@@ -85,7 +85,12 @@ Module collections.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| root_a |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| root_a |) |)
+                                              |)
+                                            ]
                                           |),
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -104,7 +109,12 @@ Module collections.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| root_b |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| root_b |) |)
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       |)) in
@@ -151,7 +161,12 @@ Module collections.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| root_a |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| root_a |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -181,48 +196,58 @@ Module collections.
                                                 M.alloc (|
                                                   Value.Tuple
                                                     [
-                                                      length_b;
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloc::collections::btree::node::NodeRef")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "alloc::collections::btree::node::marker::Immut";
-                                                                K;
-                                                                V;
-                                                                Ty.path
-                                                                  "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                              ],
-                                                            "calc_length",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::node::NodeRef")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::node::marker::Owned";
-                                                                    K;
-                                                                    V;
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                  ],
-                                                                "reborrow",
-                                                                [],
+                                                      M.borrow (| Pointer.Kind.Ref, length_b |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::btree::node::NodeRef")
                                                                 []
-                                                              |),
-                                                              [ M.read (| root_b |) ]
-                                                            |)
-                                                          ]
+                                                                [
+                                                                  Ty.path
+                                                                    "alloc::collections::btree::node::marker::Immut";
+                                                                  K;
+                                                                  V;
+                                                                  Ty.path
+                                                                    "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                ],
+                                                              "calc_length",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "alloc::collections::btree::node::NodeRef")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "alloc::collections::btree::node::marker::Owned";
+                                                                      K;
+                                                                      V;
+                                                                      Ty.path
+                                                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                    ],
+                                                                  "reborrow",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| root_b |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
                                                         |)
                                                       |)
                                                     ]
@@ -247,10 +272,14 @@ Module collections.
                                                                     UnOp.not (|
                                                                       BinOp.eq (|
                                                                         M.read (|
-                                                                          M.read (| left_val |)
+                                                                          M.deref (|
+                                                                            M.read (| left_val |)
+                                                                          |)
                                                                         |),
                                                                         M.read (|
-                                                                          M.read (| right_val |)
+                                                                          M.deref (|
+                                                                            M.read (| right_val |)
+                                                                          |)
                                                                         |)
                                                                       |)
                                                                     |)
@@ -281,8 +310,32 @@ Module collections.
                                                                         |),
                                                                         [
                                                                           M.read (| kind |);
-                                                                          M.read (| left_val |);
-                                                                          M.read (| right_val |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    left_val
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    right_val
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |);
                                                                           Value.StructTuple
                                                                             "core::option::Option::None"
                                                                             []
@@ -344,7 +397,12 @@ Module collections.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| root_b |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| root_b |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -374,48 +432,58 @@ Module collections.
                                                 M.alloc (|
                                                   Value.Tuple
                                                     [
-                                                      length_a;
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloc::collections::btree::node::NodeRef")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "alloc::collections::btree::node::marker::Immut";
-                                                                K;
-                                                                V;
-                                                                Ty.path
-                                                                  "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                              ],
-                                                            "calc_length",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::node::NodeRef")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::node::marker::Owned";
-                                                                    K;
-                                                                    V;
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                  ],
-                                                                "reborrow",
-                                                                [],
+                                                      M.borrow (| Pointer.Kind.Ref, length_a |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::btree::node::NodeRef")
                                                                 []
-                                                              |),
-                                                              [ M.read (| root_a |) ]
-                                                            |)
-                                                          ]
+                                                                [
+                                                                  Ty.path
+                                                                    "alloc::collections::btree::node::marker::Immut";
+                                                                  K;
+                                                                  V;
+                                                                  Ty.path
+                                                                    "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                ],
+                                                              "calc_length",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "alloc::collections::btree::node::NodeRef")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "alloc::collections::btree::node::marker::Owned";
+                                                                      K;
+                                                                      V;
+                                                                      Ty.path
+                                                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                    ],
+                                                                  "reborrow",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| root_a |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
                                                         |)
                                                       |)
                                                     ]
@@ -440,10 +508,14 @@ Module collections.
                                                                     UnOp.not (|
                                                                       BinOp.eq (|
                                                                         M.read (|
-                                                                          M.read (| left_val |)
+                                                                          M.deref (|
+                                                                            M.read (| left_val |)
+                                                                          |)
                                                                         |),
                                                                         M.read (|
-                                                                          M.read (| right_val |)
+                                                                          M.deref (|
+                                                                            M.read (| right_val |)
+                                                                          |)
                                                                         |)
                                                                       |)
                                                                     |)
@@ -474,8 +546,32 @@ Module collections.
                                                                         |),
                                                                         [
                                                                           M.read (| kind |);
-                                                                          M.read (| left_val |);
-                                                                          M.read (| right_val |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    left_val
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    right_val
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |);
                                                                           Value.StructTuple
                                                                             "core::option::Option::None"
                                                                             []
@@ -592,11 +688,11 @@ Module collections.
                             [],
                             []
                           |),
-                          [ M.read (| left_root |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| left_root |) |) |) ]
                         |);
                         M.call_closure (|
                           M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
-                          [ alloc ]
+                          [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
                         |)
                       ]
                     |)
@@ -618,7 +714,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| left_root |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| left_root |) |) |) ]
                     |)
                   |) in
                 let~ right_node :=
@@ -638,7 +734,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ right_root ]
+                      [ M.borrow (| Pointer.Kind.MutRef, right_root |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -664,7 +760,10 @@ Module collections.
                                   [],
                                   [ Q ]
                                 |),
-                                [ M.read (| left_node |); M.read (| key |) ]
+                                [
+                                  M.read (| left_node |);
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |)
+                                ]
                               |)
                             |),
                             [
@@ -741,7 +840,13 @@ Module collections.
                               [],
                               []
                             |),
-                            [ split_edge; right_node ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, split_edge |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, right_node |) |)
+                              |)
+                            ]
                           |)
                         |) in
                       M.match_operator (|
@@ -942,10 +1047,10 @@ Module collections.
                         [ A ]
                       |),
                       [
-                        M.read (| left_root |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| left_root |) |) |);
                         M.call_closure (|
                           M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
-                          [ alloc ]
+                          [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
                         |)
                       ]
                     |)
@@ -967,7 +1072,7 @@ Module collections.
                         [],
                         [ A ]
                       |),
-                      [ right_root; M.read (| alloc |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, right_root |); M.read (| alloc |) ]
                     |)
                   |) in
                 right_root
@@ -1021,7 +1126,7 @@ Module collections.
                       [
                         M.call_closure (|
                           M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
-                          [ alloc ]
+                          [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
                         |)
                       ]
                     |)
@@ -1072,7 +1177,12 @@ Module collections.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1115,7 +1225,7 @@ Module collections.
                                                   [ A ]
                                                 |),
                                                 [
-                                                  root;
+                                                  M.borrow (| Pointer.Kind.MutRef, root |);
                                                   M.call_closure (|
                                                     M.get_trait_method (|
                                                       "core::clone::Clone",
@@ -1126,7 +1236,7 @@ Module collections.
                                                       [],
                                                       []
                                                     |),
-                                                    [ alloc ]
+                                                    [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
                                                   |)
                                                 ]
                                               |)

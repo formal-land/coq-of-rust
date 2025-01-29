@@ -13,7 +13,10 @@ Module cmp.
           UnOp.not (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", Self, [], [ Rhs ], "eq", [], [] |),
-              [ M.read (| self |); M.read (| other |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+              ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -87,7 +90,7 @@ Module cmp.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -140,7 +143,7 @@ Module cmp.
                     [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -151,7 +154,7 @@ Module cmp.
                     [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -212,7 +215,7 @@ Module cmp.
                     [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -223,7 +226,7 @@ Module cmp.
                     [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -237,7 +240,16 @@ Module cmp.
                   [],
                   []
                 |),
-                [ __self_discr; __arg1_discr ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -271,7 +283,7 @@ Module cmp.
                     [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -282,13 +294,22 @@ Module cmp.
                     [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], [], "cmp", [], [] |),
-                [ __self_discr; __arg1_discr ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -316,7 +337,7 @@ Module cmp.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -325,17 +346,32 @@ Module cmp.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                        M.alloc (| M.read (| Value.String "Less" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Less" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                        M.alloc (| M.read (| Value.String "Equal" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Equal" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                        M.alloc (| M.read (| Value.String "Greater" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Greater" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -371,7 +407,7 @@ Module cmp.
                     [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -385,7 +421,13 @@ Module cmp.
                   [],
                   [ __H ]
                 |),
-                [ __self_discr; M.read (| state |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |)
             |)
           |)))
@@ -719,8 +761,22 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |);
-              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -788,10 +844,25 @@ Module cmp.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Reverse" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Reverse" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::cmp::Reverse",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -862,8 +933,20 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
             [
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |);
-              M.read (| state |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::cmp::Reverse",
+                      0
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -896,8 +979,27 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::cmp::Reverse",
+                      0
+                    |)
+                  |)
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -918,8 +1020,22 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -940,8 +1056,22 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -962,8 +1092,22 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -984,8 +1128,22 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1025,8 +1183,27 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::cmp::Reverse",
+                      0
+                    |)
+                  |)
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1061,10 +1238,13 @@ Module cmp.
               M.call_closure (|
                 M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::cmp::Reverse",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::cmp::Reverse",
+                      0
+                    |)
                   |)
                 ]
               |)
@@ -1087,8 +1267,27 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::clone::Clone", T, [], [], "clone_from", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |);
-              M.SubPointer.get_struct_tuple_field (| M.read (| source |), "core::cmp::Reverse", 0 |)
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::cmp::Reverse",
+                  0
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| source |) |),
+                      "core::cmp::Reverse",
+                      0
+                    |)
+                  |)
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1191,7 +1390,10 @@ Module cmp.
                                   [],
                                   []
                                 |),
-                                [ min; max ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, min |);
+                                  M.borrow (| Pointer.Kind.Ref, max |)
+                                ]
                               |)
                             |)
                           |)) in
@@ -1225,7 +1427,10 @@ Module cmp.
                               [],
                               []
                             |),
-                            [ self; min ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, self |);
+                              M.borrow (| Pointer.Kind.Ref, min |)
+                            ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1250,7 +1455,10 @@ Module cmp.
                                       [],
                                       []
                                     |),
-                                    [ self; max ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, self |);
+                                      M.borrow (| Pointer.Kind.Ref, max |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -1289,7 +1497,10 @@ Module cmp.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               |),
               [
@@ -1332,7 +1543,10 @@ Module cmp.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               |),
               [
@@ -1392,7 +1606,10 @@ Module cmp.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               |),
               [
@@ -1435,7 +1652,10 @@ Module cmp.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               |),
               [
@@ -1526,7 +1746,20 @@ Module cmp.
                   [],
                   []
                 |),
-                [ M.read (| compare |); Value.Tuple [ v1; v2 ] ]
+                [
+                  M.read (| compare |);
+                  Value.Tuple
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, v1 |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, v2 |) |)
+                      |)
+                    ]
+                ]
               |)
             |),
             [
@@ -1618,32 +1851,62 @@ Module cmp.
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [],
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                "call_mut",
-                                                [],
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| v1 |) ] ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [],
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                  "call_mut",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
+                                                  Value.Tuple
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| v1 |) |)
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)
                                             |)
                                           |);
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [],
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                "call_mut",
-                                                [],
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| v2 |) ] ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::function::FnMut",
+                                                      F,
+                                                      [],
+                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                      ],
+                                                      "call_mut",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (| Pointer.Kind.MutRef, f |);
+                                                      Value.Tuple
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| v2 |) |)
+                                                          |)
+                                                        ]
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           |)
                                         ]
@@ -1709,7 +1972,20 @@ Module cmp.
                   [],
                   []
                 |),
-                [ M.read (| compare |); Value.Tuple [ v1; v2 ] ]
+                [
+                  M.read (| compare |);
+                  Value.Tuple
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, v1 |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, v2 |) |)
+                      |)
+                    ]
+                ]
               |)
             |),
             [
@@ -1801,32 +2077,62 @@ Module cmp.
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [],
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                "call_mut",
-                                                [],
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| v1 |) ] ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [],
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                  "call_mut",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
+                                                  Value.Tuple
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| v1 |) |)
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)
                                             |)
                                           |);
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [],
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                "call_mut",
-                                                [],
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| v2 |) ] ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::function::FnMut",
+                                                      F,
+                                                      [],
+                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                      ],
+                                                      "call_mut",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (| Pointer.Kind.MutRef, f |);
+                                                      Value.Tuple
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| v2 |) |)
+                                                          |)
+                                                        ]
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           |)
                                         ]
@@ -1877,7 +2183,8 @@ Module cmp.
                             [],
                             []
                           |),
-                          [ v1; v2 ]
+                          [ M.borrow (| Pointer.Kind.Ref, v1 |); M.borrow (| Pointer.Kind.Ref, v2 |)
+                          ]
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1940,7 +2247,20 @@ Module cmp.
                                 [],
                                 []
                               |),
-                              [ M.read (| compare |); Value.Tuple [ v1; v2 ] ]
+                              [
+                                M.read (| compare |);
+                                Value.Tuple
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, v1 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, v2 |) |)
+                                    |)
+                                  ]
+                              ]
                             |)
                           ]
                         |)
@@ -2016,32 +2336,62 @@ Module cmp.
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [],
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                "call_mut",
-                                                [],
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| v1 |) ] ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [],
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                  "call_mut",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
+                                                  Value.Tuple
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| v1 |) |)
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)
                                             |)
                                           |);
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [],
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                "call_mut",
-                                                [],
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| v2 |) ] ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::function::FnMut",
+                                                      F,
+                                                      [],
+                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                      ],
+                                                      "call_mut",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (| Pointer.Kind.MutRef, f |);
+                                                      Value.Tuple
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| v2 |) |)
+                                                          |)
+                                                        ]
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           |)
                                         ]
@@ -2111,7 +2461,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2122,7 +2475,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2144,7 +2500,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2155,7 +2514,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2177,7 +2539,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2188,7 +2553,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2210,7 +2578,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2221,7 +2592,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2243,7 +2617,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2254,7 +2631,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2276,7 +2656,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2287,7 +2670,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2309,7 +2695,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2320,7 +2709,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2342,7 +2734,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2353,7 +2748,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2375,7 +2773,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2386,7 +2787,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2408,7 +2812,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2419,7 +2826,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2441,7 +2851,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2452,7 +2865,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2474,7 +2890,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2485,7 +2904,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2507,7 +2929,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2518,7 +2943,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2540,7 +2968,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2551,7 +2982,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2573,7 +3007,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2584,7 +3021,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2606,7 +3046,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2617,7 +3060,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2639,7 +3085,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2650,7 +3099,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2672,7 +3124,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2683,7 +3138,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ne (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2854,7 +3312,10 @@ Module cmp.
               [
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], [], "cmp", [], [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2893,10 +3354,13 @@ Module cmp.
                   Value.Tuple
                     [
                       BinOp.le (|
-                        M.read (| M.read (| self |) |),
-                        M.read (| M.read (| other |) |)
+                        M.read (| M.deref (| M.read (| self |) |) |),
+                        M.read (| M.deref (| M.read (| other |) |) |)
                       |);
-                      BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)
+                      BinOp.ge (|
+                        M.read (| M.deref (| M.read (| self |) |) |),
+                        M.read (| M.deref (| M.read (| other |) |) |)
+                      |)
                     ]
                 |),
                 [
@@ -2961,7 +3425,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2972,7 +3439,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2983,7 +3453,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2994,7 +3467,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3038,10 +3514,13 @@ Module cmp.
                   Value.Tuple
                     [
                       BinOp.le (|
-                        M.read (| M.read (| self |) |),
-                        M.read (| M.read (| other |) |)
+                        M.read (| M.deref (| M.read (| self |) |) |),
+                        M.read (| M.deref (| M.read (| other |) |) |)
                       |);
-                      BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)
+                      BinOp.ge (|
+                        M.read (| M.deref (| M.read (| self |) |) |),
+                        M.read (| M.deref (| M.read (| other |) |) |)
+                      |)
                     ]
                 |),
                 [
@@ -3106,7 +3585,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3117,7 +3599,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3128,7 +3613,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3139,7 +3627,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3183,10 +3674,13 @@ Module cmp.
                   Value.Tuple
                     [
                       BinOp.le (|
-                        M.read (| M.read (| self |) |),
-                        M.read (| M.read (| other |) |)
+                        M.read (| M.deref (| M.read (| self |) |) |),
+                        M.read (| M.deref (| M.read (| other |) |) |)
                       |);
-                      BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)
+                      BinOp.ge (|
+                        M.read (| M.deref (| M.read (| self |) |) |),
+                        M.read (| M.deref (| M.read (| other |) |) |)
+                      |)
                     ]
                 |),
                 [
@@ -3251,7 +3745,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3262,7 +3759,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3273,7 +3773,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3284,7 +3787,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3328,10 +3834,13 @@ Module cmp.
                   Value.Tuple
                     [
                       BinOp.le (|
-                        M.read (| M.read (| self |) |),
-                        M.read (| M.read (| other |) |)
+                        M.read (| M.deref (| M.read (| self |) |) |),
+                        M.read (| M.deref (| M.read (| other |) |) |)
                       |);
-                      BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)
+                      BinOp.ge (|
+                        M.read (| M.deref (| M.read (| self |) |) |),
+                        M.read (| M.deref (| M.read (| other |) |) |)
+                      |)
                     ]
                 |),
                 [
@@ -3396,7 +3905,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3407,7 +3919,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3418,7 +3933,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3429,7 +3947,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3501,8 +4022,8 @@ Module cmp.
               M.match_operator (|
                 M.alloc (|
                   BinOp.Wrap.sub (|
-                    M.rust_cast (M.read (| M.read (| self |) |)),
-                    M.rust_cast (M.read (| M.read (| other |) |))
+                    M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)),
+                    M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |))
                   |)
                 |),
                 [
@@ -3675,7 +4196,10 @@ Module cmp.
                     [],
                     [ Ty.path "char" ]
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3688,7 +4212,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3699,7 +4226,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3710,7 +4240,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3721,7 +4254,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3756,7 +4292,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "char" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3792,7 +4331,10 @@ Module cmp.
                     [],
                     [ Ty.path "usize" ]
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3805,7 +4347,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3816,7 +4361,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3827,7 +4375,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3838,7 +4389,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3873,7 +4427,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "usize" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3905,7 +4462,10 @@ Module cmp.
               [
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u8" ] |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3918,7 +4478,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3929,7 +4492,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3940,7 +4506,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3951,7 +4520,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3986,7 +4558,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u8" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4018,7 +4593,10 @@ Module cmp.
               [
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u16" ] |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4031,7 +4609,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4042,7 +4623,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4053,7 +4637,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4064,7 +4651,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4099,7 +4689,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u16" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4131,7 +4724,10 @@ Module cmp.
               [
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u32" ] |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4144,7 +4740,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4155,7 +4754,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4166,7 +4768,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4177,7 +4782,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4212,7 +4820,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u32" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4244,7 +4855,10 @@ Module cmp.
               [
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u64" ] |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4257,7 +4871,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4268,7 +4885,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4279,7 +4899,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4290,7 +4913,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4325,7 +4951,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u64" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4361,7 +4990,10 @@ Module cmp.
                     [],
                     [ Ty.path "u128" ]
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4374,7 +5006,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4385,7 +5020,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4396,7 +5034,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4407,7 +5048,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4442,7 +5086,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u128" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4478,7 +5125,10 @@ Module cmp.
                     [],
                     [ Ty.path "isize" ]
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4491,7 +5141,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4502,7 +5155,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4513,7 +5169,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4524,7 +5183,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4559,7 +5221,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "isize" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4591,7 +5256,10 @@ Module cmp.
               [
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i8" ] |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4604,7 +5272,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4615,7 +5286,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4626,7 +5300,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4637,7 +5314,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4672,7 +5352,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i8" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4704,7 +5387,10 @@ Module cmp.
               [
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i16" ] |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4717,7 +5403,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4728,7 +5417,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4739,7 +5431,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4750,7 +5445,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4785,7 +5483,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i16" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4817,7 +5518,10 @@ Module cmp.
               [
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i32" ] |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4830,7 +5534,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4841,7 +5548,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4852,7 +5562,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4863,7 +5576,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4898,7 +5614,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i32" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4930,7 +5649,10 @@ Module cmp.
               [
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i64" ] |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4943,7 +5665,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4954,7 +5679,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4965,7 +5693,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4976,7 +5707,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5011,7 +5745,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i64" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5047,7 +5784,10 @@ Module cmp.
                     [],
                     [ Ty.path "i128" ]
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5060,7 +5800,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5071,7 +5814,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5082,7 +5828,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5093,7 +5842,10 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5128,7 +5880,10 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i128" ] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5157,7 +5912,11 @@ Module cmp.
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
               β1,
-              [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.never_to_any (| M.read (| M.deref (| M.read (| self |) |) |) |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5193,7 +5952,11 @@ Module cmp.
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
               β1,
-              [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.never_to_any (| M.read (| M.deref (| M.read (| self |) |) |) |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5222,7 +5985,11 @@ Module cmp.
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
               β1,
-              [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.never_to_any (| M.read (| M.deref (| M.read (| self |) |) |) |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5252,7 +6019,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5271,7 +6047,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5308,7 +6093,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "partial_cmp", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5327,7 +6121,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "lt", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5346,7 +6149,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "le", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5365,7 +6177,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "gt", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5384,7 +6205,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "ge", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5422,7 +6252,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5465,7 +6304,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5484,7 +6332,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5521,7 +6378,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "partial_cmp", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5540,7 +6406,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "lt", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5559,7 +6434,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "le", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5578,7 +6462,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "gt", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5597,7 +6490,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "ge", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5635,7 +6537,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5678,7 +6589,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5697,7 +6617,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5729,7 +6658,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5748,7 +6686,16 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

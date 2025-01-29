@@ -195,10 +195,25 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "AccountId" |);
-            M.alloc (|
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |)
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "AccountId" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "multisig::AccountId",
+                        0
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)
           ]
         |)))
@@ -225,7 +240,7 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -269,10 +284,18 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
         let other := M.alloc (| other |) in
         BinOp.eq (|
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| self |) |),
+              "multisig::AccountId",
+              0
+            |)
           |),
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| other |) |),
+              "multisig::AccountId",
+              0
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -338,8 +361,32 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
             []
           |),
           [
-            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |);
-            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "multisig::AccountId",
+                    0
+                  |)
+                |)
+              |)
+            |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| other |) |),
+                    "multisig::AccountId",
+                    0
+                  |)
+                |)
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -366,8 +413,32 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
         M.call_closure (|
           M.get_trait_method (| "core::cmp::Ord", Ty.path "u128", [], [], "cmp", [], [] |),
           [
-            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |);
-            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "multisig::AccountId",
+                    0
+                  |)
+                |)
+              |)
+            |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| other |) |),
+                    "multisig::AccountId",
+                    0
+                  |)
+                |)
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -440,7 +511,7 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -608,7 +679,7 @@ Module Impl_core_clone_Clone_for_multisig_Error.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.read (| self |) |)))
+        M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -907,7 +978,11 @@ Module Impl_multisig_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "multisig::Env", "caller" |)
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "multisig::Env",
+            "caller"
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1244,20 +1319,25 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::DerefMut",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
-                      [],
-                      [],
-                      "deref_mut",
-                      [],
-                      []
-                    |),
-                    [ owners ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::DerefMut",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
+                          [],
+                          [],
+                          "deref_mut",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, owners |) ]
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1274,7 +1354,7 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ owners ]
+                [ M.borrow (| Pointer.Kind.MutRef, owners |) ]
               |)
             |) in
           let~ _ :=
@@ -1293,7 +1373,7 @@ Module Impl_multisig_Multisig.
                         [],
                         []
                       |),
-                      [ owners ]
+                      [ M.borrow (| Pointer.Kind.Ref, owners |) ]
                     |));
                   M.read (| requirement |)
                 ]
@@ -1321,7 +1401,7 @@ Module Impl_multisig_Multisig.
                       [],
                       []
                     |),
-                    [ owners ]
+                    [ M.borrow (| Pointer.Kind.Ref, owners |) ]
                   |)
                 |),
                 [
@@ -1346,7 +1426,12 @@ Module Impl_multisig_Multisig.
                                     [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -1377,12 +1462,15 @@ Module Impl_multisig_Multisig.
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              contract,
-                                              "multisig::Multisig",
-                                              "is_owner"
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                contract,
+                                                "multisig::Multisig",
+                                                "is_owner"
+                                              |)
                                             |);
-                                            M.read (| M.read (| owner |) |);
+                                            M.read (| M.deref (| M.read (| owner |) |) |);
                                             Value.Tuple []
                                           ]
                                         |)
@@ -1482,20 +1570,33 @@ Module Impl_multisig_Multisig.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "multisig::Multisig",
-                                        "confirmation_count"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "multisig::Multisig",
+                                          "confirmation_count"
+                                        |)
                                       |);
-                                      trans_id
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, trans_id |) |)
+                                      |)
                                     ]
                                   |);
-                                  M.read (| M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |) |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |)
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |),
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "multisig::Multisig",
                                   "requirement"
                                 |)
@@ -1564,15 +1665,24 @@ Module Impl_multisig_Multisig.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "multisig::Multisig",
-                        "transactions"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "multisig::Multisig",
+                          "transactions"
+                        |)
                       |);
-                      trans_id
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, trans_id |) |)
+                      |)
                     ]
                   |);
-                  M.read (| M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |) |)
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |) |) |)
+                  |)
                 ]
               |)
             |) in
@@ -1617,12 +1727,15 @@ Module Impl_multisig_Multisig.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "multisig::Multisig",
-                                  "is_owner"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "multisig::Multisig",
+                                    "is_owner"
+                                  |)
                                 |);
-                                M.read (| owner |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| owner |) |) |)
                               ]
                             |)
                           |)
@@ -1671,23 +1784,44 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.read (| self |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "multisig::Env", "caller", [], [] |),
-                      [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.path "multisig::Multisig",
-                              "env",
+                              Ty.path "multisig::Env",
+                              "caller",
                               [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "multisig::Multisig",
+                                      "env",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         |)
-                      ]
+                      |)
                     |)
                   |)
                 ]
@@ -1717,45 +1851,59 @@ Module Impl_multisig_Multisig.
               M.alloc (|
                 Value.Tuple
                   [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "multisig::Env", "caller", [], [] |),
-                        [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "multisig::Multisig",
-                                "env",
-                                [],
-                                []
-                              |),
-                              [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "multisig::Env", "caller", [], [] |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "multisig::Multisig",
+                                    "env",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              |)
                             |)
-                          |)
-                        ]
+                          ]
+                        |)
                       |)
                     |);
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "multisig::Env",
-                          "account_id",
-                          [],
-                          []
-                        |),
-                        [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "multisig::Multisig",
-                                "env",
-                                [],
-                                []
-                              |),
-                              [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "multisig::Env",
+                            "account_id",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "multisig::Multisig",
+                                    "env",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              |)
                             |)
-                          |)
-                        ]
+                          ]
+                        |)
                       |)
                     |)
                   ]
@@ -1786,7 +1934,16 @@ Module Impl_multisig_Multisig.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| left_val |); M.read (| right_val |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| left_val |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| right_val |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
@@ -1811,8 +1968,24 @@ Module Impl_multisig_Multisig.
                                       |),
                                       [
                                         M.read (| kind |);
-                                        M.read (| left_val |);
-                                        M.read (| right_val |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
                                         Value.StructTuple "core::option::Option::None" []
                                       ]
                                     |)
@@ -1867,12 +2040,15 @@ Module Impl_multisig_Multisig.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "multisig::Multisig",
-                                    "is_owner"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "multisig::Multisig",
+                                      "is_owner"
+                                    |)
                                   |);
-                                  M.read (| owner |)
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| owner |) |) |)
                                 ]
                               |)
                             |)
@@ -1929,7 +2105,7 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ _ :=
@@ -1941,7 +2117,13 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |); new_owner ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, new_owner |) |)
+                  |)
+                ]
               |)
             |) in
           let~ _ :=
@@ -1962,10 +2144,13 @@ Module Impl_multisig_Multisig.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "multisig::Multisig",
-                            "owners"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "multisig::Multisig",
+                              "owners"
+                            |)
                           |)
                         ]
                       |)),
@@ -1973,7 +2158,7 @@ Module Impl_multisig_Multisig.
                   |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "multisig::Multisig",
                       "requirement"
                     |)
@@ -1994,10 +2179,13 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "multisig::Multisig",
-                    "is_owner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "multisig::Multisig",
+                      "is_owner"
+                    |)
                   |);
                   M.read (| new_owner |);
                   Value.Tuple []
@@ -2017,10 +2205,13 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "multisig::Multisig",
-                    "owners"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "multisig::Multisig",
+                      "owners"
+                    |)
                   |);
                   M.read (| new_owner |)
                 ]
@@ -2031,10 +2222,13 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -2092,37 +2286,49 @@ Module Impl_multisig_Multisig.
                   ]
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "multisig::AccountId" ],
-                        "iter",
-                        [],
-                        []
-                      |),
-                      [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
-                            [],
-                            [],
-                            "deref",
-                            [],
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "multisig::Multisig",
-                              "owners"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "multisig::AccountId" ],
+                          "iter",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global"
+                                    ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "multisig::Multisig",
+                                      "owners"
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
-                          ]
-                        |)
-                      ]
+                          |)
+                        ]
+                      |)
                     |)
                   |);
                   M.closure
@@ -2147,7 +2353,16 @@ Module Impl_multisig_Multisig.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| x |); M.read (| owner |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| x |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| owner |) |)
+                                        |)
+                                      ]
                                     |)))
                               ]
                             |)))
@@ -2155,10 +2370,15 @@ Module Impl_multisig_Multisig.
                         end))
                 ]
               |);
-              M.read (|
-                Value.String
-                  "This is only called after it was already verified that the id is
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (|
+                    Value.String
+                      "This is only called after it was already verified that the id is
                actually an owner."
+                  |)
+                |)
               |)
             ]
           |))))
@@ -2209,14 +2429,17 @@ Module Impl_multisig_Multisig.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "multisig::Multisig",
-                        "transaction_list"
-                      |),
-                      "multisig::Transactions",
-                      "transactions"
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "multisig::Multisig",
+                          "transaction_list"
+                        |),
+                        "multisig::Transactions",
+                        "transactions"
+                      |)
                     |)
                   ]
                 |)
@@ -2240,7 +2463,12 @@ Module Impl_multisig_Multisig.
                                   [],
                                   []
                                 |),
-                                [ iter ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                  |)
+                                ]
                               |)
                             |),
                             [
@@ -2262,8 +2490,8 @@ Module Impl_multisig_Multisig.
                                     M.alloc (|
                                       Value.Tuple
                                         [
-                                          M.read (| M.read (| trans_id |) |);
-                                          M.read (| M.read (| owner |) |)
+                                          M.read (| M.deref (| M.read (| trans_id |) |) |);
+                                          M.read (| M.deref (| M.read (| owner |) |) |)
                                         ]
                                     |) in
                                   M.match_operator (|
@@ -2292,12 +2520,20 @@ Module Impl_multisig_Multisig.
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "multisig::Multisig",
-                                                      "confirmations"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "multisig::Multisig",
+                                                        "confirmations"
+                                                      |)
                                                     |);
-                                                    key
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, key |)
+                                                      |)
+                                                    |)
                                                   ]
                                                 |)
                                               |)) in
@@ -2326,10 +2562,13 @@ Module Impl_multisig_Multisig.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "multisig::Multisig",
-                                                    "confirmations"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "multisig::Multisig",
+                                                      "confirmations"
+                                                    |)
                                                   |);
                                                   M.read (| key |)
                                                 ]
@@ -2359,12 +2598,18 @@ Module Impl_multisig_Multisig.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "multisig::Multisig",
-                                                        "confirmation_count"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "multisig::Multisig",
+                                                          "confirmation_count"
+                                                        |)
                                                       |);
-                                                      M.read (| trans_id |)
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| trans_id |) |)
+                                                      |)
                                                     ]
                                                   |);
                                                   M.read (|
@@ -2398,12 +2643,15 @@ Module Impl_multisig_Multisig.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "multisig::Multisig",
-                                                    "confirmation_count"
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "multisig::Multisig",
+                                                      "confirmation_count"
+                                                    |)
                                                   |);
-                                                  M.read (| M.read (| trans_id |) |);
+                                                  M.read (| M.deref (| M.read (| trans_id |) |) |);
                                                   M.read (| count |)
                                                 ]
                                               |)
@@ -2457,7 +2705,7 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ _ :=
@@ -2469,7 +2717,13 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |); owner ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, owner |) |)
+                  |)
+                ]
               |)
             |) in
           let~ len :=
@@ -2487,10 +2741,13 @@ Module Impl_multisig_Multisig.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "multisig::Multisig",
-                        "owners"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "multisig::Multisig",
+                          "owners"
+                        |)
                       |)
                     ]
                   |)),
@@ -2505,7 +2762,7 @@ Module Impl_multisig_Multisig.
                   M.read (| len |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "multisig::Multisig",
                       "requirement"
                     |)
@@ -2530,7 +2787,13 @@ Module Impl_multisig_Multisig.
                     [],
                     []
                   |),
-                  [ M.read (| self |); owner ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, owner |) |)
+                    |)
+                  ]
                 |))
             |) in
           let~ _ :=
@@ -2546,10 +2809,13 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "multisig::Multisig",
-                    "owners"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "multisig::Multisig",
+                      "owners"
+                    |)
                   |);
                   M.read (| owner_index |)
                 ]
@@ -2568,10 +2834,13 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "multisig::Multisig",
-                    "is_owner"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "multisig::Multisig",
+                      "is_owner"
+                    |)
                   |);
                   M.read (| owner |)
                 ]
@@ -2580,7 +2849,7 @@ Module Impl_multisig_Multisig.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "multisig::Multisig",
                 "requirement"
               |),
@@ -2595,7 +2864,13 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |); owner ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, owner |) |)
+                  |)
+                ]
               |)
             |) in
           let~ _ :=
@@ -2603,10 +2878,13 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -2656,7 +2934,7 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ _ :=
@@ -2668,7 +2946,13 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |); old_owner ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, old_owner |) |)
+                  |)
+                ]
               |)
             |) in
           let~ _ :=
@@ -2680,39 +2964,56 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |); new_owner ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, new_owner |) |)
+                  |)
+                ]
               |)
             |) in
           let~ owner_index :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Multisig", "owner_index", [], [] |),
-                [ M.read (| self |); old_owner ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, old_owner |) |)
+                  |)
+                ]
               |)
             |) in
           let~ _ :=
             M.write (|
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::IndexMut",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::index::IndexMut",
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
+                    [],
+                    [ Ty.path "usize" ],
+                    "index_mut",
+                    [],
                     []
-                    [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  [ Ty.path "usize" ],
-                  "index_mut",
-                  [],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "multisig::Multisig",
-                    "owners"
-                  |);
-                  M.rust_cast (M.read (| owner_index |))
-                ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "multisig::Multisig",
+                        "owners"
+                      |)
+                    |);
+                    M.rust_cast (M.read (| owner_index |))
+                  ]
+                |)
               |),
               M.read (| new_owner |)
             |) in
@@ -2729,10 +3030,13 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "multisig::Multisig",
-                    "is_owner"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "multisig::Multisig",
+                      "is_owner"
+                    |)
                   |);
                   M.read (| old_owner |)
                 ]
@@ -2751,10 +3055,13 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "multisig::Multisig",
-                    "is_owner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "multisig::Multisig",
+                      "is_owner"
+                    |)
                   |);
                   M.read (| new_owner |);
                   Value.Tuple []
@@ -2770,7 +3077,13 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |); old_owner ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, old_owner |) |)
+                  |)
+                ]
               |)
             |) in
           let~ _ :=
@@ -2778,10 +3091,13 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -2799,10 +3115,13 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -2850,7 +3169,7 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ _ :=
@@ -2870,10 +3189,13 @@ Module Impl_multisig_Multisig.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "multisig::Multisig",
-                          "owners"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "multisig::Multisig",
+                            "owners"
+                          |)
                         |)
                       ]
                     |));
@@ -2884,7 +3206,7 @@ Module Impl_multisig_Multisig.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "multisig::Multisig",
                 "requirement"
               |),
@@ -2895,10 +3217,13 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -2979,12 +3304,18 @@ Module Impl_multisig_Multisig.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "multisig::Multisig",
-                        "confirmation_count"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "multisig::Multisig",
+                          "confirmation_count"
+                        |)
                       |);
-                      transaction
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, transaction |) |)
+                      |)
                     ]
                   |);
                   M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |)
@@ -3007,12 +3338,18 @@ Module Impl_multisig_Multisig.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "multisig::Multisig",
-                      "confirmations"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "multisig::Multisig",
+                        "confirmations"
+                      |)
                     |);
-                    key
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, key |) |)
+                    |)
                   ]
                 |)
               |)
@@ -3047,10 +3384,13 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "multisig::Multisig",
-                              "confirmations"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "multisig::Multisig",
+                                "confirmations"
+                              |)
                             |);
                             M.read (| key |);
                             Value.Tuple []
@@ -3070,10 +3410,13 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "multisig::Multisig",
-                              "confirmation_count"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "multisig::Multisig",
+                                "confirmation_count"
+                              |)
                             |);
                             M.read (| transaction |);
                             M.read (| count |)
@@ -3098,7 +3441,7 @@ Module Impl_multisig_Multisig.
                               M.read (| count |),
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "multisig::Multisig",
                                   "requirement"
                                 |)
@@ -3118,7 +3461,7 @@ Module Impl_multisig_Multisig.
                             BinOp.Wrap.sub (|
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "multisig::Multisig",
                                   "requirement"
                                 |)
@@ -3148,15 +3491,19 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "multisig::Multisig",
-                                  "env",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| self |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "multisig::Multisig",
+                                    "env",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
                               |)
                             |);
                             Value.StructTuple
@@ -3222,14 +3569,14 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ trans_id :=
             M.copy (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "multisig::Multisig",
                   "transaction_list"
                 |),
@@ -3241,7 +3588,7 @@ Module Impl_multisig_Multisig.
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "multisig::Multisig",
                   "transaction_list"
                 |),
@@ -3263,7 +3610,10 @@ Module Impl_multisig_Multisig.
                       M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 1 |)) |)
                     ]
                   |);
-                  M.read (| Value.String "Transaction ids exhausted." |)
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "Transaction ids exhausted." |) |)
+                  |)
                 ]
               |)
             |) in
@@ -3280,10 +3630,13 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "multisig::Multisig",
-                    "transactions"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "multisig::Multisig",
+                      "transactions"
+                    |)
                   |);
                   M.read (| trans_id |);
                   M.read (| transaction |)
@@ -3303,14 +3656,17 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "multisig::Multisig",
-                      "transaction_list"
-                    |),
-                    "multisig::Transactions",
-                    "transactions"
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "multisig::Multisig",
+                        "transaction_list"
+                      |),
+                      "multisig::Transactions",
+                      "transactions"
+                    |)
                   |);
                   M.read (| trans_id |)
                 ]
@@ -3321,10 +3677,13 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -3349,19 +3708,22 @@ Module Impl_multisig_Multisig.
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "multisig::Env", "caller", [], [] |),
                       [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "multisig::Multisig",
-                              "env",
-                              [],
-                              []
-                            |),
-                            [ M.read (| self |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "multisig::Multisig",
+                                "env",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
                           |)
                         |)
                       ]
@@ -3418,12 +3780,18 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "multisig::Multisig",
-                    "transactions"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "multisig::Multisig",
+                      "transactions"
+                    |)
                   |);
-                  trans_id
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, trans_id |) |)
+                  |)
                 ]
               |)
             |) in
@@ -3446,7 +3814,7 @@ Module Impl_multisig_Multisig.
                               [],
                               []
                             |),
-                            [ transaction ]
+                            [ M.borrow (| Pointer.Kind.Ref, transaction |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3463,10 +3831,13 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "multisig::Multisig",
-                              "transactions"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "multisig::Multisig",
+                                "transactions"
+                              |)
                             |);
                             M.read (| trans_id |)
                           ]
@@ -3497,41 +3868,52 @@ Module Impl_multisig_Multisig.
                                 ]
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
-                                      "iter",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::deref::Deref",
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            []
-                                            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-                                          [],
-                                          [],
-                                          "deref",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "multisig::Multisig",
-                                              "transaction_list"
-                                            |),
-                                            "multisig::Transactions",
-                                            "transactions"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
+                                        "iter",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "multisig::Multisig",
+                                                      "transaction_list"
+                                                    |),
+                                                    "multisig::Transactions",
+                                                    "transactions"
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
                                           |)
-                                        ]
-                                      |)
-                                    ]
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |);
                                 M.closure
@@ -3557,7 +3939,15 @@ Module Impl_multisig_Multisig.
                                                       [],
                                                       []
                                                     |),
-                                                    [ t; M.alloc (| trans_id |) ]
+                                                    [
+                                                      M.borrow (| Pointer.Kind.Ref, t |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.borrow (| Pointer.Kind.Ref, trans_id |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)))
                                             ]
                                           |)))
@@ -3565,9 +3955,14 @@ Module Impl_multisig_Multisig.
                                       end))
                               ]
                             |);
-                            M.read (|
-                              Value.String
-                                "The transaction exists hence it must also be in the list."
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.read (|
+                                  Value.String
+                                    "The transaction exists hence it must also be in the list."
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3585,14 +3980,17 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "multisig::Multisig",
-                                "transaction_list"
-                              |),
-                              "multisig::Transactions",
-                              "transactions"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "multisig::Multisig",
+                                  "transaction_list"
+                                |),
+                                "multisig::Transactions",
+                                "transactions"
+                              |)
                             |);
                             M.read (| pos |)
                           ]
@@ -3624,29 +4022,37 @@ Module Impl_multisig_Multisig.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "multisig::AccountId";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
                                           [
-                                            Ty.path "multisig::AccountId";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "multisig::Multisig",
-                                          "owners"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "multisig::Multisig",
+                                                "owners"
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -3675,7 +4081,14 @@ Module Impl_multisig_Multisig.
                                               [],
                                               []
                                             |),
-                                            [ iter ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -3718,15 +4131,20 @@ Module Impl_multisig_Multisig.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "multisig::Multisig",
-                                                        "confirmations"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "multisig::Multisig",
+                                                          "confirmations"
+                                                        |)
                                                       |);
                                                       Value.Tuple
                                                         [
                                                           M.read (| trans_id |);
-                                                          M.read (| M.read (| owner |) |)
+                                                          M.read (|
+                                                            M.deref (| M.read (| owner |) |)
+                                                          |)
                                                         ]
                                                     ]
                                                   |)
@@ -3751,10 +4169,13 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "multisig::Multisig",
-                              "confirmation_count"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "multisig::Multisig",
+                                "confirmation_count"
+                              |)
                             |);
                             M.read (| trans_id |)
                           ]
@@ -3798,7 +4219,7 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           M.match_operator (|
@@ -3820,15 +4241,24 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "multisig::Multisig",
-                                  "take_transaction",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| self |); M.read (| trans_id |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "multisig::Multisig",
+                                    "take_transaction",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.read (| trans_id |)
+                                  ]
+                                |)
                               |)
                             |)
                           ]
@@ -3845,15 +4275,18 @@ Module Impl_multisig_Multisig.
                           []
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "multisig::Multisig",
-                                "env",
-                                [],
-                                []
-                              |),
-                              [ M.read (| self |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "multisig::Multisig",
+                                  "env",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
                             |)
                           |);
                           Value.StructTuple
@@ -3900,7 +4333,7 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ _ :=
@@ -3912,7 +4345,10 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| trans_id |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| trans_id |)
+                ]
               |)
             |) in
           M.alloc (|
@@ -3924,14 +4360,22 @@ Module Impl_multisig_Multisig.
                 []
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "multisig::Env", "caller", [], [] |),
                   [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
-                        [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "multisig::Multisig",
+                            "env",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
                       |)
                     |)
                   ]
@@ -3983,7 +4427,7 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ caller :=
@@ -3991,10 +4435,13 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "caller", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |)
                 ]
@@ -4022,12 +4469,25 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "multisig::Multisig",
-                              "confirmations"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "multisig::Multisig",
+                                "confirmations"
+                              |)
                             |);
-                            M.alloc (| Value.Tuple [ M.read (| trans_id |); M.read (| caller |) ] |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Tuple [ M.read (| trans_id |); M.read (| caller |) ]
+                                  |)
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       |)) in
@@ -4046,10 +4506,13 @@ Module Impl_multisig_Multisig.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "multisig::Multisig",
-                            "confirmations"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "multisig::Multisig",
+                              "confirmations"
+                            |)
                           |);
                           Value.Tuple [ M.read (| trans_id |); M.read (| caller |) ]
                         ]
@@ -4076,17 +4539,28 @@ Module Impl_multisig_Multisig.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "multisig::Multisig",
-                                "confirmation_count"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "multisig::Multisig",
+                                  "confirmation_count"
+                                |)
                               |);
-                              trans_id
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, trans_id |) |)
+                              |)
                             ]
                           |);
-                          M.read (|
-                            Value.String
-                              "There is a entry in `self.confirmations`. Hence a count must exit."
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                Value.String
+                                  "There is a entry in `self.confirmations`. Hence a count must exit."
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -4110,10 +4584,13 @@ Module Impl_multisig_Multisig.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "multisig::Multisig",
-                            "confirmation_count"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "multisig::Multisig",
+                              "confirmation_count"
+                            |)
                           |);
                           M.read (| trans_id |);
                           M.read (| confirmation_count |)
@@ -4130,15 +4607,18 @@ Module Impl_multisig_Multisig.
                           []
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "multisig::Multisig",
-                                "env",
-                                [],
-                                []
-                              |),
-                              [ M.read (| self |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "multisig::Multisig",
+                                  "env",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
                             |)
                           |);
                           Value.StructTuple
@@ -4208,7 +4688,10 @@ Module Impl_multisig_Multisig.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| trans_id |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| trans_id |)
+                ]
               |)
             |) in
           let~ t :=
@@ -4228,9 +4711,15 @@ Module Impl_multisig_Multisig.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| trans_id |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| trans_id |)
+                    ]
                   |);
-                  M.read (| M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |) |)
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |) |) |)
+                  |)
                 ]
               |)
             |) in
@@ -4253,15 +4742,23 @@ Module Impl_multisig_Multisig.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "multisig::Multisig",
-                                        "env",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "multisig::Multisig",
+                                          "env",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -4339,10 +4836,13 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple

@@ -52,7 +52,10 @@ Module limits.
                   [],
                   []
                 |),
-                [ M.read (| config |); M.read (| module |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| config |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |)
+                ]
               |);
               M.closure
                 (fun γ =>
@@ -86,7 +89,12 @@ Module limits.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| module |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| module |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                   ]
@@ -156,7 +164,10 @@ Module limits.
                               [],
                               []
                             |),
-                            [ limit_check; M.read (| config |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, limit_check |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| config |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -241,7 +252,10 @@ Module limits.
                               [],
                               []
                             |),
-                            [ limit_check; M.read (| config |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, limit_check |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| config |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -326,7 +340,10 @@ Module limits.
                               [],
                               []
                             |),
-                            [ limit_check; M.read (| config |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, limit_check |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| config |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -411,7 +428,10 @@ Module limits.
                               [],
                               []
                             |),
-                            [ limit_check; M.read (| config |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, limit_check |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| config |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -496,7 +516,10 @@ Module limits.
                               [],
                               []
                             |),
-                            [ limit_check; M.read (| config |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, limit_check |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| config |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -565,7 +588,10 @@ Module limits.
                       [],
                       []
                     |),
-                    [ limit_check; M.read (| config |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, limit_check |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| config |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -606,7 +632,7 @@ Module limits.
                         ltac:(M.monadic
                           (let γ :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| config |),
+                              M.deref (| M.read (| config |) |),
                               "move_vm_config::verifier::VerifierConfig",
                               "max_generic_instantiation_length"
                             |) in
@@ -669,23 +695,33 @@ Module limits.
                                             []
                                           |),
                                           [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::CompiledModule",
-                                                "struct_handles",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "move_bytecode_verifier::limits::LimitsVerifier",
-                                                    "module"
-                                                  |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::CompiledModule",
+                                                    "struct_handles",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "move_bytecode_verifier::limits::LimitsVerifier",
+                                                            "module"
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
-                                              ]
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -725,7 +761,14 @@ Module limits.
                                                   [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -778,10 +821,17 @@ Module limits.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| struct_handle |),
-                                                                        "move_binary_format::file_format::StructHandle",
-                                                                        "type_parameters"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              struct_handle
+                                                                            |)
+                                                                          |),
+                                                                          "move_binary_format::file_format::StructHandle",
+                                                                          "type_parameters"
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |),
@@ -934,22 +984,33 @@ Module limits.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "function_handles",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "move_bytecode_verifier::limits::LimitsVerifier",
-                                            "module"
-                                          |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "function_handles",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_bytecode_verifier::limits::LimitsVerifier",
+                                                    "module"
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -988,7 +1049,12 @@ Module limits.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1022,7 +1088,7 @@ Module limits.
                                                   ltac:(M.monadic
                                                     (let γ :=
                                                       M.SubPointer.get_struct_record_field (|
-                                                        M.read (| config |),
+                                                        M.deref (| M.read (| config |) |),
                                                         "move_vm_config::verifier::VerifierConfig",
                                                         "max_generic_instantiation_length"
                                                       |) in
@@ -1059,12 +1125,17 @@ Module limits.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          M.read (|
-                                                                            function_handle
-                                                                          |),
-                                                                          "move_binary_format::file_format::FunctionHandle",
-                                                                          "type_parameters"
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                function_handle
+                                                                              |)
+                                                                            |),
+                                                                            "move_binary_format::file_format::FunctionHandle",
+                                                                            "type_parameters"
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |),
@@ -1135,7 +1206,7 @@ Module limits.
                                                   ltac:(M.monadic
                                                     (let γ :=
                                                       M.SubPointer.get_struct_record_field (|
-                                                        M.read (| config |),
+                                                        M.deref (| M.read (| config |) |),
                                                         "move_vm_config::verifier::VerifierConfig",
                                                         "max_function_parameters"
                                                       |) in
@@ -1172,36 +1243,52 @@ Module limits.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::CompiledModule",
-                                                                              "signature_at",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                  M.read (| self |),
-                                                                                  "move_bytecode_verifier::limits::LimitsVerifier",
-                                                                                  "module"
-                                                                                |)
-                                                                              |);
-                                                                              M.read (|
-                                                                                M.SubPointer.get_struct_record_field (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.SubPointer.get_struct_tuple_field (|
+                                                                            M.deref (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::CompiledModule",
+                                                                                  "signature_at",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        M.SubPointer.get_struct_record_field (|
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              self
+                                                                                            |)
+                                                                                          |),
+                                                                                          "move_bytecode_verifier::limits::LimitsVerifier",
+                                                                                          "module"
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  |);
                                                                                   M.read (|
-                                                                                    function_handle
-                                                                                  |),
-                                                                                  "move_binary_format::file_format::FunctionHandle",
-                                                                                  "parameters"
-                                                                                |)
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          function_handle
+                                                                                        |)
+                                                                                      |),
+                                                                                      "move_binary_format::file_format::FunctionHandle",
+                                                                                      "parameters"
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
                                                                               |)
-                                                                            ]
-                                                                          |),
-                                                                          "move_binary_format::file_format::Signature",
-                                                                          0
+                                                                            |),
+                                                                            "move_binary_format::file_format::Signature",
+                                                                            0
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |),
@@ -1343,11 +1430,16 @@ Module limits.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::limits::LimitsVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::limits::LimitsVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |)
                               ]
@@ -1378,7 +1470,12 @@ Module limits.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1427,10 +1524,13 @@ Module limits.
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      M.read (| sign |),
-                                                      "move_binary_format::file_format::Signature",
-                                                      0
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        M.deref (| M.read (| sign |) |),
+                                                        "move_binary_format::file_format::Signature",
+                                                        0
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -1461,7 +1561,17 @@ Module limits.
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ iter ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        iter
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |),
                                                             [
@@ -1516,9 +1626,26 @@ Module limits.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (| self |);
-                                                                              M.read (| config |);
-                                                                              M.read (| ty |)
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |)
+                                                                              |);
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    config
+                                                                                  |)
+                                                                                |)
+                                                                              |);
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (| ty |)
+                                                                                |)
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         ]
@@ -1635,11 +1762,16 @@ Module limits.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::limits::LimitsVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::limits::LimitsVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |)
                               ]
@@ -1669,7 +1801,12 @@ Module limits.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1721,12 +1858,26 @@ Module limits.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| self |);
-                                                      M.read (| config |);
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| cons |),
-                                                        "move_binary_format::file_format::Constant",
-                                                        "type_"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| config |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| cons |) |),
+                                                              "move_binary_format::file_format::Constant",
+                                                              "type_"
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -1808,11 +1959,16 @@ Module limits.
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_bytecode_verifier::limits::LimitsVerifier",
-                            "module"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::limits::LimitsVerifier",
+                                "module"
+                              |)
+                            |)
                           |)
                         |)
                       ]
@@ -1868,7 +2024,12 @@ Module limits.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1898,10 +2059,13 @@ Module limits.
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.alloc (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| sdef |),
-                                                        "move_binary_format::file_format::StructDefinition",
-                                                        "field_information"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| sdef |) |),
+                                                          "move_binary_format::file_format::StructDefinition",
+                                                          "field_information"
+                                                        |)
                                                       |)
                                                     |) in
                                                   let γ := M.read (| γ |) in
@@ -1966,7 +2130,17 @@ Module limits.
                                                                           [],
                                                                           []
                                                                         |),
-                                                                        [ iter ]
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                iter
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
                                                                       |)
                                                                     |),
                                                                     [
@@ -2024,22 +2198,42 @@ Module limits.
                                                                                       []
                                                                                     |),
                                                                                     [
-                                                                                      M.read (|
-                                                                                        self
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        config
-                                                                                      |);
-                                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                                        M.SubPointer.get_struct_record_field (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
                                                                                           M.read (|
-                                                                                            fdef
-                                                                                          |),
-                                                                                          "move_binary_format::file_format::FieldDefinition",
-                                                                                          "signature"
-                                                                                        |),
-                                                                                        "move_binary_format::file_format::TypeSignature",
-                                                                                        0
+                                                                                            self
+                                                                                          |)
+                                                                                        |)
+                                                                                      |);
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            config
+                                                                                          |)
+                                                                                        |)
+                                                                                      |);
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    fdef
+                                                                                                  |)
+                                                                                                |),
+                                                                                                "move_binary_format::file_format::FieldDefinition",
+                                                                                                "signature"
+                                                                                              |),
+                                                                                              "move_binary_format::file_format::TypeSignature",
+                                                                                              0
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
                                                                                       |)
                                                                                     ]
                                                                                   |)
@@ -2191,10 +2385,13 @@ Module limits.
                         ltac:(M.monadic
                           (let γ :=
                             M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| config |),
-                                "move_vm_config::verifier::VerifierConfig",
-                                "max_type_nodes"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| config |) |),
+                                  "move_vm_config::verifier::VerifierConfig",
+                                  "max_type_nodes"
+                                |)
                               |)
                             |) in
                           let γ := M.read (| γ |) in
@@ -2229,7 +2426,12 @@ Module limits.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| ty |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| ty |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -2254,7 +2456,14 @@ Module limits.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -2374,7 +2583,7 @@ Module limits.
                                       (M.alloc (|
                                         BinOp.gt (|
                                           M.read (| size |),
-                                          M.read (| M.read (| max |) |)
+                                          M.read (| M.deref (| M.read (| max |) |) |)
                                         |)
                                       |)) in
                                   let _ :=
@@ -2478,11 +2687,16 @@ Module limits.
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_bytecode_verifier::limits::LimitsVerifier",
-                            "module"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::limits::LimitsVerifier",
+                                "module"
+                              |)
+                            |)
                           |)
                         |)
                       ]
@@ -2496,7 +2710,7 @@ Module limits.
                         ltac:(M.monadic
                           (let γ :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| config |),
+                              M.deref (| M.read (| config |) |),
                               "move_vm_config::verifier::VerifierConfig",
                               "max_function_definitions"
                             |) in
@@ -2529,7 +2743,12 @@ Module limits.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| defs |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| defs |) |)
+                                              |)
+                                            ]
                                           |),
                                           M.read (| max_function_definitions |)
                                         |)
@@ -2581,11 +2800,16 @@ Module limits.
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_bytecode_verifier::limits::LimitsVerifier",
-                            "module"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::limits::LimitsVerifier",
+                                "module"
+                              |)
+                            |)
                           |)
                         |)
                       ]
@@ -2599,7 +2823,7 @@ Module limits.
                         ltac:(M.monadic
                           (let γ :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| config |),
+                              M.deref (| M.read (| config |) |),
                               "move_vm_config::verifier::VerifierConfig",
                               "max_struct_definitions"
                             |) in
@@ -2632,7 +2856,12 @@ Module limits.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| defs |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| defs |) |)
+                                              |)
+                                            ]
                                           |),
                                           M.read (| max_struct_definitions |)
                                         |)
@@ -2682,7 +2911,7 @@ Module limits.
                         ltac:(M.monadic
                           (let γ :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| config |),
+                              M.deref (| M.read (| config |) |),
                               "move_vm_config::verifier::VerifierConfig",
                               "max_fields_in_struct"
                             |) in
@@ -2745,7 +2974,14 @@ Module limits.
                                                   [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -2770,10 +3006,13 @@ Module limits.
                                                   let def := M.copy (| γ0_0 |) in
                                                   M.match_operator (|
                                                     M.alloc (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| def |),
-                                                        "move_binary_format::file_format::StructDefinition",
-                                                        "field_information"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| def |) |),
+                                                          "move_binary_format::file_format::StructDefinition",
+                                                          "field_information"
+                                                        |)
                                                       |)
                                                     |),
                                                     [
@@ -2821,7 +3060,16 @@ Module limits.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| fields |) ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    fields
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |),
                                                                           M.read (|
                                                                             max_fields_in_struct
@@ -2972,22 +3220,33 @@ Module limits.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "constant_pool",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "move_bytecode_verifier::limits::LimitsVerifier",
-                                            "module"
-                                          |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "constant_pool",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_bytecode_verifier::limits::LimitsVerifier",
+                                                    "module"
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -3026,7 +3285,12 @@ Module limits.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -3059,7 +3323,7 @@ Module limits.
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| constant |),
+                                                      M.deref (| M.read (| constant |) |),
                                                       "move_binary_format::file_format::Constant",
                                                       "type_"
                                                     |) in
@@ -3127,7 +3391,16 @@ Module limits.
                                                                             [],
                                                                             []
                                                                           |),
-                                                                          [ M.read (| constant |) ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  constant
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |);
                                                                         M.closure
                                                                           (fun γ =>
@@ -3252,7 +3525,9 @@ Module limits.
                                                                 ltac:(M.monadic
                                                                   (let γ :=
                                                                     M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| config |),
+                                                                      M.deref (|
+                                                                        M.read (| config |)
+                                                                      |),
                                                                       "move_vm_config::verifier::VerifierConfig",
                                                                       "max_constant_vector_len"
                                                                     |) in
@@ -3288,7 +3563,12 @@ Module limits.
                                                                                       [],
                                                                                       []
                                                                                     |),
-                                                                                    [ cons ]
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        cons
+                                                                                      |)
+                                                                                    ]
                                                                                   |),
                                                                                   M.rust_cast
                                                                                     (M.read (|
@@ -3361,34 +3641,58 @@ Module limits.
                                                                                                             []
                                                                                                           |),
                                                                                                           [
-                                                                                                            M.alloc (|
-                                                                                                              Value.Array
-                                                                                                                [
-                                                                                                                  M.read (|
-                                                                                                                    Value.String
-                                                                                                                      "vector size limit is "
-                                                                                                                  |)
-                                                                                                                ]
-                                                                                                            |);
-                                                                                                            M.alloc (|
-                                                                                                              Value.Array
-                                                                                                                [
-                                                                                                                  M.call_closure (|
-                                                                                                                    M.get_associated_function (|
-                                                                                                                      Ty.path
-                                                                                                                        "core::fmt::rt::Argument",
-                                                                                                                      "new_display",
-                                                                                                                      [],
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.Ref,
+                                                                                                              M.deref (|
+                                                                                                                M.borrow (|
+                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                  M.alloc (|
+                                                                                                                    Value.Array
                                                                                                                       [
-                                                                                                                        Ty.path
-                                                                                                                          "u64"
+                                                                                                                        M.read (|
+                                                                                                                          Value.String
+                                                                                                                            "vector size limit is "
+                                                                                                                        |)
                                                                                                                       ]
-                                                                                                                    |),
-                                                                                                                    [
-                                                                                                                      lim
-                                                                                                                    ]
                                                                                                                   |)
-                                                                                                                ]
+                                                                                                                |)
+                                                                                                              |)
+                                                                                                            |);
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.Ref,
+                                                                                                              M.deref (|
+                                                                                                                M.borrow (|
+                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                  M.alloc (|
+                                                                                                                    Value.Array
+                                                                                                                      [
+                                                                                                                        M.call_closure (|
+                                                                                                                          M.get_associated_function (|
+                                                                                                                            Ty.path
+                                                                                                                              "core::fmt::rt::Argument",
+                                                                                                                            "new_display",
+                                                                                                                            [],
+                                                                                                                            [
+                                                                                                                              Ty.path
+                                                                                                                                "u64"
+                                                                                                                            ]
+                                                                                                                          |),
+                                                                                                                          [
+                                                                                                                            M.borrow (|
+                                                                                                                              Pointer.Kind.Ref,
+                                                                                                                              M.deref (|
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  lim
+                                                                                                                                |)
+                                                                                                                              |)
+                                                                                                                            |)
+                                                                                                                          ]
+                                                                                                                        |)
+                                                                                                                      ]
+                                                                                                                  |)
+                                                                                                                |)
+                                                                                                              |)
                                                                                                             |)
                                                                                                           ]
                                                                                                         |)
@@ -3503,7 +3807,7 @@ Module limits.
                         ltac:(M.monadic
                           (let γ :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| config |),
+                              M.deref (| M.read (| config |) |),
                               "move_vm_config::verifier::VerifierConfig",
                               "max_idenfitier_len"
                             |) in
@@ -3561,23 +3865,33 @@ Module limits.
                                             []
                                           |),
                                           [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::CompiledModule",
-                                                "identifiers",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "move_bytecode_verifier::limits::LimitsVerifier",
-                                                    "module"
-                                                  |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::CompiledModule",
+                                                    "identifiers",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "move_bytecode_verifier::limits::LimitsVerifier",
+                                                            "module"
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
-                                              ]
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -3617,7 +3931,14 @@ Module limits.
                                                   [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -3663,18 +3984,32 @@ Module limits.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::deref::Deref",
-                                                                          Ty.path
-                                                                            "move_core_types::identifier::Identifier",
-                                                                          [],
-                                                                          [],
-                                                                          "deref",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| identifier |) ]
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::deref::Deref",
+                                                                              Ty.path
+                                                                                "move_core_types::identifier::Identifier",
+                                                                              [],
+                                                                              [],
+                                                                              "deref",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    identifier
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |),

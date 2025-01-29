@@ -46,15 +46,21 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "hash_map_alternate_or_custom_key_types::Account",
-                "username"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "hash_map_alternate_or_custom_key_types::Account",
+                  "username"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "hash_map_alternate_or_custom_key_types::Account",
-                "username"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| other |) |),
+                  "hash_map_alternate_or_custom_key_types::Account",
+                  "username"
+                |)
               |)
             ]
           |),
@@ -70,15 +76,21 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "hash_map_alternate_or_custom_key_types::Account",
-                  "password"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "hash_map_alternate_or_custom_key_types::Account",
+                    "password"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "hash_map_alternate_or_custom_key_types::Account",
-                  "password"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "hash_map_alternate_or_custom_key_types::Account",
+                    "password"
+                  |)
                 |)
               ]
             |)))
@@ -156,12 +168,20 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
                   [ __H ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "hash_map_alternate_or_custom_key_types::Account",
-                    "username"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "hash_map_alternate_or_custom_key_types::Account",
+                          "username"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| state |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |)
             |) in
@@ -177,12 +197,20 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
                 [ __H ]
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "hash_map_alternate_or_custom_key_types::Account",
-                  "password"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "hash_map_alternate_or_custom_key_types::Account",
+                        "password"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)
           |)
@@ -261,24 +289,48 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "Username: " |); M.read (| Value.String "
-" |) ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [ username ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Username: " |);
+                                  M.read (| Value.String "
+" |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, username |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -300,24 +352,48 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "Password: " |); M.read (| Value.String "
-" |) ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [ password ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Password: " |);
+                                  M.read (| Value.String "
+" |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, password |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -338,8 +414,19 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "Attempting logon...
-" |) ] |)
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Attempting logon...
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -350,7 +437,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
-              [ ("username", M.read (| username |)); ("password", M.read (| password |)) ]
+              [
+                ("username", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| username |) |) |));
+                ("password", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| password |) |) |))
+              ]
           |) in
         M.match_operator (|
           M.alloc (|
@@ -368,7 +458,13 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 [],
                 [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ]
               |),
-              [ M.read (| accounts |); logon ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| accounts |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, logon |) |)
+                |)
+              ]
             |)
           |),
           [
@@ -391,9 +487,17 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "Successful logon!
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "Successful logon!
 " |) ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -415,33 +519,57 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Name: " |);
-                                    M.read (| Value.String "
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "Name: " |);
+                                          M.read (| Value.String "
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| account_info |),
-                                          "hash_map_alternate_or_custom_key_types::AccountInfo",
-                                          "name"
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| account_info |) |),
+                                                      "hash_map_alternate_or_custom_key_types::AccountInfo",
+                                                      "name"
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -463,33 +591,57 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Email: " |);
-                                    M.read (| Value.String "
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "Email: " |);
+                                          M.read (| Value.String "
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| account_info |),
-                                          "hash_map_alternate_or_custom_key_types::AccountInfo",
-                                          "email"
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| account_info |) |),
+                                                      "hash_map_alternate_or_custom_key_types::AccountInfo",
+                                                      "email"
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -512,8 +664,19 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                             [],
                             []
                           |),
-                          [ M.alloc (| Value.Array [ M.read (| Value.String "Login failed!
-" |) ] |)
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array [ M.read (| Value.String "Login failed!
+" |) ]
+                                  |)
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
@@ -579,8 +742,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
               [
-                ("username", M.read (| Value.String "j.everyman" |));
-                ("password", M.read (| Value.String "password123" |))
+                ("username",
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "j.everyman" |) |)
+                  |));
+                ("password",
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "password123" |) |)
+                  |))
               ]
           |) in
         let~ account_info :=
@@ -588,8 +759,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::AccountInfo"
               [
-                ("name", M.read (| Value.String "John Everyman" |));
-                ("email", M.read (| Value.String "j.everyman@email.com" |))
+                ("name",
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "John Everyman" |) |)
+                  |));
+                ("email",
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "j.everyman@email.com" |) |)
+                  |))
               ]
           |) in
         let~ _ :=
@@ -608,17 +787,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ accounts; M.read (| account |); M.read (| account_info |) ]
-            |)
-          |) in
-        let~ _ :=
-          M.alloc (|
-            M.call_closure (|
-              M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
               [
-                accounts;
-                M.read (| Value.String "j.everyman" |);
-                M.read (| Value.String "psasword123" |)
+                M.borrow (| Pointer.Kind.MutRef, accounts |);
+                M.read (| account |);
+                M.read (| account_info |)
               ]
             |)
           |) in
@@ -627,9 +799,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
               [
-                accounts;
-                M.read (| Value.String "j.everyman" |);
-                M.read (| Value.String "password123" |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, accounts |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "j.everyman" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "psasword123" |) |)
+                |)
+              ]
+            |)
+          |) in
+        let~ _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, accounts |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "j.everyman" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "password123" |) |)
+                |)
               ]
             |)
           |) in

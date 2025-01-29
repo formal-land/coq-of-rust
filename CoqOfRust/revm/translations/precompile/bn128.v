@@ -51,30 +51,46 @@ Module bn128.
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "bytes::bytes::Bytes",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
+                                                        Ty.path "bytes::bytes::Bytes",
                                                         [],
                                                         [],
                                                         "deref",
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| input |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::deref::Deref",
+                                                                Ty.path
+                                                                  "alloy_primitives::bytes_::Bytes",
+                                                                [],
+                                                                [],
+                                                                "deref",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| input |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |);
                                                 M.read (|
                                                   M.get_constant (|
@@ -131,30 +147,46 @@ Module bn128.
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "bytes::bytes::Bytes",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
+                                                        Ty.path "bytes::bytes::Bytes",
                                                         [],
                                                         [],
                                                         "deref",
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| input |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::deref::Deref",
+                                                                Ty.path
+                                                                  "alloy_primitives::bytes_::Bytes",
+                                                                [],
+                                                                [],
+                                                                "deref",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| input |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |);
                                                 M.read (|
                                                   M.get_constant (|
@@ -223,30 +255,46 @@ Module bn128.
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "bytes::bytes::Bytes",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
+                                                        Ty.path "bytes::bytes::Bytes",
                                                         [],
                                                         [],
                                                         "deref",
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| input |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::deref::Deref",
+                                                                Ty.path
+                                                                  "alloy_primitives::bytes_::Bytes",
+                                                                [],
+                                                                [],
+                                                                "deref",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| input |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |);
                                                 M.read (|
                                                   M.get_constant (|
@@ -303,30 +351,46 @@ Module bn128.
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "bytes::bytes::Bytes",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
+                                                        Ty.path "bytes::bytes::Bytes",
                                                         [],
                                                         [],
                                                         "deref",
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| input |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::deref::Deref",
+                                                                Ty.path
+                                                                  "alloy_primitives::bytes_::Bytes",
+                                                                [],
+                                                                [],
+                                                                "deref",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| input |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |);
                                                 M.read (|
                                                   M.get_constant (|
@@ -398,30 +462,46 @@ Module bn128.
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "bytes::bytes::Bytes",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
+                                                        Ty.path "bytes::bytes::Bytes",
                                                         [],
                                                         [],
                                                         "deref",
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| input |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::deref::Deref",
+                                                                Ty.path
+                                                                  "alloy_primitives::bytes_::Bytes",
+                                                                [],
+                                                                [],
+                                                                "deref",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| input |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |);
                                                 M.read (|
                                                   M.get_constant (|
@@ -486,30 +566,46 @@ Module bn128.
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "bytes::bytes::Bytes",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
+                                                        Ty.path "bytes::bytes::Bytes",
                                                         [],
                                                         [],
                                                         "deref",
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| input |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::deref::Deref",
+                                                                Ty.path
+                                                                  "alloy_primitives::bytes_::Bytes",
+                                                                [],
+                                                                [],
+                                                                "deref",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| input |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |);
                                                 M.read (|
                                                   M.get_constant (|
@@ -593,22 +689,33 @@ Module bn128.
             M.call_closure (|
               M.get_associated_function (| Ty.path "substrate_bn::Fq", "from_slice", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::Index",
-                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                    [],
-                    [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
-                    "index",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (| input |);
-                    Value.StructRecord
-                      "core::ops::range::RangeTo"
-                      [ ("end_", Value.Integer IntegerKind.Usize 32) ]
-                  ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::index::Index",
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                            [],
+                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
+                            ],
+                            "index",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |);
+                            Value.StructRecord
+                              "core::ops::range::RangeTo"
+                              [ ("end_", Value.Integer IntegerKind.Usize 32) ]
+                          ]
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |);
@@ -676,30 +783,43 @@ Module bn128.
                           M.call_closure (|
                             M.get_function (| "revm_precompile::bn128::read_fq", [], [] |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::Range")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (| input |);
-                                  Value.StructRecord
-                                    "core::ops::range::Range"
-                                    [
-                                      ("start", Value.Integer IntegerKind.Usize 0);
-                                      ("end_", Value.Integer IntegerKind.Usize 32)
-                                    ]
-                                ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::Range")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| input |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::Range"
+                                            [
+                                              ("start", Value.Integer IntegerKind.Usize 0);
+                                              ("end_", Value.Integer IntegerKind.Usize 32)
+                                            ]
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -787,30 +907,43 @@ Module bn128.
                           M.call_closure (|
                             M.get_function (| "revm_precompile::bn128::read_fq", [], [] |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::Range")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (| input |);
-                                  Value.StructRecord
-                                    "core::ops::range::Range"
-                                    [
-                                      ("start", Value.Integer IntegerKind.Usize 32);
-                                      ("end_", Value.Integer IntegerKind.Usize 64)
-                                    ]
-                                ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::Range")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| input |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::Range"
+                                            [
+                                              ("start", Value.Integer IntegerKind.Usize 32);
+                                              ("end_", Value.Integer IntegerKind.Usize 64)
+                                            ]
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -925,16 +1058,19 @@ Module bn128.
                               []
                             |),
                             [
-                              px;
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "substrate_bn::Fq",
-                                    "zero",
-                                    [],
+                              M.borrow (| Pointer.Kind.Ref, px |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "substrate_bn::Fq",
+                                      "zero",
+                                      [],
+                                      []
+                                    |),
                                     []
-                                  |),
-                                  []
+                                  |)
                                 |)
                               |)
                             ]
@@ -951,16 +1087,19 @@ Module bn128.
                                 []
                               |),
                               [
-                                py;
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "substrate_bn::Fq",
-                                      "zero",
-                                      [],
+                                M.borrow (| Pointer.Kind.Ref, py |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "substrate_bn::Fq",
+                                        "zero",
+                                        [],
+                                        []
+                                      |),
                                       []
-                                    |),
-                                    []
+                                    |)
                                   |)
                                 |)
                               ]
@@ -1154,7 +1293,7 @@ Module bn128.
                       [ Value.Integer IntegerKind.Usize 128 ],
                       []
                     |),
-                    [ M.read (| input |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                   |)
                 |) in
               let~ p1 :=
@@ -1181,49 +1320,64 @@ Module bn128.
                           M.call_closure (|
                             M.get_function (| "revm_precompile::bn128::read_point", [], [] |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 128 ]
-                                    [ Ty.path "u8" ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeTo")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "alloc::borrow::Cow")
-                                        []
-                                        [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
                                           Ty.apply
                                             (Ty.path "array")
                                             [ Value.Integer IntegerKind.Usize 128 ]
-                                            [ Ty.path "u8" ]
-                                        ],
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [ input ]
-                                  |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeTo"
-                                    [ ("end_", Value.Integer IntegerKind.Usize 64) ]
-                                ]
+                                            [ Ty.path "u8" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeTo")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::borrow::Cow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 128 ]
+                                                        [ Ty.path "u8" ]
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, input |) ]
+                                              |)
+                                            |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [ ("end_", Value.Integer IntegerKind.Usize 64) ]
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1311,49 +1465,64 @@ Module bn128.
                           M.call_closure (|
                             M.get_function (| "revm_precompile::bn128::read_point", [], [] |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 128 ]
-                                    [ Ty.path "u8" ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeFrom")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "alloc::borrow::Cow")
-                                        []
-                                        [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
                                           Ty.apply
                                             (Ty.path "array")
                                             [ Value.Integer IntegerKind.Usize 128 ]
-                                            [ Ty.path "u8" ]
-                                        ],
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [ input ]
-                                  |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeFrom"
-                                    [ ("start", Value.Integer IntegerKind.Usize 64) ]
-                                ]
+                                            [ Ty.path "u8" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeFrom")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::borrow::Cow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 128 ]
+                                                        [ Ty.path "u8" ]
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, input |) ]
+                                              |)
+                                            |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeFrom"
+                                            [ ("start", Value.Integer IntegerKind.Usize 64) ]
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1480,41 +1649,54 @@ Module bn128.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "substrate_bn::AffineG1",
-                                          "x",
-                                          [],
-                                          []
-                                        |),
-                                        [ sum ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "substrate_bn::AffineG1",
+                                            "x",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, sum |) ]
+                                        |)
                                       |)
                                     |);
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::index::IndexMut",
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 64 ]
-                                          [ Ty.path "u8" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::RangeTo")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ],
-                                        "index_mut",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        output;
-                                        Value.StructRecord
-                                          "core::ops::range::RangeTo"
-                                          [ ("end_", Value.Integer IntegerKind.Usize 32) ]
-                                      ]
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::index::IndexMut",
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 64 ]
+                                                  [ Ty.path "u8" ],
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::range::RangeTo")
+                                                    []
+                                                    [ Ty.path "usize" ]
+                                                ],
+                                                "index_mut",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, output |);
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeTo"
+                                                  [ ("end_", Value.Integer IntegerKind.Usize 32) ]
+                                              ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1542,41 +1724,54 @@ Module bn128.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "substrate_bn::AffineG1",
-                                          "y",
-                                          [],
-                                          []
-                                        |),
-                                        [ sum ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "substrate_bn::AffineG1",
+                                            "y",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, sum |) ]
+                                        |)
                                       |)
                                     |);
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::index::IndexMut",
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 64 ]
-                                          [ Ty.path "u8" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::RangeFrom")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ],
-                                        "index_mut",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        output;
-                                        Value.StructRecord
-                                          "core::ops::range::RangeFrom"
-                                          [ ("start", Value.Integer IntegerKind.Usize 32) ]
-                                      ]
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::index::IndexMut",
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 64 ]
+                                                  [ Ty.path "u8" ],
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::range::RangeFrom")
+                                                    []
+                                                    [ Ty.path "usize" ]
+                                                ],
+                                                "index_mut",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, output |);
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeFrom"
+                                                  [ ("start", Value.Integer IntegerKind.Usize 32) ]
+                                              ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1709,7 +1904,7 @@ Module bn128.
                       [ Value.Integer IntegerKind.Usize 96 ],
                       []
                     |),
-                    [ M.read (| input |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                   |)
                 |) in
               let~ p :=
@@ -1736,49 +1931,64 @@ Module bn128.
                           M.call_closure (|
                             M.get_function (| "revm_precompile::bn128::read_point", [], [] |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 96 ]
-                                    [ Ty.path "u8" ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeTo")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "alloc::borrow::Cow")
-                                        []
-                                        [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
                                           Ty.apply
                                             (Ty.path "array")
                                             [ Value.Integer IntegerKind.Usize 96 ]
-                                            [ Ty.path "u8" ]
-                                        ],
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [ input ]
-                                  |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeTo"
-                                    [ ("end_", Value.Integer IntegerKind.Usize 64) ]
-                                ]
+                                            [ Ty.path "u8" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeTo")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::borrow::Cow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 96 ]
+                                                        [ Ty.path "u8" ]
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, input |) ]
+                                              |)
+                                            |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [ ("end_", Value.Integer IntegerKind.Usize 64) ]
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1863,48 +2073,67 @@ Module bn128.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::Index",
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 96 ]
-                                [ Ty.path "u8" ],
-                              [],
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
-                              ],
-                              "index",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "alloc::borrow::Cow")
-                                    []
-                                    [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::index::Index",
                                       Ty.apply
                                         (Ty.path "array")
                                         [ Value.Integer IntegerKind.Usize 96 ]
-                                        [ Ty.path "u8" ]
-                                    ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [ input ]
-                              |);
-                              Value.StructRecord
-                                "core::ops::range::Range"
-                                [
-                                  ("start", Value.Integer IntegerKind.Usize 64);
-                                  ("end_", Value.Integer IntegerKind.Usize 96)
-                                ]
-                            ]
+                                        [ Ty.path "u8" ],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
+                                      "index",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.apply
+                                                (Ty.path "alloc::borrow::Cow")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 96 ]
+                                                    [ Ty.path "u8" ]
+                                                ],
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.Ref, input |) ]
+                                          |)
+                                        |)
+                                      |);
+                                      Value.StructRecord
+                                        "core::ops::range::Range"
+                                        [
+                                          ("start", Value.Integer IntegerKind.Usize 64);
+                                          ("end_", Value.Integer IntegerKind.Usize 96)
+                                        ]
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -1974,41 +2203,54 @@ Module bn128.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "substrate_bn::AffineG1",
-                                          "x",
-                                          [],
-                                          []
-                                        |),
-                                        [ mul ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "substrate_bn::AffineG1",
+                                            "x",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, mul |) ]
+                                        |)
                                       |)
                                     |);
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::index::IndexMut",
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 64 ]
-                                          [ Ty.path "u8" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::RangeTo")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ],
-                                        "index_mut",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        output;
-                                        Value.StructRecord
-                                          "core::ops::range::RangeTo"
-                                          [ ("end_", Value.Integer IntegerKind.Usize 32) ]
-                                      ]
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::index::IndexMut",
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 64 ]
+                                                  [ Ty.path "u8" ],
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::range::RangeTo")
+                                                    []
+                                                    [ Ty.path "usize" ]
+                                                ],
+                                                "index_mut",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, output |);
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeTo"
+                                                  [ ("end_", Value.Integer IntegerKind.Usize 32) ]
+                                              ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -2036,41 +2278,54 @@ Module bn128.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "substrate_bn::AffineG1",
-                                          "y",
-                                          [],
-                                          []
-                                        |),
-                                        [ mul ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "substrate_bn::AffineG1",
+                                            "y",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, mul |) ]
+                                        |)
                                       |)
                                     |);
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::index::IndexMut",
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 64 ]
-                                          [ Ty.path "u8" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::RangeFrom")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ],
-                                        "index_mut",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        output;
-                                        Value.StructRecord
-                                          "core::ops::range::RangeFrom"
-                                          [ ("start", Value.Integer IntegerKind.Usize 32) ]
-                                      ]
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::index::IndexMut",
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 64 ]
+                                                  [ Ty.path "u8" ],
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::range::RangeFrom")
+                                                    []
+                                                    [ Ty.path "usize" ]
+                                                ],
+                                                "index_mut",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, output |);
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeFrom"
+                                                  [ ("start", Value.Integer IntegerKind.Usize 32) ]
+                                              ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -2209,7 +2464,7 @@ Module bn128.
                               [],
                               []
                             |),
-                            [ M.read (| input |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                           |),
                           M.read (|
                             M.get_constant (| "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
@@ -2282,7 +2537,12 @@ Module bn128.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| input |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| input |) |)
+                                      |)
+                                    ]
                                   |),
                                   M.read (|
                                     M.get_constant (| "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
@@ -2341,7 +2601,12 @@ Module bn128.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| input |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| input |) |)
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -2359,7 +2624,12 @@ Module bn128.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| input |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| input |) |)
+                                    |)
+                                  ]
                                 |),
                                 M.read (|
                                   M.get_constant (| "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
@@ -2434,7 +2704,14 @@ Module bn128.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -2617,8 +2894,13 @@ Module bn128.
                                                                                     ]
                                                                                   |),
                                                                                   [
-                                                                                    M.read (|
-                                                                                      input
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          input
+                                                                                        |)
+                                                                                      |)
                                                                                     |);
                                                                                     Value.StructRecord
                                                                                       "core::ops::range::Range"
@@ -2680,8 +2962,13 @@ Module bn128.
                                                                                       []
                                                                                     |),
                                                                                     [
-                                                                                      M.read (|
-                                                                                        slice
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            slice
+                                                                                          |)
+                                                                                        |)
                                                                                       |)
                                                                                     ]
                                                                                   |);
@@ -2765,7 +3052,10 @@ Module bn128.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    read_fq_at;
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      read_fq_at
+                                                                    |);
                                                                     Value.Tuple
                                                                       [
                                                                         Value.Integer
@@ -2886,7 +3176,10 @@ Module bn128.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    read_fq_at;
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      read_fq_at
+                                                                    |);
                                                                     Value.Tuple
                                                                       [
                                                                         Value.Integer
@@ -3007,7 +3300,10 @@ Module bn128.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    read_fq_at;
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      read_fq_at
+                                                                    |);
                                                                     Value.Tuple
                                                                       [
                                                                         Value.Integer
@@ -3128,7 +3424,10 @@ Module bn128.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    read_fq_at;
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      read_fq_at
+                                                                    |);
                                                                     Value.Tuple
                                                                       [
                                                                         Value.Integer
@@ -3249,7 +3548,10 @@ Module bn128.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    read_fq_at;
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      read_fq_at
+                                                                    |);
                                                                     Value.Tuple
                                                                       [
                                                                         Value.Integer
@@ -3370,7 +3672,10 @@ Module bn128.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    read_fq_at;
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      read_fq_at
+                                                                    |);
                                                                     Value.Tuple
                                                                       [
                                                                         Value.Integer
@@ -3585,7 +3890,12 @@ Module bn128.
                                                                             [],
                                                                             []
                                                                           |),
-                                                                          [ ba ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              ba
+                                                                            |)
+                                                                          ]
                                                                         |),
                                                                         ltac:(M.monadic
                                                                           (M.call_closure (|
@@ -3596,7 +3906,12 @@ Module bn128.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ bb ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                bb
+                                                                              |)
+                                                                            ]
                                                                           |)))
                                                                       |)
                                                                     |)) in
@@ -3835,7 +4150,10 @@ Module bn128.
                                                             []
                                                           |),
                                                           [
-                                                            points;
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              points
+                                                            |);
                                                             Value.Tuple
                                                               [ M.read (| a |); M.read (| b |) ]
                                                           ]
@@ -3853,25 +4171,37 @@ Module bn128.
                               M.call_closure (|
                                 M.get_function (| "substrate_bn::pairing_batch", [], [] |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.path "substrate_bn::G1";
+                                                  Ty.path "substrate_bn::G2"
+                                                ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
                                         [
-                                          Ty.tuple
-                                            [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::G2"
-                                            ];
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [ points ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, points |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3888,16 +4218,19 @@ Module bn128.
                                 []
                               |),
                               [
-                                mul;
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "substrate_bn::Gt",
-                                      "one",
-                                      [],
+                                M.borrow (| Pointer.Kind.Ref, mul |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "substrate_bn::Gt",
+                                        "one",
+                                        [],
+                                        []
+                                      |),
                                       []
-                                    |),
-                                    []
+                                    |)
                                   |)
                                 |)
                               ]

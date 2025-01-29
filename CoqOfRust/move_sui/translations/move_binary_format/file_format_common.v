@@ -298,7 +298,7 @@ Module file_format_common.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -334,7 +334,7 @@ Module file_format_common.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -347,7 +347,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::MODULE_HANDLES"
                           |) in
-                        M.alloc (| M.read (| Value.String "MODULE_HANDLES" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MODULE_HANDLES" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -356,7 +361,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::STRUCT_HANDLES"
                           |) in
-                        M.alloc (| M.read (| Value.String "STRUCT_HANDLES" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "STRUCT_HANDLES" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -365,7 +375,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::FUNCTION_HANDLES"
                           |) in
-                        M.alloc (| M.read (| Value.String "FUNCTION_HANDLES" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FUNCTION_HANDLES" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -374,7 +389,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::FUNCTION_INST"
                           |) in
-                        M.alloc (| M.read (| Value.String "FUNCTION_INST" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FUNCTION_INST" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -383,7 +403,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::SIGNATURES"
                           |) in
-                        M.alloc (| M.read (| Value.String "SIGNATURES" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SIGNATURES" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -392,7 +417,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::CONSTANT_POOL"
                           |) in
-                        M.alloc (| M.read (| Value.String "CONSTANT_POOL" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CONSTANT_POOL" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -401,7 +431,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::IDENTIFIERS"
                           |) in
-                        M.alloc (| M.read (| Value.String "IDENTIFIERS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "IDENTIFIERS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -410,7 +445,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::ADDRESS_IDENTIFIERS"
                           |) in
-                        M.alloc (| M.read (| Value.String "ADDRESS_IDENTIFIERS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ADDRESS_IDENTIFIERS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -419,7 +459,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::STRUCT_DEFS"
                           |) in
-                        M.alloc (| M.read (| Value.String "STRUCT_DEFS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "STRUCT_DEFS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -428,7 +473,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::STRUCT_DEF_INST"
                           |) in
-                        M.alloc (| M.read (| Value.String "STRUCT_DEF_INST" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "STRUCT_DEF_INST" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -437,7 +487,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::FUNCTION_DEFS"
                           |) in
-                        M.alloc (| M.read (| Value.String "FUNCTION_DEFS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FUNCTION_DEFS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -446,7 +501,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::FIELD_HANDLE"
                           |) in
-                        M.alloc (| M.read (| Value.String "FIELD_HANDLE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FIELD_HANDLE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -455,7 +515,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::FIELD_INST"
                           |) in
-                        M.alloc (| M.read (| Value.String "FIELD_INST" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FIELD_INST" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -464,7 +529,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::FRIEND_DECLS"
                           |) in
-                        M.alloc (| M.read (| Value.String "FRIEND_DECLS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FRIEND_DECLS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -473,7 +543,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::TableType::METADATA"
                           |) in
-                        M.alloc (| M.read (| Value.String "METADATA" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "METADATA" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -535,7 +610,7 @@ Module file_format_common.
                     [],
                     [ Ty.path "move_binary_format::file_format_common::TableType" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -549,7 +624,13 @@ Module file_format_common.
                   [],
                   [ __H ]
                 |),
-                [ __self_discr; M.read (| state |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |)
             |)
           |)))
@@ -594,7 +675,7 @@ Module file_format_common.
                     [],
                     [ Ty.path "move_binary_format::file_format_common::TableType" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -605,7 +686,7 @@ Module file_format_common.
                     [],
                     [ Ty.path "move_binary_format::file_format_common::TableType" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -716,7 +797,7 @@ Module file_format_common.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -752,7 +833,7 @@ Module file_format_common.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -765,7 +846,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::BOOL"
                           |) in
-                        M.alloc (| M.read (| Value.String "BOOL" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BOOL" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -774,7 +860,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::U8"
                           |) in
-                        M.alloc (| M.read (| Value.String "U8" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U8" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -783,7 +874,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::U64"
                           |) in
-                        M.alloc (| M.read (| Value.String "U64" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U64" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -792,7 +888,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::U128"
                           |) in
-                        M.alloc (| M.read (| Value.String "U128" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U128" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -801,7 +902,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::ADDRESS"
                           |) in
-                        M.alloc (| M.read (| Value.String "ADDRESS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ADDRESS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -810,7 +916,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::REFERENCE"
                           |) in
-                        M.alloc (| M.read (| Value.String "REFERENCE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "REFERENCE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -819,7 +930,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::MUTABLE_REFERENCE"
                           |) in
-                        M.alloc (| M.read (| Value.String "MUTABLE_REFERENCE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MUTABLE_REFERENCE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -828,7 +944,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::STRUCT"
                           |) in
-                        M.alloc (| M.read (| Value.String "STRUCT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "STRUCT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -837,7 +958,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::TYPE_PARAMETER"
                           |) in
-                        M.alloc (| M.read (| Value.String "TYPE_PARAMETER" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TYPE_PARAMETER" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -846,7 +972,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::VECTOR"
                           |) in
-                        M.alloc (| M.read (| Value.String "VECTOR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VECTOR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -855,7 +986,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::STRUCT_INST"
                           |) in
-                        M.alloc (| M.read (| Value.String "STRUCT_INST" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "STRUCT_INST" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -864,7 +1000,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::SIGNER"
                           |) in
-                        M.alloc (| M.read (| Value.String "SIGNER" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SIGNER" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -873,7 +1014,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::U16"
                           |) in
-                        M.alloc (| M.read (| Value.String "U16" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U16" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -882,7 +1028,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::U32"
                           |) in
-                        M.alloc (| M.read (| Value.String "U32" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U32" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -891,7 +1042,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedType::U256"
                           |) in
-                        M.alloc (| M.read (| Value.String "U256" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U256" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -939,7 +1095,7 @@ Module file_format_common.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -977,7 +1133,7 @@ Module file_format_common.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -990,7 +1146,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedNativeStructFlag::NATIVE"
                           |) in
-                        M.alloc (| M.read (| Value.String "NATIVE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NATIVE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -999,7 +1160,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::SerializedNativeStructFlag::DECLARED"
                           |) in
-                        M.alloc (| M.read (| Value.String "DECLARED" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "DECLARED" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -1421,7 +1587,7 @@ Module file_format_common.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1457,7 +1623,7 @@ Module file_format_common.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -1470,7 +1636,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::POP"
                           |) in
-                        M.alloc (| M.read (| Value.String "POP" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "POP" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1479,7 +1650,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::RET"
                           |) in
-                        M.alloc (| M.read (| Value.String "RET" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RET" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1488,7 +1664,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::BR_TRUE"
                           |) in
-                        M.alloc (| M.read (| Value.String "BR_TRUE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BR_TRUE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1497,7 +1678,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::BR_FALSE"
                           |) in
-                        M.alloc (| M.read (| Value.String "BR_FALSE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BR_FALSE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1506,7 +1692,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::BRANCH"
                           |) in
-                        M.alloc (| M.read (| Value.String "BRANCH" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BRANCH" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1515,7 +1706,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LD_U64"
                           |) in
-                        M.alloc (| M.read (| Value.String "LD_U64" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LD_U64" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1524,7 +1720,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LD_CONST"
                           |) in
-                        M.alloc (| M.read (| Value.String "LD_CONST" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LD_CONST" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1533,7 +1734,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LD_TRUE"
                           |) in
-                        M.alloc (| M.read (| Value.String "LD_TRUE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LD_TRUE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1542,7 +1748,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LD_FALSE"
                           |) in
-                        M.alloc (| M.read (| Value.String "LD_FALSE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LD_FALSE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1551,7 +1762,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::COPY_LOC"
                           |) in
-                        M.alloc (| M.read (| Value.String "COPY_LOC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "COPY_LOC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1560,7 +1776,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MOVE_LOC"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVE_LOC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVE_LOC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1569,7 +1790,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::ST_LOC"
                           |) in
-                        M.alloc (| M.read (| Value.String "ST_LOC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ST_LOC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1578,7 +1804,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_LOC"
                           |) in
-                        M.alloc (| M.read (| Value.String "MUT_BORROW_LOC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MUT_BORROW_LOC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1587,7 +1818,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_LOC"
                           |) in
-                        M.alloc (| M.read (| Value.String "IMM_BORROW_LOC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "IMM_BORROW_LOC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1596,7 +1832,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD"
                           |) in
-                        M.alloc (| M.read (| Value.String "MUT_BORROW_FIELD" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MUT_BORROW_FIELD" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1605,7 +1846,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD"
                           |) in
-                        M.alloc (| M.read (| Value.String "IMM_BORROW_FIELD" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "IMM_BORROW_FIELD" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1614,7 +1860,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::CALL"
                           |) in
-                        M.alloc (| M.read (| Value.String "CALL" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CALL" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1623,7 +1874,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::PACK"
                           |) in
-                        M.alloc (| M.read (| Value.String "PACK" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "PACK" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1632,7 +1888,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::UNPACK"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNPACK" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNPACK" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1641,7 +1902,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::READ_REF"
                           |) in
-                        M.alloc (| M.read (| Value.String "READ_REF" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "READ_REF" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1650,7 +1916,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::WRITE_REF"
                           |) in
-                        M.alloc (| M.read (| Value.String "WRITE_REF" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "WRITE_REF" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1659,7 +1930,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::ADD"
                           |) in
-                        M.alloc (| M.read (| Value.String "ADD" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ADD" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1668,7 +1944,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::SUB"
                           |) in
-                        M.alloc (| M.read (| Value.String "SUB" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SUB" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1677,7 +1958,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MUL"
                           |) in
-                        M.alloc (| M.read (| Value.String "MUL" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MUL" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1686,7 +1972,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MOD"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOD" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOD" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1695,7 +1986,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::DIV"
                           |) in
-                        M.alloc (| M.read (| Value.String "DIV" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "DIV" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1704,7 +2000,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::BIT_OR"
                           |) in
-                        M.alloc (| M.read (| Value.String "BIT_OR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BIT_OR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1713,7 +2014,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::BIT_AND"
                           |) in
-                        M.alloc (| M.read (| Value.String "BIT_AND" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BIT_AND" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1722,7 +2028,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::XOR"
                           |) in
-                        M.alloc (| M.read (| Value.String "XOR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "XOR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1731,7 +2042,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::OR"
                           |) in
-                        M.alloc (| M.read (| Value.String "OR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1740,7 +2056,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::AND"
                           |) in
-                        M.alloc (| M.read (| Value.String "AND" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "AND" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1749,7 +2070,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::NOT"
                           |) in
-                        M.alloc (| M.read (| Value.String "NOT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NOT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1758,7 +2084,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::EQ"
                           |) in
-                        M.alloc (| M.read (| Value.String "EQ" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EQ" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1767,7 +2098,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::NEQ"
                           |) in
-                        M.alloc (| M.read (| Value.String "NEQ" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NEQ" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1776,7 +2112,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LT"
                           |) in
-                        M.alloc (| M.read (| Value.String "LT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1785,7 +2126,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::GT"
                           |) in
-                        M.alloc (| M.read (| Value.String "GT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "GT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1794,7 +2140,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LE"
                           |) in
-                        M.alloc (| M.read (| Value.String "LE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1803,7 +2154,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::GE"
                           |) in
-                        M.alloc (| M.read (| Value.String "GE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "GE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1812,7 +2168,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::ABORT"
                           |) in
-                        M.alloc (| M.read (| Value.String "ABORT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ABORT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1821,7 +2182,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::NOP"
                           |) in
-                        M.alloc (| M.read (| Value.String "NOP" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NOP" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1830,7 +2196,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::FREEZE_REF"
                           |) in
-                        M.alloc (| M.read (| Value.String "FREEZE_REF" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FREEZE_REF" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1839,7 +2210,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::SHL"
                           |) in
-                        M.alloc (| M.read (| Value.String "SHL" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SHL" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1848,7 +2224,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::SHR"
                           |) in
-                        M.alloc (| M.read (| Value.String "SHR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SHR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1857,7 +2238,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LD_U8"
                           |) in
-                        M.alloc (| M.read (| Value.String "LD_U8" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LD_U8" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1866,7 +2252,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LD_U128"
                           |) in
-                        M.alloc (| M.read (| Value.String "LD_U128" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LD_U128" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1875,7 +2266,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::CAST_U8"
                           |) in
-                        M.alloc (| M.read (| Value.String "CAST_U8" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CAST_U8" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1884,7 +2280,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::CAST_U64"
                           |) in
-                        M.alloc (| M.read (| Value.String "CAST_U64" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CAST_U64" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1893,7 +2294,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::CAST_U128"
                           |) in
-                        M.alloc (| M.read (| Value.String "CAST_U128" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CAST_U128" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1902,7 +2308,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_GENERIC"
                           |) in
-                        M.alloc (| M.read (| Value.String "MUT_BORROW_FIELD_GENERIC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MUT_BORROW_FIELD_GENERIC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1911,7 +2322,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_GENERIC"
                           |) in
-                        M.alloc (| M.read (| Value.String "IMM_BORROW_FIELD_GENERIC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "IMM_BORROW_FIELD_GENERIC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1920,7 +2336,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::CALL_GENERIC"
                           |) in
-                        M.alloc (| M.read (| Value.String "CALL_GENERIC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CALL_GENERIC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1929,7 +2350,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::PACK_GENERIC"
                           |) in
-                        M.alloc (| M.read (| Value.String "PACK_GENERIC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "PACK_GENERIC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1938,7 +2364,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::UNPACK_GENERIC"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNPACK_GENERIC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNPACK_GENERIC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1947,7 +2378,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::VEC_PACK"
                           |) in
-                        M.alloc (| M.read (| Value.String "VEC_PACK" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VEC_PACK" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1956,7 +2392,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::VEC_LEN"
                           |) in
-                        M.alloc (| M.read (| Value.String "VEC_LEN" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VEC_LEN" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1965,7 +2406,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::VEC_IMM_BORROW"
                           |) in
-                        M.alloc (| M.read (| Value.String "VEC_IMM_BORROW" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VEC_IMM_BORROW" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1974,7 +2420,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::VEC_MUT_BORROW"
                           |) in
-                        M.alloc (| M.read (| Value.String "VEC_MUT_BORROW" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VEC_MUT_BORROW" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1983,7 +2434,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::VEC_PUSH_BACK"
                           |) in
-                        M.alloc (| M.read (| Value.String "VEC_PUSH_BACK" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VEC_PUSH_BACK" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1992,7 +2448,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK"
                           |) in
-                        M.alloc (| M.read (| Value.String "VEC_POP_BACK" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VEC_POP_BACK" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2001,7 +2462,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::VEC_UNPACK"
                           |) in
-                        M.alloc (| M.read (| Value.String "VEC_UNPACK" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VEC_UNPACK" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2010,7 +2476,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::VEC_SWAP"
                           |) in
-                        M.alloc (| M.read (| Value.String "VEC_SWAP" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VEC_SWAP" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2019,7 +2490,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LD_U16"
                           |) in
-                        M.alloc (| M.read (| Value.String "LD_U16" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LD_U16" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2028,7 +2504,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LD_U32"
                           |) in
-                        M.alloc (| M.read (| Value.String "LD_U32" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LD_U32" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2037,7 +2518,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::LD_U256"
                           |) in
-                        M.alloc (| M.read (| Value.String "LD_U256" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LD_U256" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2046,7 +2532,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::CAST_U16"
                           |) in
-                        M.alloc (| M.read (| Value.String "CAST_U16" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CAST_U16" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2055,7 +2546,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::CAST_U32"
                           |) in
-                        M.alloc (| M.read (| Value.String "CAST_U32" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CAST_U32" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2064,7 +2560,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::CAST_U256"
                           |) in
-                        M.alloc (| M.read (| Value.String "CAST_U256" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CAST_U256" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2073,7 +2574,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::EXISTS_DEPRECATED"
                           |) in
-                        M.alloc (| M.read (| Value.String "EXISTS_DEPRECATED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EXISTS_DEPRECATED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2082,7 +2588,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_DEPRECATED"
                           |) in
-                        M.alloc (| M.read (| Value.String "MUT_BORROW_GLOBAL_DEPRECATED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MUT_BORROW_GLOBAL_DEPRECATED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2091,7 +2602,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_DEPRECATED"
                           |) in
-                        M.alloc (| M.read (| Value.String "IMM_BORROW_GLOBAL_DEPRECATED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "IMM_BORROW_GLOBAL_DEPRECATED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2100,7 +2616,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MOVE_FROM_DEPRECATED"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVE_FROM_DEPRECATED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVE_FROM_DEPRECATED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2109,7 +2630,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MOVE_TO_DEPRECATED"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVE_TO_DEPRECATED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVE_TO_DEPRECATED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2118,7 +2644,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::EXISTS_GENERIC_DEPRECATED"
                           |) in
-                        M.alloc (| M.read (| Value.String "EXISTS_GENERIC_DEPRECATED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EXISTS_GENERIC_DEPRECATED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2128,7 +2659,12 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_GENERIC_DEPRECATED"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "MUT_BORROW_GLOBAL_GENERIC_DEPRECATED" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "MUT_BORROW_GLOBAL_GENERIC_DEPRECATED" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2139,7 +2675,12 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_GENERIC_DEPRECATED"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "IMM_BORROW_GLOBAL_GENERIC_DEPRECATED" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "IMM_BORROW_GLOBAL_GENERIC_DEPRECATED" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2149,7 +2690,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MOVE_FROM_GENERIC_DEPRECATED"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVE_FROM_GENERIC_DEPRECATED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVE_FROM_GENERIC_DEPRECATED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2158,7 +2704,12 @@ Module file_format_common.
                             γ,
                             "move_binary_format::file_format_common::Opcodes::MOVE_TO_GENERIC_DEPRECATED"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVE_TO_GENERIC_DEPRECATED" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVE_TO_GENERIC_DEPRECATED" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -2257,14 +2808,25 @@ Module file_format_common.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "BinaryData" |);
-              M.read (| Value.String "_binary" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::file_format_common::BinaryData",
-                  "_binary"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "BinaryData" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_binary" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format_common::BinaryData",
+                          "_binary"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -2326,26 +2888,39 @@ Module file_format_common.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format_common::BinaryData",
-                "_binary"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format_common::BinaryData",
+                          "_binary"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2417,27 +2992,35 @@ Module file_format_common.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "usize",
-                                          "checked_add",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path
-                                                "move_binary_format::file_format_common::BinaryData",
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
-                                          |);
-                                          Value.Integer IntegerKind.Usize 1
-                                        ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "usize",
+                                            "checked_add",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path
+                                                  "move_binary_format::file_format_common::BinaryData",
+                                                "len",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
+                                            |);
+                                            Value.Integer IntegerKind.Usize 1
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -2458,10 +3041,13 @@ Module file_format_common.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_binary_format::file_format_common::BinaryData",
-                                    "_binary"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_binary_format::file_format_common::BinaryData",
+                                      "_binary"
+                                    |)
                                   |);
                                   M.read (| item |)
                                 ]
@@ -2510,60 +3096,104 @@ Module file_format_common.
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String "binary size ("
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      ") + 1 is greater than limit ("
-                                                                  |);
-                                                                  M.read (| Value.String ")" |)
-                                                                ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "binary size ("
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            ") + 1 is greater than limit ("
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String ")"
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [],
-                                                                      [ Ty.path "usize" ]
-                                                                    |),
-                                                                    [
-                                                                      M.alloc (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
                                                                         M.call_closure (|
                                                                           M.get_associated_function (|
                                                                             Ty.path
-                                                                              "move_binary_format::file_format_common::BinaryData",
-                                                                            "len",
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
                                                                             [],
-                                                                            []
+                                                                            [ Ty.path "usize" ]
                                                                           |),
-                                                                          [ M.read (| self |) ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format_common::BinaryData",
+                                                                                        "len",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              self
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [ Ty.path "usize" ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.get_constant (|
+                                                                                    "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |)
-                                                                      |)
-                                                                    ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [],
-                                                                      [ Ty.path "usize" ]
-                                                                    |),
-                                                                    [
-                                                                      M.get_constant (|
-                                                                        "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
-                                                                      |)
-                                                                    ]
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -2625,7 +3255,7 @@ Module file_format_common.
                         [],
                         []
                       |),
-                      [ M.read (| vec |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vec |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -2648,27 +3278,35 @@ Module file_format_common.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "usize",
-                                          "checked_add",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path
-                                                "move_binary_format::file_format_common::BinaryData",
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
-                                          |);
-                                          M.read (| vec_len |)
-                                        ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "usize",
+                                            "checked_add",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path
+                                                  "move_binary_format::file_format_common::BinaryData",
+                                                "len",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.read (| vec_len |)
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -2697,10 +3335,13 @@ Module file_format_common.
                                   ]
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_binary_format::file_format_common::BinaryData",
-                                    "_binary"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_binary_format::file_format_common::BinaryData",
+                                      "_binary"
+                                    |)
                                   |);
                                   M.read (| vec |)
                                 ]
@@ -2749,86 +3390,153 @@ Module file_format_common.
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String "binary size ("
-                                                                  |);
-                                                                  M.read (| Value.String ") + " |);
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      " is greater than limit ("
-                                                                  |);
-                                                                  M.read (| Value.String ")" |)
-                                                                ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "binary size ("
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String ") + "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            " is greater than limit ("
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String ")"
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [],
-                                                                      [ Ty.path "usize" ]
-                                                                    |),
-                                                                    [
-                                                                      M.alloc (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
                                                                         M.call_closure (|
                                                                           M.get_associated_function (|
                                                                             Ty.path
-                                                                              "move_binary_format::file_format_common::BinaryData",
-                                                                            "len",
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
                                                                             [],
-                                                                            []
+                                                                            [ Ty.path "usize" ]
                                                                           |),
-                                                                          [ M.read (| self |) ]
-                                                                        |)
-                                                                      |)
-                                                                    ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [],
-                                                                      [ Ty.path "usize" ]
-                                                                    |),
-                                                                    [
-                                                                      M.alloc (|
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format_common::BinaryData",
+                                                                                        "len",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              self
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
                                                                         M.call_closure (|
                                                                           M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path "slice")
-                                                                              []
-                                                                              [ Ty.path "u8" ],
-                                                                            "len",
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
                                                                             [],
-                                                                            []
+                                                                            [ Ty.path "usize" ]
                                                                           |),
-                                                                          [ M.read (| vec |) ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "slice")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ],
+                                                                                        "len",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              vec
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [ Ty.path "usize" ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.get_constant (|
+                                                                                    "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |)
-                                                                      |)
-                                                                    ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [],
-                                                                      [ Ty.path "usize" ]
-                                                                    |),
-                                                                    [
-                                                                      M.get_constant (|
-                                                                        "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
-                                                                      |)
-                                                                    ]
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -2877,10 +3585,13 @@ Module file_format_common.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format_common::BinaryData",
-                "_binary"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_binary_format::file_format_common::BinaryData",
+                  "_binary"
+                |)
               |)
             ]
           |)))
@@ -2910,10 +3621,13 @@ Module file_format_common.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format_common::BinaryData",
-                "_binary"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_binary_format::file_format_common::BinaryData",
+                  "_binary"
+                |)
               |)
             ]
           |)))
@@ -2946,10 +3660,13 @@ Module file_format_common.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::file_format_common::BinaryData",
-                      "_binary"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::file_format_common::BinaryData",
+                        "_binary"
+                      |)
                     |)
                   ]
                 |)
@@ -3060,7 +3777,10 @@ Module file_format_common.
                                           []
                                         |),
                                         [
-                                          M.read (| binary |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| binary |) |)
+                                          |);
                                           M.rust_cast
                                             (BinOp.bit_or
                                               (M.read (| cur |))
@@ -3160,7 +3880,12 @@ Module file_format_common.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |); M.rust_cast (M.read (| cur |))
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |);
+                                                M.rust_cast (M.read (| cur |))
                                               ]
                                             |)
                                           ]
@@ -3256,11 +3981,19 @@ Module file_format_common.
             []
           |),
           [
-            M.read (| binary |);
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "to_le_bytes", [], [] |),
-                [ M.read (| value |) ]
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "to_le_bytes", [], [] |),
+                      [ M.read (| value |) ]
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -3290,11 +4023,19 @@ Module file_format_common.
             []
           |),
           [
-            M.read (| binary |);
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
-                [ M.read (| value |) ]
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
+                      [ M.read (| value |) ]
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -3324,11 +4065,19 @@ Module file_format_common.
             []
           |),
           [
-            M.read (| binary |);
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "to_le_bytes", [], [] |),
-                [ M.read (| value |) ]
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "to_le_bytes", [], [] |),
+                      [ M.read (| value |) ]
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -3358,11 +4107,19 @@ Module file_format_common.
             []
           |),
           [
-            M.read (| binary |);
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "to_le_bytes", [], [] |),
-                [ M.read (| value |) ]
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "to_le_bytes", [], [] |),
+                      [ M.read (| value |) ]
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -3395,16 +4152,24 @@ Module file_format_common.
             []
           |),
           [
-            M.read (| binary |);
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "move_core_types::u256::U256",
-                  "to_le_bytes",
-                  [],
-                  []
-                |),
-                [ M.read (| value |) ]
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "move_core_types::u256::U256",
+                        "to_le_bytes",
+                        [],
+                        []
+                      |),
+                      [ M.read (| value |) ]
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -3469,7 +4234,13 @@ Module file_format_common.
                             [],
                             []
                           |),
-                          [ M.read (| cursor |); buf ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                            |)
+                          ]
                         |)
                       ]
                     |)
@@ -3600,7 +4371,13 @@ Module file_format_common.
                             [],
                             []
                           |),
-                          [ M.read (| cursor |); buf ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                            |)
+                          ]
                         |)
                       ]
                     |)
@@ -3729,7 +4506,12 @@ Module file_format_common.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| cursor |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| cursor |) |)
+                                      |)
+                                    ]
                                   |)
                                 |) in
                               let γ0_0 :=
@@ -3796,14 +4578,22 @@ Module file_format_common.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "invalid ULEB128 repr for usize"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "invalid ULEB128 repr for usize"
+                                                                              |)
+                                                                            ]
                                                                         |)
-                                                                      ]
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -3904,14 +4694,22 @@ Module file_format_common.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "invalid ULEB128 repr for usize"
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.alloc (|
+                                                                                          Value.Array
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                Value.String
+                                                                                                  "invalid ULEB128 repr for usize"
+                                                                                              |)
+                                                                                            ]
                                                                                         |)
-                                                                                      ]
+                                                                                      |)
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -4008,10 +4806,21 @@ Module file_format_common.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "invalid ULEB128 repr for usize" |)
-                                        ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  Value.String "invalid ULEB128 repr for usize"
+                                                |)
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)

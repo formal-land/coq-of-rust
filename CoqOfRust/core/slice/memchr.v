@@ -99,7 +99,12 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| text |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| text |) |)
+                                      |)
+                                    ]
                                   |),
                                   BinOp.Wrap.mul (|
                                     Value.Integer IntegerKind.Usize 2,
@@ -121,7 +126,13 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| x |); M.read (| text |) ]
+                                    [
+                                      M.read (| x |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| text |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)
@@ -133,7 +144,10 @@ Module slice.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::slice::memchr::memchr_aligned", [], [] |),
-                    [ M.read (| x |); M.read (| text |) ]
+                    [
+                      M.read (| x |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -189,7 +203,12 @@ Module slice.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| text |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| text |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)
                                   |)) in
@@ -210,7 +229,7 @@ Module slice.
                                               BinOp.eq (|
                                                 M.read (|
                                                   M.SubPointer.get_array_field (|
-                                                    M.read (| text |),
+                                                    M.deref (| M.read (| text |) |),
                                                     i
                                                   |)
                                                 |),
@@ -340,7 +359,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| text |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |) ]
                     |)
                   |) in
                 let~ ptr :=
@@ -352,7 +371,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| text |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |) ]
                     |)
                   |) in
                 let~ offset :=
@@ -427,7 +446,12 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| text |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| text |) |)
+                                      |)
+                                    ]
                                   |);
                                   M.read (| offset |)
                                 ]
@@ -446,7 +470,13 @@ Module slice.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| x |); M.read (| slice |) ]
+                                        [
+                                          M.read (| x |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| slice |) |)
+                                          |)
+                                        ]
                                       |)
                                     |) in
                                   let γ0_0 :=
@@ -512,39 +542,43 @@ Module slice.
                               let~ _ :=
                                 let~ u :=
                                   M.copy (|
-                                    M.rust_cast
-                                      (M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                          "add",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| ptr |); M.read (| offset |) ]
-                                      |))
+                                    M.deref (|
+                                      M.rust_cast
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                            "add",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| ptr |); M.read (| offset |) ]
+                                        |))
+                                    |)
                                   |) in
                                 let~ v :=
                                   M.copy (|
-                                    M.rust_cast
-                                      (M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                          "add",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.read (| ptr |);
-                                          BinOp.Wrap.add (|
-                                            M.read (| offset |),
-                                            M.read (|
-                                              M.get_constant (|
-                                                "core::slice::memchr::USIZE_BYTES"
+                                    M.deref (|
+                                      M.rust_cast
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                            "add",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.read (| ptr |);
+                                            BinOp.Wrap.add (|
+                                              M.read (| offset |),
+                                              M.read (|
+                                                M.get_constant (|
+                                                  "core::slice::memchr::USIZE_BYTES"
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        ]
-                                      |))
+                                          ]
+                                        |))
+                                    |)
                                   |) in
                                 let~ zu :=
                                   M.alloc (|
@@ -643,7 +677,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| text |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |) ]
                             |);
                             M.read (| offset |)
                           ]
@@ -656,7 +690,7 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.read (| text |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |) ]
                           |),
                           M.read (| offset |)
                         |)
@@ -672,7 +706,10 @@ Module slice.
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (| "core::slice::memchr::memchr_naive", [], [] |),
-                              [ M.read (| x |); M.read (| slice |) ]
+                              [
+                                M.read (| x |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
+                              ]
                             |)
                           |) in
                         let γ0_0 :=
@@ -771,7 +808,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| text |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |) ]
                     |)
                   |) in
                 let~ ptr :=
@@ -783,7 +820,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| text |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -796,7 +833,7 @@ Module slice.
                           [],
                           [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                         |),
-                        [ M.read (| text |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |) ]
                       |)
                     |),
                     [
@@ -817,7 +854,12 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| prefix |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| prefix |) |)
+                                    |)
+                                  ]
                                 |);
                                 BinOp.Wrap.sub (|
                                   M.read (| len |),
@@ -828,7 +870,12 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| suffix |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| suffix |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               ]
@@ -872,38 +919,53 @@ Module slice.
                                           ]
                                         |),
                                         [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                "iter",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::index::Index",
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                    [],
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::ops::range::RangeFrom")
-                                                        []
-                                                        [ Ty.path "usize" ]
-                                                    ],
-                                                    "index",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| text |);
-                                                    Value.StructRecord
-                                                      "core::ops::range::RangeFrom"
-                                                      [ ("start", M.read (| offset |)) ]
-                                                  ]
-                                                |)
-                                              ]
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                  "iter",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::index::Index",
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ],
+                                                          [],
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ops::range::RangeFrom")
+                                                              []
+                                                              [ Ty.path "usize" ]
+                                                          ],
+                                                          "index",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| text |) |)
+                                                          |);
+                                                          Value.StructRecord
+                                                            "core::ops::range::RangeFrom"
+                                                            [ ("start", M.read (| offset |)) ]
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
                                             |)
                                           |);
                                           M.closure
@@ -919,7 +981,9 @@ Module slice.
                                                           ltac:(M.monadic
                                                             (let elt := M.copy (| γ |) in
                                                             BinOp.eq (|
-                                                              M.read (| M.read (| elt |) |),
+                                                              M.read (|
+                                                                M.deref (| M.read (| elt |) |)
+                                                              |),
                                                               M.read (| x |)
                                                             |)))
                                                       ]
@@ -993,44 +1057,48 @@ Module slice.
                                       let~ _ :=
                                         let~ u :=
                                           M.copy (|
-                                            M.rust_cast
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                  "add",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| ptr |);
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (| offset |),
-                                                    BinOp.Wrap.mul (|
-                                                      Value.Integer IntegerKind.Usize 2,
-                                                      M.read (| chunk_bytes |)
+                                            M.deref (|
+                                              M.rust_cast
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                                    "add",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (| ptr |);
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| offset |),
+                                                      BinOp.Wrap.mul (|
+                                                        Value.Integer IntegerKind.Usize 2,
+                                                        M.read (| chunk_bytes |)
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |))
+                                                  ]
+                                                |))
+                                            |)
                                           |) in
                                         let~ v :=
                                           M.copy (|
-                                            M.rust_cast
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                  "add",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| ptr |);
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (| offset |),
-                                                    M.read (| chunk_bytes |)
-                                                  |)
-                                                ]
-                                              |))
+                                            M.deref (|
+                                              M.rust_cast
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                                    "add",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (| ptr |);
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| offset |),
+                                                      M.read (| chunk_bytes |)
+                                                    |)
+                                                  ]
+                                                |))
+                                            |)
                                           |) in
                                         let~ zu :=
                                           M.alloc (|
@@ -1131,38 +1199,49 @@ Module slice.
                               ]
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                    "iter",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::index::Index",
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::RangeTo")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ],
-                                        "index",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (| text |);
-                                        Value.StructRecord
-                                          "core::ops::range::RangeTo"
-                                          [ ("end_", M.read (| offset |)) ]
-                                      ]
-                                    |)
-                                  ]
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      "iter",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::index::Index",
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeTo")
+                                                  []
+                                                  [ Ty.path "usize" ]
+                                              ],
+                                              "index",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| text |) |)
+                                              |);
+                                              Value.StructRecord
+                                                "core::ops::range::RangeTo"
+                                                [ ("end_", M.read (| offset |)) ]
+                                            ]
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |);
                               M.closure
@@ -1178,7 +1257,7 @@ Module slice.
                                               ltac:(M.monadic
                                                 (let elt := M.copy (| γ |) in
                                                 BinOp.eq (|
-                                                  M.read (| M.read (| elt |) |),
+                                                  M.read (| M.deref (| M.read (| elt |) |) |),
                                                   M.read (| x |)
                                                 |)))
                                           ]

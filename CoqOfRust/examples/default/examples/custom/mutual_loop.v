@@ -113,7 +113,7 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "mutual_loop::LoopA", "start_loop", [], [] |),
-              [ la ]
+              [ M.borrow (| Pointer.Kind.Ref, la |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

@@ -29,10 +29,18 @@ Module async_iter.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::async_iter::from_iter::FromIter",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::async_iter::from_iter::FromIter",
+                              "iter"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -69,14 +77,25 @@ Module async_iter.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "FromIter" |);
-                M.read (| Value.String "iter" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::async_iter::from_iter::FromIter",
-                    "iter"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FromIter" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::async_iter::from_iter::FromIter",
+                            "iter"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -171,34 +190,39 @@ Module async_iter.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply
-                            (Ty.path "core::pin::Pin")
-                            []
-                            [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
                               Ty.apply
-                                (Ty.path "&mut")
+                                (Ty.path "core::pin::Pin")
                                 []
                                 [
                                   Ty.apply
-                                    (Ty.path "core::async_iter::from_iter::FromIter")
+                                    (Ty.path "&mut")
                                     []
-                                    [ I ]
-                                ]
-                            ],
-                          [],
-                          [],
-                          "deref_mut",
-                          [],
-                          []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::async_iter::from_iter::FromIter")
+                                        []
+                                        [ I ]
+                                    ]
+                                ],
+                              [],
+                              [],
+                              "deref_mut",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                          |)
                         |),
-                        [ self ]
-                      |),
-                      "core::async_iter::from_iter::FromIter",
-                      "iter"
+                        "core::async_iter::from_iter::FromIter",
+                        "iter"
+                      |)
                     |)
                   ]
                 |)
@@ -228,10 +252,13 @@ Module async_iter.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::async_iter::from_iter::FromIter",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::async_iter::from_iter::FromIter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))

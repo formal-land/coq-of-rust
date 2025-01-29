@@ -35,20 +35,42 @@ Module vec.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Splice" |);
-                M.read (| Value.String "drain" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::splice::Splice",
-                  "drain"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Splice" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "drain" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::vec::splice::Splice",
+                        "drain"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "replace_with" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::vec::splice::Splice",
-                    "replace_with"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "replace_with" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::vec::splice::Splice",
+                            "replace_with"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -94,10 +116,13 @@ Module vec.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::splice::Splice",
-                  "drain"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::vec::splice::Splice",
+                    "drain"
+                  |)
                 |)
               ]
             |)))
@@ -126,10 +151,13 @@ Module vec.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::splice::Splice",
-                  "drain"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::vec::splice::Splice",
+                    "drain"
+                  |)
                 |)
               ]
             |)))
@@ -176,10 +204,13 @@ Module vec.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::splice::Splice",
-                  "drain"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::vec::splice::Splice",
+                    "drain"
+                  |)
                 |)
               ]
             |)))
@@ -283,23 +314,34 @@ Module vec.
                           [ Ty.function [ Ty.associated ] (Ty.tuple []) ]
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ Ty.associated; A ],
-                              [],
-                              [],
-                              "by_ref",
-                              [],
-                              []
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::vec::splice::Splice",
-                                "drain"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::drain::Drain")
+                                    []
+                                    [ Ty.associated; A ],
+                                  [],
+                                  [],
+                                  "by_ref",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::vec::splice::Splice",
+                                      "drain"
+                                    |)
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |);
                           M.get_function (| "core::mem::drop", [], [ Ty.associated ] |)
                         ]
@@ -309,7 +351,7 @@ Module vec.
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::vec::splice::Splice",
                           "drain"
                         |),
@@ -323,7 +365,14 @@ Module vec.
                           [],
                           []
                         |),
-                        [ M.alloc (| Value.Array [] |) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |)
+                            |)
+                          |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -339,7 +388,7 @@ Module vec.
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "alloc::vec::splice::Splice",
                                           "drain"
                                         |),
@@ -371,32 +420,40 @@ Module vec.
                                           [ Ty.apply (Ty.path "&mut") [] [ I ] ]
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
-                                                []
-                                                [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
                                                   Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
+                                                    (Ty.path "core::ptr::non_null::NonNull")
                                                     []
-                                                    [ Ty.associated; A ]
-                                                ],
-                                              "as_mut",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "alloc::vec::splice::Splice",
-                                                  "drain"
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [ Ty.associated; A ]
+                                                    ],
+                                                  "as_mut",
+                                                  [],
+                                                  []
                                                 |),
-                                                "alloc::vec::drain::Drain",
-                                                "vec"
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "alloc::vec::splice::Splice",
+                                                        "drain"
+                                                      |),
+                                                      "alloc::vec::drain::Drain",
+                                                      "vec"
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
-                                            ]
+                                            |)
                                           |);
                                           M.call_closure (|
                                             M.get_trait_method (|
@@ -409,10 +466,13 @@ Module vec.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "alloc::vec::splice::Splice",
-                                                "replace_with"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::vec::splice::Splice",
+                                                  "replace_with"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -447,15 +507,26 @@ Module vec.
                                         [ I ]
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "alloc::vec::splice::Splice",
-                                          "drain"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::vec::splice::Splice",
+                                            "drain"
+                                          |)
                                         |);
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "alloc::vec::splice::Splice",
-                                          "replace_with"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "alloc::vec::splice::Splice",
+                                                "replace_with"
+                                              |)
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -482,10 +553,13 @@ Module vec.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::vec::splice::Splice",
-                            "replace_with"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::vec::splice::Splice",
+                              "replace_with"
+                            |)
                           |)
                         ]
                       |)
@@ -529,10 +603,13 @@ Module vec.
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::vec::splice::Splice",
-                                              "drain"
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "alloc::vec::splice::Splice",
+                                                "drain"
+                                              |)
                                             |);
                                             M.read (| lower_bound |)
                                           ]
@@ -558,15 +635,26 @@ Module vec.
                                                         [ I ]
                                                       |),
                                                       [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| self |),
-                                                          "alloc::vec::splice::Splice",
-                                                          "drain"
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "alloc::vec::splice::Splice",
+                                                            "drain"
+                                                          |)
                                                         |);
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| self |),
-                                                          "alloc::vec::splice::Splice",
-                                                          "replace_with"
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "alloc::vec::splice::Splice",
+                                                                "replace_with"
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -620,23 +708,31 @@ Module vec.
                                       ]
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::iter::traits::iterator::Iterator",
-                                          I,
-                                          [],
-                                          [],
-                                          "by_ref",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::vec::splice::Splice",
-                                            "replace_with"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
+                                              I,
+                                              [],
+                                              [],
+                                              "by_ref",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::vec::splice::Splice",
+                                                  "replace_with"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -665,7 +761,7 @@ Module vec.
                                               [],
                                               []
                                             |),
-                                            [ collected ]
+                                            [ M.borrow (| Pointer.Kind.Ref, collected |) ]
                                           |),
                                           Value.Integer IntegerKind.Usize 0
                                         |)
@@ -688,10 +784,13 @@ Module vec.
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::vec::splice::Splice",
-                                            "drain"
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::vec::splice::Splice",
+                                              "drain"
+                                            |)
                                           |);
                                           M.call_closure (|
                                             M.get_trait_method (|
@@ -706,7 +805,7 @@ Module vec.
                                               [],
                                               []
                                             |),
-                                            [ collected ]
+                                            [ M.borrow (| Pointer.Kind.Ref, collected |) ]
                                           |)
                                         ]
                                       |)
@@ -729,12 +828,20 @@ Module vec.
                                           ]
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::vec::splice::Splice",
-                                            "drain"
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::vec::splice::Splice",
+                                              "drain"
+                                            |)
                                           |);
-                                          collected
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.borrow (| Pointer.Kind.MutRef, collected |)
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -808,29 +915,40 @@ Module vec.
                                                 M.alloc (|
                                                   Value.Tuple
                                                     [
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::iter::traits::exact_size::ExactSizeIterator",
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloc::vec::into_iter::IntoIter")
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::iter::traits::exact_size::ExactSizeIterator",
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::vec::into_iter::IntoIter")
+                                                                []
+                                                                [
+                                                                  Ty.associated;
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ],
+                                                              [],
+                                                              [],
+                                                              "len",
+                                                              [],
                                                               []
-                                                              [
-                                                                Ty.associated;
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            [],
-                                                            [],
-                                                            "len",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ collected ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                collected
+                                                              |)
+                                                            ]
+                                                          |)
                                                         |)
                                                       |);
-                                                      M.alloc (|
-                                                        Value.Integer IntegerKind.Usize 0
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        |)
                                                       |)
                                                     ]
                                                 |),
@@ -854,10 +972,14 @@ Module vec.
                                                                     UnOp.not (|
                                                                       BinOp.eq (|
                                                                         M.read (|
-                                                                          M.read (| left_val |)
+                                                                          M.deref (|
+                                                                            M.read (| left_val |)
+                                                                          |)
                                                                         |),
                                                                         M.read (|
-                                                                          M.read (| right_val |)
+                                                                          M.deref (|
+                                                                            M.read (| right_val |)
+                                                                          |)
                                                                         |)
                                                                       |)
                                                                     |)
@@ -888,8 +1010,32 @@ Module vec.
                                                                         |),
                                                                         [
                                                                           M.read (| kind |);
-                                                                          M.read (| left_val |);
-                                                                          M.read (| right_val |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    left_val
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    right_val
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |);
                                                                           Value.StructTuple
                                                                             "core::option::Option::None"
                                                                             []
@@ -966,29 +1112,37 @@ Module vec.
                 (M.read (|
                   let~ vec :=
                     M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::ptr::non_null::NonNull")
-                            []
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                          "as_mut",
-                          [],
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::vec::drain::Drain",
-                            "vec"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                              "as_mut",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::vec::drain::Drain",
+                                  "vec"
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
                     |) in
                   let~ range_start :=
                     M.copy (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| vec |),
+                        M.deref (| M.read (| vec |) |),
                         "alloc::vec::Vec",
                         "len"
                       |)
@@ -996,38 +1150,48 @@ Module vec.
                   let~ range_end :=
                     M.copy (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::vec::drain::Drain",
                         "tail_start"
                       |)
                     |) in
                   let~ range_slice :=
                     M.alloc (|
-                      M.call_closure (|
-                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-                        [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
                           M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [] [ T ],
-                              "add",
-                              [],
-                              []
-                            |),
+                            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                                  "as_mut_ptr",
+                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                  "add",
                                   [],
                                   []
                                 |),
-                                [ M.read (| vec |) ]
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                      "as_mut_ptr",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| vec |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.read (| range_start |)
+                                ]
                               |);
-                              M.read (| range_start |)
+                              BinOp.Wrap.sub (| M.read (| range_end |), M.read (| range_start |) |)
                             ]
-                          |);
-                          BinOp.Wrap.sub (| M.read (| range_end |), M.read (| range_start |) |)
-                        ]
+                          |)
+                        |)
                       |)
                     |) in
                   let~ _ :=
@@ -1069,7 +1233,12 @@ Module vec.
                                             [],
                                             []
                                           |),
-                                          [ iter ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       [
@@ -1109,7 +1278,14 @@ Module vec.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| replace_with |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (|
+                                                                M.read (| replace_with |)
+                                                              |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       |) in
                                                     let γ0_0 :=
@@ -1128,7 +1304,10 @@ Module vec.
                                                             [ T ]
                                                           |),
                                                           [
-                                                            M.read (| place |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutPointer,
+                                                              M.deref (| M.read (| place |) |)
+                                                            |);
                                                             M.read (| new_item |)
                                                           ]
                                                         |)
@@ -1136,7 +1315,7 @@ Module vec.
                                                     let~ _ :=
                                                       let β :=
                                                         M.SubPointer.get_struct_record_field (|
-                                                          M.read (| vec |),
+                                                          M.deref (| M.read (| vec |) |),
                                                           "alloc::vec::Vec",
                                                           "len"
                                                         |) in
@@ -1200,23 +1379,31 @@ Module vec.
             M.read (|
               let~ vec :=
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::ptr::non_null::NonNull")
-                        []
-                        [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                      "as_mut",
-                      [],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::vec::drain::Drain",
-                        "vec"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                          "as_mut",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::vec::drain::Drain",
+                              "vec"
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 |) in
               let~ len :=
@@ -1224,14 +1411,14 @@ Module vec.
                   BinOp.Wrap.add (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::vec::drain::Drain",
                         "tail_start"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::vec::drain::Drain",
                         "tail_len"
                       |)
@@ -1248,10 +1435,13 @@ Module vec.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| vec |),
-                        "alloc::vec::Vec",
-                        "buf"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| vec |) |),
+                          "alloc::vec::Vec",
+                          "buf"
+                        |)
                       |);
                       M.read (| len |);
                       M.read (| additional |)
@@ -1263,7 +1453,7 @@ Module vec.
                   BinOp.Wrap.add (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::vec::drain::Drain",
                         "tail_start"
                       |)
@@ -1289,11 +1479,11 @@ Module vec.
                             [],
                             []
                           |),
-                          [ M.read (| vec |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vec |) |) |) ]
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::vec::drain::Drain",
                             "tail_start"
                           |)
@@ -1318,7 +1508,7 @@ Module vec.
                             [],
                             []
                           |),
-                          [ M.read (| vec |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| vec |) |) |) ]
                         |);
                         M.read (| new_tail_start |)
                       ]
@@ -1333,7 +1523,7 @@ Module vec.
                         M.read (| dst |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::vec::drain::Drain",
                             "tail_len"
                           |)
@@ -1345,7 +1535,7 @@ Module vec.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "alloc::vec::drain::Drain",
                     "tail_start"
                   |),

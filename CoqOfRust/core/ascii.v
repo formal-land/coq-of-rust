@@ -42,10 +42,18 @@ Module ascii.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::ascii::EscapeDefault",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::ascii::EscapeDefault",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -154,23 +162,31 @@ Module ascii.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::escape::EscapeIterInner")
-                [ Value.Integer IntegerKind.Usize 4 ]
-                [],
-              "as_str",
-              [ Value.Integer IntegerKind.Usize 4 ],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::ascii::EscapeDefault",
-                0
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 4 ]
+                    [],
+                  "as_str",
+                  [ Value.Integer IntegerKind.Usize 4 ],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::ascii::EscapeDefault",
+                      0
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -205,10 +221,13 @@ Module ascii.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::ascii::EscapeDefault",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::ascii::EscapeDefault",
+                  0
+                |)
               |)
             ]
           |)))
@@ -240,10 +259,13 @@ Module ascii.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::ascii::EscapeDefault",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ascii::EscapeDefault",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -277,7 +299,12 @@ Module ascii.
               [ Value.Integer IntegerKind.Usize 4 ],
               []
             |),
-            [ M.SubPointer.get_struct_tuple_field (| self, "core::ascii::EscapeDefault", 0 |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (| self, "core::ascii::EscapeDefault", 0 |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -302,7 +329,12 @@ Module ascii.
               [ Value.Integer IntegerKind.Usize 4 ],
               []
             |),
-            [ M.SubPointer.get_struct_tuple_field (| self, "core::ascii::EscapeDefault", 0 |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (| self, "core::ascii::EscapeDefault", 0 |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -329,10 +361,13 @@ Module ascii.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::ascii::EscapeDefault",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::ascii::EscapeDefault",
+                  0
+                |)
               |);
               M.read (| n |)
             ]
@@ -380,10 +415,13 @@ Module ascii.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::ascii::EscapeDefault",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::ascii::EscapeDefault",
+                  0
+                |)
               |)
             ]
           |)))
@@ -412,10 +450,13 @@ Module ascii.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::ascii::EscapeDefault",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::ascii::EscapeDefault",
+                  0
+                |)
               |);
               M.read (| n |)
             ]
@@ -459,10 +500,13 @@ Module ascii.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::ascii::EscapeDefault",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::ascii::EscapeDefault",
+                  0
+                |)
               |)
             ]
           |)))
@@ -505,24 +549,32 @@ Module ascii.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::escape::EscapeIterInner")
-                    [ Value.Integer IntegerKind.Usize 4 ]
-                    [],
-                  "as_str",
-                  [ Value.Integer IntegerKind.Usize 4 ],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::ascii::EscapeDefault",
-                    0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::escape::EscapeIterInner")
+                        [ Value.Integer IntegerKind.Usize 4 ]
+                        [],
+                      "as_str",
+                      [ Value.Integer IntegerKind.Usize 4 ],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::ascii::EscapeDefault",
+                          0
+                        |)
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |)
             ]
           |)))
@@ -559,15 +611,24 @@ Module ascii.
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    [],
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "EscapeDefault" |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "EscapeDefault" |) |)
+                      |)
+                    ]
+                  |)
                 |)
               |)
             ]

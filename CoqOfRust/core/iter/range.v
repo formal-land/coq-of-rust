@@ -207,7 +207,10 @@ Module iter.
                   |),
                   [ M.read (| start |); M.read (| count |) ]
                 |);
-                M.read (| Value.String "overflow in `Step::forward`" |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "overflow in `Step::forward`" |) |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -260,7 +263,10 @@ Module iter.
                   |),
                   [ M.read (| start |); M.read (| count |) ]
                 |);
-                M.read (| Value.String "overflow in `Step::backward`" |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "overflow in `Step::backward`" |) |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -328,18 +334,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "u8",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "u8",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -404,18 +413,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "u8",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "u8",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -509,8 +521,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -520,8 +532,8 @@ Module iter.
                           [
                             M.rust_cast
                               (BinOp.Wrap.sub (|
-                                M.read (| M.read (| end_ |) |),
-                                M.read (| M.read (| start |) |)
+                                M.read (| M.deref (| M.read (| end_ |) |) |),
+                                M.read (| M.deref (| M.read (| start |) |) |)
                               |))
                           ]
                       |)));
@@ -711,18 +723,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "i8",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "i8",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -787,18 +802,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "i8",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "i8",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -916,8 +934,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -934,8 +952,8 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.rust_cast (M.read (| M.read (| end_ |) |));
-                                  M.rust_cast (M.read (| M.read (| start |) |))
+                                  M.rust_cast (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                  M.rust_cast (M.read (| M.deref (| M.read (| start |) |) |))
                                 ]
                               |))
                           ]
@@ -1204,18 +1222,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "u16",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "u16",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -1280,18 +1301,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "u16",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "u16",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -1385,8 +1409,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1396,8 +1420,8 @@ Module iter.
                           [
                             M.rust_cast
                               (BinOp.Wrap.sub (|
-                                M.read (| M.read (| end_ |) |),
-                                M.read (| M.read (| start |) |)
+                                M.read (| M.deref (| M.read (| end_ |) |) |),
+                                M.read (| M.deref (| M.read (| start |) |) |)
                               |))
                           ]
                       |)));
@@ -1587,18 +1611,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "i16",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "i16",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -1663,18 +1690,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "i16",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "i16",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -1792,8 +1822,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1810,8 +1840,8 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.rust_cast (M.read (| M.read (| end_ |) |));
-                                  M.rust_cast (M.read (| M.read (| start |) |))
+                                  M.rust_cast (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                  M.rust_cast (M.read (| M.deref (| M.read (| start |) |) |))
                                 ]
                               |))
                           ]
@@ -2080,18 +2110,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "u32",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "u32",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -2156,18 +2189,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "u32",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "u32",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -2261,8 +2297,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2272,8 +2308,8 @@ Module iter.
                           [
                             M.rust_cast
                               (BinOp.Wrap.sub (|
-                                M.read (| M.read (| end_ |) |),
-                                M.read (| M.read (| start |) |)
+                                M.read (| M.deref (| M.read (| end_ |) |) |),
+                                M.read (| M.deref (| M.read (| start |) |) |)
                               |))
                           ]
                       |)));
@@ -2463,18 +2499,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "i32",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "i32",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -2539,18 +2578,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "i32",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "i32",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -2668,8 +2710,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2686,8 +2728,8 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.rust_cast (M.read (| M.read (| end_ |) |));
-                                  M.rust_cast (M.read (| M.read (| start |) |))
+                                  M.rust_cast (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                  M.rust_cast (M.read (| M.deref (| M.read (| start |) |) |))
                                 ]
                               |))
                           ]
@@ -2956,18 +2998,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "u64",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "u64",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -3032,18 +3077,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "u64",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "u64",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -3137,8 +3185,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3148,8 +3196,8 @@ Module iter.
                           [
                             M.rust_cast
                               (BinOp.Wrap.sub (|
-                                M.read (| M.read (| end_ |) |),
-                                M.read (| M.read (| start |) |)
+                                M.read (| M.deref (| M.read (| end_ |) |) |),
+                                M.read (| M.deref (| M.read (| start |) |) |)
                               |))
                           ]
                       |)));
@@ -3339,18 +3387,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "i64",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "i64",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -3415,18 +3466,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "i64",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "i64",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -3544,8 +3598,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3562,8 +3616,8 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.rust_cast (M.read (| M.read (| end_ |) |));
-                                  M.rust_cast (M.read (| M.read (| start |) |))
+                                  M.rust_cast (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                  M.rust_cast (M.read (| M.deref (| M.read (| start |) |) |))
                                 ]
                               |))
                           ]
@@ -3832,18 +3886,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "usize",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "usize",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -3908,18 +3965,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "usize",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "usize",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -4013,8 +4073,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4026,8 +4086,8 @@ Module iter.
                               M.use
                                 (M.alloc (|
                                   BinOp.Wrap.sub (|
-                                    M.read (| M.read (| end_ |) |),
-                                    M.read (| M.read (| start |) |)
+                                    M.read (| M.deref (| M.read (| end_ |) |) |),
+                                    M.read (| M.deref (| M.read (| start |) |) |)
                                   |)
                                 |))
                             |)
@@ -4219,18 +4279,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "isize",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "isize",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -4295,18 +4358,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "isize",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "isize",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -4424,8 +4490,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4442,8 +4508,8 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.read (| M.use (M.read (| end_ |)) |);
-                                  M.read (| M.use (M.read (| start |)) |)
+                                  M.read (| M.use (M.deref (| M.read (| end_ |) |)) |);
+                                  M.read (| M.use (M.deref (| M.read (| start |) |)) |)
                                 ]
                               |))
                           ]
@@ -4712,18 +4778,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "u128",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "u128",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -4788,18 +4857,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "u128",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "u128",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -4892,8 +4964,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4921,8 +4993,8 @@ Module iter.
                               |),
                               [
                                 BinOp.Wrap.sub (|
-                                  M.read (| M.read (| end_ |) |),
-                                  M.read (| M.read (| start |) |)
+                                  M.read (| M.deref (| M.read (| end_ |) |) |),
+                                  M.read (| M.deref (| M.read (| start |) |) |)
                                 |)
                               ]
                             |)
@@ -5029,18 +5101,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "i128",
-                                        [],
-                                        [],
-                                        "forward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "i128",
+                                          [],
+                                          [],
+                                          "forward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -5105,18 +5180,21 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::range::Step",
-                                        Ty.path "i128",
-                                        [],
-                                        [],
-                                        "backward_checked",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| start |); M.read (| n |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::range::Step",
+                                          Ty.path "i128",
+                                          [],
+                                          [],
+                                          "backward_checked",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| start |); M.read (| n |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -5234,8 +5312,8 @@ Module iter.
                         M.use
                           (M.alloc (|
                             BinOp.le (|
-                              M.read (| M.read (| start |) |),
-                              M.read (| M.read (| end_ |) |)
+                              M.read (| M.deref (| M.read (| start |) |) |),
+                              M.read (| M.deref (| M.read (| end_ |) |) |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5243,7 +5321,10 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "i128", "checked_sub", [], [] |),
-                            [ M.read (| M.read (| end_ |) |); M.read (| M.read (| start |) |) ]
+                            [
+                              M.read (| M.deref (| M.read (| end_ |) |) |);
+                              M.read (| M.deref (| M.read (| start |) |) |)
+                            ]
                           |)
                         |),
                         [
@@ -6261,26 +6342,42 @@ Module iter.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::ascii::ascii_char::AsciiChar",
-                                      "to_u8",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| start |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::ascii::ascii_char::AsciiChar",
+                                            "to_u8",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| start |) ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 |);
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::ascii::ascii_char::AsciiChar",
-                                      "to_u8",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| end_ |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::ascii::ascii_char::AsciiChar",
+                                            "to_u8",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| end_ |) ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 |)
                               ]
@@ -6714,26 +6811,42 @@ Module iter.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::net::ip_addr::Ipv4Addr",
-                                      "to_bits",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| start |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::net::ip_addr::Ipv4Addr",
+                                            "to_bits",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| start |) ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 |);
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::net::ip_addr::Ipv4Addr",
-                                      "to_bits",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| end_ |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::net::ip_addr::Ipv4Addr",
+                                            "to_bits",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| end_ |) ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 |)
                               ]
@@ -7009,26 +7122,42 @@ Module iter.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::net::ip_addr::Ipv6Addr",
-                                      "to_bits",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| start |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::net::ip_addr::Ipv6Addr",
+                                            "to_bits",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| start |) ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 |);
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::net::ip_addr::Ipv6Addr",
-                                      "to_bits",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| end_ |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::net::ip_addr::Ipv6Addr",
+                                            "to_bits",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| end_ |) ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 |)
                               ]
@@ -7311,15 +7440,21 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)
                               ]
                             |)
@@ -7357,17 +7492,25 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::ops::range::Range",
-                                        "start"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::ops::range::Range",
+                                          "start"
+                                        |)
                                       |)
                                     ]
                                   |);
                                   Value.Integer IntegerKind.Usize 1
                                 ]
                               |);
-                              M.read (| Value.String "`Step` invariants not upheld" |)
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (| Value.String "`Step` invariants not upheld" |)
+                                |)
+                              |)
                             ]
                           |)
                         |) in
@@ -7378,10 +7521,18 @@ Module iter.
                             M.call_closure (|
                               M.get_function (| "core::mem::replace", [], [ A ] |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::ops::range::Range",
+                                        "start"
+                                      |)
+                                    |)
+                                  |)
                                 |);
                                 M.read (| n |)
                               ]
@@ -7451,10 +7602,13 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::Range",
-                                          "start"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::Range",
+                                            "start"
+                                          |)
                                         |)
                                       ]
                                     |);
@@ -7488,11 +7642,14 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              plus_n;
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::ops::range::Range",
-                                                "end"
+                                              M.borrow (| Pointer.Kind.Ref, plus_n |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::ops::range::Range",
+                                                  "end"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -7508,7 +7665,7 @@ Module iter.
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::range::Range",
                                                 "start"
                                               |),
@@ -7544,13 +7701,18 @@ Module iter.
                                                           [],
                                                           []
                                                         |),
-                                                        [ plus_n ]
+                                                        [ M.borrow (| Pointer.Kind.Ref, plus_n |) ]
                                                       |);
                                                       Value.Integer IntegerKind.Usize 1
                                                     ]
                                                   |);
-                                                  M.read (|
-                                                    Value.String "`Step` invariants not upheld"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        Value.String "`Step` invariants not upheld"
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -7572,17 +7734,20 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::Range",
                         "start"
                       |),
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::Range",
-                            "end"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "end"
+                            |)
                           |)
                         ]
                       |)
@@ -7643,15 +7808,21 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "start"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::ops::range::Range",
+                                        "start"
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "end"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::ops::range::Range",
+                                        "end"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -7678,15 +7849,31 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "start"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::Range",
+                                            "start"
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "end"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::Range",
+                                            "end"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |);
@@ -7716,7 +7903,7 @@ Module iter.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::range::Range",
                     "start"
                   |),
@@ -7750,17 +7937,23 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::ops::range::Range",
-                                "start"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::ops::range::Range",
+                                  "start"
+                                |)
                               |)
                             ]
                           |);
                           M.read (| taken |)
                         ]
                       |);
-                      M.read (| Value.String "`Step` invariants not upheld" |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "`Step` invariants not upheld" |) |)
+                      |)
                     ]
                   |)
                 |) in
@@ -7853,15 +8046,21 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)
                               ]
                             |)
@@ -7870,7 +8069,7 @@ Module iter.
                       let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::ops::range::Range",
                             "end"
                           |),
@@ -7904,17 +8103,25 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::ops::range::Range",
-                                        "end"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::ops::range::Range",
+                                          "end"
+                                        |)
                                       |)
                                     ]
                                   |);
                                   Value.Integer IntegerKind.Usize 1
                                 ]
                               |);
-                              M.read (| Value.String "`Step` invariants not upheld" |)
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (| Value.String "`Step` invariants not upheld" |)
+                                |)
+                              |)
                             ]
                           |)
                         |) in
@@ -7933,10 +8140,13 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)
                               ]
                             |)
@@ -8010,10 +8220,13 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::Range",
-                                          "end"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::Range",
+                                            "end"
+                                          |)
                                         |)
                                       ]
                                     |);
@@ -8047,11 +8260,14 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              minus_n;
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::ops::range::Range",
-                                                "start"
+                                              M.borrow (| Pointer.Kind.Ref, minus_n |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::ops::range::Range",
+                                                  "start"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -8067,7 +8283,7 @@ Module iter.
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::range::Range",
                                                 "end"
                                               |),
@@ -8097,8 +8313,13 @@ Module iter.
                                                       Value.Integer IntegerKind.Usize 1
                                                     ]
                                                   |);
-                                                  M.read (|
-                                                    Value.String "`Step` invariants not upheld"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        Value.String "`Step` invariants not upheld"
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -8118,10 +8339,13 @@ Module iter.
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "core::ops::range::Range",
-                                                      "end"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::ops::range::Range",
+                                                        "end"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -8139,17 +8363,20 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::Range",
                         "end"
                       |),
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::Range",
-                            "start"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "start"
+                            |)
                           |)
                         ]
                       |)
@@ -8210,15 +8437,21 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "start"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::ops::range::Range",
+                                        "start"
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "end"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::ops::range::Range",
+                                        "end"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -8245,15 +8478,31 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "start"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::Range",
+                                            "start"
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "end"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::Range",
+                                            "end"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |);
@@ -8283,7 +8532,7 @@ Module iter.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::range::Range",
                     "end"
                   |),
@@ -8317,17 +8566,23 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::ops::range::Range",
-                                "end"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::ops::range::Range",
+                                  "end"
+                                |)
                               |)
                             ]
                           |);
                           M.read (| taken |)
                         ]
                       |);
-                      M.read (| Value.String "`Step` invariants not upheld" |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "`Step` invariants not upheld" |) |)
+                      |)
                     ]
                   |)
                 |) in
@@ -8437,15 +8692,21 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)
                               ]
                             |)
@@ -8454,7 +8715,7 @@ Module iter.
                       let~ old :=
                         M.copy (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::ops::range::Range",
                             "start"
                           |)
@@ -8462,7 +8723,7 @@ Module iter.
                       let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::ops::range::Range",
                             "start"
                           |),
@@ -8536,7 +8797,7 @@ Module iter.
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::ops::range::Range",
                                         "start"
                                       |)
@@ -8571,11 +8832,14 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              plus_n;
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::ops::range::Range",
-                                                "end"
+                                              M.borrow (| Pointer.Kind.Ref, plus_n |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::ops::range::Range",
+                                                  "end"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -8591,7 +8855,7 @@ Module iter.
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::range::Range",
                                                 "start"
                                               |),
@@ -8628,13 +8892,13 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::Range",
                         "start"
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::ops::range::Range",
                           "end"
                         |)
@@ -8699,15 +8963,21 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "start"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::ops::range::Range",
+                                        "start"
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "end"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::ops::range::Range",
+                                        "end"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -8734,15 +9004,31 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "start"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::Range",
+                                            "start"
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "end"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::Range",
+                                            "end"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |);
@@ -8772,7 +9058,7 @@ Module iter.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::range::Range",
                     "start"
                   |),
@@ -8789,7 +9075,7 @@ Module iter.
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::ops::range::Range",
                           "start"
                         |)
@@ -8887,15 +9173,21 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)
                               ]
                             |)
@@ -8904,7 +9196,7 @@ Module iter.
                       let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::ops::range::Range",
                             "end"
                           |),
@@ -8921,7 +9213,7 @@ Module iter.
                             [
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::ops::range::Range",
                                   "end"
                                 |)
@@ -8936,7 +9228,7 @@ Module iter.
                           [
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::ops::range::Range",
                                 "end"
                               |)
@@ -9002,7 +9294,7 @@ Module iter.
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::ops::range::Range",
                                         "end"
                                       |)
@@ -9037,11 +9329,14 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              minus_n;
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::ops::range::Range",
-                                                "start"
+                                              M.borrow (| Pointer.Kind.Ref, minus_n |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::ops::range::Range",
+                                                  "start"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -9057,7 +9352,7 @@ Module iter.
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::range::Range",
                                                 "end"
                                               |),
@@ -9083,7 +9378,7 @@ Module iter.
                                               [
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::ops::range::Range",
                                                     "end"
                                                   |)
@@ -9102,13 +9397,13 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::Range",
                         "end"
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::ops::range::Range",
                           "start"
                         |)
@@ -9170,15 +9465,21 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "start"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::ops::range::Range",
+                                        "start"
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "end"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::ops::range::Range",
+                                        "end"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -9205,15 +9506,31 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "start"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::Range",
+                                            "start"
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::Range",
-                                      "end"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::Range",
+                                            "end"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |);
@@ -9243,7 +9560,7 @@ Module iter.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::range::Range",
                     "end"
                   |),
@@ -9260,7 +9577,7 @@ Module iter.
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::ops::range::Range",
                           "end"
                         |)
@@ -9360,7 +9677,7 @@ Module iter.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9401,15 +9718,21 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)
                               ]
                             |)
@@ -9428,15 +9751,31 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::ops::range::Range",
-                                "start"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::ops::range::Range",
+                                      "start"
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::ops::range::Range",
-                                "end"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::ops::range::Range",
+                                      "end"
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -9511,15 +9850,21 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::ops::range::Range",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::ops::range::Range",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)
                               ]
                             |)
@@ -9545,19 +9890,38 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::ops::range::Range",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::ops::range::Range",
+                                        "start"
+                                      |)
+                                    |)
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::ops::range::Range",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::ops::range::Range",
+                                        "end"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |);
-                            M.read (| Value.String "count overflowed usize" |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "count overflowed usize" |) |)
+                            |)
                           ]
                         |)
                       |)));
@@ -9590,7 +9954,8 @@ Module iter.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| n |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); M.read (| n |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9616,7 +9981,7 @@ Module iter.
                 [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9645,7 +10010,7 @@ Module iter.
                 [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9674,7 +10039,7 @@ Module iter.
                 [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9716,7 +10081,8 @@ Module iter.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| n |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); M.read (| n |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9759,10 +10125,13 @@ Module iter.
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::ops::range::Range",
-                      "start"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::Range",
+                        "start"
+                      |)
                     |)
                   ]
                 |);
@@ -10234,7 +10603,7 @@ Module iter.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10261,7 +10630,8 @@ Module iter.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| n |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); M.read (| n |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10293,7 +10663,8 @@ Module iter.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| n |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); M.read (| n |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10372,10 +10743,13 @@ Module iter.
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeFrom",
-                            "start"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeFrom",
+                              "start"
+                            |)
                           |)
                         ]
                       |);
@@ -10390,10 +10764,18 @@ Module iter.
                     M.call_closure (|
                       M.get_function (| "core::mem::replace", [], [ A ] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::ops::range::RangeFrom",
-                          "start"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::ops::range::RangeFrom",
+                                "start"
+                              |)
+                            |)
+                          |)
                         |);
                         M.read (| n |)
                       ]
@@ -10454,10 +10836,13 @@ Module iter.
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeFrom",
-                            "start"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeFrom",
+                              "start"
+                            |)
                           |)
                         ]
                       |);
@@ -10468,7 +10853,7 @@ Module iter.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::range::RangeFrom",
                     "start"
                   |),
@@ -10485,7 +10870,7 @@ Module iter.
                     [
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
-                        [ plus_n ]
+                        [ M.borrow (| Pointer.Kind.Ref, plus_n |) ]
                       |);
                       Value.Integer IntegerKind.Usize 1
                     ]
@@ -10591,7 +10976,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -10619,15 +11009,21 @@ Module iter.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "start"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "start"
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "end"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "end"
+                            |)
                           |)
                         ]
                       |)
@@ -10680,17 +11076,27 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "core::ops::range::RangeInclusive",
-                                                    "start"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::ops::range::RangeInclusive",
+                                                      "start"
+                                                    |)
                                                   |)
                                                 ]
                                               |);
                                               Value.Integer IntegerKind.Usize 1
                                             ]
                                           |);
-                                          M.read (| Value.String "`Step` invariants not upheld" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                Value.String "`Step` invariants not upheld"
+                                              |)
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -10698,10 +11104,18 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [], [ A ] |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "start"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::ops::range::RangeInclusive",
+                                                "start"
+                                              |)
+                                            |)
+                                          |)
                                         |);
                                         M.read (| n |)
                                       ]
@@ -10712,7 +11126,7 @@ Module iter.
                                   (let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::ops::range::RangeInclusive",
                                         "exhausted"
                                       |),
@@ -10730,10 +11144,13 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "start"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::RangeInclusive",
+                                            "start"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -10812,7 +11229,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -10863,15 +11285,21 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::ops::range::RangeInclusive",
-                                            "start"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::ops::range::RangeInclusive",
+                                              "start"
+                                            |)
                                           |);
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::ops::range::RangeInclusive",
-                                            "end"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::ops::range::RangeInclusive",
+                                              "end"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -10913,17 +11341,25 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::ops::range::RangeInclusive",
-                                                  "start"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::ops::range::RangeInclusive",
+                                                    "start"
+                                                  |)
                                                 |)
                                               ]
                                             |);
                                             Value.Integer IntegerKind.Usize 1
                                           ]
                                         |);
-                                        M.read (| Value.String "`Step` invariants not upheld" |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (| Value.String "`Step` invariants not upheld" |)
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -10932,10 +11368,18 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [], [ A ] |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "start"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::ops::range::RangeInclusive",
+                                                "start"
+                                              |)
+                                            |)
+                                          |)
                                         |);
                                         M.read (| n |)
                                       ]
@@ -10969,7 +11413,7 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  f;
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
                                                   Value.Tuple [ M.read (| accum |); M.read (| n |) ]
                                                 ]
                                               |)
@@ -11040,7 +11484,7 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::RangeInclusive",
                         "exhausted"
                       |),
@@ -11066,15 +11510,21 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::ops::range::RangeInclusive",
-                                        "start"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::ops::range::RangeInclusive",
+                                          "start"
+                                        |)
                                       |);
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::ops::range::RangeInclusive",
-                                        "end"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::ops::range::RangeInclusive",
+                                          "end"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -11109,7 +11559,7 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              f;
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
                                               Value.Tuple
                                                 [
                                                   M.read (| accum |);
@@ -11124,10 +11574,13 @@ Module iter.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::ops::range::RangeInclusive",
-                                                        "start"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "core::ops::range::RangeInclusive",
+                                                          "start"
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -11253,7 +11706,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -11281,15 +11739,21 @@ Module iter.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "start"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "start"
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "end"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "end"
+                            |)
                           |)
                         ]
                       |)
@@ -11342,17 +11806,27 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "core::ops::range::RangeInclusive",
-                                                    "end"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::ops::range::RangeInclusive",
+                                                      "end"
+                                                    |)
                                                   |)
                                                 ]
                                               |);
                                               Value.Integer IntegerKind.Usize 1
                                             ]
                                           |);
-                                          M.read (| Value.String "`Step` invariants not upheld" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                Value.String "`Step` invariants not upheld"
+                                              |)
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -11360,10 +11834,18 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [], [ A ] |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "end"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::ops::range::RangeInclusive",
+                                                "end"
+                                              |)
+                                            |)
+                                          |)
                                         |);
                                         M.read (| n |)
                                       ]
@@ -11374,7 +11856,7 @@ Module iter.
                                   (let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::ops::range::RangeInclusive",
                                         "exhausted"
                                       |),
@@ -11392,10 +11874,13 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "end"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::RangeInclusive",
+                                            "end"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -11474,7 +11959,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -11525,15 +12015,21 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::ops::range::RangeInclusive",
-                                            "start"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::ops::range::RangeInclusive",
+                                              "start"
+                                            |)
                                           |);
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::ops::range::RangeInclusive",
-                                            "end"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::ops::range::RangeInclusive",
+                                              "end"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -11575,17 +12071,25 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::ops::range::RangeInclusive",
-                                                  "end"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::ops::range::RangeInclusive",
+                                                    "end"
+                                                  |)
                                                 |)
                                               ]
                                             |);
                                             Value.Integer IntegerKind.Usize 1
                                           ]
                                         |);
-                                        M.read (| Value.String "`Step` invariants not upheld" |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (| Value.String "`Step` invariants not upheld" |)
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -11594,10 +12098,18 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [], [ A ] |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "end"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::ops::range::RangeInclusive",
+                                                "end"
+                                              |)
+                                            |)
+                                          |)
                                         |);
                                         M.read (| n |)
                                       ]
@@ -11631,7 +12143,7 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  f;
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
                                                   Value.Tuple [ M.read (| accum |); M.read (| n |) ]
                                                 ]
                                               |)
@@ -11702,7 +12214,7 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::RangeInclusive",
                         "exhausted"
                       |),
@@ -11728,15 +12240,21 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::ops::range::RangeInclusive",
-                                        "start"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::ops::range::RangeInclusive",
+                                          "start"
+                                        |)
                                       |);
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::ops::range::RangeInclusive",
-                                        "end"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::ops::range::RangeInclusive",
+                                          "end"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -11771,7 +12289,7 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              f;
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
                                               Value.Tuple
                                                 [
                                                   M.read (| accum |);
@@ -11786,10 +12304,13 @@ Module iter.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::ops::range::RangeInclusive",
-                                                        "start"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "core::ops::range::RangeInclusive",
+                                                          "start"
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -11930,7 +12451,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -11958,15 +12484,21 @@ Module iter.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "start"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "start"
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "end"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "end"
+                            |)
                           |)
                         ]
                       |)
@@ -12002,7 +12534,7 @@ Module iter.
                                         [
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::ops::range::RangeInclusive",
                                               "start"
                                             |)
@@ -12015,10 +12547,18 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [], [ T ] |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "start"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::ops::range::RangeInclusive",
+                                                "start"
+                                              |)
+                                            |)
+                                          |)
                                         |);
                                         M.read (| n |)
                                       ]
@@ -12029,14 +12569,14 @@ Module iter.
                                   (let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::ops::range::RangeInclusive",
                                         "exhausted"
                                       |),
                                       Value.Bool true
                                     |) in
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::ops::range::RangeInclusive",
                                     "start"
                                   |)))
@@ -12114,7 +12654,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -12165,15 +12710,21 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::ops::range::RangeInclusive",
-                                            "start"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::ops::range::RangeInclusive",
+                                              "start"
+                                            |)
                                           |);
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::ops::range::RangeInclusive",
-                                            "end"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::ops::range::RangeInclusive",
+                                              "end"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -12198,7 +12749,7 @@ Module iter.
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::ops::range::RangeInclusive",
                                             "start"
                                           |)
@@ -12212,10 +12763,18 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [], [ T ] |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "start"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::ops::range::RangeInclusive",
+                                                "start"
+                                              |)
+                                            |)
+                                          |)
                                         |);
                                         M.read (| n |)
                                       ]
@@ -12249,7 +12808,7 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  f;
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
                                                   Value.Tuple [ M.read (| accum |); M.read (| n |) ]
                                                 ]
                                               |)
@@ -12320,7 +12879,7 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::RangeInclusive",
                         "exhausted"
                       |),
@@ -12346,15 +12905,21 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::ops::range::RangeInclusive",
-                                        "start"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::ops::range::RangeInclusive",
+                                          "start"
+                                        |)
                                       |);
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::ops::range::RangeInclusive",
-                                        "end"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::ops::range::RangeInclusive",
+                                          "end"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -12389,13 +12954,13 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              f;
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
                                               Value.Tuple
                                                 [
                                                   M.read (| accum |);
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::ops::range::RangeInclusive",
                                                       "start"
                                                     |)
@@ -12522,7 +13087,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -12550,15 +13120,21 @@ Module iter.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "start"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "start"
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "end"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "end"
+                            |)
                           |)
                         ]
                       |)
@@ -12594,7 +13170,7 @@ Module iter.
                                         [
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::ops::range::RangeInclusive",
                                               "end"
                                             |)
@@ -12607,10 +13183,18 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [], [ T ] |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "end"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::ops::range::RangeInclusive",
+                                                "end"
+                                              |)
+                                            |)
+                                          |)
                                         |);
                                         M.read (| n |)
                                       ]
@@ -12621,14 +13205,14 @@ Module iter.
                                   (let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::ops::range::RangeInclusive",
                                         "exhausted"
                                       |),
                                       Value.Bool true
                                     |) in
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::ops::range::RangeInclusive",
                                     "end"
                                   |)))
@@ -12706,7 +13290,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -12757,15 +13346,21 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::ops::range::RangeInclusive",
-                                            "start"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::ops::range::RangeInclusive",
+                                              "start"
+                                            |)
                                           |);
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::ops::range::RangeInclusive",
-                                            "end"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::ops::range::RangeInclusive",
+                                              "end"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -12790,7 +13385,7 @@ Module iter.
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::ops::range::RangeInclusive",
                                             "end"
                                           |)
@@ -12804,10 +13399,18 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [], [ T ] |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "end"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::ops::range::RangeInclusive",
+                                                "end"
+                                              |)
+                                            |)
+                                          |)
                                         |);
                                         M.read (| n |)
                                       ]
@@ -12841,7 +13444,7 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  f;
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
                                                   Value.Tuple [ M.read (| accum |); M.read (| n |) ]
                                                 ]
                                               |)
@@ -12912,7 +13515,7 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::RangeInclusive",
                         "exhausted"
                       |),
@@ -12938,15 +13541,21 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::ops::range::RangeInclusive",
-                                        "start"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::ops::range::RangeInclusive",
+                                          "start"
+                                        |)
                                       |);
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::ops::range::RangeInclusive",
-                                        "end"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::ops::range::RangeInclusive",
+                                          "end"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -12981,13 +13590,13 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              f;
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
                                               Value.Tuple
                                                 [
                                                   M.read (| accum |);
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::ops::range::RangeInclusive",
                                                       "start"
                                                     |)
@@ -13108,7 +13717,7 @@ Module iter.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13153,7 +13762,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -13189,15 +13803,31 @@ Module iter.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "start"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::ops::range::RangeInclusive",
+                                  "start"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "end"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::ops::range::RangeInclusive",
+                                  "end"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -13291,7 +13921,7 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ self ]
+                                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
                                   |)
                                 |)) in
                             let _ :=
@@ -13337,15 +13967,31 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::ops::range::RangeInclusive",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::ops::range::RangeInclusive",
+                                        "start"
+                                      |)
+                                    |)
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::ops::range::RangeInclusive",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::ops::range::RangeInclusive",
+                                        "end"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |);
@@ -13379,7 +14025,10 @@ Module iter.
                                   end))
                           ]
                         |);
-                        M.read (| Value.String "count overflowed usize" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "count overflowed usize" |) |)
+                        |)
                       ]
                     |)
                   |)
@@ -13445,7 +14094,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -13490,10 +14144,13 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "start"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::RangeInclusive",
+                                            "start"
+                                          |)
                                         |)
                                       ]
                                     |);
@@ -13521,11 +14178,19 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    plus_n;
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::RangeInclusive",
-                                      "end"
+                                    M.borrow (| Pointer.Kind.Ref, plus_n |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::RangeInclusive",
+                                            "end"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -13547,7 +14212,7 @@ Module iter.
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::range::RangeInclusive",
                                                 "start"
                                               |),
@@ -13572,7 +14237,7 @@ Module iter.
                                                       [],
                                                       []
                                                     |),
-                                                    [ plus_n ]
+                                                    [ M.borrow (| Pointer.Kind.Ref, plus_n |) ]
                                                   |);
                                                   Value.Integer IntegerKind.Usize 1
                                                 ]
@@ -13602,7 +14267,7 @@ Module iter.
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::range::RangeInclusive",
                                                 "start"
                                               |),
@@ -13616,13 +14281,13 @@ Module iter.
                                                   [],
                                                   []
                                                 |),
-                                                [ plus_n ]
+                                                [ M.borrow (| Pointer.Kind.Ref, plus_n |) ]
                                               |)
                                             |) in
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::range::RangeInclusive",
                                                 "exhausted"
                                               |),
@@ -13645,17 +14310,20 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::RangeInclusive",
                         "start"
                       |),
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "end"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "end"
+                            |)
                           |)
                         ]
                       |)
@@ -13663,7 +14331,7 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::RangeInclusive",
                         "exhausted"
                       |),
@@ -13703,7 +14371,11 @@ Module iter.
                 [],
                 [ B; F; R ]
               |),
-              [ M.read (| self |); M.read (| init |); M.read (| f |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                M.read (| init |);
+                M.read (| f |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13744,7 +14416,7 @@ Module iter.
                       ]
                     |),
                     [
-                      self;
+                      M.borrow (| Pointer.Kind.MutRef, self |);
                       M.read (| init |);
                       M.call_closure (|
                         M.get_associated_function (|
@@ -13786,7 +14458,7 @@ Module iter.
                 [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13815,7 +14487,7 @@ Module iter.
                 [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13844,7 +14516,7 @@ Module iter.
                 [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13911,7 +14583,7 @@ Module iter.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13973,7 +14645,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -14018,10 +14695,13 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "end"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::RangeInclusive",
+                                            "end"
+                                          |)
                                         |)
                                       ]
                                     |);
@@ -14049,11 +14729,19 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    minus_n;
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::ops::range::RangeInclusive",
-                                      "start"
+                                    M.borrow (| Pointer.Kind.Ref, minus_n |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::ops::range::RangeInclusive",
+                                            "start"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -14078,7 +14766,7 @@ Module iter.
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::range::RangeInclusive",
                                                 "end"
                                               |),
@@ -14103,7 +14791,7 @@ Module iter.
                                                       [],
                                                       []
                                                     |),
-                                                    [ minus_n ]
+                                                    [ M.borrow (| Pointer.Kind.Ref, minus_n |) ]
                                                   |);
                                                   Value.Integer IntegerKind.Usize 1
                                                 ]
@@ -14133,7 +14821,7 @@ Module iter.
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::range::RangeInclusive",
                                                 "end"
                                               |),
@@ -14147,13 +14835,13 @@ Module iter.
                                                   [],
                                                   []
                                                 |),
-                                                [ minus_n ]
+                                                [ M.borrow (| Pointer.Kind.Ref, minus_n |) ]
                                               |)
                                             |) in
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::range::RangeInclusive",
                                                 "exhausted"
                                               |),
@@ -14176,17 +14864,20 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::RangeInclusive",
                         "end"
                       |),
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::ops::range::RangeInclusive",
-                            "start"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "start"
+                            |)
                           |)
                         ]
                       |)
@@ -14194,7 +14885,7 @@ Module iter.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::ops::range::RangeInclusive",
                         "exhausted"
                       |),
@@ -14234,7 +14925,11 @@ Module iter.
                 [],
                 [ B; F; R ]
               |),
-              [ M.read (| self |); M.read (| init |); M.read (| f |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                M.read (| init |);
+                M.read (| f |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14275,7 +14970,7 @@ Module iter.
                       ]
                     |),
                     [
-                      self;
+                      M.borrow (| Pointer.Kind.MutRef, self |);
                       M.read (| init |);
                       M.call_closure (|
                         M.get_associated_function (|

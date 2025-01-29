@@ -32,13 +32,27 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "ByRefSized" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "ByRefSized" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::by_ref_sized::ByRefSized",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -84,11 +98,16 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -118,11 +137,16 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -158,11 +182,16 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| n |)
@@ -194,11 +223,16 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| n |)
@@ -242,11 +276,16 @@ Module iter.
                         ]
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            self,
-                            "core::iter::adapters::by_ref_sized::ByRefSized",
-                            0
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                self,
+                                "core::iter::adapters::by_ref_sized::ByRefSized",
+                                0
+                              |)
+                            |)
                           |)
                         |);
                         M.read (| init |);
@@ -297,11 +336,16 @@ Module iter.
                   [ B; F; R ]
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| init |);
@@ -355,11 +399,16 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -395,11 +444,16 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| n |)
@@ -431,11 +485,16 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| n |)
@@ -479,11 +538,16 @@ Module iter.
                         ]
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            self,
-                            "core::iter::adapters::by_ref_sized::ByRefSized",
-                            0
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                self,
+                                "core::iter::adapters::by_ref_sized::ByRefSized",
+                                0
+                              |)
+                            |)
                           |)
                         |);
                         M.read (| init |);
@@ -534,11 +598,16 @@ Module iter.
                   [ B; F; R ]
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| init |);

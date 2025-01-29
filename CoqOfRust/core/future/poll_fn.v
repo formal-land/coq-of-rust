@@ -67,15 +67,24 @@ Module future.
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Formatter",
-                      "debug_struct",
-                      [],
-                      []
-                    |),
-                    [ M.read (| f |); M.read (| Value.String "PollFn" |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_struct",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "PollFn" |) |)
+                        |)
+                      ]
+                    |)
                   |)
                 |)
               ]
@@ -124,28 +133,38 @@ Module future.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::pin::Pin")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "core::future::poll_fn::PollFn") [] [ F ] ]
-                        ],
-                      "get_unchecked_mut",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |),
-                  "core::future::poll_fn::PollFn",
-                  "f"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::pin::Pin")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "core::future::poll_fn::PollFn") [] [ F ] ]
+                                ],
+                              "get_unchecked_mut",
+                              [],
+                              []
+                            |),
+                            [ M.read (| self |) ]
+                          |)
+                        |),
+                        "core::future::poll_fn::PollFn",
+                        "f"
+                      |)
+                    |)
+                  |)
                 |);
-                Value.Tuple [ M.read (| cx |) ]
+                Value.Tuple [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

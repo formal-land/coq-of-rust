@@ -49,20 +49,25 @@ Module array.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::DerefMut",
-                            Ty.apply
-                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                              []
-                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                            [],
-                            [],
-                            "deref_mut",
-                            [],
-                            []
-                          |),
-                          [ array ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::DerefMut",
+                                Ty.apply
+                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                                [],
+                                [],
+                                "deref_mut",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, array |) ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -119,20 +124,28 @@ Module array.
                 [ Ty.apply (Ty.path "slice") [] [ T ] ]
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                    "as_mut_slice",
-                    [],
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::array::drain::Drain",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutPointer,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                        "as_mut_slice",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::array::drain::Drain",
+                            0
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -199,10 +212,13 @@ Module array.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.read (| self |),
-                                    "core::array::drain::Drain",
-                                    0
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::array::drain::Drain",
+                                      0
+                                    |)
                                   |)
                                 ]
                               |)
@@ -253,7 +269,12 @@ Module array.
                                   0
                                 |) in
                               let val := M.copy (| γ0_0 |) in
-                              M.alloc (| M.read (| val |) |)))
+                              M.alloc (|
+                                M.borrow (|
+                                  Pointer.Kind.ConstPointer,
+                                  M.deref (| M.read (| val |) |)
+                                |)
+                              |)))
                         ]
                       |)
                     |) in
@@ -302,7 +323,7 @@ Module array.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -355,10 +376,13 @@ Module array.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::array::drain::Drain",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::array::drain::Drain",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -412,23 +436,31 @@ Module array.
             M.read (|
               let~ p :=
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::iter::traits::unchecked_iterator::UncheckedIterator",
-                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                      [],
-                      [],
-                      "next_unchecked",
-                      [],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::array::drain::Drain",
-                        0
+                  M.borrow (|
+                    Pointer.Kind.ConstPointer,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                          Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                          [],
+                          [],
+                          "next_unchecked",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::array::drain::Drain",
+                              0
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 |) in
               M.alloc (|

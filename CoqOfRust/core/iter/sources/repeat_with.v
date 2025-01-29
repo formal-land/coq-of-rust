@@ -62,10 +62,18 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::repeat_with::RepeatWith",
-                          "repeater"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::sources::repeat_with::RepeatWith",
+                                "repeater"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -106,15 +114,24 @@ Module iter.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_struct",
-                        [],
-                        []
-                      |),
-                      [ M.read (| f |); M.read (| Value.String "RepeatWith" |) ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "debug_struct",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RepeatWith" |) |)
+                          |)
+                        ]
+                      |)
                     |)
                   |)
                 ]
@@ -163,10 +180,13 @@ Module iter.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::sources::repeat_with::RepeatWith",
-                        "repeater"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::sources::repeat_with::RepeatWith",
+                          "repeater"
+                        |)
                       |);
                       Value.Tuple []
                     ]
@@ -247,10 +267,13 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::repeat_with::RepeatWith",
-                                    "repeater"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::sources::repeat_with::RepeatWith",
+                                      "repeater"
+                                    |)
                                   |);
                                   Value.Tuple []
                                 ]
@@ -284,7 +307,7 @@ Module iter.
                                             []
                                           |),
                                           [
-                                            fold;
+                                            M.borrow (| Pointer.Kind.MutRef, fold |);
                                             Value.Tuple [ M.read (| init |); M.read (| item |) ]
                                           ]
                                         |)

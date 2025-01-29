@@ -73,10 +73,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "Greater than 9, quit!
-" |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (|
+                                                        Value.String "Greater than 9, quit!
+"
+                                                      |)
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -106,27 +118,50 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "`i` is `" |);
-                                                M.read (| Value.String "`. Try again.
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "`i` is `" |);
+                                                      M.read (| Value.String "`. Try again.
 " |)
-                                              ]
-                                          |);
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_debug",
-                                                    [],
-                                                    [ Ty.path "i32" ]
-                                                  |),
-                                                  [ i ]
+                                                    ]
                                                 |)
-                                              ]
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [],
+                                                          [ Ty.path "i32" ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (| Pointer.Kind.Ref, i |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)

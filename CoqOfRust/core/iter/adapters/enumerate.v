@@ -30,10 +30,18 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::enumerate::Enumerate",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::enumerate::Enumerate",
+                                "iter"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -49,10 +57,18 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::enumerate::Enumerate",
-                          "count"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::enumerate::Enumerate",
+                                "count"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -89,20 +105,42 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Enumerate" |);
-                  M.read (| Value.String "iter" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::enumerate::Enumerate",
-                    "iter"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "Enumerate" |) |)
                   |);
-                  M.read (| Value.String "count" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::enumerate::Enumerate",
-                      "count"
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::enumerate::Enumerate",
+                          "iter"
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "count" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::enumerate::Enumerate",
+                              "count"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -195,10 +233,13 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::enumerate::Enumerate",
-                                      "iter"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::enumerate::Enumerate",
+                                        "iter"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -259,7 +300,7 @@ Module iter.
                     let~ i :=
                       M.copy (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |)
@@ -267,7 +308,7 @@ Module iter.
                     let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |) in
@@ -307,10 +348,13 @@ Module iter.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::enumerate::Enumerate",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::enumerate::Enumerate",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -361,10 +405,13 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::enumerate::Enumerate",
-                                      "iter"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::enumerate::Enumerate",
+                                        "iter"
+                                      |)
                                     |);
                                     M.read (| n |)
                                   ]
@@ -428,7 +475,7 @@ Module iter.
                         BinOp.Wrap.add (|
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::enumerate::Enumerate",
                               "count"
                             |)
@@ -439,7 +486,7 @@ Module iter.
                     let~ _ :=
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |),
@@ -531,19 +578,30 @@ Module iter.
                   [ Acc; Ty.associated; R ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::enumerate::Enumerate",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::enumerate::Enumerate",
+                      "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.call_closure (|
                     M.get_associated_function (| Self, "enumerate.try_fold", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::enumerate::Enumerate",
-                        "count"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::enumerate::Enumerate",
+                              "count"
+                            |)
+                          |)
+                        |)
                       |);
                       M.read (| fold |)
                     ]
@@ -656,10 +714,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::enumerate::Enumerate",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::enumerate::Enumerate",
+                            "iter"
+                          |)
                         |);
                         M.read (| n |)
                       ]
@@ -711,7 +772,7 @@ Module iter.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::iter::adapters::enumerate::Enumerate",
                       "count"
                     |) in
@@ -754,10 +815,18 @@ Module iter.
                         [ I ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::enumerate::Enumerate",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::enumerate::Enumerate",
+                                "iter"
+                              |)
+                            |)
+                          |)
                         |);
                         M.read (| idx |)
                       ]
@@ -769,7 +838,7 @@ Module iter.
                       BinOp.Wrap.add (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::iter::adapters::enumerate::Enumerate",
                             "count"
                           |)
@@ -851,10 +920,13 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::enumerate::Enumerate",
-                                      "iter"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::enumerate::Enumerate",
+                                        "iter"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -925,10 +997,13 @@ Module iter.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::enumerate::Enumerate",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::enumerate::Enumerate",
+                                "iter"
+                              |)
                             |)
                           ]
                         |)
@@ -942,7 +1017,7 @@ Module iter.
                               BinOp.Wrap.add (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::enumerate::Enumerate",
                                     "count"
                                   |)
@@ -1003,10 +1078,13 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::enumerate::Enumerate",
-                                      "iter"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::enumerate::Enumerate",
+                                        "iter"
+                                      |)
                                     |);
                                     M.read (| n |)
                                   ]
@@ -1078,10 +1156,13 @@ Module iter.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::enumerate::Enumerate",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::enumerate::Enumerate",
+                                "iter"
+                              |)
                             |)
                           ]
                         |)
@@ -1095,7 +1176,7 @@ Module iter.
                               BinOp.Wrap.add (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::enumerate::Enumerate",
                                     "count"
                                   |)
@@ -1148,7 +1229,7 @@ Module iter.
                     BinOp.Wrap.add (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |)
@@ -1164,10 +1245,13 @@ Module iter.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::enumerate::Enumerate",
-                            "iter"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::enumerate::Enumerate",
+                              "iter"
+                            |)
                           |)
                         ]
                       |)
@@ -1185,10 +1269,13 @@ Module iter.
                       [ Acc; Ty.associated; R ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::enumerate::Enumerate",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::enumerate::Enumerate",
+                          "iter"
+                        |)
                       |);
                       M.read (| init |);
                       M.call_closure (|
@@ -1253,10 +1340,13 @@ Module iter.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "core::iter::adapters::enumerate::Enumerate",
-                            "iter"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::enumerate::Enumerate",
+                              "iter"
+                            |)
                           |)
                         ]
                       |)
@@ -1323,10 +1413,13 @@ Module iter.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::enumerate::Enumerate",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::enumerate::Enumerate",
+                      "iter"
+                    |)
                   |);
                   M.read (| n |)
                 ]
@@ -1376,10 +1469,13 @@ Module iter.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::enumerate::Enumerate",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::enumerate::Enumerate",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -1408,10 +1504,13 @@ Module iter.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::enumerate::Enumerate",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::enumerate::Enumerate",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -1525,23 +1624,46 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::iter::adapters::SourceIter",
-                  I,
-                  [],
-                  [],
-                  "as_inner",
-                  [],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::enumerate::Enumerate",
-                    "iter"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::adapters::SourceIter",
+                              I,
+                              [],
+                              [],
+                              "as_inner",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::enumerate::Enumerate",
+                                      "iter"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

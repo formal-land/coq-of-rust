@@ -45,38 +45,96 @@ Module ffi.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "VaListImpl" |);
-                M.read (| Value.String "gp_offset" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ffi::va_list::VaListImpl",
-                  "gp_offset"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "VaListImpl" |) |)
                 |);
-                M.read (| Value.String "fp_offset" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ffi::va_list::VaListImpl",
-                  "fp_offset"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "gp_offset" |) |)
                 |);
-                M.read (| Value.String "overflow_arg_area" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ffi::va_list::VaListImpl",
-                  "overflow_arg_area"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ffi::va_list::VaListImpl",
+                        "gp_offset"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "reg_save_area" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ffi::va_list::VaListImpl",
-                  "reg_save_area"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "fp_offset" |) |)
                 |);
-                M.read (| Value.String "_marker" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ffi::va_list::VaListImpl",
-                    "_marker"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ffi::va_list::VaListImpl",
+                        "fp_offset"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "overflow_arg_area" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ffi::va_list::VaListImpl",
+                        "overflow_arg_area"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "reg_save_area" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ffi::va_list::VaListImpl",
+                        "reg_save_area"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ffi::va_list::VaListImpl",
+                            "_marker"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -126,20 +184,39 @@ Module ffi.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "VaList" |);
-                M.read (| Value.String "inner" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ffi::va_list::VaList",
-                  "inner"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "VaList" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ffi::va_list::VaList",
+                        "inner"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "_marker" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ffi::va_list::VaList",
-                    "_marker"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ffi::va_list::VaList",
+                            "_marker"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -171,7 +248,7 @@ Module ffi.
             Value.StructRecord
               "core::ffi::va_list::VaList"
               [
-                ("inner", M.read (| self |));
+                ("inner", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
                 ("_marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -191,7 +268,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::ffi::va_list::va_arg", [], [ T ] |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -231,7 +308,7 @@ Module ffi.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ ret :=
@@ -257,7 +334,7 @@ Module ffi.
                               [],
                               []
                             |),
-                            [ ap ]
+                            [ M.borrow (| Pointer.Kind.MutRef, ap |) ]
                           |)
                         ]
                     ]
@@ -268,7 +345,12 @@ Module ffi.
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::ffi::va_list::va_end", [], [] |),
-                      [ ap ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, ap |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
@@ -296,11 +378,21 @@ Module ffi.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::ffi::va_list::VaList",
-                "inner"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.read (|
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ffi::va_list::VaList",
+                        "inner"
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -328,11 +420,26 @@ Module ffi.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::ffi::va_list::VaList",
-                "inner"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.read (|
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ffi::va_list::VaList",
+                            "inner"
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -546,9 +653,9 @@ Module ffi.
                           [],
                           []
                         |),
-                        [ dest ]
+                        [ M.borrow (| Pointer.Kind.MutRef, dest |) ]
                       |);
-                      M.read (| self |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
                     ]
                   |)
                 |) in

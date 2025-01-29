@@ -27,16 +27,24 @@ Module deserializer.
               []
             |),
             [
-              M.read (| binary |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "move_binary_format::binary_config::BinaryConfig",
-                    "with_extraneous_bytes_check",
-                    [],
-                    []
-                  |),
-                  [ Value.Bool false ]
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "move_binary_format::binary_config::BinaryConfig",
+                          "with_extraneous_bytes_check",
+                          [],
+                          []
+                        |),
+                        [ Value.Bool false ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -93,7 +101,13 @@ Module deserializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| binary_config |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| binary_config |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |)
@@ -180,7 +194,12 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ module ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, module |) |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -271,16 +290,24 @@ Module deserializer.
               []
             |),
             [
-              M.read (| binary |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "move_binary_format::binary_config::BinaryConfig",
-                    "with_extraneous_bytes_check",
-                    [],
-                    []
-                  |),
-                  [ Value.Bool false ]
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "move_binary_format::binary_config::BinaryConfig",
+                          "with_extraneous_bytes_check",
+                          [],
+                          []
+                        |),
+                        [ Value.Bool false ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -329,10 +356,18 @@ Module deserializer.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::deserializer::Table",
-                      "kind"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::deserializer::Table",
+                            "kind"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -348,10 +383,18 @@ Module deserializer.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::deserializer::Table",
-                      "offset"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::deserializer::Table",
+                            "offset"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -367,10 +410,18 @@ Module deserializer.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::deserializer::Table",
-                      "count"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -404,26 +455,53 @@ Module deserializer.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Table" |);
-              M.read (| Value.String "kind" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::deserializer::Table",
-                "kind"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Table" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::deserializer::Table",
+                      "kind"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "offset" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::deserializer::Table",
-                "offset"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "offset" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::deserializer::Table",
+                      "offset"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "count" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::deserializer::Table",
-                  "count"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "count" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::deserializer::Table",
+                          "count"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -535,7 +613,16 @@ Module deserializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| cursor |); u16_bytes ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| cursor |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, u16_bytes |) |)
+                                |)
+                              ]
                             |);
                             M.closure
                               (fun γ =>
@@ -709,7 +796,16 @@ Module deserializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| cursor |); u32_bytes ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| cursor |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, u32_bytes |) |)
+                                |)
+                              ]
                             |);
                             M.closure
                               (fun γ =>
@@ -883,7 +979,16 @@ Module deserializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| cursor |); u64_bytes ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| cursor |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, u64_bytes |) |)
+                                |)
+                              ]
                             |);
                             M.closure
                               (fun γ =>
@@ -1057,7 +1162,16 @@ Module deserializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| cursor |); u128_bytes ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| cursor |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, u128_bytes |) |)
+                                |)
+                              ]
                             |);
                             M.closure
                               (fun γ =>
@@ -1233,7 +1347,16 @@ Module deserializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| cursor |); u256_bytes ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| cursor |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, u256_bytes |) |)
+                                |)
+                              ]
                             |);
                             M.closure
                               (fun γ =>
@@ -1336,7 +1459,12 @@ Module deserializer.
                         [],
                         []
                       |),
-                      [ u256_bytes ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, u256_bytes |) |)
+                        |)
+                      ]
                     |)
                   ]
               |)
@@ -1418,7 +1546,12 @@ Module deserializer.
                                   [],
                                   []
                                 |),
-                                [ M.read (| cursor |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |)
+                                ]
                               |);
                               M.closure
                                 (fun γ =>
@@ -1464,7 +1597,14 @@ Module deserializer.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| Value.String "Bad Uleb" |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (| Value.String "Bad Uleb" |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)))
@@ -1580,8 +1720,13 @@ Module deserializer.
                                             []
                                           |),
                                           [
-                                            M.read (|
-                                              Value.String "Uleb greater than max requested"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  Value.String "Uleb greater than max requested"
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -1646,9 +1791,14 @@ Module deserializer.
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "Failed to convert u64 to target integer type. This should not happen. Is the maximum value correct?"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      Value.String
+                                                        "Failed to convert u64 to target integer type. This should not happen. Is the maximum value correct?"
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -1744,7 +1894,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::SIGNATURE_INDEX_MAX"
@@ -1870,7 +2023,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::MODULE_HANDLE_INDEX_MAX"
@@ -1998,7 +2154,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::IDENTIFIER_INDEX_MAX"
@@ -2124,7 +2283,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::STRUCT_HANDLE_INDEX_MAX"
@@ -2258,7 +2420,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::ADDRESS_INDEX_MAX"
@@ -2388,7 +2553,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::STRUCT_DEF_INDEX_MAX"
@@ -2516,7 +2684,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::FUNCTION_HANDLE_INDEX_MAX"
@@ -2644,7 +2815,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::FIELD_HANDLE_INDEX_MAX"
@@ -2774,7 +2948,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::FIELD_INST_INDEX_MAX"
@@ -2902,7 +3079,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::FUNCTION_INST_INDEX_MAX"
@@ -3032,7 +3212,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::STRUCT_DEF_INST_INDEX_MAX"
@@ -3160,7 +3343,10 @@ Module deserializer.
                                   [ Ty.path "u16" ]
                                 |),
                                 [
-                                  M.read (| cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
                                   M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::CONSTANT_INDEX_MAX"
@@ -3257,7 +3443,7 @@ Module deserializer.
             [ Ty.path "usize" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::BYTECODE_COUNT_MAX" |)
             |)
@@ -3286,7 +3472,7 @@ Module deserializer.
             [ Ty.path "u16" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::BYTECODE_INDEX_MAX" |)
             |)
@@ -3315,7 +3501,7 @@ Module deserializer.
             [ Ty.path "u64" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX" |)
             |)
@@ -3344,7 +3530,7 @@ Module deserializer.
             [ Ty.path "u64" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::FIELD_COUNT_MAX" |)
             |)
@@ -3373,7 +3559,7 @@ Module deserializer.
             [ Ty.path "usize" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (|
                 "move_binary_format::file_format_common::TYPE_PARAMETER_COUNT_MAX"
@@ -3406,7 +3592,7 @@ Module deserializer.
             [ Ty.path "u64" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX" |)
             |)
@@ -3435,7 +3621,7 @@ Module deserializer.
             [ Ty.path "usize" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::CONSTANT_SIZE_MAX" |)
             |)
@@ -3464,7 +3650,7 @@ Module deserializer.
             [ Ty.path "usize" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX" |)
             |)
@@ -3493,7 +3679,7 @@ Module deserializer.
             [ Ty.path "usize" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX" |)
             |)
@@ -3524,7 +3710,7 @@ Module deserializer.
             [ Ty.path "usize" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX" |)
             |)
@@ -3553,7 +3739,7 @@ Module deserializer.
             [ Ty.path "u16" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (|
                 "move_binary_format::file_format_common::TYPE_PARAMETER_INDEX_MAX"
@@ -3586,7 +3772,7 @@ Module deserializer.
             [ Ty.path "u16" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::FIELD_OFFSET_MAX" |)
             |)
@@ -3615,7 +3801,7 @@ Module deserializer.
             [ Ty.path "u8" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::TABLE_COUNT_MAX" |)
             |)
@@ -3644,7 +3830,7 @@ Module deserializer.
             [ Ty.path "u32" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::TABLE_OFFSET_MAX" |)
             |)
@@ -3673,7 +3859,7 @@ Module deserializer.
             [ Ty.path "u32" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::TABLE_SIZE_MAX" |)
             |)
@@ -3702,7 +3888,7 @@ Module deserializer.
             [ Ty.path "u8" ]
           |),
           [
-            M.read (| cursor |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::LOCAL_INDEX_MAX" |)
             |)
@@ -3779,7 +3965,14 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| binary |); M.read (| binary_config |); Value.Bool true ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| binary_config |) |)
+                              |);
+                              Value.Bool true
+                            ]
                           |)
                         ]
                       |)
@@ -3850,7 +4043,7 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ versioned_binary ]
+                    [ M.borrow (| Pointer.Kind.Ref, versioned_binary |) ]
                   |)
                 |) in
               let~ self_module_handle_idx :=
@@ -3862,7 +4055,7 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ versioned_binary ]
+                    [ M.borrow (| Pointer.Kind.Ref, versioned_binary |) ]
                   |)
                 |) in
               let~ module :=
@@ -3909,31 +4102,50 @@ Module deserializer.
                             []
                           |),
                           [
-                            module;
-                            versioned_binary;
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, module |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, versioned_binary |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::deserializer::Table";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
                                   [
-                                    Ty.path "move_binary_format::deserializer::Table";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  versioned_binary,
-                                  "move_binary_format::deserializer::VersionedBinary",
-                                  "tables"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            versioned_binary,
+                                            "move_binary_format::deserializer::VersionedBinary",
+                                            "tables"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |)
                             |)
                           ]
                         |)
@@ -4005,7 +4217,7 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ versioned_binary ]
+                    [ M.borrow (| Pointer.Kind.Ref, versioned_binary |) ]
                   |)
                 |) in
               let~ had_remaining_bytes :=
@@ -4019,7 +4231,7 @@ Module deserializer.
                         [],
                         []
                       |),
-                      [ M.read (| binary |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |) ]
                     |)
                   |)
                 |) in
@@ -4035,7 +4247,7 @@ Module deserializer.
                               LogicalOp.and (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| binary_config |),
+                                    M.deref (| M.read (| binary_config |) |),
                                     "move_binary_format::binary_config::BinaryConfig",
                                     "check_no_extraneous_bytes"
                                   |)
@@ -4152,7 +4364,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -4189,7 +4406,10 @@ Module deserializer.
                                                 []
                                               |),
                                               [
-                                                M.read (| tables |);
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| tables |) |)
+                                                |);
                                                 M.read (|
                                                   M.match_operator (|
                                                     M.alloc (|
@@ -4218,7 +4438,12 @@ Module deserializer.
                                                               [],
                                                               []
                                                             |),
-                                                            [ M.read (| cursor |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (| M.read (| cursor |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -4337,7 +4562,7 @@ Module deserializer.
                           [],
                           []
                         |),
-                        [ M.read (| cursor |) ]
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |) ]
                       |)
                     |),
                     [
@@ -4397,7 +4622,14 @@ Module deserializer.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| Value.String "Error reading table" |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (| Value.String "Error reading table" |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -4433,7 +4665,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -4519,7 +4752,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -4764,23 +4998,29 @@ Module deserializer.
                       ]
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [
-                              Ty.path "move_binary_format::deserializer::Table";
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          [],
-                          [],
-                          "deref_mut",
-                          [],
-                          []
-                        |),
-                        [ M.read (| tables |) ]
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::deserializer::Table";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              [],
+                              "deref_mut",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| tables |) |) |)
+                            ]
+                          |)
+                        |)
                       |);
                       M.closure
                         (fun γ =>
@@ -4811,15 +5051,26 @@ Module deserializer.
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| t1 |),
-                                                      "move_binary_format::deserializer::Table",
-                                                      "offset"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| t1 |) |),
+                                                        "move_binary_format::deserializer::Table",
+                                                        "offset"
+                                                      |)
                                                     |);
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| t2 |),
-                                                      "move_binary_format::deserializer::Table",
-                                                      "offset"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| t2 |) |),
+                                                            "move_binary_format::deserializer::Table",
+                                                            "offset"
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)))
@@ -4901,7 +5152,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -4933,7 +5189,7 @@ Module deserializer.
                                                         BinOp.ne (|
                                                           M.read (|
                                                             M.SubPointer.get_struct_record_field (|
-                                                              M.read (| table |),
+                                                              M.deref (| M.read (| table |) |),
                                                               "move_binary_format::deserializer::Table",
                                                               "offset"
                                                             |)
@@ -4988,7 +5244,7 @@ Module deserializer.
                                                         BinOp.eq (|
                                                           M.read (|
                                                             M.SubPointer.get_struct_record_field (|
-                                                              M.read (| table |),
+                                                              M.deref (| M.read (| table |) |),
                                                               "move_binary_format::deserializer::Table",
                                                               "count"
                                                             |)
@@ -5045,7 +5301,7 @@ Module deserializer.
                                                   M.read (| current_offset |);
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| table |),
+                                                      M.deref (| M.read (| table |) |),
                                                       "move_binary_format::deserializer::Table",
                                                       "count"
                                                     |)
@@ -5129,10 +5385,13 @@ Module deserializer.
                                                               []
                                                             |),
                                                             [
-                                                              table_types;
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                table_types
+                                                              |);
                                                               M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| table |),
+                                                                  M.deref (| M.read (| table |) |),
                                                                   "move_binary_format::deserializer::Table",
                                                                   "kind"
                                                                 |)
@@ -5256,10 +5515,23 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_binary_format::file_format::CompiledModule",
-            "module_handles"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::file_format::CompiledModule",
+                      "module_handles"
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5274,10 +5546,23 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_binary_format::file_format::CompiledModule",
-            "struct_handles"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::file_format::CompiledModule",
+                      "struct_handles"
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5292,10 +5577,23 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_binary_format::file_format::CompiledModule",
-            "function_handles"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::file_format::CompiledModule",
+                      "function_handles"
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5314,10 +5612,23 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_binary_format::file_format::CompiledModule",
-            "function_instantiations"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::file_format::CompiledModule",
+                      "function_instantiations"
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5332,10 +5643,23 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_binary_format::file_format::CompiledModule",
-            "signatures"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::file_format::CompiledModule",
+                      "signatures"
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5350,10 +5674,23 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_binary_format::file_format::CompiledModule",
-            "identifiers"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::file_format::CompiledModule",
+                      "identifiers"
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5368,10 +5705,23 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_binary_format::file_format::CompiledModule",
-            "address_identifiers"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::file_format::CompiledModule",
+                      "address_identifiers"
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5386,10 +5736,23 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_binary_format::file_format::CompiledModule",
-            "constant_pool"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::file_format::CompiledModule",
+                      "constant_pool"
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5404,10 +5767,23 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_binary_format::file_format::CompiledModule",
-            "metadata"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::file_format::CompiledModule",
+                      "metadata"
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5475,7 +5851,11 @@ Module deserializer.
                             [],
                             [ Ty.path "move_binary_format::file_format::CompiledModule" ]
                           |),
-                          [ M.read (| binary |); M.read (| tables |); M.read (| module |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| tables |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| module |) |) |)
+                          ]
                         |)
                       ]
                     |)
@@ -5559,7 +5939,11 @@ Module deserializer.
                             [],
                             []
                           |),
-                          [ M.read (| binary |); M.read (| tables |); M.read (| module |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| tables |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| module |) |) |)
+                          ]
                         |)
                       ]
                     |)
@@ -5753,16 +6137,21 @@ Module deserializer.
             (M.read (|
               M.match_operator (|
                 M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| binary |),
-                        "move_binary_format::deserializer::VersionedBinary",
-                        "binary_config"
-                      |)
-                    |),
-                    "move_binary_format::binary_config::BinaryConfig",
-                    "table_config"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| binary |) |),
+                            "move_binary_format::deserializer::VersionedBinary",
+                            "binary_config"
+                          |)
+                        |)
+                      |),
+                      "move_binary_format::binary_config::BinaryConfig",
+                      "table_config"
+                    |)
                   |)
                 |),
                 [
@@ -5911,7 +6300,14 @@ Module deserializer.
                                                 [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -5936,7 +6332,7 @@ Module deserializer.
                                                 let table := M.copy (| γ0_0 |) in
                                                 M.match_operator (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| table |),
+                                                    M.deref (| M.read (| table |) |),
                                                     "move_binary_format::deserializer::Table",
                                                     "kind"
                                                   |),
@@ -5960,7 +6356,12 @@ Module deserializer.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| common |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| common |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -5991,9 +6392,26 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.read (| module_handles |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            module_handles
+                                                                          |)
+                                                                        |)
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -6089,15 +6507,22 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                module_handles
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    module_handles
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                module_handles_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  module_handles_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -6166,103 +6591,152 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::ModuleHandle";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      module_handles
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::ModuleHandle";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.read (|
+                                                                                                                                      module_handles
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              module_handles_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                module_handles_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -6305,7 +6779,12 @@ Module deserializer.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| common |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| common |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -6336,9 +6815,26 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.read (| struct_handles |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            struct_handles
+                                                                          |)
+                                                                        |)
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -6434,15 +6930,22 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                struct_handles
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    struct_handles
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                struct_handles_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  struct_handles_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -6511,103 +7014,152 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::StructHandle";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      struct_handles
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::StructHandle";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.read (|
+                                                                                                                                      struct_handles
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              struct_handles_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                struct_handles_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -6650,7 +7202,12 @@ Module deserializer.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| common |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| common |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -6681,9 +7238,26 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.read (| function_handles |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            function_handles
+                                                                          |)
+                                                                        |)
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -6779,15 +7353,22 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                function_handles
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    function_handles
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                function_handles_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  function_handles_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -6856,103 +7437,152 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::FunctionHandle";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      function_handles
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::FunctionHandle";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.read (|
+                                                                                                                                      function_handles
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              function_handles_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                function_handles_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -6995,7 +7625,12 @@ Module deserializer.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| common |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| common |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -7026,10 +7661,25 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.read (|
-                                                                        function_instantiations
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            function_instantiations
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -7126,15 +7776,22 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                function_instantiations
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    function_instantiations
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                function_instantiations_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  function_instantiations_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -7203,103 +7860,152 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::FunctionInstantiation";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      function_instantiations
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::FunctionInstantiation";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.read (|
+                                                                                                                                      function_instantiations
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              function_instantiations_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                function_instantiations_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -7342,7 +8048,12 @@ Module deserializer.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| common |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| common |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -7373,9 +8084,24 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.read (| signatures |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.read (| signatures |)
+                                                                        |)
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -7471,15 +8197,22 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                signatures
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    signatures
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                signatures_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  signatures_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -7548,103 +8281,152 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::Signature";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      signatures
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::Signature";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.read (|
+                                                                                                                                      signatures
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              signatures_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                signatures_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -7687,7 +8469,12 @@ Module deserializer.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| common |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| common |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -7718,9 +8505,24 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.read (| constant_pool |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.read (| constant_pool |)
+                                                                        |)
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -7816,15 +8618,22 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                constant_pool
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    constant_pool
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                constant_pool_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  constant_pool_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -7893,103 +8702,152 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::Constant";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      constant_pool
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::Constant";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.read (|
+                                                                                                                                      constant_pool
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              constant_pool_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                constant_pool_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -8038,7 +8896,16 @@ Module deserializer.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| binary |) ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    binary
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |),
                                                                           ltac:(M.monadic
                                                                             (BinOp.lt (|
@@ -8051,8 +8918,13 @@ Module deserializer.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    binary
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        binary
+                                                                                      |)
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |),
@@ -8128,49 +9000,78 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "metadata declarations not applicable in bytecode version "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "u32"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "metadata declarations not applicable in bytecode version "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
                                                                                                                     Ty.path
-                                                                                                                      "move_binary_format::deserializer::VersionedBinary",
-                                                                                                                    "version",
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u32"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      binary
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.path
+                                                                                                                                  "move_binary_format::deserializer::VersionedBinary",
+                                                                                                                                "version",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.read (|
+                                                                                                                                      binary
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
+                                                                                                              ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -8221,19 +9122,43 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "move_binary_format::deserializer::CommonTables",
-                                                                          impl_CommonTables,
-                                                                          [],
-                                                                          [],
-                                                                          "get_metadata",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| common |) ]
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "move_binary_format::deserializer::CommonTables",
+                                                                              impl_CommonTables,
+                                                                              [],
+                                                                              [],
+                                                                              "get_metadata",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    common
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -8323,7 +9248,12 @@ Module deserializer.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| common |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| common |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -8354,9 +9284,24 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.read (| identifiers |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.read (| identifiers |)
+                                                                        |)
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -8452,15 +9397,22 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                identifiers
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    identifiers
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                identifiers_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  identifiers_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -8529,103 +9481,152 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_core_types::identifier::Identifier";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      identifiers
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_core_types::identifier::Identifier";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.read (|
+                                                                                                                                      identifiers
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              identifiers_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                identifiers_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -8668,7 +9669,12 @@ Module deserializer.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| common |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| common |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |) in
                                                         let~ _ :=
@@ -8699,10 +9705,25 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.read (|
-                                                                        address_identifiers
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            address_identifiers
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -8799,15 +9820,22 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                address_identifiers
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    address_identifiers
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                address_identifiers_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  address_identifiers_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -8876,103 +9904,152 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_core_types::account_address::AccountAddress";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      address_identifiers
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_core_types::account_address::AccountAddress";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.read (|
+                                                                                                                                      address_identifiers
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              address_identifiers_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                address_identifiers_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -9077,7 +10154,14 @@ Module deserializer.
                                                                             [],
                                                                             []
                                                                           |),
-                                                                          [ M.read (| binary |) ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (| binary |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |),
                                                                         M.read (|
                                                                           M.get_constant (|
@@ -9132,9 +10216,14 @@ Module deserializer.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "Friend declarations not applicable in bytecode version 1"
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "Friend declarations not applicable in bytecode version 1"
+                                                                                        |)
+                                                                                      |)
                                                                                     |)
                                                                                   ]
                                                                                 |)
@@ -9266,16 +10355,21 @@ Module deserializer.
             (M.read (|
               M.match_operator (|
                 M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| binary |),
-                        "move_binary_format::deserializer::VersionedBinary",
-                        "binary_config"
-                      |)
-                    |),
-                    "move_binary_format::binary_config::BinaryConfig",
-                    "table_config"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| binary |) |),
+                            "move_binary_format::deserializer::VersionedBinary",
+                            "binary_config"
+                          |)
+                        |)
+                      |),
+                      "move_binary_format::binary_config::BinaryConfig",
+                      "table_config"
+                    |)
                   |)
                 |),
                 [
@@ -9422,7 +10516,14 @@ Module deserializer.
                                                 [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -9447,7 +10548,7 @@ Module deserializer.
                                                 let table := M.copy (| γ0_0 |) in
                                                 M.match_operator (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| table |),
+                                                    M.deref (| M.read (| table |) |),
                                                     "move_binary_format::deserializer::Table",
                                                     "kind"
                                                   |),
@@ -9487,12 +10588,32 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| module |),
-                                                                        "move_binary_format::file_format::CompiledModule",
-                                                                        "struct_defs"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| module |)
+                                                                              |),
+                                                                              "move_binary_format::file_format::CompiledModule",
+                                                                              "struct_defs"
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -9589,17 +10710,31 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| module |),
-                                                                                "move_binary_format::file_format::CompiledModule",
-                                                                                "struct_defs"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          module
+                                                                                        |)
+                                                                                      |),
+                                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                                      "struct_defs"
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                struct_defs_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  struct_defs_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -9668,107 +10803,161 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::StructDefinition";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                                                      M.read (|
-                                                                                                                        module
-                                                                                                                      |),
-                                                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                                                      "struct_defs"
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::StructDefinition";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.borrow (|
+                                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                                                                        M.deref (|
+                                                                                                                                          M.read (|
+                                                                                                                                            module
+                                                                                                                                          |)
+                                                                                                                                        |),
+                                                                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                                                                        "struct_defs"
+                                                                                                                                      |)
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              struct_defs_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                struct_defs_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -9827,12 +11016,32 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| module |),
-                                                                        "move_binary_format::file_format::CompiledModule",
-                                                                        "struct_def_instantiations"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| module |)
+                                                                              |),
+                                                                              "move_binary_format::file_format::CompiledModule",
+                                                                              "struct_def_instantiations"
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -9929,17 +11138,31 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| module |),
-                                                                                "move_binary_format::file_format::CompiledModule",
-                                                                                "struct_def_instantiations"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          module
+                                                                                        |)
+                                                                                      |),
+                                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                                      "struct_def_instantiations"
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                struct_def_instantiations_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  struct_def_instantiations_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -10008,107 +11231,161 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::StructDefInstantiation";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                                                      M.read (|
-                                                                                                                        module
-                                                                                                                      |),
-                                                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                                                      "struct_def_instantiations"
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::StructDefInstantiation";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.borrow (|
+                                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                                                                        M.deref (|
+                                                                                                                                          M.read (|
+                                                                                                                                            module
+                                                                                                                                          |)
+                                                                                                                                        |),
+                                                                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                                                                        "struct_def_instantiations"
+                                                                                                                                      |)
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              struct_def_instantiations_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                struct_def_instantiations_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -10167,12 +11444,32 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| module |),
-                                                                        "move_binary_format::file_format::CompiledModule",
-                                                                        "function_defs"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| module |)
+                                                                              |),
+                                                                              "move_binary_format::file_format::CompiledModule",
+                                                                              "function_defs"
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -10269,17 +11566,31 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| module |),
-                                                                                "move_binary_format::file_format::CompiledModule",
-                                                                                "function_defs"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          module
+                                                                                        |)
+                                                                                      |),
+                                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                                      "function_defs"
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                function_defs_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  function_defs_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -10348,107 +11659,161 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::FunctionDefinition";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                                                      M.read (|
-                                                                                                                        module
-                                                                                                                      |),
-                                                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                                                      "function_defs"
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::FunctionDefinition";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.borrow (|
+                                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                                                                        M.deref (|
+                                                                                                                                          M.read (|
+                                                                                                                                            module
+                                                                                                                                          |)
+                                                                                                                                        |),
+                                                                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                                                                        "function_defs"
+                                                                                                                                      |)
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              function_defs_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                function_defs_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -10507,12 +11872,32 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| module |),
-                                                                        "move_binary_format::file_format::CompiledModule",
-                                                                        "field_handles"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| module |)
+                                                                              |),
+                                                                              "move_binary_format::file_format::CompiledModule",
+                                                                              "field_handles"
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -10609,17 +11994,31 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| module |),
-                                                                                "move_binary_format::file_format::CompiledModule",
-                                                                                "field_handles"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          module
+                                                                                        |)
+                                                                                      |),
+                                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                                      "field_handles"
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                field_handles_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  field_handles_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -10688,107 +12087,161 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::FieldHandle";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                                                      M.read (|
-                                                                                                                        module
-                                                                                                                      |),
-                                                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                                                      "field_handles"
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::FieldHandle";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.borrow (|
+                                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                                                                        M.deref (|
+                                                                                                                                          M.read (|
+                                                                                                                                            module
+                                                                                                                                          |)
+                                                                                                                                        |),
+                                                                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                                                                        "field_handles"
+                                                                                                                                      |)
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              field_handles_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                field_handles_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -10847,12 +12300,32 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| module |),
-                                                                        "move_binary_format::file_format::CompiledModule",
-                                                                        "field_instantiations"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| module |)
+                                                                              |),
+                                                                              "move_binary_format::file_format::CompiledModule",
+                                                                              "field_instantiations"
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -10949,17 +12422,31 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| module |),
-                                                                                "move_binary_format::file_format::CompiledModule",
-                                                                                "field_instantiations"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          module
+                                                                                        |)
+                                                                                      |),
+                                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                                      "field_instantiations"
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                field_instantiations_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  field_instantiations_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -11028,107 +12515,161 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::FieldInstantiation";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                                                      M.read (|
-                                                                                                                        module
-                                                                                                                      |),
-                                                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                                                      "field_instantiations"
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::FieldInstantiation";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.borrow (|
+                                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                                                                        M.deref (|
+                                                                                                                                          M.read (|
+                                                                                                                                            module
+                                                                                                                                          |)
+                                                                                                                                        |),
+                                                                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                                                                        "field_instantiations"
+                                                                                                                                      |)
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              field_instantiations_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                field_instantiations_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -11187,12 +12728,32 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| binary |);
-                                                                      M.read (| table |);
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| module |),
-                                                                        "move_binary_format::file_format::CompiledModule",
-                                                                        "friend_decls"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| binary |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| table |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| module |)
+                                                                              |),
+                                                                              "move_binary_format::file_format::CompiledModule",
+                                                                              "friend_decls"
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -11289,17 +12850,31 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| module |),
-                                                                                "move_binary_format::file_format::CompiledModule",
-                                                                                "friend_decls"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          module
+                                                                                        |)
+                                                                                      |),
+                                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                                      "friend_decls"
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |),
                                                                           M.rust_cast
                                                                             (M.read (|
-                                                                              M.read (|
-                                                                                friend_decls_max
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  friend_decls_max
+                                                                                |)
                                                                               |)
                                                                             |))
                                                                         |)
@@ -11368,107 +12943,161 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "Exceeded size ("
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " > "
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              ")  in "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "usize"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "Exceeded size ("
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    " > "
+                                                                                                                |);
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    ")  in "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "alloc::vec::Vec")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "move_binary_format::file_format::ModuleHandle";
-                                                                                                                        Ty.path
-                                                                                                                          "alloc::alloc::Global"
-                                                                                                                      ],
-                                                                                                                    "len",
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                                                      M.read (|
-                                                                                                                        module
-                                                                                                                      |),
-                                                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                                                      "friend_decls"
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "alloc::vec::Vec")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "move_binary_format::file_format::ModuleHandle";
+                                                                                                                                    Ty.path
+                                                                                                                                      "alloc::alloc::Global"
+                                                                                                                                  ],
+                                                                                                                                "len",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.borrow (|
+                                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                                                                        M.deref (|
+                                                                                                                                          M.read (|
+                                                                                                                                            module
+                                                                                                                                          |)
+                                                                                                                                        |),
+                                                                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                                                                        "friend_decls"
+                                                                                                                                      |)
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u16"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.read (|
+                                                                                                                              friend_decls_max
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |);
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [],
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_binary_format::file_format_common::TableType"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                                            M.deref (|
+                                                                                                                              M.read (|
+                                                                                                                                table
+                                                                                                                              |)
+                                                                                                                            |),
+                                                                                                                            "move_binary_format::deserializer::Table",
+                                                                                                                            "kind"
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "u16"
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                friend_decls_max
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |);
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_debug",
-                                                                                                              [],
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "move_binary_format::file_format_common::TableType"
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                                M.read (|
-                                                                                                                  table
-                                                                                                                |),
-                                                                                                                "move_binary_format::deserializer::Table",
-                                                                                                                "kind"
-                                                                                                              |)
-                                                                                                            ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -11634,7 +13263,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -11647,7 +13276,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -11663,7 +13292,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -11685,12 +13318,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.rust_cast
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| table |),
+                                          M.deref (| M.read (| table |) |),
                                           "move_binary_format::deserializer::Table",
                                           "count"
                                         |)
@@ -11727,7 +13360,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -11819,7 +13459,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -11899,7 +13546,10 @@ Module deserializer.
                                     []
                                   |),
                                   [
-                                    M.read (| module_handles |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| module_handles |) |)
+                                    |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::ModuleHandle"
                                       [
@@ -11972,7 +13622,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -11985,7 +13635,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -12001,7 +13651,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -12023,12 +13677,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.rust_cast
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| table |),
+                                          M.deref (| M.read (| table |) |),
                                           "move_binary_format::deserializer::Table",
                                           "count"
                                         |)
@@ -12065,7 +13719,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -12157,7 +13818,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -12249,7 +13917,12 @@ Module deserializer.
                                             []
                                           |),
                                           [
-                                            cursor;
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |);
                                             Value.StructTuple
                                               "move_binary_format::deserializer::AbilitySetPosition::StructHandle"
                                               []
@@ -12351,7 +14024,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -12431,7 +14111,10 @@ Module deserializer.
                                     []
                                   |),
                                   [
-                                    M.read (| struct_handles |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| struct_handles |) |)
+                                    |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::StructHandle"
                                       [
@@ -12510,7 +14193,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -12523,7 +14206,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -12539,7 +14222,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -12561,12 +14248,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.rust_cast
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| table |),
+                                          M.deref (| M.read (| table |) |),
                                           "move_binary_format::deserializer::Table",
                                           "count"
                                         |)
@@ -12603,7 +14290,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -12695,7 +14389,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -12787,7 +14488,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -12879,7 +14587,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -12978,7 +14693,12 @@ Module deserializer.
                                             []
                                           |),
                                           [
-                                            cursor;
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |);
                                             Value.StructTuple
                                               "move_binary_format::deserializer::AbilitySetPosition::FunctionTypeParameters"
                                               []
@@ -13062,7 +14782,10 @@ Module deserializer.
                                     []
                                   |),
                                   [
-                                    M.read (| function_handles |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| function_handles |) |)
+                                    |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::FunctionHandle"
                                       [
@@ -13135,7 +14858,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -13148,7 +14871,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -13164,7 +14887,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -13186,12 +14913,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.rust_cast
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| table |),
+                                          M.deref (| M.read (| table |) |),
                                           "move_binary_format::deserializer::Table",
                                           "count"
                                         |)
@@ -13228,7 +14955,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -13320,7 +15054,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -13401,7 +15142,10 @@ Module deserializer.
                                     []
                                   |),
                                   [
-                                    M.read (| struct_insts |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| struct_insts |) |)
+                                    |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::StructDefInstantiation"
                                       [
@@ -13476,7 +15220,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -13489,7 +15233,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -13505,7 +15249,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -13527,12 +15275,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.rust_cast
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| table |),
+                                          M.deref (| M.read (| table |) |),
                                           "move_binary_format::deserializer::Table",
                                           "count"
                                         |)
@@ -13569,7 +15317,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -13661,7 +15416,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -13742,7 +15504,10 @@ Module deserializer.
                                     []
                                   |),
                                   [
-                                    M.read (| func_insts |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| func_insts |) |)
+                                    |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::FunctionInstantiation"
                                       [
@@ -13820,7 +15585,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -13833,7 +15598,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -13849,7 +15614,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -13871,7 +15640,7 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -13886,7 +15655,7 @@ Module deserializer.
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| table |),
+                                            M.deref (| M.read (| table |) |),
                                             "move_binary_format::deserializer::Table",
                                             "count"
                                           |)
@@ -13924,7 +15693,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -14018,21 +15794,34 @@ Module deserializer.
                                             []
                                           |),
                                           [
-                                            cursor;
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::deref::DerefMut",
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                                [],
-                                                [],
-                                                "deref_mut",
-                                                [],
-                                                []
-                                              |),
-                                              [ buffer ]
+                                            M.borrow (| Pointer.Kind.MutRef, cursor |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::DerefMut",
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
+                                                      ],
+                                                    [],
+                                                    [],
+                                                    "deref_mut",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, buffer |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -14104,9 +15893,14 @@ Module deserializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "Bad Identifier pool size"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "Bad Identifier pool size"
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -14220,9 +16014,14 @@ Module deserializer.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "Invalid Identifier"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      "Invalid Identifier"
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |)
@@ -14313,7 +16112,13 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| identifiers |); M.read (| s |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| identifiers |) |)
+                                            |);
+                                            M.read (| s |)
+                                          ]
                                         |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
@@ -14383,7 +16188,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -14403,7 +16208,7 @@ Module deserializer.
                                   M.rust_cast
                                     (M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| table |),
+                                        M.deref (| M.read (| table |) |),
                                         "move_binary_format::deserializer::Table",
                                         "count"
                                       |)
@@ -14456,8 +16261,13 @@ Module deserializer.
                                             []
                                           |),
                                           [
-                                            M.read (|
-                                              Value.String "Bad Address Identifier pool size"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  Value.String "Bad Address Identifier pool size"
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -14495,7 +16305,7 @@ Module deserializer.
                                   M.rust_cast
                                     (M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| table |),
+                                        M.deref (| M.read (| table |) |),
                                         "move_binary_format::deserializer::Table",
                                         "count"
                                       |)
@@ -14530,7 +16340,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -14581,19 +16396,27 @@ Module deserializer.
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_binary_format::deserializer::VersionedBinary",
-                                                    "slice",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| binary |);
-                                                    M.read (| start |);
-                                                    M.read (| end_addr |)
-                                                  ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::deserializer::VersionedBinary",
+                                                        "slice",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| binary |) |)
+                                                        |);
+                                                        M.read (| start |);
+                                                        M.read (| end_addr |)
+                                                      ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -14622,7 +16445,8 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ address ]
+                                                          [ M.borrow (| Pointer.Kind.Ref, address |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -14671,9 +16495,14 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "Invalid Address format"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "Invalid Address format"
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -14706,7 +16535,10 @@ Module deserializer.
                                                 []
                                               |),
                                               [
-                                                M.read (| addresses |);
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| addresses |) |)
+                                                |);
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.apply
@@ -14775,7 +16607,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -14788,7 +16620,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -14804,7 +16636,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -14826,7 +16662,7 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -14841,7 +16677,7 @@ Module deserializer.
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| table |),
+                                            M.deref (| M.read (| table |) |),
                                             "move_binary_format::deserializer::Table",
                                             "count"
                                           |)
@@ -14867,7 +16703,10 @@ Module deserializer.
                                   []
                                 |),
                                 [
-                                  M.read (| constants |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| constants |) |)
+                                  |);
                                   M.read (|
                                     M.match_operator (|
                                       M.alloc (|
@@ -14894,7 +16733,14 @@ Module deserializer.
                                                 [],
                                                 []
                                               |),
-                                              [ cursor ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -15026,7 +16872,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -15135,7 +16982,7 @@ Module deserializer.
                               ]
                             |),
                             [
-                              M.read (| cursor |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
                               M.get_function (|
                                 "move_binary_format::deserializer::load_constant_size",
                                 [],
@@ -15250,7 +17097,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -15263,7 +17110,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -15279,7 +17126,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -15301,7 +17152,7 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -15316,7 +17167,7 @@ Module deserializer.
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| table |),
+                                            M.deref (| M.read (| table |) |),
                                             "move_binary_format::deserializer::Table",
                                             "count"
                                           |)
@@ -15342,7 +17193,10 @@ Module deserializer.
                                   []
                                 |),
                                 [
-                                  M.read (| metadata |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| metadata |) |)
+                                  |);
                                   M.read (|
                                     M.match_operator (|
                                       M.alloc (|
@@ -15369,7 +17223,14 @@ Module deserializer.
                                                 [],
                                                 []
                                               |),
-                                              [ cursor ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -15521,7 +17382,7 @@ Module deserializer.
                               ]
                             |),
                             [
-                              M.read (| cursor |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
                               M.get_function (|
                                 "move_binary_format::deserializer::load_metadata_key_size",
                                 [],
@@ -15636,7 +17497,7 @@ Module deserializer.
                               ]
                             |),
                             [
-                              M.read (| cursor |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
                               M.get_function (|
                                 "move_binary_format::deserializer::load_metadata_value_size",
                                 [],
@@ -15788,7 +17649,16 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ size_loader; Value.Tuple [ M.read (| cursor |) ] ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, size_loader |);
+                              Value.Tuple
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |)
+                                ]
+                            ]
                           |)
                         ]
                       |)
@@ -15906,21 +17776,34 @@ Module deserializer.
                                   []
                                 |),
                                 [
-                                  M.read (| cursor |);
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::DerefMut",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                      [],
-                                      [],
-                                      "deref_mut",
-                                      [],
-                                      []
-                                    |),
-                                    [ data ]
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::DerefMut",
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                          [],
+                                          [],
+                                          "deref_mut",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, data |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |);
@@ -15969,8 +17852,13 @@ Module deserializer.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          Value.String "Unexpected end of table"
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              Value.String "Unexpected end of table"
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -16094,7 +17982,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| Value.String "Bad byte blob size" |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (| Value.String "Bad byte blob size" |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -16145,7 +18040,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -16158,7 +18053,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -16174,7 +18069,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -16196,7 +18095,7 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -16211,7 +18110,7 @@ Module deserializer.
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| table |),
+                                            M.deref (| M.read (| table |) |),
                                             "move_binary_format::deserializer::Table",
                                             "count"
                                           |)
@@ -16238,7 +18137,10 @@ Module deserializer.
                                     []
                                   |),
                                   [
-                                    M.read (| signatures |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| signatures |) |)
+                                    |);
                                     Value.StructTuple
                                       "move_binary_format::file_format::Signature"
                                       [
@@ -16276,7 +18178,14 @@ Module deserializer.
                                                       [],
                                                       []
                                                     |),
-                                                    [ cursor ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -16411,7 +18320,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -16542,7 +18452,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -16578,7 +18493,7 @@ Module deserializer.
                                                 []
                                               |),
                                               [
-                                                tokens;
+                                                M.borrow (| Pointer.Kind.MutRef, tokens |);
                                                 M.read (|
                                                   M.match_operator (|
                                                     M.alloc (|
@@ -16607,7 +18522,12 @@ Module deserializer.
                                                               [],
                                                               []
                                                             |),
-                                                            [ M.read (| cursor |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (| M.read (| cursor |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -16899,7 +18819,12 @@ Module deserializer.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| cursor |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| cursor |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |) in
                                               let γ0_0 :=
@@ -17054,7 +18979,14 @@ Module deserializer.
                                                                             [],
                                                                             []
                                                                           |),
-                                                                          [ M.read (| cursor |) ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (| cursor |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |),
                                                                         M.read (|
                                                                           M.get_constant (|
@@ -17127,49 +19059,78 @@ Module deserializer.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "u16, u32, u256 integers not supported in bytecode version "
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |);
-                                                                                                    M.alloc (|
-                                                                                                      Value.Array
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "new_display",
-                                                                                                              [],
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
                                                                                                               [
-                                                                                                                Ty.path
-                                                                                                                  "u32"
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "u16, u32, u256 integers not supported in bytecode version "
+                                                                                                                |)
                                                                                                               ]
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |);
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
                                                                                                                 M.call_closure (|
                                                                                                                   M.get_associated_function (|
                                                                                                                     Ty.path
-                                                                                                                      "move_binary_format::deserializer::VersionedCursor",
-                                                                                                                    "version",
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_display",
                                                                                                                     [],
-                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "u32"
+                                                                                                                    ]
                                                                                                                   |),
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      cursor
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      M.deref (|
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.alloc (|
+                                                                                                                            M.call_closure (|
+                                                                                                                              M.get_associated_function (|
+                                                                                                                                Ty.path
+                                                                                                                                  "move_binary_format::deserializer::VersionedCursor",
+                                                                                                                                "version",
+                                                                                                                                [],
+                                                                                                                                []
+                                                                                                                              |),
+                                                                                                                              [
+                                                                                                                                M.borrow (|
+                                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                                  M.deref (|
+                                                                                                                                    M.read (|
+                                                                                                                                      cursor
+                                                                                                                                    |)
+                                                                                                                                  |)
+                                                                                                                                |)
+                                                                                                                              ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
                                                                                                                     |)
                                                                                                                   ]
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
+                                                                                                              ]
                                                                                                           |)
-                                                                                                        ]
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -17517,7 +19478,16 @@ Module deserializer.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| cursor |) ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    cursor
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         ]
                                                                       |)
@@ -17637,7 +19607,16 @@ Module deserializer.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| cursor |) ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    cursor
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         ]
                                                                       |)
@@ -17740,7 +19719,16 @@ Module deserializer.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| cursor |) ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    cursor
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         ]
                                                                       |)
@@ -17877,9 +19865,14 @@ Module deserializer.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                "Struct inst with arity 0"
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.deref (|
+                                                                                                M.read (|
+                                                                                                  Value.String
+                                                                                                    "Struct inst with arity 0"
+                                                                                                |)
+                                                                                              |)
                                                                                             |)
                                                                                           ]
                                                                                         |)
@@ -17960,7 +19953,16 @@ Module deserializer.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| cursor |) ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    cursor
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         ]
                                                                       |)
@@ -18088,8 +20090,13 @@ Module deserializer.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (|
-                                                              Value.String "Unexpected EOF"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (|
+                                                                  Value.String "Unexpected EOF"
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -18147,7 +20154,7 @@ Module deserializer.
                                 [],
                                 []
                               |),
-                              [ read_next; Value.Tuple [] ]
+                              [ M.borrow (| Pointer.Kind.MutRef, read_next |); Value.Tuple [] ]
                             |)
                           ]
                         |)
@@ -18304,7 +20311,7 @@ Module deserializer.
                                               [],
                                               []
                                             |),
-                                            [ stack ]
+                                            [ M.borrow (| Pointer.Kind.Ref, stack |) ]
                                           |),
                                           M.read (|
                                             M.get_constant (|
@@ -18359,9 +20366,14 @@ Module deserializer.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (|
-                                                        Value.String
-                                                          "Maximum recursion depth reached"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (|
+                                                            Value.String
+                                                              "Maximum recursion depth reached"
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -18392,61 +20404,72 @@ Module deserializer.
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::deserializer::load_signature_token::TypeBuilder"
-                                                    ]
-                                                ],
-                                              "unwrap",
-                                              [],
-                                              []
-                                            |),
-                                            [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
-                                                    (Ty.path "slice")
+                                                    (Ty.path "core::option::Option")
                                                     []
                                                     [
-                                                      Ty.path
-                                                        "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                                        ]
                                                     ],
-                                                  "last",
+                                                  "unwrap",
                                                   [],
                                                   []
                                                 |),
                                                 [
                                                   M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
+                                                    M.get_associated_function (|
                                                       Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
+                                                        (Ty.path "slice")
                                                         []
                                                         [
                                                           Ty.path
-                                                            "move_binary_format::deserializer::load_signature_token::TypeBuilder";
-                                                          Ty.path "alloc::alloc::Global"
+                                                            "move_binary_format::deserializer::load_signature_token::TypeBuilder"
                                                         ],
-                                                      [],
-                                                      [],
-                                                      "deref",
+                                                      "last",
                                                       [],
                                                       []
                                                     |),
-                                                    [ stack ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ],
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [ M.borrow (| Pointer.Kind.Ref, stack |)
+                                                            ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
-                                            ]
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -18495,7 +20518,7 @@ Module deserializer.
                                                 [],
                                                 []
                                               |),
-                                              [ stack ]
+                                              [ M.borrow (| Pointer.Kind.MutRef, stack |) ]
                                             |)
                                           ]
                                         |)
@@ -18518,7 +20541,7 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ stack ]
+                                      [ M.borrow (| Pointer.Kind.MutRef, stack |) ]
                                     |)
                                   |),
                                   [
@@ -18547,7 +20570,7 @@ Module deserializer.
                                               []
                                             |),
                                             [
-                                              stack;
+                                              M.borrow (| Pointer.Kind.MutRef, stack |);
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path
@@ -18596,7 +20619,7 @@ Module deserializer.
                                       []
                                     |),
                                     [
-                                      stack;
+                                      M.borrow (| Pointer.Kind.MutRef, stack |);
                                       M.read (|
                                         M.match_operator (|
                                           M.alloc (|
@@ -18639,7 +20662,10 @@ Module deserializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ read_next; Value.Tuple [] ]
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, read_next |);
+                                                    Value.Tuple []
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -18950,7 +20976,7 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ ty_args; M.read (| tok |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, ty_args |); M.read (| tok |) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -18976,7 +21002,7 @@ Module deserializer.
                                           [],
                                           []
                                         |),
-                                        [ ty_args ]
+                                        [ M.borrow (| Pointer.Kind.Ref, ty_args |) ]
                                       |),
                                       M.read (| arity |)
                                     |)
@@ -19054,24 +21080,40 @@ Module deserializer.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "internal error: entered unreachable code: invalid type constructor application"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "internal error: entered unreachable code: invalid type constructor application"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |);
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "none",
-                                        [],
-                                        []
-                                      |),
-                                      []
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "none",
+                                              [],
+                                              []
+                                            |),
+                                            []
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -19164,24 +21206,40 @@ Module deserializer.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "internal error: entered unreachable code: cannot unwrap unsaturated type constructor"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "internal error: entered unreachable code: cannot unwrap unsaturated type constructor"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |);
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "none",
-                                        [],
-                                        []
-                                      |),
-                                      []
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "none",
+                                              [],
+                                              []
+                                            |),
+                                            []
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -19247,7 +21305,7 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -19349,7 +21407,8 @@ Module deserializer.
                                   [],
                                   []
                                 |),
-                                [ M.read (| cursor |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| cursor |) |) |)
+                                ]
                               |),
                               Value.Integer IntegerKind.U32 2
                             |)
@@ -19366,7 +21425,12 @@ Module deserializer.
                                   [],
                                   []
                                 |),
-                                [ M.read (| cursor |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |)
+                                ]
                               |)
                             |),
                             [
@@ -19428,7 +21492,14 @@ Module deserializer.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| Value.String "Unexpected EOF" |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (| Value.String "Unexpected EOF" |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -20021,7 +22092,10 @@ Module deserializer.
                                       [ Ty.path "u8" ]
                                     |),
                                     [
-                                      M.read (| cursor |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| cursor |) |)
+                                      |);
                                       M.rust_cast
                                         (M.call_closure (|
                                           M.get_associated_function (|
@@ -20211,7 +22285,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -20343,7 +22418,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -20379,7 +22459,7 @@ Module deserializer.
                                                 []
                                               |),
                                               [
-                                                kinds;
+                                                M.borrow (| Pointer.Kind.MutRef, kinds |);
                                                 M.read (|
                                                   M.match_operator (|
                                                     M.alloc (|
@@ -20408,7 +22488,12 @@ Module deserializer.
                                                               [],
                                                               []
                                                             |),
-                                                            [ M.read (| cursor |); M.read (| pos |)
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (| M.read (| cursor |) |)
+                                                              |);
+                                                              M.read (| pos |)
                                                             ]
                                                           |)
                                                         ]
@@ -20553,7 +22638,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -20686,7 +22772,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -20722,7 +22813,7 @@ Module deserializer.
                                                 []
                                               |),
                                               [
-                                                type_params;
+                                                M.borrow (| Pointer.Kind.MutRef, type_params |);
                                                 M.read (|
                                                   M.match_operator (|
                                                     M.alloc (|
@@ -20751,7 +22842,12 @@ Module deserializer.
                                                               [],
                                                               []
                                                             |),
-                                                            [ M.read (| cursor |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (| M.read (| cursor |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -20903,7 +22999,7 @@ Module deserializer.
                               []
                             |),
                             [
-                              M.read (| cursor |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
                               Value.StructTuple
                                 "move_binary_format::deserializer::AbilitySetPosition::StructTypeParameters"
                                 []
@@ -20988,7 +23084,12 @@ Module deserializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| cursor |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| cursor |) |)
+                                      |)
+                                    ]
                                   |),
                                   M.read (|
                                     M.get_constant (|
@@ -21029,7 +23130,13 @@ Module deserializer.
                                           [],
                                           [ Ty.path "u8" ]
                                         |),
-                                        [ M.read (| cursor |); Value.Integer IntegerKind.U64 1 ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| cursor |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U64 1
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -21170,7 +23277,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -21183,7 +23290,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -21199,7 +23306,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -21221,7 +23332,7 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -21236,7 +23347,7 @@ Module deserializer.
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| table |),
+                                            M.deref (| M.read (| table |) |),
                                             "move_binary_format::deserializer::Table",
                                             "count"
                                           |)
@@ -21275,7 +23386,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -21350,7 +23468,7 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.MutRef, cursor |) ]
                                     |)
                                   |),
                                   [
@@ -21505,9 +23623,14 @@ Module deserializer.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "Invalid field info in struct"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "Invalid field info in struct"
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -21580,7 +23703,17 @@ Module deserializer.
                                                         [],
                                                         []
                                                       |),
-                                                      [ cursor ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              cursor
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -21669,7 +23802,10 @@ Module deserializer.
                                     []
                                   |),
                                   [
-                                    M.read (| struct_defs |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| struct_defs |) |)
+                                    |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::StructDefinition"
                                       [
@@ -21763,7 +23899,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -21878,7 +24015,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -21914,7 +24056,7 @@ Module deserializer.
                                                 []
                                               |),
                                               [
-                                                fields;
+                                                M.borrow (| Pointer.Kind.MutRef, fields |);
                                                 M.read (|
                                                   M.match_operator (|
                                                     M.alloc (|
@@ -21943,7 +24085,12 @@ Module deserializer.
                                                               [],
                                                               []
                                                             |),
-                                                            [ M.read (| cursor |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (| M.read (| cursor |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -22083,7 +24230,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -22173,7 +24321,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -22290,7 +24439,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -22303,7 +24452,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -22319,7 +24468,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -22341,7 +24494,7 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                     |),
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -22356,7 +24509,7 @@ Module deserializer.
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| table |),
+                                            M.deref (| M.read (| table |) |),
                                             "move_binary_format::deserializer::Table",
                                             "count"
                                           |)
@@ -22395,7 +24548,14 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ cursor ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.MutRef, cursor |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -22475,7 +24635,13 @@ Module deserializer.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| func_defs |); M.read (| func_def |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| func_defs |) |)
+                                    |);
+                                    M.read (| func_def |)
+                                  ]
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -22540,7 +24706,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -22553,7 +24719,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -22569,7 +24735,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -22593,7 +24763,7 @@ Module deserializer.
                                           [],
                                           []
                                         |),
-                                        [ cursor ]
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                       |),
                                       M.call_closure (|
                                         M.get_trait_method (|
@@ -22608,7 +24778,7 @@ Module deserializer.
                                         [
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| table |),
+                                              M.deref (| M.read (| table |) |),
                                               "move_binary_format::deserializer::Table",
                                               "count"
                                             |)
@@ -22654,7 +24824,12 @@ Module deserializer.
                                     [],
                                     []
                                   |),
-                                  [ cursor ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, cursor |) |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -22744,7 +24919,12 @@ Module deserializer.
                                     [],
                                     []
                                   |),
-                                  [ cursor ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, cursor |) |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -22823,7 +25003,10 @@ Module deserializer.
                             []
                           |),
                           [
-                            M.read (| field_handles |);
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.read (| field_handles |) |)
+                            |);
                             Value.StructRecord
                               "move_binary_format::file_format::FieldHandle"
                               [ ("owner", M.read (| struct_idx |)); ("field", M.read (| offset |)) ]
@@ -22879,7 +25062,7 @@ Module deserializer.
                   M.rust_cast
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| table |),
+                        M.deref (| M.read (| table |) |),
                         "move_binary_format::deserializer::Table",
                         "offset"
                       |)
@@ -22892,7 +25075,7 @@ Module deserializer.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| table |),
+                          M.deref (| M.read (| table |) |),
                           "move_binary_format::deserializer::Table",
                           "count"
                         |)
@@ -22908,7 +25091,11 @@ Module deserializer.
                       [],
                       []
                     |),
-                    [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |);
+                      M.read (| start |);
+                      M.read (| end_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -22932,7 +25119,7 @@ Module deserializer.
                                           [],
                                           []
                                         |),
-                                        [ cursor ]
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
                                       |),
                                       M.call_closure (|
                                         M.get_trait_method (|
@@ -22947,7 +25134,7 @@ Module deserializer.
                                         [
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| table |),
+                                              M.deref (| M.read (| table |) |),
                                               "move_binary_format::deserializer::Table",
                                               "count"
                                             |)
@@ -22992,7 +25179,12 @@ Module deserializer.
                                     [],
                                     []
                                   |),
-                                  [ cursor ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, cursor |) |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -23082,7 +25274,12 @@ Module deserializer.
                                     [],
                                     []
                                   |),
-                                  [ cursor ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, cursor |) |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -23161,7 +25358,10 @@ Module deserializer.
                             []
                           |),
                           [
-                            M.read (| field_insts |);
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.read (| field_insts |) |)
+                            |);
                             Value.StructRecord
                               "move_binary_format::file_format::FieldInstantiation"
                               [
@@ -23294,7 +25494,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -23398,7 +25599,12 @@ Module deserializer.
                                   [],
                                   []
                                 |),
-                                [ M.read (| cursor |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| cursor |) |)
+                                  |)
+                                ]
                               |);
                               M.closure
                                 (fun γ =>
@@ -23444,7 +25650,16 @@ Module deserializer.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| Value.String "Unexpected EOF" |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              Value.String "Unexpected EOF"
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)))
@@ -23532,7 +25747,12 @@ Module deserializer.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| cursor |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| cursor |) |)
+                                    |)
+                                  ]
                                 |),
                                 M.read (|
                                   M.get_constant (|
@@ -23618,7 +25838,12 @@ Module deserializer.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| cursor |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| cursor |) |)
+                                            |)
+                                          ]
                                         |),
                                         M.read (|
                                           M.get_constant (|
@@ -23771,9 +25996,14 @@ Module deserializer.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "Invalid visibility byte"
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "Invalid visibility byte"
+                                                                                        |)
+                                                                                      |)
                                                                                     |)
                                                                                   ]
                                                                                 |)
@@ -23912,7 +26142,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |);
                                                         M.closure
                                                           (fun γ =>
@@ -23959,9 +26194,14 @@ Module deserializer.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "Unexpected EOF"
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "Unexpected EOF"
+                                                                                      |)
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -24155,9 +26395,14 @@ Module deserializer.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "Invalid visibility byte"
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "Invalid visibility byte"
+                                                                              |)
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -24280,7 +26525,12 @@ Module deserializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| cursor |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| cursor |) |)
+                                                    |)
+                                                  ]
                                                 |);
                                                 M.closure
                                                   (fun γ =>
@@ -24327,9 +26577,14 @@ Module deserializer.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "Unexpected EOF"
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "Unexpected EOF"
+                                                                              |)
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -24501,7 +26756,12 @@ Module deserializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| cursor |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| cursor |) |)
+                                      |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -24639,7 +26899,12 @@ Module deserializer.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| cursor |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| cursor |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -24832,7 +27097,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -24963,7 +27229,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -24999,7 +27270,7 @@ Module deserializer.
                                                 []
                                               |),
                                               [
-                                                indices;
+                                                M.borrow (| Pointer.Kind.MutRef, indices |);
                                                 M.read (|
                                                   M.match_operator (|
                                                     M.alloc (|
@@ -25028,7 +27299,12 @@ Module deserializer.
                                                               [],
                                                               []
                                                             |),
-                                                            [ M.read (| cursor |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (| M.read (| cursor |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -25173,7 +27449,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -25283,11 +27560,19 @@ Module deserializer.
                             []
                           |),
                           [
-                            M.read (| cursor |);
-                            M.SubPointer.get_struct_record_field (|
-                              code_unit,
-                              "move_binary_format::file_format::CodeUnit",
-                              "code"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    code_unit,
+                                    "move_binary_format::file_format::CodeUnit",
+                                    "code"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -25578,7 +27863,8 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ M.read (| cursor |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -25665,7 +27951,12 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| code |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| code |) |)
+                                        |)
+                                      ]
                                     |),
                                     M.read (| bytecode_count |)
                                   |)
@@ -25718,7 +28009,12 @@ Module deserializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| cursor |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| cursor |) |)
+                                                |)
+                                              ]
                                             |);
                                             M.closure
                                               (fun γ =>
@@ -25765,9 +28061,14 @@ Module deserializer.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "Unexpected EOF"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "Unexpected EOF"
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -26031,7 +28332,14 @@ Module deserializer.
                                                                     [],
                                                                     []
                                                                   |),
-                                                                  [ M.read (| cursor |) ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| cursor |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
                                                                 |),
                                                                 M.read (|
                                                                   M.get_constant (|
@@ -26104,36 +28412,60 @@ Module deserializer.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.alloc (|
-                                                                                            Value.Array
-                                                                                              [
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    "Vector operations not available before bytecode version "
-                                                                                                |)
-                                                                                              ]
-                                                                                          |);
-                                                                                          M.alloc (|
-                                                                                            Value.Array
-                                                                                              [
-                                                                                                M.call_closure (|
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.path
-                                                                                                      "core::fmt::rt::Argument",
-                                                                                                    "new_display",
-                                                                                                    [],
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.alloc (|
+                                                                                                  Value.Array
                                                                                                     [
-                                                                                                      Ty.path
-                                                                                                        "u32"
+                                                                                                      M.read (|
+                                                                                                        Value.String
+                                                                                                          "Vector operations not available before bytecode version "
+                                                                                                      |)
                                                                                                     ]
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.get_constant (|
-                                                                                                      "move_binary_format::file_format_common::VERSION_4"
-                                                                                                    |)
-                                                                                                  ]
                                                                                                 |)
-                                                                                              ]
+                                                                                              |)
+                                                                                            |)
+                                                                                          |);
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.alloc (|
+                                                                                                  Value.Array
+                                                                                                    [
+                                                                                                      M.call_closure (|
+                                                                                                        M.get_associated_function (|
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::rt::Argument",
+                                                                                                          "new_display",
+                                                                                                          [],
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "u32"
+                                                                                                          ]
+                                                                                                        |),
+                                                                                                        [
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.Ref,
+                                                                                                            M.deref (|
+                                                                                                              M.borrow (|
+                                                                                                                Pointer.Kind.Ref,
+                                                                                                                M.get_constant (|
+                                                                                                                  "move_binary_format::file_format_common::VERSION_4"
+                                                                                                                |)
+                                                                                                              |)
+                                                                                                            |)
+                                                                                                          |)
+                                                                                                        ]
+                                                                                                      |)
+                                                                                                    ]
+                                                                                                |)
+                                                                                              |)
+                                                                                            |)
                                                                                           |)
                                                                                         ]
                                                                                       |)
@@ -26236,7 +28568,12 @@ Module deserializer.
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.read (| cursor |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| cursor |) |)
+                                                          |)
+                                                        ]
                                                       |),
                                                       M.read (|
                                                         M.get_constant (|
@@ -26309,49 +28646,78 @@ Module deserializer.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "Loading or casting u16, u32, u256 integers not supported in bytecode version "
-                                                                                        |)
-                                                                                      ]
-                                                                                  |);
-                                                                                  M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Argument",
-                                                                                            "new_display",
-                                                                                            [],
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.alloc (|
+                                                                                          Value.Array
                                                                                             [
-                                                                                              Ty.path
-                                                                                                "u32"
+                                                                                              M.read (|
+                                                                                                Value.String
+                                                                                                  "Loading or casting u16, u32, u256 integers not supported in bytecode version "
+                                                                                              |)
                                                                                             ]
-                                                                                          |),
-                                                                                          [
-                                                                                            M.alloc (|
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  |);
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.alloc (|
+                                                                                          Value.Array
+                                                                                            [
                                                                                               M.call_closure (|
                                                                                                 M.get_associated_function (|
                                                                                                   Ty.path
-                                                                                                    "move_binary_format::deserializer::VersionedCursor",
-                                                                                                  "version",
+                                                                                                    "core::fmt::rt::Argument",
+                                                                                                  "new_display",
                                                                                                   [],
-                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u32"
+                                                                                                  ]
                                                                                                 |),
                                                                                                 [
-                                                                                                  M.read (|
-                                                                                                    cursor
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.deref (|
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.Ref,
+                                                                                                        M.alloc (|
+                                                                                                          M.call_closure (|
+                                                                                                            M.get_associated_function (|
+                                                                                                              Ty.path
+                                                                                                                "move_binary_format::deserializer::VersionedCursor",
+                                                                                                              "version",
+                                                                                                              [],
+                                                                                                              []
+                                                                                                            |),
+                                                                                                            [
+                                                                                                              M.borrow (|
+                                                                                                                Pointer.Kind.Ref,
+                                                                                                                M.deref (|
+                                                                                                                  M.read (|
+                                                                                                                    cursor
+                                                                                                                  |)
+                                                                                                                |)
+                                                                                                              |)
+                                                                                                            ]
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
                                                                                                 ]
                                                                                               |)
-                                                                                            |)
-                                                                                          ]
+                                                                                            ]
                                                                                         |)
-                                                                                      ]
+                                                                                      |)
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -26442,7 +28808,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -26549,7 +28920,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -26656,7 +29032,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -26780,7 +29161,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |);
                                                         M.closure
                                                           (fun γ =>
@@ -26827,9 +29213,14 @@ Module deserializer.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "Unexpected EOF"
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "Unexpected EOF"
+                                                                                      |)
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -26946,7 +29337,12 @@ Module deserializer.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| cursor |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| cursor |) |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -27051,7 +29447,12 @@ Module deserializer.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| cursor |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| cursor |) |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -27210,7 +29611,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -27341,7 +29747,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -27448,7 +29859,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -27555,7 +29971,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -27662,7 +30083,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -27769,7 +30195,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -27877,7 +30308,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -27985,7 +30421,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -28093,7 +30534,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -28201,7 +30647,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -28309,7 +30760,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -28417,7 +30873,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -28525,7 +30986,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -28633,7 +31099,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -28741,7 +31212,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -28849,7 +31325,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -29245,7 +31726,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -29339,7 +31825,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -29447,7 +31938,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -29555,7 +32051,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -29663,7 +32164,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -29771,7 +32277,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -29879,7 +32390,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -29987,7 +32503,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -30081,7 +32602,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -30189,7 +32715,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -30293,7 +32824,12 @@ Module deserializer.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| cursor |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| cursor |) |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -30398,7 +32934,12 @@ Module deserializer.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| cursor |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| cursor |) |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -30503,7 +33044,12 @@ Module deserializer.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| cursor |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| cursor |) |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -30664,7 +33210,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -30772,7 +33323,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -30880,7 +33436,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -30988,7 +33549,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -31096,7 +33662,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -31204,7 +33775,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -31312,7 +33888,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -31420,7 +34001,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -31528,7 +34114,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -31636,7 +34227,12 @@ Module deserializer.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| cursor |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -31723,7 +34319,13 @@ Module deserializer.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| code |); M.read (| bytecode |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| code |) |)
+                                    |);
+                                    M.read (| bytecode |)
+                                  ]
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -32388,7 +34990,7 @@ Module deserializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -32426,7 +35028,7 @@ Module deserializer.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -32439,7 +35041,12 @@ Module deserializer.
                             γ,
                             "move_binary_format::deserializer::DeprecatedNominalResourceFlag::NOMINAL_RESOURCE"
                           |) in
-                        M.alloc (| M.read (| Value.String "NOMINAL_RESOURCE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NOMINAL_RESOURCE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -32448,7 +35055,12 @@ Module deserializer.
                             γ,
                             "move_binary_format::deserializer::DeprecatedNominalResourceFlag::NORMAL_STRUCT"
                           |) in
-                        M.alloc (| M.read (| Value.String "NORMAL_STRUCT" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NORMAL_STRUCT" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -34138,62 +36750,155 @@ Module deserializer.
           M.read (|
             let~ names :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.read (| Value.String "binary_config" |);
-                      M.read (| Value.String "binary" |);
-                      M.read (| Value.String "version" |);
-                      M.read (| Value.String "tables" |);
-                      M.read (| Value.String "module_idx" |);
-                      M.read (| Value.String "data_offset" |);
-                      M.read (| Value.String "binary_end_offset" |)
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "binary_config" |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "binary" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "version" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "tables" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "module_idx" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "data_offset" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "binary_end_offset" |) |)
+                            |)
+                          ]
+                      |)
+                    |)
+                  |)
                 |)
               |) in
             let~ values :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::deserializer::VersionedBinary",
-                        "binary_config"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::deserializer::VersionedBinary",
-                        "binary"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::deserializer::VersionedBinary",
-                        "version"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::deserializer::VersionedBinary",
-                        "tables"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::deserializer::VersionedBinary",
-                        "module_idx"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::deserializer::VersionedBinary",
-                        "data_offset"
-                      |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.alloc (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::deserializer::VersionedBinary",
-                          "binary_end_offset"
-                        |)
+                        Value.Array
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::deserializer::VersionedBinary",
+                                    "binary_config"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::deserializer::VersionedBinary",
+                                    "binary"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::deserializer::VersionedBinary",
+                                    "version"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::deserializer::VersionedBinary",
+                                    "tables"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::deserializer::VersionedBinary",
+                                    "module_idx"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::deserializer::VersionedBinary",
+                                    "data_offset"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::deserializer::VersionedBinary",
+                                        "binary_end_offset"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                       |)
-                    ]
+                    |)
+                  |)
                 |)
               |) in
             M.alloc (|
@@ -34205,10 +36910,13 @@ Module deserializer.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "VersionedBinary" |);
-                  M.read (| names |);
-                  M.read (| values |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "VersionedBinary" |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
             |)
@@ -34258,20 +36966,42 @@ Module deserializer.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "VersionedCursor" |);
-              M.read (| Value.String "version" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::deserializer::VersionedCursor",
-                "version"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "VersionedCursor" |) |)
               |);
-              M.read (| Value.String "cursor" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::deserializer::VersionedCursor",
-                  "cursor"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "version" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::deserializer::VersionedCursor",
+                      "version"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "cursor" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::deserializer::VersionedCursor",
+                          "cursor"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -34374,7 +37104,7 @@ Module deserializer.
                         [],
                         []
                       |),
-                      [ M.read (| binary |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |) ]
                     |)
                   |) in
                 let~ cursor :=
@@ -34427,7 +37157,13 @@ Module deserializer.
                                   [],
                                   []
                                 |),
-                                [ cursor; magic ]
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, cursor |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, magic |) |)
+                                  |)
+                                ]
                               |)
                             |) in
                           let γ0_0 :=
@@ -34474,9 +37210,12 @@ Module deserializer.
                                                 []
                                               |),
                                               [
-                                                magic;
-                                                M.get_constant (|
-                                                  "move_binary_format::file_format_common::MOVE_MAGIC"
+                                                M.borrow (| Pointer.Kind.Ref, magic |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.get_constant (|
+                                                    "move_binary_format::file_format_common::MOVE_MAGIC"
+                                                  |)
                                                 |)
                                               ]
                                             |)))
@@ -34556,7 +37295,14 @@ Module deserializer.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| Value.String "Bad binary header" |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (| Value.String "Bad binary header" |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -34577,7 +37323,12 @@ Module deserializer.
                             [],
                             []
                           |),
-                          [ cursor ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, cursor |) |)
+                            |)
+                          ]
                         |)
                       |),
                       [
@@ -34638,7 +37389,14 @@ Module deserializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| Value.String "Bad binary header" |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (| Value.String "Bad binary header" |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -34680,7 +37438,7 @@ Module deserializer.
                                         [
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| binary_config |),
+                                              M.deref (| M.read (| binary_config |) |),
                                               "move_binary_format::binary_config::BinaryConfig",
                                               "max_binary_format_version"
                                             |)
@@ -34756,7 +37514,12 @@ Module deserializer.
                                 [],
                                 []
                               |),
-                              [ versioned_cursor ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, versioned_cursor |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |)
@@ -34860,7 +37623,17 @@ Module deserializer.
                               [],
                               []
                             |),
-                            [ versioned_cursor; M.read (| table_count |); tables ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, versioned_cursor |) |)
+                              |);
+                              M.read (| table_count |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, tables |) |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -34947,7 +37720,13 @@ Module deserializer.
                                 [],
                                 []
                               |),
-                              [ tables; M.read (| binary_len |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, tables |) |)
+                                |);
+                                M.read (| binary_len |)
+                              ]
                             |)
                           ]
                         |)
@@ -35029,7 +37808,7 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ versioned_cursor ]
+                                      [ M.borrow (| Pointer.Kind.Ref, versioned_cursor |) ]
                                     |)
                                   |),
                                   M.rust_cast (M.read (| binary_len |))
@@ -35075,7 +37854,14 @@ Module deserializer.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| Value.String "Table size too big" |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (| Value.String "Table size too big" |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -35097,7 +37883,7 @@ Module deserializer.
                           [],
                           []
                         |),
-                        [ versioned_cursor ]
+                        [ M.borrow (| Pointer.Kind.Ref, versioned_cursor |) ]
                       |))
                   |) in
                 let~ module_idx :=
@@ -35120,7 +37906,7 @@ Module deserializer.
                                     []
                                   |),
                                   [
-                                    versioned_cursor;
+                                    M.borrow (| Pointer.Kind.MutRef, versioned_cursor |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.read (| data_offset |),
@@ -35155,7 +37941,14 @@ Module deserializer.
                                         [],
                                         []
                                       |),
-                                      [ versioned_cursor ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (| Pointer.Kind.MutRef, versioned_cursor |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -35239,7 +38032,7 @@ Module deserializer.
                           [],
                           []
                         |),
-                        [ versioned_cursor ]
+                        [ M.borrow (| Pointer.Kind.Ref, versioned_cursor |) ]
                       |))
                   |) in
                 M.alloc (|
@@ -35278,7 +38071,7 @@ Module deserializer.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "move_binary_format::deserializer::VersionedBinary",
               "version"
             |)
@@ -35300,7 +38093,7 @@ Module deserializer.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "move_binary_format::deserializer::VersionedBinary",
               "module_idx"
             |)
@@ -35322,7 +38115,7 @@ Module deserializer.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "move_binary_format::deserializer::VersionedBinary",
               "binary_end_offset"
             |)
@@ -35364,51 +38157,71 @@ Module deserializer.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::index::Index",
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                        "index",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::deserializer::VersionedBinary",
-                            "binary"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::index::Index",
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ],
+                                "index",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::deserializer::VersionedBinary",
+                                        "binary"
+                                      |)
+                                    |)
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::Range"
+                                  [
+                                    ("start",
+                                      BinOp.Wrap.add (|
+                                        M.read (| start |),
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_binary_format::deserializer::VersionedBinary",
+                                            "data_offset"
+                                          |)
+                                        |)
+                                      |));
+                                    ("end_",
+                                      BinOp.Wrap.add (|
+                                        M.read (| end_ |),
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_binary_format::deserializer::VersionedBinary",
+                                            "data_offset"
+                                          |)
+                                        |)
+                                      |))
+                                  ]
+                              ]
+                            |)
                           |)
-                        |);
-                        Value.StructRecord
-                          "core::ops::range::Range"
-                          [
-                            ("start",
-                              BinOp.Wrap.add (|
-                                M.read (| start |),
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_binary_format::deserializer::VersionedBinary",
-                                    "data_offset"
-                                  |)
-                                |)
-                              |));
-                            ("end_",
-                              BinOp.Wrap.add (|
-                                M.read (| end_ |),
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_binary_format::deserializer::VersionedBinary",
-                                    "data_offset"
-                                  |)
-                                |)
-                              |))
-                          ]
-                      ]
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -35420,7 +38233,7 @@ Module deserializer.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -35440,51 +38253,66 @@ Module deserializer.
           (let self := M.alloc (| self |) in
           let start := M.alloc (| start |) in
           let end_ := M.alloc (| end_ |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::Index",
-              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-              [],
-              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-              "index",
-              [],
-              []
-            |),
-            [
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::deserializer::VersionedBinary",
-                  "binary"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                      [],
+                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
+                      "index",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::deserializer::VersionedBinary",
+                              "binary"
+                            |)
+                          |)
+                        |)
+                      |);
+                      Value.StructRecord
+                        "core::ops::range::Range"
+                        [
+                          ("start",
+                            BinOp.Wrap.add (|
+                              M.read (| start |),
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::deserializer::VersionedBinary",
+                                  "data_offset"
+                                |)
+                              |)
+                            |));
+                          ("end_",
+                            BinOp.Wrap.add (|
+                              M.read (| end_ |),
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::deserializer::VersionedBinary",
+                                  "data_offset"
+                                |)
+                              |)
+                            |))
+                        ]
+                    ]
+                  |)
                 |)
-              |);
-              Value.StructRecord
-                "core::ops::range::Range"
-                [
-                  ("start",
-                    BinOp.Wrap.add (|
-                      M.read (| start |),
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::deserializer::VersionedBinary",
-                          "data_offset"
-                        |)
-                      |)
-                    |));
-                  ("end_",
-                    BinOp.Wrap.add (|
-                      M.read (| end_ |),
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::deserializer::VersionedBinary",
-                          "data_offset"
-                        |)
-                      |)
-                    |))
-                ]
-            ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -35507,11 +38335,13 @@ Module deserializer.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::deserializer::VersionedBinary",
-                  "binary_config"
+              M.deref (|
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_binary_format::deserializer::VersionedBinary",
+                    "binary_config"
+                  |)
                 |)
               |),
               "move_binary_format::binary_config::BinaryConfig",
@@ -35540,7 +38370,7 @@ Module deserializer.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "move_binary_format::deserializer::VersionedCursor",
               "version"
             |)
@@ -35571,10 +38401,13 @@ Module deserializer.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::deserializer::VersionedCursor",
-                "cursor"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_binary_format::deserializer::VersionedCursor",
+                  "cursor"
+                |)
               |)
             ]
           |)))
@@ -35596,10 +38429,18 @@ Module deserializer.
           M.call_closure (|
             M.get_function (| "move_binary_format::file_format_common::read_u8", [], [] |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::deserializer::VersionedCursor",
-                "cursor"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::deserializer::VersionedCursor",
+                      "cursor"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -35634,10 +38475,13 @@ Module deserializer.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::deserializer::VersionedCursor",
-                      "cursor"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::deserializer::VersionedCursor",
+                        "cursor"
+                      |)
                     |);
                     M.read (| pos |)
                   ]
@@ -35663,10 +38507,18 @@ Module deserializer.
           M.call_closure (|
             M.get_function (| "move_binary_format::file_format_common::read_u32", [], [] |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::deserializer::VersionedCursor",
-                "cursor"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::deserializer::VersionedCursor",
+                      "cursor"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -35692,10 +38544,18 @@ Module deserializer.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::deserializer::VersionedCursor",
-                "cursor"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::deserializer::VersionedCursor",
+                      "cursor"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -35734,12 +38594,15 @@ Module deserializer.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::deserializer::VersionedCursor",
-                "cursor"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_binary_format::deserializer::VersionedCursor",
+                  "cursor"
+                |)
               |);
-              M.read (| buf |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

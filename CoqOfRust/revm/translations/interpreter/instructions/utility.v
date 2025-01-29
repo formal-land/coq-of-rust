@@ -87,7 +87,12 @@ Module instructions.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| slice |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| slice |) |)
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -116,7 +121,12 @@ Module instructions.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| slice |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| slice |) |)
+                                        |)
+                                      ]
                                     |),
                                     Value.Integer IntegerKind.Usize 32
                                   |)
@@ -137,8 +147,17 @@ Module instructions.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "slice too long" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "slice too long" |) ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -160,7 +179,7 @@ Module instructions.
                             [],
                             []
                           |),
-                          [ M.read (| slice |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                         |),
                         Value.Integer IntegerKind.Usize 31
                       |),
@@ -177,21 +196,29 @@ Module instructions.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "ruint::Uint")
-                              [
-                                Value.Integer IntegerKind.Usize 256;
-                                Value.Integer IntegerKind.Usize 4
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [],
+                                "as_limbs_mut",
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dest |) |) |)
                               ]
-                              [],
-                            "as_limbs_mut",
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ],
-                            []
-                          |),
-                          [ M.read (| dest |) ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -206,7 +233,10 @@ Module instructions.
                         [],
                         []
                       |),
-                      [ M.read (| slice |); Value.Integer IntegerKind.Usize 32 ]
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |);
+                        Value.Integer IntegerKind.Usize 32
+                      ]
                     |)
                   |) in
                 let~ partial_last_word :=
@@ -218,7 +248,7 @@ Module instructions.
                         [],
                         []
                       |),
-                      [ words ]
+                      [ M.borrow (| Pointer.Kind.Ref, words |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -260,7 +290,12 @@ Module instructions.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -311,7 +346,10 @@ Module instructions.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| word |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| word |) |)
+                                                        |);
                                                         Value.Integer IntegerKind.Usize 8
                                                       ]
                                                     |)
@@ -341,7 +379,17 @@ Module instructions.
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ iter ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        iter
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |),
                                                             [
@@ -465,7 +513,15 @@ Module instructions.
                                                                                       [],
                                                                                       []
                                                                                     |),
-                                                                                    [ M.read (| l |)
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            l
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
                                                                                     ]
                                                                                   |)
                                                                                 ]
@@ -515,7 +571,12 @@ Module instructions.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| partial_last_word |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| partial_last_word |) |)
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -535,7 +596,13 @@ Module instructions.
                         [],
                         []
                       |),
-                      [ M.read (| partial_last_word |); Value.Integer IntegerKind.Usize 8 ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| partial_last_word |) |)
+                        |);
+                        Value.Integer IntegerKind.Usize 8
+                      ]
                     |)
                   |) in
                 let~ partial_last_limb :=
@@ -547,7 +614,7 @@ Module instructions.
                         [],
                         []
                       |),
-                      [ limbs ]
+                      [ M.borrow (| Pointer.Kind.Ref, limbs |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -592,7 +659,12 @@ Module instructions.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -691,7 +763,12 @@ Module instructions.
                                                               [],
                                                               []
                                                             |),
-                                                            [ M.read (| l |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| l |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -733,7 +810,12 @@ Module instructions.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| partial_last_limb |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| partial_last_limb |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -756,46 +838,62 @@ Module instructions.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::IndexMut",
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 8 ]
-                                        [ Ty.path "u8" ],
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeFrom")
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::IndexMut",
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 8 ]
+                                            [ Ty.path "u8" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeFrom")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index_mut",
+                                          [],
                                           []
-                                          [ Ty.path "usize" ]
-                                      ],
-                                      "index_mut",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      tmp;
-                                      Value.StructRecord
-                                        "core::ops::range::RangeFrom"
+                                        |),
                                         [
-                                          ("start",
-                                            BinOp.Wrap.sub (|
-                                              Value.Integer IntegerKind.Usize 8,
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                  "len",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| partial_last_limb |) ]
-                                              |)
-                                            |))
+                                          M.borrow (| Pointer.Kind.MutRef, tmp |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeFrom"
+                                            [
+                                              ("start",
+                                                BinOp.Wrap.sub (|
+                                                  Value.Integer IntegerKind.Usize 8,
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| partial_last_limb |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |))
+                                            ]
                                         ]
-                                    ]
+                                      |)
+                                    |)
                                   |);
-                                  M.read (| partial_last_limb |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| partial_last_limb |) |)
+                                  |)
                                 ]
                               |)
                             |) in
@@ -854,16 +952,19 @@ Module instructions.
                               M.alloc (|
                                 Value.Tuple
                                   [
-                                    M.alloc (|
-                                      BinOp.Wrap.div (|
-                                        BinOp.Wrap.add (|
-                                          M.read (| i |),
-                                          Value.Integer IntegerKind.Usize 3
-                                        |),
-                                        Value.Integer IntegerKind.Usize 4
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        BinOp.Wrap.div (|
+                                          BinOp.Wrap.add (|
+                                            M.read (| i |),
+                                            Value.Integer IntegerKind.Usize 3
+                                          |),
+                                          Value.Integer IntegerKind.Usize 4
+                                        |)
                                       |)
                                     |);
-                                    n_words
+                                    M.borrow (| Pointer.Kind.Ref, n_words |)
                                   ]
                               |),
                               [
@@ -883,8 +984,12 @@ Module instructions.
                                                 (M.alloc (|
                                                   UnOp.not (|
                                                     BinOp.eq (|
-                                                      M.read (| M.read (| left_val |) |),
-                                                      M.read (| M.read (| right_val |) |)
+                                                      M.read (|
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |),
+                                                      M.read (|
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -911,8 +1016,24 @@ Module instructions.
                                                       |),
                                                       [
                                                         M.read (| kind |);
-                                                        M.read (| left_val |);
-                                                        M.read (| right_val |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| left_val |) |)
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| right_val |) |)
+                                                            |)
+                                                          |)
+                                                        |);
                                                         Value.StructTuple
                                                           "core::option::Option::Some"
                                                           [
@@ -924,14 +1045,22 @@ Module instructions.
                                                                 []
                                                               |),
                                                               [
-                                                                M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "wrote too much"
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "wrote too much"
+                                                                            |)
+                                                                          ]
                                                                       |)
-                                                                    ]
+                                                                    |)
+                                                                  |)
                                                                 |)
                                                               ]
                                                             |)
@@ -1043,7 +1172,7 @@ Module instructions.
                     [],
                     []
                   |),
-                  [ self ]
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |)
               ]
             |)))
@@ -1163,7 +1292,7 @@ Module instructions.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                         []
                       |),
-                      [ self ]
+                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
                     |)
                   ]
                 |)

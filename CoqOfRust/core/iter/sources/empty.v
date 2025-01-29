@@ -53,15 +53,24 @@ Module iter.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_struct",
-                        [],
-                        []
-                      |),
-                      [ M.read (| f |); M.read (| Value.String "Empty" |) ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "debug_struct",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Empty" |) |)
+                          |)
+                        ]
+                      |)
                     |)
                   |)
                 ]

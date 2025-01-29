@@ -127,7 +127,7 @@ Module hardfork.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -163,7 +163,7 @@ Module hardfork.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -176,7 +176,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::FRONTIER"
                           |) in
-                        M.alloc (| M.read (| Value.String "FRONTIER" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FRONTIER" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -185,7 +190,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::FRONTIER_THAWING"
                           |) in
-                        M.alloc (| M.read (| Value.String "FRONTIER_THAWING" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FRONTIER_THAWING" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -194,7 +204,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::HOMESTEAD"
                           |) in
-                        M.alloc (| M.read (| Value.String "HOMESTEAD" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "HOMESTEAD" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -203,7 +218,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::DAO_FORK"
                           |) in
-                        M.alloc (| M.read (| Value.String "DAO_FORK" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "DAO_FORK" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -212,7 +232,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::TANGERINE"
                           |) in
-                        M.alloc (| M.read (| Value.String "TANGERINE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TANGERINE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -221,7 +246,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
                           |) in
-                        M.alloc (| M.read (| Value.String "SPURIOUS_DRAGON" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SPURIOUS_DRAGON" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -230,7 +260,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::BYZANTIUM"
                           |) in
-                        M.alloc (| M.read (| Value.String "BYZANTIUM" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BYZANTIUM" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -239,7 +274,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
                           |) in
-                        M.alloc (| M.read (| Value.String "CONSTANTINOPLE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CONSTANTINOPLE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -248,7 +288,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::PETERSBURG"
                           |) in
-                        M.alloc (| M.read (| Value.String "PETERSBURG" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "PETERSBURG" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -257,7 +302,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::ISTANBUL"
                           |) in
-                        M.alloc (| M.read (| Value.String "ISTANBUL" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ISTANBUL" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -266,7 +316,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::MUIR_GLACIER"
                           |) in
-                        M.alloc (| M.read (| Value.String "MUIR_GLACIER" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MUIR_GLACIER" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -275,7 +330,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::BERLIN"
                           |) in
-                        M.alloc (| M.read (| Value.String "BERLIN" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BERLIN" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -284,7 +344,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::LONDON"
                           |) in
-                        M.alloc (| M.read (| Value.String "LONDON" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LONDON" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -293,7 +358,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::ARROW_GLACIER"
                           |) in
-                        M.alloc (| M.read (| Value.String "ARROW_GLACIER" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ARROW_GLACIER" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -302,7 +372,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::GRAY_GLACIER"
                           |) in
-                        M.alloc (| M.read (| Value.String "GRAY_GLACIER" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "GRAY_GLACIER" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -311,7 +386,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::MERGE"
                           |) in
-                        M.alloc (| M.read (| Value.String "MERGE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MERGE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -320,7 +400,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::SHANGHAI"
                           |) in
-                        M.alloc (| M.read (| Value.String "SHANGHAI" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SHANGHAI" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -329,7 +414,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::CANCUN"
                           |) in
-                        M.alloc (| M.read (| Value.String "CANCUN" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CANCUN" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -338,7 +428,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::PRAGUE"
                           |) in
-                        M.alloc (| M.read (| Value.String "PRAGUE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "PRAGUE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -347,7 +442,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::OSAKA"
                           |) in
-                        M.alloc (| M.read (| Value.String "OSAKA" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OSAKA" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -356,7 +456,12 @@ Module hardfork.
                             γ,
                             "revm_specification::hardfork::SpecId::LATEST"
                           |) in
-                        M.alloc (| M.read (| Value.String "LATEST" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LATEST" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -422,7 +527,7 @@ Module hardfork.
                     [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -433,7 +538,7 @@ Module hardfork.
                     [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -494,7 +599,7 @@ Module hardfork.
                     [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -505,7 +610,7 @@ Module hardfork.
                     [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -519,7 +624,16 @@ Module hardfork.
                   [],
                   []
                 |),
-                [ __self_discr; __arg1_discr ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -553,7 +667,7 @@ Module hardfork.
                     [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -564,13 +678,22 @@ Module hardfork.
                     [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], [], "cmp", [], [] |),
-                [ __self_discr; __arg1_discr ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -604,7 +727,7 @@ Module hardfork.
                     [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -618,7 +741,13 @@ Module hardfork.
                   [],
                   [ __H ]
                 |),
-                [ __self_discr; M.read (| state |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |)
             |)
           |)))
@@ -1442,39 +1571,63 @@ Module hardfork.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                          |),
-                          [
-                            M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
                               M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::convert::From",
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
                                   [],
-                                  [ Ty.path "revm_specification::hardfork::SpecId" ],
-                                  "from",
-                                  [],
-                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
-                                [ M.read (| M.read (| self |) |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::convert::From",
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                              [],
+                                              [ Ty.path "revm_specification::hardfork::SpecId" ],
+                                              "from",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
-                            |)
-                          ]
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 ]
               |)

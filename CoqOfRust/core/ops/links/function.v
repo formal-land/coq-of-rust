@@ -39,6 +39,7 @@ Module Impl_FnOnce_for_Function2.
     { intros.
       cbn.
       destruct args as [a1 a2].
+      with_strategy transparent [φ] cbn.
       eapply Run.CallClosure. {
         apply self.
       }

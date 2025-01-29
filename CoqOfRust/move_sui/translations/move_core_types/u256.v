@@ -44,13 +44,27 @@ Module u256.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "U256FromStrError" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::u256::U256FromStrError",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "U256FromStrError" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::u256::U256FromStrError",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -115,7 +129,7 @@ Module u256.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -128,7 +142,12 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU8"
                           |) in
-                        M.alloc (| M.read (| Value.String "TooLargeForU8" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TooLargeForU8" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -137,7 +156,12 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU16"
                           |) in
-                        M.alloc (| M.read (| Value.String "TooLargeForU16" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TooLargeForU16" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -146,7 +170,12 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU32"
                           |) in
-                        M.alloc (| M.read (| Value.String "TooLargeForU32" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TooLargeForU32" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -155,7 +184,12 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU64"
                           |) in
-                        M.alloc (| M.read (| Value.String "TooLargeForU64" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TooLargeForU64" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -164,7 +198,12 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU128"
                           |) in
-                        M.alloc (| M.read (| Value.String "TooLargeForU128" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TooLargeForU128" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -211,7 +250,7 @@ Module u256.
                     [],
                     [ Ty.path "move_core_types::u256::U256CastErrorKind" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -222,7 +261,7 @@ Module u256.
                     [],
                     [ Ty.path "move_core_types::u256::U256CastErrorKind" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -273,7 +312,7 @@ Module u256.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -315,7 +354,7 @@ Module u256.
                     [],
                     [ Ty.path "move_core_types::u256::U256CastErrorKind" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -329,7 +368,13 @@ Module u256.
                   [],
                   [ __H ]
                 |),
-                [ __self_discr; M.read (| state |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |)
             |)
           |)))
@@ -374,20 +419,42 @@ Module u256.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "U256CastError" |);
-              M.read (| Value.String "kind" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256CastError",
-                "kind"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "U256CastError" |) |)
               |);
-              M.read (| Value.String "val" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::u256::U256CastError",
-                  "val"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::u256::U256CastError",
+                      "kind"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "val" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::u256::U256CastError",
+                          "val"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -482,7 +549,7 @@ Module u256.
               M.copy (|
                 M.match_operator (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "move_core_types::u256::U256CastError",
                     "kind"
                   |),
@@ -502,7 +569,12 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU16"
                           |) in
-                        M.alloc (| M.read (| Value.String "u16" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "u16" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
@@ -510,7 +582,12 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU32"
                           |) in
-                        M.alloc (| M.read (| Value.String "u32" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "u32" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
@@ -518,7 +595,12 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU64"
                           |) in
-                        M.alloc (| M.read (| Value.String "u64" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "u64" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
@@ -526,7 +608,12 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU128"
                           |) in
-                        M.alloc (| M.read (| Value.String "u128" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "u128" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |) in
@@ -553,42 +640,73 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "Cast failed. " |);
-                                        M.read (| Value.String " too large for " |);
-                                        M.read (| Value.String "." |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "move_core_types::u256::U256" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "move_core_types::u256::U256CastError",
-                                              "val"
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                          |),
-                                          [ type_str ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "Cast failed. " |);
+                                              M.read (| Value.String " too large for " |);
+                                              M.read (| Value.String "." |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "move_core_types::u256::U256" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "move_core_types::u256::U256CastError",
+                                                          "val"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, type_str |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -604,7 +722,7 @@ Module u256.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
                 [
-                  M.read (| f |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
@@ -613,20 +731,41 @@ Module u256.
                       []
                     |),
                     [
-                      M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.path "alloc::string::String" ]
-                              |),
-                              [ err_str ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, err_str |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -669,10 +808,13 @@ Module u256.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256FromStrError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::u256::U256FromStrError",
+                  0
+                |)
               |)
             ]
           |)))
@@ -704,30 +846,54 @@ Module u256.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [],
-                            [ Ty.path "uint::uint::FromStrRadixErr" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "move_core_types::u256::U256FromStrError",
-                              0
-                            |)
-                          ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [],
+                                  [ Ty.path "uint::uint::FromStrRadixErr" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::u256::U256FromStrError",
+                                          0
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -764,7 +930,7 @@ Module u256.
           M.read (|
             M.match_operator (|
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -796,13 +962,24 @@ Module u256.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "U256" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::u256::U256",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "U256" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::u256::U256",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -850,15 +1027,21 @@ Module u256.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::u256::U256",
+                  0
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "move_core_types::u256::U256",
+                  0
+                |)
               |)
             ]
           |)))
@@ -925,12 +1108,20 @@ Module u256.
               [ __H ]
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::u256::U256",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| state |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -976,15 +1167,31 @@ Module u256.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::u256::U256",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::u256::U256",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -1020,15 +1227,31 @@ Module u256.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::u256::U256",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::u256::U256",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -1103,12 +1326,15 @@ Module u256.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::u256::U256",
+                  0
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1147,12 +1373,20 @@ Module u256.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::u256::U256",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1191,12 +1425,20 @@ Module u256.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::u256::U256",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1233,7 +1475,10 @@ Module u256.
               [],
               []
             |),
-            [ M.read (| s |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1278,96 +1523,109 @@ Module u256.
                       []
                     |),
                     [
-                      M.match_operator (|
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    [ Ty.path "u8" ];
-                                  Ty.associated
-                                ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "serde::de::Deserialize",
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    [ Ty.path "u8" ],
-                                  [],
-                                  [],
-                                  "deserialize",
-                                  [],
-                                  [ D ]
-                                |),
-                                [ M.read (| deserializer |) ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.match_operator (|
                               M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [ Ty.path "move_core_types::u256::U256"; Ty.associated
-                                            ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [ Ty.path "core::convert::Infallible"; Ty.associated ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
-                                      |)
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::Try",
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [ Ty.path "u8" ];
+                                        Ty.associated
+                                      ],
+                                    [],
+                                    [],
+                                    "branch",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "serde::de::Deserialize",
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [ Ty.path "u8" ],
+                                        [],
+                                        [],
+                                        "deserialize",
+                                        [],
+                                        [ D ]
+                                      |),
+                                      [ M.read (| deserializer |) ]
                                     |)
-                                  |)
+                                  ]
                                 |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
-                        ]
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Break",
+                                        0
+                                      |) in
+                                    let residual := M.copy (| γ0_0 |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::try_trait::FromResidual",
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "move_core_types::u256::U256";
+                                                    Ty.associated
+                                                  ],
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.associated
+                                                    ]
+                                                ],
+                                                "from_residual",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| residual |) ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Continue",
+                                        0
+                                      |) in
+                                    let val := M.copy (| γ0_0 |) in
+                                    val))
+                              ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -1412,15 +1670,18 @@ Module u256.
               [ S ]
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "move_core_types::u256::U256",
-                    "to_le_bytes",
-                    [],
-                    []
-                  |),
-                  [ M.read (| M.read (| self |) |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "move_core_types::u256::U256",
+                      "to_le_bytes",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                  |)
                 |)
               |);
               M.read (| serializer |)
@@ -1880,7 +2141,7 @@ Module u256.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::bit::BitAnd",
@@ -1891,7 +2152,7 @@ Module u256.
                     [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -1961,7 +2222,7 @@ Module u256.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Add",
@@ -1972,7 +2233,7 @@ Module u256.
                     [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -2042,7 +2303,7 @@ Module u256.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Sub",
@@ -2053,7 +2314,7 @@ Module u256.
                     [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -2123,7 +2384,7 @@ Module u256.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Mul",
@@ -2134,7 +2395,7 @@ Module u256.
                     [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -2218,7 +2479,7 @@ Module u256.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Div",
@@ -2229,7 +2490,7 @@ Module u256.
                     [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -2313,7 +2574,7 @@ Module u256.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 Value.StructTuple
                   "move_core_types::u256::U256"
                   [
@@ -2330,7 +2591,7 @@ Module u256.
                       [
                         M.read (|
                           M.SubPointer.get_struct_tuple_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "move_core_types::u256::U256",
                             0
                           |)
@@ -2486,14 +2747,22 @@ Module u256.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "str",
-                          "trim_start_matches",
-                          [],
-                          [ Ty.path "char" ]
-                        |),
-                        [ M.read (| src |); Value.UnicodeChar 48 ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "str",
+                              "trim_start_matches",
+                              [],
+                              [ Ty.path "char" ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+                              Value.UnicodeChar 48
+                            ]
+                          |)
+                        |)
                       |);
                       M.read (| radix |)
                     ]
@@ -2530,7 +2799,7 @@ Module u256.
                   [],
                   []
                 |),
-                [ M.read (| slice |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
               |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2566,12 +2835,18 @@ Module u256.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "move_core_types::u256::U256",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "move_core_types::u256::U256",
+                        0
+                      |)
                     |);
-                    bytes
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
                   ]
                 |)
               |) in
@@ -2600,10 +2875,13 @@ Module u256.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::u256::U256",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2627,10 +2905,13 @@ Module u256.
             (M.call_closure (|
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::u256::U256",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_core_types::u256::U256",
+                    0
+                  |)
                 |)
               ]
             |))))
@@ -2654,10 +2935,13 @@ Module u256.
             (M.call_closure (|
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::u256::U256",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_core_types::u256::U256",
+                    0
+                  |)
                 |)
               ]
             |))))
@@ -2681,10 +2965,13 @@ Module u256.
             (M.call_closure (|
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::u256::U256",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_core_types::u256::U256",
+                    0
+                  |)
                 |)
               ]
             |))))
@@ -2708,10 +2995,13 @@ Module u256.
             (M.call_closure (|
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::u256::U256",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_core_types::u256::U256",
+                    0
+                  |)
                 |)
               ]
             |))))
@@ -2734,10 +3024,13 @@ Module u256.
           M.call_closure (|
             M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::u256::U256",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::u256::U256",
+                  0
+                |)
               |)
             ]
           |)))
@@ -3239,10 +3532,13 @@ Module u256.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_tuple_field (|
-                            self,
-                            "move_core_types::u256::U256",
-                            0
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "move_core_types::u256::U256",
+                              0
+                            |)
                           |)
                         ]
                       |))
@@ -3274,8 +3570,17 @@ Module u256.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array [ M.read (| Value.String "Fatal! Downcast failed" |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [ M.read (| Value.String "Fatal! Downcast failed" |) ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -3565,7 +3870,7 @@ Module u256.
                     [],
                     []
                   |),
-                  [ low; M.read (| value_LOWER_MASK |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, low |); M.read (| value_LOWER_MASK |) ]
                 |)
               |) in
             let~ _ :=
@@ -3581,7 +3886,7 @@ Module u256.
                     []
                   |),
                   [
-                    t;
+                    M.borrow (| Pointer.Kind.MutRef, t |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
@@ -3632,7 +3937,7 @@ Module u256.
                     []
                   |),
                   [
-                    low;
+                    M.borrow (| Pointer.Kind.MutRef, low |);
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::bit::Shl",
@@ -3705,7 +4010,7 @@ Module u256.
                     [],
                     []
                   |),
-                  [ low; M.read (| value_LOWER_MASK |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, low |); M.read (| value_LOWER_MASK |) ]
                 |)
               |) in
             let~ _ :=
@@ -3721,7 +4026,7 @@ Module u256.
                     []
                   |),
                   [
-                    t;
+                    M.borrow (| Pointer.Kind.MutRef, t |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
@@ -3772,7 +4077,7 @@ Module u256.
                     []
                   |),
                   [
-                    low;
+                    M.borrow (| Pointer.Kind.MutRef, low |);
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::bit::Shl",
@@ -3815,7 +4120,7 @@ Module u256.
                     []
                   |),
                   [
-                    high;
+                    M.borrow (| Pointer.Kind.MutRef, high |);
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::bit::Shr",
@@ -3844,7 +4149,7 @@ Module u256.
                     []
                   |),
                   [
-                    high;
+                    M.borrow (| Pointer.Kind.MutRef, high |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
@@ -4112,15 +4417,23 @@ Module u256.
             |),
             [
               Value.StructTuple "num_bigint::bigint::Sign::Plus" [];
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "move_core_types::u256::U256",
-                    "to_le_bytes",
-                    [],
-                    []
-                  |),
-                  [ M.read (| M.read (| n |) |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "move_core_types::u256::U256",
+                          "to_le_bytes",
+                          [],
+                          []
+                        |),
+                        [ M.read (| M.deref (| M.read (| n |) |) |) ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -4178,26 +4491,50 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_upper_hex",
-                                            [],
-                                            [ Ty.path "primitive_types::U256" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              M.read (| n |),
-                                              "move_core_types::u256::U256",
-                                              0
-                                            |)
-                                          ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_upper_hex",
+                                                  [],
+                                                  [ Ty.path "primitive_types::U256" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          M.deref (| M.read (| n |) |),
+                                                          "move_core_types::u256::U256",
+                                                          0
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -4229,22 +4566,35 @@ Module u256.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.path "alloc::string::String",
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [ num_str ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.path "alloc::string::String",
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, num_str |) |)
+                              |)
+                            ]
+                          |)
+                        |)
                       |);
                       Value.Integer IntegerKind.U32 16
                     ]
                   |);
-                  M.read (| Value.String "Cannot convert to U256" |)
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "Cannot convert to U256" |) |)
+                  |)
                 ]
               |)
             |)
@@ -4292,7 +4642,12 @@ Module u256.
                     [],
                     []
                   |),
-                  [ M.SubPointer.get_struct_tuple_field (| n, "move_core_types::u256::U256", 0 |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (| n, "move_core_types::u256::U256", 0 |)
+                    |)
+                  ]
                 |)
               |) in
             M.match_operator (|
@@ -4380,7 +4735,12 @@ Module u256.
                     [],
                     []
                   |),
-                  [ M.SubPointer.get_struct_tuple_field (| n, "move_core_types::u256::U256", 0 |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (| n, "move_core_types::u256::U256", 0 |)
+                    |)
+                  ]
                 |)
               |) in
             M.match_operator (|
@@ -4468,7 +4828,12 @@ Module u256.
                     [],
                     []
                   |),
-                  [ M.SubPointer.get_struct_tuple_field (| n, "move_core_types::u256::U256", 0 |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (| n, "move_core_types::u256::U256", 0 |)
+                    |)
+                  ]
                 |)
               |) in
             M.match_operator (|
@@ -4556,7 +4921,12 @@ Module u256.
                     [],
                     []
                   |),
-                  [ M.SubPointer.get_struct_tuple_field (| n, "move_core_types::u256::U256", 0 |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (| n, "move_core_types::u256::U256", 0 |)
+                    |)
+                  ]
                 |)
               |) in
             M.match_operator (|
@@ -4653,19 +5023,22 @@ Module u256.
                               []
                             |),
                             [
-                              n;
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.path "move_core_types::u256::U256",
-                                    [],
-                                    [ Ty.path "u128" ],
-                                    "from",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                              M.borrow (| Pointer.Kind.Ref, n |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::convert::From",
+                                      Ty.path "move_core_types::u256::U256",
+                                      [],
+                                      [ Ty.path "u128" ],
+                                      "from",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                                  |)
                                 |)
                               |)
                             ]
@@ -4706,10 +5079,13 @@ Module u256.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_tuple_field (|
-                                n,
-                                "move_core_types::u256::U256",
-                                0
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  n,
+                                  "move_core_types::u256::U256",
+                                  0
+                                |)
                               |)
                             ]
                           |)
@@ -4755,7 +5131,13 @@ Module u256.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "rand_core::RngCore", R, [], [], "fill_bytes", [], [] |),
-                  [ M.read (| rng |); dest ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| rng |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, dest |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -4766,7 +5148,12 @@ Module u256.
                   [],
                   []
                 |),
-                [ dest ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, dest |) |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -4806,7 +5193,7 @@ Module u256.
           M.read (|
             M.match_operator (|
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4849,26 +5236,56 @@ Module u256.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "UniformU256" |);
-              M.read (| Value.String "low" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::u256::UniformU256",
-                "low"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "UniformU256" |) |)
               |);
-              M.read (| Value.String "range" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::u256::UniformU256",
-                "range"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "low" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::u256::UniformU256",
+                      "low"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "z" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::u256::UniformU256",
-                  "z"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "range" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::u256::UniformU256",
+                      "range"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "z" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::u256::UniformU256",
+                          "z"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -4918,15 +5335,21 @@ Module u256.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::u256::UniformU256",
-                    "low"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::u256::UniformU256",
+                      "low"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_core_types::u256::UniformU256",
-                    "low"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::u256::UniformU256",
+                      "low"
+                    |)
                   |)
                 ]
               |),
@@ -4942,15 +5365,21 @@ Module u256.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::u256::UniformU256",
-                      "range"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::u256::UniformU256",
+                        "range"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_core_types::u256::UniformU256",
-                      "range"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "move_core_types::u256::UniformU256",
+                        "range"
+                      |)
                     |)
                   ]
                 |)))
@@ -4967,15 +5396,21 @@ Module u256.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::u256::UniformU256",
-                    "z"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::u256::UniformU256",
+                      "z"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_core_types::u256::UniformU256",
-                    "z"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::u256::UniformU256",
+                      "z"
+                    |)
                   |)
                 ]
               |)))
@@ -5063,32 +5498,36 @@ Module u256.
           M.read (|
             let~ low :=
               M.copy (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "rand::distributions::uniform::SampleBorrow",
-                    B1,
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "borrow",
-                    [],
-                    []
-                  |),
-                  [ low ]
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "rand::distributions::uniform::SampleBorrow",
+                      B1,
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "borrow",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, low |) ]
+                  |)
                 |)
               |) in
             let~ high :=
               M.copy (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "rand::distributions::uniform::SampleBorrow",
-                    B2,
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "borrow",
-                    [],
-                    []
-                  |),
-                  [ high ]
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "rand::distributions::uniform::SampleBorrow",
+                      B2,
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "borrow",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, high |) ]
+                  |)
                 |)
               |) in
             let~ _ :=
@@ -5111,7 +5550,10 @@ Module u256.
                                   [],
                                   []
                                 |),
-                                [ low; high ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, low |);
+                                  M.borrow (| Pointer.Kind.Ref, high |)
+                                ]
                               |)
                             |)
                           |)) in
@@ -5129,13 +5571,22 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "Uniform::new called with `low >= high`"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "Uniform::new called with `low >= high`"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -5227,32 +5678,36 @@ Module u256.
           M.read (|
             let~ low :=
               M.copy (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "rand::distributions::uniform::SampleBorrow",
-                    B1,
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "borrow",
-                    [],
-                    []
-                  |),
-                  [ low ]
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "rand::distributions::uniform::SampleBorrow",
+                      B1,
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "borrow",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, low |) ]
+                  |)
                 |)
               |) in
             let~ high :=
               M.copy (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "rand::distributions::uniform::SampleBorrow",
-                    B2,
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "borrow",
-                    [],
-                    []
-                  |),
-                  [ high ]
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "rand::distributions::uniform::SampleBorrow",
+                      B2,
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "borrow",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, high |) ]
+                  |)
                 |)
               |) in
             let~ _ :=
@@ -5275,7 +5730,10 @@ Module u256.
                                   [],
                                   []
                                 |),
-                                [ low; high ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, low |);
+                                  M.borrow (| Pointer.Kind.Ref, high |)
+                                ]
                               |)
                             |)
                           |)) in
@@ -5293,14 +5751,22 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "Uniform::new_inclusive called with `low > high`"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "Uniform::new_inclusive called with `low > high`"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -5375,16 +5841,19 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  range;
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_core_types::u256::U256",
-                                        "zero",
-                                        [],
+                                  M.borrow (| Pointer.Kind.Ref, range |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_core_types::u256::U256",
+                                          "zero",
+                                          [],
+                                          []
+                                        |),
                                         []
-                                      |),
-                                      []
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -5502,7 +5971,7 @@ Module u256.
                 let~ range :=
                   M.copy (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "move_core_types::u256::UniformU256",
                       "range"
                     |)
@@ -5526,16 +5995,19 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  range;
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_core_types::u256::U256",
-                                        "zero",
-                                        [],
+                                  M.borrow (| Pointer.Kind.Ref, range |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_core_types::u256::U256",
+                                          "zero",
+                                          [],
+                                          []
+                                        |),
                                         []
-                                      |),
-                                      []
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -5571,7 +6043,7 @@ Module u256.
                                 M.read (| unsigned_max |);
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_core_types::u256::UniformU256",
                                     "z"
                                   |)
@@ -5596,7 +6068,12 @@ Module u256.
                                           [],
                                           [ Ty.path "move_core_types::u256::U256" ]
                                         |),
-                                        [ M.read (| rng |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| rng |) |)
+                                          |)
+                                        ]
                                       |)
                                     |) in
                                   M.match_operator (|
@@ -5637,7 +6114,10 @@ Module u256.
                                                             [],
                                                             []
                                                           |),
-                                                          [ lo; zone ]
+                                                          [
+                                                            M.borrow (| Pointer.Kind.Ref, lo |);
+                                                            M.borrow (| Pointer.Kind.Ref, zone |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -5659,7 +6139,7 @@ Module u256.
                                                             [
                                                               M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
+                                                                  M.deref (| M.read (| self |) |),
                                                                   "move_core_types::u256::UniformU256",
                                                                   "low"
                                                                 |)
@@ -5694,7 +6174,7 @@ Module u256.
                               [],
                               [ Ty.path "move_core_types::u256::U256" ]
                             |),
-                            [ M.read (| rng |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| rng |) |) |) ]
                           |)
                         |)))
                   ]
@@ -5726,32 +6206,36 @@ Module u256.
           M.read (|
             let~ low :=
               M.copy (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "rand::distributions::uniform::SampleBorrow",
-                    B1,
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "borrow",
-                    [],
-                    []
-                  |),
-                  [ low ]
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "rand::distributions::uniform::SampleBorrow",
+                      B1,
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "borrow",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, low |) ]
+                  |)
                 |)
               |) in
             let~ high :=
               M.copy (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "rand::distributions::uniform::SampleBorrow",
-                    B2,
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "borrow",
-                    [],
-                    []
-                  |),
-                  [ high ]
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "rand::distributions::uniform::SampleBorrow",
+                      B2,
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "borrow",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, high |) ]
+                  |)
                 |)
               |) in
             let~ _ :=
@@ -5774,7 +6258,10 @@ Module u256.
                                   [],
                                   []
                                 |),
-                                [ low; high ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, low |);
+                                  M.borrow (| Pointer.Kind.Ref, high |)
+                                ]
                               |)
                             |)
                           |)) in
@@ -5792,13 +6279,22 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "UniformSampler::sample_single: low >= high"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "UniformSampler::sample_single: low >= high"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -5846,7 +6342,7 @@ Module u256.
                       |)
                     ]
                   |);
-                  M.read (| rng |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| rng |) |) |)
                 ]
               |)
             |)
@@ -5901,32 +6397,36 @@ Module u256.
               (M.read (|
                 let~ low :=
                   M.copy (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "rand::distributions::uniform::SampleBorrow",
-                        B1,
-                        [],
-                        [ Ty.path "move_core_types::u256::U256" ],
-                        "borrow",
-                        [],
-                        []
-                      |),
-                      [ low ]
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "rand::distributions::uniform::SampleBorrow",
+                          B1,
+                          [],
+                          [ Ty.path "move_core_types::u256::U256" ],
+                          "borrow",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, low |) ]
+                      |)
                     |)
                   |) in
                 let~ high :=
                   M.copy (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "rand::distributions::uniform::SampleBorrow",
-                        B2,
-                        [],
-                        [ Ty.path "move_core_types::u256::U256" ],
-                        "borrow",
-                        [],
-                        []
-                      |),
-                      [ high ]
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "rand::distributions::uniform::SampleBorrow",
+                          B2,
+                          [],
+                          [ Ty.path "move_core_types::u256::U256" ],
+                          "borrow",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, high |) ]
+                      |)
                     |)
                   |) in
                 let~ _ :=
@@ -5949,7 +6449,10 @@ Module u256.
                                       [],
                                       []
                                     |),
-                                    [ low; high ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, low |);
+                                      M.borrow (| Pointer.Kind.Ref, high |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -5968,14 +6471,22 @@ Module u256.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "UniformSampler::sample_single_inclusive: low > high"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String
+                                                      "UniformSampler::sample_single_inclusive: low > high"
+                                                  |)
+                                                ]
                                             |)
-                                          ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -6037,16 +6548,19 @@ Module u256.
                                     []
                                   |),
                                   [
-                                    range;
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_core_types::u256::U256",
-                                          "zero",
-                                          [],
+                                    M.borrow (| Pointer.Kind.Ref, range |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "move_core_types::u256::U256",
+                                            "zero",
+                                            [],
+                                            []
+                                          |),
                                           []
-                                        |),
-                                        []
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -6068,7 +6582,12 @@ Module u256.
                                       [],
                                       [ Ty.path "move_core_types::u256::U256" ]
                                     |),
-                                    [ M.read (| rng |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| rng |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)
@@ -6106,7 +6625,7 @@ Module u256.
                                 [],
                                 []
                               |),
-                              [ range ]
+                              [ M.borrow (| Pointer.Kind.Ref, range |) ]
                             |)
                           ]
                         |);
@@ -6139,7 +6658,8 @@ Module u256.
                                   [],
                                   [ Ty.path "move_core_types::u256::U256" ]
                                 |),
-                                [ M.read (| rng |) ]
+                                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| rng |) |) |)
+                                ]
                               |)
                             |) in
                           M.match_operator (|
@@ -6179,7 +6699,10 @@ Module u256.
                                                     [],
                                                     []
                                                   |),
-                                                  [ lo; zone ]
+                                                  [
+                                                    M.borrow (| Pointer.Kind.Ref, lo |);
+                                                    M.borrow (| Pointer.Kind.Ref, zone |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=

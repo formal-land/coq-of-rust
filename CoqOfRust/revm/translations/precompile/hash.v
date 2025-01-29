@@ -61,17 +61,22 @@ Module hash.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.path "alloy_primitives::bytes_::Bytes",
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [ M.read (| input |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.path "alloy_primitives::bytes_::Bytes",
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
+                          |)
+                        |)
                       |)
                     ]
                   |);
@@ -212,18 +217,17 @@ Module hash.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "generic_array::GenericArray")
-                                          []
-                                          [
-                                            Ty.path "u8";
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
                                             Ty.apply
-                                              (Ty.path "typenum::uint::UInt")
+                                              (Ty.path "generic_array::GenericArray")
                                               []
                                               [
+                                                Ty.path "u8";
                                                 Ty.apply
                                                   (Ty.path "typenum::uint::UInt")
                                                   []
@@ -244,8 +248,16 @@ Module hash.
                                                                   (Ty.path "typenum::uint::UInt")
                                                                   []
                                                                   [
-                                                                    Ty.path "typenum::uint::UTerm";
-                                                                    Ty.path "typenum::bit::B1"
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "typenum::uint::UInt")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "typenum::uint::UTerm";
+                                                                        Ty.path "typenum::bit::B1"
+                                                                      ];
+                                                                    Ty.path "typenum::bit::B0"
                                                                   ];
                                                                 Ty.path "typenum::bit::B0"
                                                               ];
@@ -254,17 +266,17 @@ Module hash.
                                                         Ty.path "typenum::bit::B0"
                                                       ];
                                                     Ty.path "typenum::bit::B0"
-                                                  ];
-                                                Ty.path "typenum::bit::B0"
-                                              ]
-                                          ],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [ output ]
+                                                  ]
+                                              ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, output |) ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -312,17 +324,22 @@ Module hash.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.path "alloy_primitives::bytes_::Bytes",
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [ M.read (| input |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.path "alloy_primitives::bytes_::Bytes",
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
+                          |)
+                        |)
                       |)
                     ]
                   |);
@@ -400,7 +417,7 @@ Module hash.
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                           ]
                         |),
-                        [ hasher; M.read (| input |) ]
+                        [ M.borrow (| Pointer.Kind.MutRef, hasher |); M.read (| input |) ]
                       |)
                     |) in
                   let~ output :=
@@ -484,30 +501,40 @@ Module hash.
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::IndexMut",
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    [ Ty.path "u8" ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeFrom")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index_mut",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  output;
-                                  Value.StructRecord
-                                    "core::ops::range::RangeFrom"
-                                    [ ("start", Value.Integer IntegerKind.Usize 12) ]
-                                ]
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::IndexMut",
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [ Ty.path "u8" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeFrom")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index_mut",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (| Pointer.Kind.MutRef, output |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeFrom"
+                                            [ ("start", Value.Integer IntegerKind.Usize 12) ]
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -548,7 +575,7 @@ Module hash.
                                     [],
                                     []
                                   |),
-                                  [ output ]
+                                  [ M.borrow (| Pointer.Kind.Ref, output |) ]
                                 |)
                               ]
                             |)

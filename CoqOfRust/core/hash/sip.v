@@ -36,14 +36,28 @@ Module hash.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "SipHasher13" |);
-                M.read (| Value.String "hasher" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::hash::sip::SipHasher13",
-                    "hasher"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "SipHasher13" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "hasher" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::SipHasher13",
+                            "hasher"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -86,10 +100,18 @@ Module hash.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::hash::sip::SipHasher13",
-                        "hasher"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::hash::sip::SipHasher13",
+                              "hasher"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -177,14 +199,28 @@ Module hash.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "SipHasher24" |);
-                M.read (| Value.String "hasher" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::hash::sip::SipHasher24",
-                    "hasher"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "SipHasher24" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "hasher" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::SipHasher24",
+                            "hasher"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -227,10 +263,18 @@ Module hash.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::hash::sip::SipHasher24",
-                        "hasher"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::hash::sip::SipHasher24",
+                              "hasher"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -311,13 +355,27 @@ Module hash.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "SipHasher" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::hash::sip::SipHasher",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "SipHasher" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::SipHasher",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -356,10 +414,18 @@ Module hash.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::hash::sip::SipHasher",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::SipHasher",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -441,62 +507,155 @@ Module hash.
             M.read (|
               let~ names :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (| Value.String "k0" |);
-                        M.read (| Value.String "k1" |);
-                        M.read (| Value.String "length" |);
-                        M.read (| Value.String "state" |);
-                        M.read (| Value.String "tail" |);
-                        M.read (| Value.String "ntail" |);
-                        M.read (| Value.String "_marker" |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "k0" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "k1" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "length" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "state" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "tail" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "ntail" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "_marker" |) |)
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)
                   |)
                 |) in
               let~ values :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "k0"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "k1"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "length"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "state"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "tail"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "ntail"
-                        |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
                         M.alloc (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::hash::sip::Hasher",
-                            "_marker"
-                          |)
+                          Value.Array
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "k0"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "k1"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "length"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "state"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "tail"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "ntail"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::hash::sip::Hasher",
+                                          "_marker"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 |) in
               M.alloc (|
@@ -508,10 +667,13 @@ Module hash.
                     []
                   |),
                   [
-                    M.read (| f |);
-                    M.read (| Value.String "Hasher" |);
-                    M.read (| names |);
-                    M.read (| values |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "Hasher" |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
                 |)
               |)
@@ -560,32 +722,67 @@ Module hash.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "State" |);
-                M.read (| Value.String "v0" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::hash::sip::State",
-                  "v0"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "State" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v0" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "v2" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::hash::sip::State",
-                  "v2"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v2" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "v1" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::hash::sip::State",
-                  "v1"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v1" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "v3" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::hash::sip::State",
-                    "v3"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v3" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::State",
+                            "v3"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -613,7 +810,7 @@ Module hash.
             M.read (|
               M.match_operator (|
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -788,7 +985,12 @@ Module hash.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| buf |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| buf |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)
                                                         |)
@@ -851,12 +1053,28 @@ Module hash.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| buf |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| buf |) |)
+                                              |)
+                                            ]
                                           |);
                                           BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
                                         ]
                                       |);
-                                      M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
+                                      M.rust_cast
+                                        (M.read (|
+                                          M.use
+                                            (M.alloc (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutPointer,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, data |)
+                                                |)
+                                              |)
+                                            |))
+                                        |));
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::mem::size_of",
@@ -960,7 +1178,12 @@ Module hash.
                                                                     [],
                                                                     []
                                                                   |),
-                                                                  [ M.read (| buf |) ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (| M.read (| buf |) |)
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)
                                                             |)
@@ -1023,7 +1246,12 @@ Module hash.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| buf |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| buf |) |)
+                                                  |)
+                                                ]
                                               |);
                                               BinOp.Wrap.add (|
                                                 M.read (| start |),
@@ -1031,7 +1259,18 @@ Module hash.
                                               |)
                                             ]
                                           |);
-                                          M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
+                                          M.rust_cast
+                                            (M.read (|
+                                              M.use
+                                                (M.alloc (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutPointer,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, data |)
+                                                    |)
+                                                  |)
+                                                |))
+                                            |));
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::mem::size_of",
@@ -1084,17 +1323,22 @@ Module hash.
                             (BinOp.Wrap.shl (|
                               M.rust_cast
                                 (M.read (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                      "get_unchecked",
-                                      [],
-                                      [ Ty.path "usize" ]
-                                    |),
-                                    [
-                                      M.read (| buf |);
-                                      BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
-                                    ]
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                        "get_unchecked",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| buf |) |)
+                                        |);
+                                        BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
+                                      ]
+                                    |)
                                   |)
                                 |)),
                               BinOp.Wrap.mul (| M.read (| i |), Value.Integer IntegerKind.Usize 8 |)
@@ -1344,7 +1588,7 @@ Module hash.
                       [],
                       []
                     |),
-                    [ state ]
+                    [ M.borrow (| Pointer.Kind.MutRef, state |) ]
                   |)
                 |) in
               state
@@ -1376,7 +1620,7 @@ Module hash.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::hash::sip::Hasher",
                     "length"
                   |),
@@ -1386,7 +1630,7 @@ Module hash.
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "state"
                     |),
@@ -1396,7 +1640,7 @@ Module hash.
                   BinOp.bit_xor
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "k0"
                       |)
@@ -1407,7 +1651,7 @@ Module hash.
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "state"
                     |),
@@ -1417,7 +1661,7 @@ Module hash.
                   BinOp.bit_xor
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "k1"
                       |)
@@ -1428,7 +1672,7 @@ Module hash.
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "state"
                     |),
@@ -1438,7 +1682,7 @@ Module hash.
                   BinOp.bit_xor
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "k0"
                       |)
@@ -1449,7 +1693,7 @@ Module hash.
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "state"
                     |),
@@ -1459,7 +1703,7 @@ Module hash.
                   BinOp.bit_xor
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "k1"
                       |)
@@ -1469,7 +1713,7 @@ Module hash.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::hash::sip::Hasher",
                     "ntail"
                   |),
@@ -1513,16 +1757,19 @@ Module hash.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::hash::sip::SipHasher",
-                    0
-                  |),
-                  "core::hash::sip::SipHasher24",
-                  "hasher"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::hash::sip::SipHasher",
+                      0
+                    |),
+                    "core::hash::sip::SipHasher24",
+                    "hasher"
+                  |)
                 |);
-                M.read (| msg |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1556,16 +1803,19 @@ Module hash.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "core::hash::sip::SipHasher",
-                          0
-                        |),
-                        "core::hash::sip::SipHasher24",
-                        "hasher"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::SipHasher",
+                            0
+                          |),
+                          "core::hash::sip::SipHasher24",
+                          "hasher"
+                        |)
                       |);
-                      M.read (| s |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
                     ]
                   |)
                 |) in
@@ -1598,14 +1848,17 @@ Module hash.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::hash::sip::SipHasher",
-                    0
-                  |),
-                  "core::hash::sip::SipHasher24",
-                  "hasher"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::hash::sip::SipHasher",
+                      0
+                    |),
+                    "core::hash::sip::SipHasher24",
+                    "hasher"
+                  |)
                 |)
               ]
             |)))
@@ -1653,12 +1906,15 @@ Module hash.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::hash::sip::SipHasher13",
-                  "hasher"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::hash::sip::SipHasher13",
+                    "hasher"
+                  |)
                 |);
-                M.read (| msg |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1692,12 +1948,15 @@ Module hash.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::hash::sip::SipHasher13",
-                        "hasher"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::hash::sip::SipHasher13",
+                          "hasher"
+                        |)
                       |);
-                      M.read (| s |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
                     ]
                   |)
                 |) in
@@ -1730,10 +1989,13 @@ Module hash.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::hash::sip::SipHasher13",
-                  "hasher"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::hash::sip::SipHasher13",
+                    "hasher"
+                  |)
                 |)
               ]
             |)))
@@ -1822,13 +2084,13 @@ Module hash.
                           [],
                           []
                         |),
-                        [ M.read (| msg |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |) ]
                       |)
                     |) in
                   let~ _ :=
                     let β :=
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "length"
                       |) in
@@ -1846,7 +2108,7 @@ Module hash.
                                   BinOp.ne (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::hash::sip::Hasher",
                                         "ntail"
                                       |)
@@ -1863,7 +2125,7 @@ Module hash.
                                   Value.Integer IntegerKind.Usize 8,
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::hash::sip::Hasher",
                                       "ntail"
                                     |)
@@ -1873,7 +2135,7 @@ Module hash.
                             let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::hash::sip::Hasher",
                                   "tail"
                                 |) in
@@ -1885,7 +2147,10 @@ Module hash.
                                     M.call_closure (|
                                       M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
                                       [
-                                        M.read (| msg |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| msg |) |)
+                                        |);
                                         Value.Integer IntegerKind.Usize 0;
                                         M.call_closure (|
                                           M.get_function (|
@@ -1901,7 +2166,7 @@ Module hash.
                                       Value.Integer IntegerKind.Usize 8,
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::hash::sip::Hasher",
                                           "ntail"
                                         |)
@@ -1930,7 +2195,7 @@ Module hash.
                                           let~ _ :=
                                             let β :=
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::hash::sip::Hasher",
                                                 "ntail"
                                               |) in
@@ -1951,7 +2216,7 @@ Module hash.
                                       let β :=
                                         M.SubPointer.get_struct_record_field (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::hash::sip::Hasher",
                                             "state"
                                           |),
@@ -1964,7 +2229,7 @@ Module hash.
                                           (M.read (| β |))
                                           (M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::hash::sip::Hasher",
                                               "tail"
                                             |)
@@ -1983,10 +2248,18 @@ Module hash.
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::hash::sip::Hasher",
-                                              "state"
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::hash::sip::Hasher",
+                                                    "state"
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -1995,7 +2268,7 @@ Module hash.
                                       let β :=
                                         M.SubPointer.get_struct_record_field (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::hash::sip::Hasher",
                                             "state"
                                           |),
@@ -2008,7 +2281,7 @@ Module hash.
                                           (M.read (| β |))
                                           (M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::hash::sip::Hasher",
                                               "tail"
                                             |)
@@ -2017,7 +2290,7 @@ Module hash.
                                     let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::hash::sip::Hasher",
                                           "ntail"
                                         |),
@@ -2103,7 +2376,14 @@ Module hash.
                                                                       [],
                                                                       []
                                                                     |),
-                                                                    [ M.read (| msg |) ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| msg |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |)
                                                               |)
@@ -2167,12 +2447,28 @@ Module hash.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| msg |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| msg |) |)
+                                                    |)
+                                                  ]
                                                 |);
                                                 M.read (| i |)
                                               ]
                                             |);
-                                            M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
+                                            M.rust_cast
+                                              (M.read (|
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutPointer,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, data |)
+                                                      |)
+                                                    |)
+                                                  |))
+                                              |));
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::size_of",
@@ -2200,7 +2496,7 @@ Module hash.
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::hash::sip::Hasher",
                                         "state"
                                       |),
@@ -2224,10 +2520,18 @@ Module hash.
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::hash::sip::Hasher",
-                                          "state"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::hash::sip::Hasher",
+                                                "state"
+                                              |)
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -2236,7 +2540,7 @@ Module hash.
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::hash::sip::Hasher",
                                         "state"
                                       |),
@@ -2276,19 +2580,23 @@ Module hash.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "tail"
                       |),
                       M.call_closure (|
                         M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
-                        [ M.read (| msg |); M.read (| i |); M.read (| left |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |);
+                          M.read (| i |);
+                          M.read (| left |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "ntail"
                       |),
@@ -2329,10 +2637,15 @@ Module hash.
                       []
                     |),
                     [
-                      M.read (| self |);
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                        [ M.read (| s |) ]
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -2349,7 +2662,10 @@ Module hash.
                       [],
                       []
                     |),
-                    [ M.read (| self |); Value.Integer IntegerKind.U8 255 ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      Value.Integer IntegerKind.U8 255
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2383,7 +2699,7 @@ Module hash.
               let~ state :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::hash::sip::Hasher",
                     "state"
                   |)
@@ -2396,7 +2712,7 @@ Module hash.
                         (M.rust_cast
                           (M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::hash::sip::Hasher",
                               "length"
                             |)
@@ -2406,7 +2722,7 @@ Module hash.
                     |))
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "tail"
                       |)
@@ -2424,7 +2740,12 @@ Module hash.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::sip::Sip", S, [], [], "c_rounds", [], [] |),
-                    [ state ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, state |) |)
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -2450,7 +2771,12 @@ Module hash.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::sip::Sip", S, [], [], "d_rounds", [], [] |),
-                    [ state ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, state |) |)
+                      |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -2528,7 +2854,7 @@ Module hash.
                 ("k0",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "k0"
                     |)
@@ -2536,7 +2862,7 @@ Module hash.
                 ("k1",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "k1"
                     |)
@@ -2544,7 +2870,7 @@ Module hash.
                 ("length",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "length"
                     |)
@@ -2552,7 +2878,7 @@ Module hash.
                 ("state",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "state"
                     |)
@@ -2560,7 +2886,7 @@ Module hash.
                 ("tail",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "tail"
                     |)
@@ -2568,7 +2894,7 @@ Module hash.
                 ("ntail",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "ntail"
                     |)
@@ -2576,7 +2902,7 @@ Module hash.
                 ("_marker",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "_marker"
                     |)
@@ -2651,7 +2977,13 @@ Module hash.
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-              [ M.read (| f |); M.read (| Value.String "Sip13Rounds" |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "Sip13Rounds" |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2721,7 +3053,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -2730,14 +3062,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -2748,7 +3080,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -2757,14 +3089,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -2775,7 +3107,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -2784,7 +3116,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -2796,7 +3128,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -2806,7 +3138,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -2815,7 +3147,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -2824,7 +3156,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -2836,7 +3168,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -2846,7 +3178,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -2855,7 +3187,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -2864,7 +3196,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -2876,7 +3208,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -2885,14 +3217,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -2903,7 +3235,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -2912,14 +3244,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -2930,7 +3262,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -2939,7 +3271,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -2951,7 +3283,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -2961,7 +3293,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -2970,7 +3302,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -2979,7 +3311,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -2991,7 +3323,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3001,7 +3333,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3010,7 +3342,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -3019,7 +3351,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -3051,7 +3383,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -3060,14 +3392,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3078,7 +3410,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -3087,14 +3419,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3105,7 +3437,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -3114,7 +3446,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3126,7 +3458,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3136,7 +3468,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3145,7 +3477,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -3154,7 +3486,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3166,7 +3498,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3176,7 +3508,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3185,7 +3517,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -3194,7 +3526,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -3206,7 +3538,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -3215,14 +3547,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3233,7 +3565,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -3242,14 +3574,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3260,7 +3592,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -3269,7 +3601,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3281,7 +3613,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3291,7 +3623,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3300,7 +3632,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -3309,7 +3641,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3321,7 +3653,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3331,7 +3663,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3340,7 +3672,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -3349,7 +3681,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -3363,7 +3695,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -3372,14 +3704,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3390,7 +3722,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -3399,14 +3731,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3417,7 +3749,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -3426,7 +3758,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3438,7 +3770,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3448,7 +3780,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3457,7 +3789,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -3466,7 +3798,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3478,7 +3810,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3488,7 +3820,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3497,7 +3829,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -3506,7 +3838,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -3518,7 +3850,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -3527,14 +3859,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3545,7 +3877,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -3554,14 +3886,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3572,7 +3904,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -3581,7 +3913,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3593,7 +3925,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3603,7 +3935,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3612,7 +3944,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -3621,7 +3953,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3633,7 +3965,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3643,7 +3975,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3652,7 +3984,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -3661,7 +3993,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -3675,7 +4007,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -3684,14 +4016,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3702,7 +4034,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -3711,14 +4043,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3729,7 +4061,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -3738,7 +4070,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3750,7 +4082,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3760,7 +4092,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3769,7 +4101,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -3778,7 +4110,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3790,7 +4122,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3800,7 +4132,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3809,7 +4141,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -3818,7 +4150,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -3830,7 +4162,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -3839,14 +4171,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3857,7 +4189,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -3866,14 +4198,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3884,7 +4216,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -3893,7 +4225,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3905,7 +4237,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3915,7 +4247,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3924,7 +4256,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -3933,7 +4265,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3945,7 +4277,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3955,7 +4287,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3964,7 +4296,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -3973,7 +4305,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -4018,7 +4350,13 @@ Module hash.
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-              [ M.read (| f |); M.read (| Value.String "Sip24Rounds" |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "Sip24Rounds" |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4089,7 +4427,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -4098,14 +4436,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4116,7 +4454,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -4125,14 +4463,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4143,7 +4481,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -4152,7 +4490,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4164,7 +4502,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4174,7 +4512,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4183,7 +4521,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -4192,7 +4530,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4204,7 +4542,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4214,7 +4552,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4223,7 +4561,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -4232,7 +4570,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -4244,7 +4582,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -4253,14 +4591,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4271,7 +4609,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -4280,14 +4618,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4298,7 +4636,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -4307,7 +4645,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4319,7 +4657,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4329,7 +4667,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4338,7 +4676,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -4347,7 +4685,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4359,7 +4697,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4369,7 +4707,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4378,7 +4716,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -4387,7 +4725,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -4401,7 +4739,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -4410,14 +4748,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4428,7 +4766,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -4437,14 +4775,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4455,7 +4793,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -4464,7 +4802,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4476,7 +4814,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4486,7 +4824,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4495,7 +4833,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -4504,7 +4842,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4516,7 +4854,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4526,7 +4864,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4535,7 +4873,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -4544,7 +4882,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -4556,7 +4894,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -4565,14 +4903,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4583,7 +4921,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -4592,14 +4930,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4610,7 +4948,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -4619,7 +4957,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4631,7 +4969,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4641,7 +4979,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4650,7 +4988,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -4659,7 +4997,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4671,7 +5009,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4681,7 +5019,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4690,7 +5028,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -4699,7 +5037,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -4732,7 +5070,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -4741,14 +5079,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4759,7 +5097,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -4768,14 +5106,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4786,7 +5124,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -4795,7 +5133,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4807,7 +5145,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4817,7 +5155,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4826,7 +5164,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -4835,7 +5173,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4847,7 +5185,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4857,7 +5195,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4866,7 +5204,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -4875,7 +5213,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -4887,7 +5225,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -4896,14 +5234,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4914,7 +5252,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -4923,14 +5261,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4941,7 +5279,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -4950,7 +5288,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4962,7 +5300,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4972,7 +5310,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4981,7 +5319,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -4990,7 +5328,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5002,7 +5340,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5012,7 +5350,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5021,7 +5359,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -5030,7 +5368,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -5044,7 +5382,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -5053,14 +5391,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5071,7 +5409,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -5080,14 +5418,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5098,7 +5436,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -5107,7 +5445,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5119,7 +5457,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5129,7 +5467,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5138,7 +5476,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -5147,7 +5485,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5159,7 +5497,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5169,7 +5507,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5178,7 +5516,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -5187,7 +5525,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -5199,7 +5537,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -5208,14 +5546,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5226,7 +5564,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -5235,14 +5573,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5253,7 +5591,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -5262,7 +5600,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5274,7 +5612,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5284,7 +5622,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5293,7 +5631,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -5302,7 +5640,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5314,7 +5652,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5324,7 +5662,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5333,7 +5671,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -5342,7 +5680,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -5356,7 +5694,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -5365,14 +5703,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5383,7 +5721,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -5392,14 +5730,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5410,7 +5748,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -5419,7 +5757,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5431,7 +5769,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5441,7 +5779,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5450,7 +5788,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -5459,7 +5797,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5471,7 +5809,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5481,7 +5819,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5490,7 +5828,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -5499,7 +5837,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -5511,7 +5849,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -5520,14 +5858,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5538,7 +5876,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -5547,14 +5885,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5565,7 +5903,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -5574,7 +5912,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5586,7 +5924,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5596,7 +5934,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5605,7 +5943,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -5614,7 +5952,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5626,7 +5964,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5636,7 +5974,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5645,7 +5983,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -5654,7 +5992,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -5668,7 +6006,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -5677,14 +6015,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5695,7 +6033,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -5704,14 +6042,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5722,7 +6060,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -5731,7 +6069,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5743,7 +6081,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5753,7 +6091,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5762,7 +6100,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -5771,7 +6109,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5783,7 +6121,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5793,7 +6131,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5802,7 +6140,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -5811,7 +6149,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -5823,7 +6161,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -5832,14 +6170,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5850,7 +6188,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
@@ -5859,14 +6197,14 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5877,7 +6215,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
@@ -5886,7 +6224,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5898,7 +6236,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5908,7 +6246,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5917,7 +6255,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
@@ -5926,7 +6264,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5938,7 +6276,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5948,7 +6286,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5957,7 +6295,7 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
@@ -5966,7 +6304,7 @@ Module hash.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)

@@ -42,7 +42,7 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |) in
                       let γ0_0 :=
@@ -97,7 +97,14 @@ Module slice.
                                                 [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -132,7 +139,18 @@ Module slice.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| el |); value ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| el |) |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.Ref, value |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)))
@@ -142,7 +160,7 @@ Module slice.
                                   |)))
                             ]
                           |)) in
-                      M.write (| M.read (| last |), M.read (| value |) |)));
+                      M.write (| M.deref (| M.read (| last |) |), M.read (| value |) |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |)
@@ -198,7 +216,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       ]
                     |)
@@ -222,7 +240,12 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -243,7 +266,10 @@ Module slice.
                                         |) in
                                       let item := M.copy (| γ0_0 |) in
                                       let~ _ :=
-                                        M.write (| M.read (| item |), M.read (| value |) |) in
+                                        M.write (|
+                                          M.deref (| M.read (| item |) |),
+                                          M.read (| value |)
+                                        |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in

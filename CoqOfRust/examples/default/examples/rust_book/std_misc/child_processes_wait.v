@@ -30,27 +30,35 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "std::process::Command", "spawn", [], [] |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "std::process::Command",
-                        "arg",
-                        [],
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                      |),
-                      [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "std::process::Command",
-                              "new",
-                              [],
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                            |),
-                            [ M.read (| Value.String "sleep" |) ]
-                          |)
-                        |);
-                        M.read (| Value.String "5" |)
-                      ]
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "std::process::Command",
+                            "arg",
+                            [],
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "std::process::Command",
+                                    "new",
+                                    [],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                  |),
+                                  [ M.read (| Value.String "sleep" |) ]
+                                |)
+                              |)
+                            |);
+                            M.read (| Value.String "5" |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -72,7 +80,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "std::process::Child", "wait", [], [] |),
-                  [ child ]
+                  [ M.borrow (| Pointer.Kind.MutRef, child |) ]
                 |)
               ]
             |)
@@ -90,8 +98,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "reached end of main
-" |) ] |)
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "reached end of main
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]

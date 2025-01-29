@@ -116,7 +116,7 @@ Module evm.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -183,23 +183,31 @@ Module evm.
                                               []
                                             |),
                                             [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "revm_database_interface::DatabaseGetter",
-                                                  CTX,
-                                                  [],
-                                                  [],
-                                                  "db",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "revm::evm::Evm",
-                                                    "context"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "revm_database_interface::DatabaseGetter",
+                                                      CTX,
+                                                      [],
+                                                      [],
+                                                      "db",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "revm::evm::Evm",
+                                                          "context"
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                ]
+                                                |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
@@ -298,10 +306,13 @@ Module evm.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "context"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm::evm::Evm",
+                        "context"
+                      |)
                     |);
                     M.read (| block |)
                   ]
@@ -343,10 +354,13 @@ Module evm.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "context"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm::evm::Evm",
+                        "context"
+                      |)
                     |);
                     M.read (| tx |)
                   ]
@@ -390,7 +404,7 @@ Module evm.
               [],
               []
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -698,7 +712,7 @@ Module evm.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |);
                     M.closure
                       (fun γ =>
@@ -734,7 +748,7 @@ Module evm.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             output
@@ -779,31 +793,47 @@ Module evm.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "revm_handler_interface::handler::Handler",
-                        Ty.apply
-                          (Ty.path "revm_handler::EthHandler")
-                          []
-                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
-                        [],
-                        [],
-                        "post_execution",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm::evm::Evm",
-                          "handler"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "revm_handler_interface::handler::Handler",
+                            Ty.apply
+                              (Ty.path "revm_handler::EthHandler")
+                              []
+                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                            [],
+                            [],
+                            "post_execution",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm::evm::Evm",
+                                "handler"
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "context"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm::evm::Evm",
+                            "context"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -892,31 +922,47 @@ Module evm.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "revm_handler_interface::handler::Handler",
-                                        Ty.apply
-                                          (Ty.path "revm_handler::EthHandler")
-                                          []
-                                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
-                                        [],
-                                        [],
-                                        "validation",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "revm::evm::Evm",
-                                          "handler"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "revm_handler_interface::handler::Handler",
+                                            Ty.apply
+                                              (Ty.path "revm_handler::EthHandler")
+                                              []
+                                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                                            [],
+                                            [],
+                                            "validation",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "revm::evm::Evm",
+                                                "handler"
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "revm::evm::Evm",
-                                      "context"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm::evm::Evm",
+                                            "context"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |);
@@ -959,7 +1005,12 @@ Module evm.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| self |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| self |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)
@@ -1043,7 +1094,10 @@ Module evm.
                         [],
                         []
                       |),
-                      [ M.read (| self |); M.read (| initial_gas_spend |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                        M.read (| initial_gas_spend |)
+                      ]
                     |)
                   |) in
                 let~ output :=
@@ -1059,31 +1113,47 @@ Module evm.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "revm_handler_interface::handler::Handler",
-                            Ty.apply
-                              (Ty.path "revm_handler::EthHandler")
-                              []
-                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
-                            [],
-                            [],
-                            "post_execution",
-                            [],
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "handler"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "revm_handler_interface::handler::Handler",
+                                Ty.apply
+                                  (Ty.path "revm_handler::EthHandler")
+                                  []
+                                  [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                                [],
+                                [],
+                                "post_execution",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm::evm::Evm",
+                                    "handler"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm::evm::Evm",
-                          "context"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm::evm::Evm",
+                                "context"
+                              |)
+                            |)
+                          |)
                         |);
                         M.read (| output |)
                       ]
@@ -1108,7 +1178,7 @@ Module evm.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 output
@@ -1176,31 +1246,47 @@ Module evm.
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "revm_handler_interface::handler::Handler",
-                                  Ty.apply
-                                    (Ty.path "revm_handler::EthHandler")
-                                    []
-                                    [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
-                                  [],
-                                  [],
-                                  "validation",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm::evm::Evm",
-                                    "handler"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "revm_handler_interface::handler::Handler",
+                                      Ty.apply
+                                        (Ty.path "revm_handler::EthHandler")
+                                        []
+                                        [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                                      [],
+                                      [],
+                                      "validation",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm::evm::Evm",
+                                          "handler"
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::evm::Evm",
-                                "context"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm::evm::Evm",
+                                      "context"
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1283,31 +1369,47 @@ Module evm.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "revm_handler_interface::handler::Handler",
-                                    Ty.apply
-                                      (Ty.path "revm_handler::EthHandler")
-                                      []
-                                      [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
-                                    [],
-                                    [],
-                                    "validation",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "revm::evm::Evm",
-                                      "handler"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "revm_handler_interface::handler::Handler",
+                                        Ty.apply
+                                          (Ty.path "revm_handler::EthHandler")
+                                          []
+                                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                                        [],
+                                        [],
+                                        "validation",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm::evm::Evm",
+                                            "handler"
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "revm::evm::Evm",
-                                  "context"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm::evm::Evm",
+                                        "context"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -1390,31 +1492,47 @@ Module evm.
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "revm_handler_interface::handler::Handler",
-                                  Ty.apply
-                                    (Ty.path "revm_handler::EthHandler")
-                                    []
-                                    [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
-                                  [],
-                                  [],
-                                  "validation",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm::evm::Evm",
-                                    "handler"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "revm_handler_interface::handler::Handler",
+                                      Ty.apply
+                                        (Ty.path "revm_handler::EthHandler")
+                                        []
+                                        [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                                      [],
+                                      [],
+                                      "validation",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm::evm::Evm",
+                                          "handler"
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::evm::Evm",
-                                "context"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm::evm::Evm",
+                                      "context"
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1559,7 +1677,12 @@ Module evm.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |)
+                                  ]
                                 |);
                                 M.closure
                                   (fun γ =>
@@ -1600,7 +1723,12 @@ Module evm.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| self |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| self |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)
@@ -1684,7 +1812,10 @@ Module evm.
                         [],
                         []
                       |),
-                      [ M.read (| self |); M.read (| initial_gas_spend |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                        M.read (| initial_gas_spend |)
+                      ]
                     |)
                   |) in
                 let~ output :=
@@ -1700,31 +1831,47 @@ Module evm.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "revm_handler_interface::handler::Handler",
-                            Ty.apply
-                              (Ty.path "revm_handler::EthHandler")
-                              []
-                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
-                            [],
-                            [],
-                            "post_execution",
-                            [],
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "handler"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "revm_handler_interface::handler::Handler",
+                                Ty.apply
+                                  (Ty.path "revm_handler::EthHandler")
+                                  []
+                                  [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                                [],
+                                [],
+                                "post_execution",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm::evm::Evm",
+                                    "handler"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm::evm::Evm",
-                          "context"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm::evm::Evm",
+                                "context"
+                              |)
+                            |)
+                          |)
                         |);
                         M.read (| output |)
                       ]
@@ -1749,7 +1896,7 @@ Module evm.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 output
@@ -1826,10 +1973,13 @@ Module evm.
               (M.read (|
                 let~ context :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "context"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm::evm::Evm",
+                        "context"
+                      |)
                     |)
                   |) in
                 let~ pre_exec :=
@@ -1848,10 +1998,13 @@ Module evm.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm::evm::Evm",
-                          "handler"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm::evm::Evm",
+                            "handler"
+                          |)
                         |)
                       ]
                     |)
@@ -1880,7 +2033,10 @@ Module evm.
                               [],
                               []
                             |),
-                            [ M.read (| pre_exec |); M.read (| context |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pre_exec |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| context |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -1959,7 +2115,10 @@ Module evm.
                               [],
                               []
                             |),
-                            [ M.read (| pre_exec |); M.read (| context |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pre_exec |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| context |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -2032,30 +2191,40 @@ Module evm.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "revm_context_interface::transaction::Transaction",
-                              Ty.associated,
-                              [],
-                              [],
-                              "common_fields",
-                              [],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_trait_method (|
-                                  "revm_context_interface::transaction::TransactionGetter",
-                                  Ty.apply (Ty.path "&mut") [] [ CTX ],
+                                  "revm_context_interface::transaction::Transaction",
+                                  Ty.associated,
                                   [],
                                   [],
-                                  "tx",
+                                  "common_fields",
                                   [],
                                   []
                                 |),
-                                [ context ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "revm_context_interface::transaction::TransactionGetter",
+                                          Ty.apply (Ty.path "&mut") [] [ CTX ],
+                                          [],
+                                          [],
+                                          "tx",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, context |) ]
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |),
@@ -2092,7 +2261,16 @@ Module evm.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| pre_exec |); M.read (| context |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| pre_exec |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| context |) |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -2165,10 +2343,13 @@ Module evm.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm::evm::Evm",
-                          "handler"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm::evm::Evm",
+                            "handler"
+                          |)
                         |)
                       ]
                     |)
@@ -2208,7 +2389,14 @@ Module evm.
                                 [],
                                 []
                               |),
-                              [ M.read (| exec |); M.read (| context |); M.read (| gas_limit |) ]
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| exec |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| context |) |)
+                                |);
+                                M.read (| gas_limit |)
+                              ]
                             |)
                           ]
                         |)
@@ -2304,7 +2492,16 @@ Module evm.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| exec |); M.read (| context |); M.read (| frame |)
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| exec |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| context |) |)
+                                        |);
+                                        M.read (| frame |)
                                       ]
                                     |)
                                   ]
@@ -2401,7 +2598,14 @@ Module evm.
                                 [],
                                 []
                               |),
-                              [ M.read (| exec |); M.read (| context |); M.read (| frame_result |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| exec |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| context |) |)
+                                |);
+                                M.read (| frame_result |)
+                              ]
                             |)
                           ]
                         |)
@@ -2473,10 +2677,13 @@ Module evm.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm::evm::Evm",
-                          "handler"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm::evm::Evm",
+                            "handler"
+                          |)
                         |)
                       ]
                     |)
@@ -2494,9 +2701,12 @@ Module evm.
                         []
                       |),
                       [
-                        M.read (| post_exec |);
-                        M.read (| context |);
-                        exec_result;
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| post_exec |) |) |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| context |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, exec_result |) |)
+                        |);
                         M.read (| eip7702_gas_refund |)
                       ]
                     |)
@@ -2525,7 +2735,17 @@ Module evm.
                               [],
                               []
                             |),
-                            [ M.read (| post_exec |); M.read (| context |); exec_result ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| post_exec |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.read (| context |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, exec_result |) |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -2604,7 +2824,17 @@ Module evm.
                               [],
                               []
                             |),
-                            [ M.read (| post_exec |); M.read (| context |); exec_result ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| post_exec |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.read (| context |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, exec_result |) |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -2670,7 +2900,11 @@ Module evm.
                       [],
                       []
                     |),
-                    [ M.read (| post_exec |); M.read (| context |); M.read (| exec_result |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| post_exec |) |) |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| context |) |) |);
+                      M.read (| exec_result |)
+                    ]
                   |)
                 |)
               |)))

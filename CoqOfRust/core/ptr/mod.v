@@ -223,7 +223,7 @@ Module ptr.
     | [], [ T ], [ r ] =>
       ltac:(M.monadic
         (let r := M.alloc (| r |) in
-        M.read (| r |)))
+        M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| r |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -239,7 +239,7 @@ Module ptr.
     | [], [ T ], [ r ] =>
       ltac:(M.monadic
         (let r := M.alloc (| r |) in
-        M.read (| r |)))
+        M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| r |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -345,7 +345,7 @@ Module ptr.
                       [],
                       []
                     |),
-                    [ tmp ]
+                    [ M.borrow (| Pointer.Kind.MutRef, tmp |) ]
                   |);
                   Value.Integer IntegerKind.Usize 1
                 ]
@@ -374,7 +374,7 @@ Module ptr.
                       [],
                       []
                     |),
-                    [ tmp ]
+                    [ M.borrow (| Pointer.Kind.Ref, tmp |) ]
                   |);
                   M.read (| y |);
                   Value.Integer IntegerKind.Usize 1
@@ -1066,7 +1066,13 @@ Module ptr.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "core::mem::replace", [], [ T ] |),
-              [ M.read (| dst |); M.read (| src |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dst |) |) |) |)
+                |);
+                M.read (| src |)
+              ]
             |)
           |)
         |)))
@@ -1215,7 +1221,7 @@ Module ptr.
                         [],
                         []
                       |),
-                      [ tmp ]
+                      [ M.borrow (| Pointer.Kind.MutRef, tmp |) ]
                     |));
                   M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                 ]
@@ -1340,7 +1346,7 @@ Module ptr.
               M.call_closure (|
                 M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ Ty.path "u8" ] |),
                 [
-                  M.rust_cast src;
+                  M.rust_cast (M.borrow (| Pointer.Kind.ConstPointer, src |));
                   M.rust_cast (M.read (| dst |));
                   M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                 ]
@@ -2348,7 +2354,10 @@ Module ptr.
                   [],
                   [ S ]
                 |),
-                [ hashee; M.read (| into |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, hashee |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| into |) |) |)
+                ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -2376,11 +2385,11 @@ Module ptr.
           BinOp.eq (|
             M.call_closure (|
               M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
-              [ M.read (| M.read (| self |) |) ]
+              [ M.read (| M.deref (| M.read (| self |) |) |) ]
             |),
             M.call_closure (|
               M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
-              [ M.read (| M.read (| other |) |) ]
+              [ M.read (| M.deref (| M.read (| other |) |) |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2429,16 +2438,27 @@ Module ptr.
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
-                  [ M.read (| M.read (| self |) |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                  |)
                 |)
               |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
-                  [ M.read (| M.read (| other |) |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                        [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -2481,16 +2501,27 @@ Module ptr.
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
-                  [ M.read (| M.read (| self |) |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                  |)
                 |)
               |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
-                  [ M.read (| M.read (| other |) |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                        [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -2525,11 +2556,11 @@ Module ptr.
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", HH, [], [], "write_usize", [], [] |),
             [
-              M.read (| state |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
               M.rust_cast
                 (M.call_closure (|
                   M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
-                  [ M.read (| M.read (| self |) |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |))
             ]
           |)))
@@ -2566,9 +2597,9 @@ Module ptr.
               M.rust_cast
                 (M.call_closure (|
                   M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
-                  [ M.read (| M.read (| self |) |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |));
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2604,9 +2635,9 @@ Module ptr.
               M.rust_cast
                 (M.call_closure (|
                   M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
-                  [ M.read (| M.read (| self |) |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |));
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

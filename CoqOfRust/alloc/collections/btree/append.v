@@ -91,7 +91,11 @@ Module collections.
                         A
                       ]
                     |),
-                    [ M.read (| self |); M.read (| iter |); M.read (| length |); M.read (| alloc |)
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| iter |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| length |) |) |);
+                      M.read (| alloc |)
                     ]
                   |)
                 |)
@@ -232,7 +236,8 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           ]
                         |)
@@ -275,7 +280,12 @@ Module collections.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -329,7 +339,12 @@ Module collections.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ cur_node ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  cur_node
+                                                                |)
+                                                              ]
                                                             |),
                                                             M.read (|
                                                               M.get_constant (|
@@ -364,7 +379,10 @@ Module collections.
                                                             []
                                                           |),
                                                           [
-                                                            cur_node;
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              cur_node
+                                                            |);
                                                             M.read (| key |);
                                                             M.read (| value |)
                                                           ]
@@ -492,7 +510,12 @@ Module collections.
                                                                                       [],
                                                                                       []
                                                                                     |),
-                                                                                    [ parent ]
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        parent
+                                                                                      |)
+                                                                                    ]
                                                                                   |),
                                                                                   M.read (|
                                                                                     M.get_constant (|
@@ -588,7 +611,14 @@ Module collections.
                                                                                 [ A ]
                                                                               |),
                                                                               [
-                                                                                M.read (| self |);
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.MutRef,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |)
+                                                                                |);
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
                                                                                     "core::clone::Clone",
@@ -599,7 +629,12 @@ Module collections.
                                                                                     [],
                                                                                     []
                                                                                   |),
-                                                                                  [ alloc ]
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      alloc
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
                                                                               ]
                                                                             |)
@@ -632,7 +667,12 @@ Module collections.
                                                               [],
                                                               []
                                                             |),
-                                                            [ open_node ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                open_node
+                                                              |)
+                                                            ]
                                                           |),
                                                           Value.Integer IntegerKind.Usize 1
                                                         |)
@@ -668,7 +708,12 @@ Module collections.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ alloc ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  alloc
+                                                                |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
@@ -728,7 +773,17 @@ Module collections.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ iter ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    iter
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         |),
                                                                         [
@@ -775,7 +830,10 @@ Module collections.
                                                                                       [ A ]
                                                                                     |),
                                                                                     [
-                                                                                      right_tree;
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.MutRef,
+                                                                                        right_tree
+                                                                                      |);
                                                                                       M.call_closure (|
                                                                                         M.get_trait_method (|
                                                                                           "core::clone::Clone",
@@ -786,7 +844,12 @@ Module collections.
                                                                                           [],
                                                                                           []
                                                                                         |),
-                                                                                        [ alloc ]
+                                                                                        [
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            alloc
+                                                                                          |)
+                                                                                        ]
                                                                                       |)
                                                                                     ]
                                                                                   |)
@@ -821,7 +884,10 @@ Module collections.
                                                             []
                                                           |),
                                                           [
-                                                            open_node;
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              open_node
+                                                            |);
                                                             M.read (| key |);
                                                             M.read (| value |);
                                                             M.read (| right_tree |)
@@ -906,7 +972,7 @@ Module collections.
                                               ]
                                             |) in
                                           let~ _ :=
-                                            let β := M.read (| length |) in
+                                            let β := M.deref (| M.read (| length |) |) in
                                             M.write (|
                                               β,
                                               BinOp.Wrap.add (|
@@ -938,7 +1004,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -1003,10 +1069,13 @@ Module collections.
                         ]
                       |),
                       [
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::append::MergeIter",
-                          0
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::append::MergeIter",
+                            0
+                          |)
                         |);
                         M.closure
                           (fun γ =>
@@ -1037,13 +1106,29 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_tuple_field (|
-                                                        M.read (| a |),
-                                                        0
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.deref (| M.read (| a |) |),
+                                                              0
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |);
-                                                      M.SubPointer.get_tuple_field (|
-                                                        M.read (| b |),
-                                                        0
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.deref (| M.read (| b |) |),
+                                                              0
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)))

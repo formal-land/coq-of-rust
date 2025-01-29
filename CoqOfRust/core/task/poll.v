@@ -74,7 +74,8 @@ Module task.
                                 [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)));
@@ -131,7 +132,17 @@ Module task.
                             [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Ready" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Ready" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -146,7 +157,13 @@ Module task.
                             [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Pending" |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Pending" |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -230,7 +247,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -241,7 +258,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -283,7 +300,10 @@ Module task.
                                     [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -325,7 +345,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -336,7 +356,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -351,7 +371,16 @@ Module task.
                       [],
                       []
                     |),
-                    [ __self_discr; __arg1_discr ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                      |)
+                    ]
                   |)
                 |),
                 [
@@ -392,7 +421,16 @@ Module task.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -439,7 +477,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -450,7 +488,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -487,7 +525,10 @@ Module task.
                             [],
                             []
                           |),
-                          [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -503,7 +544,16 @@ Module task.
                             [],
                             []
                           |),
-                          [ __self_discr; __arg1_discr ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -541,7 +591,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -556,7 +606,13 @@ Module task.
                       [],
                       [ __H ]
                     |),
-                    [ __self_discr; M.read (| state |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -583,7 +639,10 @@ Module task.
                             [],
                             [ __H ]
                           |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -681,7 +740,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -722,7 +781,7 @@ Module task.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

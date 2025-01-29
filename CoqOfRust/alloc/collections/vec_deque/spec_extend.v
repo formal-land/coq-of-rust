@@ -69,7 +69,7 @@ Module collections.
                                     [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -91,7 +91,7 @@ Module collections.
                                     [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [ M.borrow (| Pointer.Kind.Ref, iter |) ]
                                 |)
                               |),
                               [
@@ -113,7 +113,10 @@ Module collections.
                                             []
                                           |),
                                           [
-                                            M.read (| self |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| self |) |)
+                                            |);
                                             M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "usize",
@@ -141,7 +144,13 @@ Module collections.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| self |); M.read (| element |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| self |) |)
+                                            |);
+                                            M.read (| element |)
+                                          ]
                                         |)
                                       |) in
                                     M.loop (|
@@ -157,7 +166,7 @@ Module collections.
                                                       BinOp.lt (|
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
+                                                            M.deref (| M.read (| self |) |),
                                                             "alloc::collections::vec_deque::VecDeque",
                                                             "len"
                                                           |)
@@ -173,7 +182,12 @@ Module collections.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| self |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| self |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       |)
                                                     |)) in
@@ -194,7 +208,7 @@ Module collections.
                                                         [],
                                                         []
                                                       |),
-                                                      [ iter ]
+                                                      [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
                                                     |)
                                                   |),
                                                   [
@@ -221,7 +235,10 @@ Module collections.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| element |)
                                                               ]
                                                             |)
@@ -336,7 +353,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ iter ]
+                      [ M.borrow (| Pointer.Kind.Ref, iter |) ]
                     |)
                   |),
                   [
@@ -373,7 +390,13 @@ Module collections.
                                             |) in
                                           let~ _ :=
                                             M.match_operator (|
-                                              M.alloc (| Value.Tuple [ low; additional ] |),
+                                              M.alloc (|
+                                                Value.Tuple
+                                                  [
+                                                    M.borrow (| Pointer.Kind.Ref, low |);
+                                                    M.borrow (| Pointer.Kind.Ref, additional |)
+                                                  ]
+                                              |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
@@ -394,10 +417,14 @@ Module collections.
                                                                   UnOp.not (|
                                                                     BinOp.eq (|
                                                                       M.read (|
-                                                                        M.read (| left_val |)
+                                                                        M.deref (|
+                                                                          M.read (| left_val |)
+                                                                        |)
                                                                       |),
                                                                       M.read (|
-                                                                        M.read (| right_val |)
+                                                                        M.deref (|
+                                                                          M.read (| right_val |)
+                                                                        |)
                                                                       |)
                                                                     |)
                                                                   |)
@@ -428,8 +455,32 @@ Module collections.
                                                                       |),
                                                                       [
                                                                         M.read (| kind |);
-                                                                        M.read (| left_val |);
-                                                                        M.read (| right_val |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  left_val
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  right_val
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |);
                                                                         Value.StructTuple
                                                                           "core::option::Option::Some"
                                                                           [
@@ -442,55 +493,79 @@ Module collections.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "TrustedLen iterator's size hint is not exact: "
-                                                                                      |)
-                                                                                    ]
-                                                                                |);
-                                                                                M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.path
-                                                                                            "core::fmt::rt::Argument",
-                                                                                          "new_debug",
-                                                                                          [],
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.alloc (|
+                                                                                        Value.Array
                                                                                           [
-                                                                                            Ty.tuple
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "usize";
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "core::option::Option")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "usize"
-                                                                                                  ]
-                                                                                              ]
+                                                                                            M.read (|
+                                                                                              Value.String
+                                                                                                "TrustedLen iterator's size hint is not exact: "
+                                                                                            |)
                                                                                           ]
-                                                                                        |),
-                                                                                        [
-                                                                                          M.alloc (|
-                                                                                            Value.Tuple
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                |);
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::rt::Argument",
+                                                                                                "new_debug",
+                                                                                                [],
+                                                                                                [
+                                                                                                  Ty.tuple
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "usize";
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "core::option::Option")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "usize"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                ]
+                                                                                              |),
                                                                                               [
-                                                                                                M.read (|
-                                                                                                  low
-                                                                                                |);
-                                                                                                M.read (|
-                                                                                                  high
+                                                                                                M.borrow (|
+                                                                                                  Pointer.Kind.Ref,
+                                                                                                  M.deref (|
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.alloc (|
+                                                                                                        Value.Tuple
+                                                                                                          [
+                                                                                                            M.read (|
+                                                                                                              low
+                                                                                                            |);
+                                                                                                            M.read (|
+                                                                                                              high
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)
                                                                                               ]
-                                                                                          |)
-                                                                                        ]
+                                                                                            |)
+                                                                                          ]
                                                                                       |)
-                                                                                    ]
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               ]
                                                                             |)
@@ -524,7 +599,13 @@ Module collections.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |); M.read (| additional |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
+                                        M.read (| additional |)
+                                      ]
                                     |)
                                   |) in
                                 let~ written :=
@@ -540,7 +621,10 @@ Module collections.
                                         [ I ]
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
@@ -552,10 +636,13 @@ Module collections.
                                             []
                                           |),
                                           [
-                                            M.read (| self |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "alloc::collections::vec_deque::VecDeque",
                                                 "len"
                                               |)
@@ -581,7 +668,13 @@ Module collections.
                                             |) in
                                           let~ _ :=
                                             M.match_operator (|
-                                              M.alloc (| Value.Tuple [ additional; written ] |),
+                                              M.alloc (|
+                                                Value.Tuple
+                                                  [
+                                                    M.borrow (| Pointer.Kind.Ref, additional |);
+                                                    M.borrow (| Pointer.Kind.Ref, written |)
+                                                  ]
+                                              |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
@@ -602,10 +695,14 @@ Module collections.
                                                                   UnOp.not (|
                                                                     BinOp.eq (|
                                                                       M.read (|
-                                                                        M.read (| left_val |)
+                                                                        M.deref (|
+                                                                          M.read (| left_val |)
+                                                                        |)
                                                                       |),
                                                                       M.read (|
-                                                                        M.read (| right_val |)
+                                                                        M.deref (|
+                                                                          M.read (| right_val |)
+                                                                        |)
                                                                       |)
                                                                     |)
                                                                   |)
@@ -636,8 +733,32 @@ Module collections.
                                                                       |),
                                                                       [
                                                                         M.read (| kind |);
-                                                                        M.read (| left_val |);
-                                                                        M.read (| right_val |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  left_val
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  right_val
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |);
                                                                         Value.StructTuple
                                                                           "core::option::Option::Some"
                                                                           [
@@ -650,14 +771,22 @@ Module collections.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "The number of items written to VecDeque doesn't match the TrustedLen size hint"
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              Value.String
+                                                                                                "The number of items written to VecDeque doesn't match the TrustedLen size hint"
+                                                                                            |)
+                                                                                          ]
                                                                                       |)
-                                                                                    ]
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               ]
                                                                             |)
@@ -695,9 +824,21 @@ Module collections.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [ M.read (| Value.String "capacity overflow" |) ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String "capacity overflow"
+                                                        |)
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -763,7 +904,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ iterator ]
+                      [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -776,7 +917,7 @@ Module collections.
                         []
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
@@ -784,7 +925,7 @@ Module collections.
                             [],
                             []
                           |),
-                          [ M.read (| slice |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                         |)
                       ]
                     |)
@@ -800,7 +941,7 @@ Module collections.
                           []
                         |),
                         [
-                          M.read (| self |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -812,24 +953,24 @@ Module collections.
                               []
                             |),
                             [
-                              M.read (| self |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "alloc::collections::vec_deque::VecDeque",
                                   "len"
                                 |)
                               |)
                             ]
                           |);
-                          M.read (| slice |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
                         ]
                       |)
                     |) in
                   let~ _ :=
                     let β :=
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::vec_deque::VecDeque",
                         "len"
                       |) in
@@ -844,7 +985,7 @@ Module collections.
                             [],
                             []
                           |),
-                          [ M.read (| slice |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                         |)
                       |)
                     |) in
@@ -861,7 +1002,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ iterator ]
+                      [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -918,7 +1059,7 @@ Module collections.
                   []
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -982,7 +1123,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ iterator ]
+                      [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -995,7 +1136,7 @@ Module collections.
                         []
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
@@ -1003,7 +1144,7 @@ Module collections.
                             [],
                             []
                           |),
-                          [ M.read (| slice |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                         |)
                       ]
                     |)
@@ -1018,7 +1159,7 @@ Module collections.
                         []
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -1030,24 +1171,24 @@ Module collections.
                             []
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::collections::vec_deque::VecDeque",
                                 "len"
                               |)
                             |)
                           ]
                         |);
-                        M.read (| slice |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
                       ]
                     |)
                   |) in
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::collections::vec_deque::VecDeque",
                       "len"
                     |) in
@@ -1062,7 +1203,7 @@ Module collections.
                           [],
                           []
                         |),
-                        [ M.read (| slice |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                       |)
                     |)
                   |) in

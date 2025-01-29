@@ -145,7 +145,7 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -210,7 +210,7 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
-            M.read (| f |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
                 self,
@@ -220,13 +220,23 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "trait_erc20::Error::InsufficientBalance" |) in
-                      M.alloc (| M.read (| Value.String "InsufficientBalance" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "InsufficientBalance" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "trait_erc20::Error::InsufficientAllowance" |) in
-                      M.alloc (| M.read (| Value.String "InsufficientAllowance" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "InsufficientAllowance" |) |)
+                        |)
+                      |)))
                 ]
               |)
             |)
@@ -273,7 +283,7 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
                   [],
                   [ Ty.path "trait_erc20::Error" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -284,7 +294,7 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
                   [],
                   [ Ty.path "trait_erc20::Error" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -491,7 +501,11 @@ Module Impl_trait_erc20_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "trait_erc20::Env", "caller" |)
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "trait_erc20::Env",
+            "caller"
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -585,15 +599,18 @@ Module Impl_trait_erc20_Erc20.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "trait_erc20::Erc20",
-                        "init_env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "trait_erc20::Erc20",
+                          "init_env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -611,7 +628,11 @@ Module Impl_trait_erc20_Erc20.
                   [],
                   []
                 |),
-                [ balances; M.read (| caller |); M.read (| total_supply |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, balances |);
+                  M.read (| caller |);
+                  M.read (| total_supply |)
+                ]
               |)
             |) in
           let~ _ :=
@@ -619,15 +640,18 @@ Module Impl_trait_erc20_Erc20.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "trait_erc20::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "trait_erc20::Erc20",
-                        "init_env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "trait_erc20::Erc20",
+                          "init_env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -709,12 +733,15 @@ Module Impl_trait_erc20_Erc20.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "trait_erc20::Erc20",
-                  "balances"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "trait_erc20::Erc20",
+                    "balances"
+                  |)
                 |);
-                M.read (| owner |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| owner |) |) |)
               ]
             |)
           ]
@@ -759,13 +786,28 @@ Module Impl_trait_erc20_Erc20.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "trait_erc20::Erc20",
-                  "allowances"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "trait_erc20::Erc20",
+                    "allowances"
+                  |)
                 |);
-                M.alloc (|
-                  Value.Tuple [ M.read (| M.read (| owner |) |); M.read (| M.read (| spender |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Tuple
+                          [
+                            M.read (| M.deref (| M.read (| owner |) |) |);
+                            M.read (| M.deref (| M.read (| spender |) |) |)
+                          ]
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)
@@ -815,7 +857,10 @@ Module Impl_trait_erc20_Erc20.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| from |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| from |) |) |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -858,12 +903,15 @@ Module Impl_trait_erc20_Erc20.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "trait_erc20::Erc20",
-                        "balances"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "trait_erc20::Erc20",
+                          "balances"
+                        |)
                       |);
-                      M.read (| M.read (| from |) |);
+                      M.read (| M.deref (| M.read (| from |) |) |);
                       BinOp.Wrap.sub (| M.read (| from_balance |), M.read (| value |) |)
                     ]
                   |)
@@ -877,7 +925,10 @@ Module Impl_trait_erc20_Erc20.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| to |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| to |) |) |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -893,12 +944,15 @@ Module Impl_trait_erc20_Erc20.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "trait_erc20::Erc20",
-                        "balances"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "trait_erc20::Erc20",
+                          "balances"
+                        |)
                       |);
-                      M.read (| M.read (| to |) |);
+                      M.read (| M.deref (| M.read (| to |) |) |);
                       BinOp.Wrap.add (| M.read (| to_balance |), M.read (| value |) |)
                     ]
                   |)
@@ -913,15 +967,18 @@ Module Impl_trait_erc20_Erc20.
                       []
                     |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "trait_erc20::Erc20",
-                            "env",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "trait_erc20::Erc20",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       Value.StructTuple
@@ -933,11 +990,11 @@ Module Impl_trait_erc20_Erc20.
                               ("from",
                                 Value.StructTuple
                                   "core::option::Option::Some"
-                                  [ M.read (| M.read (| from |) |) ]);
+                                  [ M.read (| M.deref (| M.read (| from |) |) |) ]);
                               ("to",
                                 Value.StructTuple
                                   "core::option::Option::Some"
-                                  [ M.read (| M.read (| to |) |) ]);
+                                  [ M.read (| M.deref (| M.read (| to |) |) |) ]);
                               ("value", M.read (| value |))
                             ]
                         ]
@@ -969,7 +1026,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "trait_erc20::Erc20",
             "total_supply"
           |)
@@ -990,7 +1047,10 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
         let owner := M.alloc (| owner |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "trait_erc20::Erc20", "balance_of_impl", [], [] |),
-          [ M.read (| self |); owner ]
+          [
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, owner |) |) |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1009,7 +1069,11 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
         let spender := M.alloc (| spender |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "trait_erc20::Erc20", "allowance_impl", [], [] |),
-          [ M.read (| self |); owner; spender ]
+          [
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, owner |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, spender |) |) |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1033,10 +1097,13 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |)
                 ]
@@ -1050,7 +1117,15 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                 [],
                 []
               |),
-              [ M.read (| self |); from; to; M.read (| value |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, from |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, to |) |) |);
+                M.read (| value |)
+              ]
             |)
           |)
         |)))
@@ -1082,10 +1157,13 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |)
                 ]
@@ -1108,10 +1186,13 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "trait_erc20::Erc20",
-                    "allowances"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "trait_erc20::Erc20",
+                      "allowances"
+                    |)
                   |);
                   Value.Tuple [ M.read (| owner |); M.read (| spender |) ];
                   M.read (| value |)
@@ -1123,10 +1204,13 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "trait_erc20::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -1176,15 +1260,18 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "trait_erc20::Erc20",
-                            "env",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "trait_erc20::Erc20",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -1199,7 +1286,17 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                       [],
                       []
                     |),
-                    [ M.read (| self |); from; caller ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, from |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, caller |) |)
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -1254,7 +1351,18 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                             [],
                             []
                           |),
-                          [ M.read (| self |); from; to; M.read (| value |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, from |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, to |) |)
+                            |);
+                            M.read (| value |)
+                          ]
                         |)
                       ]
                     |)
@@ -1329,10 +1437,13 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "trait_erc20::Erc20",
-                        "allowances"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "trait_erc20::Erc20",
+                          "allowances"
+                        |)
                       |);
                       Value.Tuple [ M.read (| from |); M.read (| caller |) ];
                       BinOp.Wrap.sub (| M.read (| allowance |), M.read (| value |) |)

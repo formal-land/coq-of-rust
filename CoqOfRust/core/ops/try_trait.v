@@ -94,7 +94,10 @@ Module ops.
                                       [],
                                       []
                                     |),
-                                    [ f; Value.Tuple [ M.read (| a |) ] ]
+                                    [
+                                      M.borrow (| Pointer.Kind.MutRef, f |);
+                                      Value.Tuple [ M.read (| a |) ]
+                                    ]
                                   |)
                                 ]))
                         ]
@@ -150,7 +153,10 @@ Module ops.
                                               [],
                                               []
                                             |),
-                                            [ f; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| a |); M.read (| b |) ]
+                                            ]
                                           |)
                                         ]))
                                 ]
@@ -319,13 +325,24 @@ Module ops.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Yeet" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::ops::try_trait::Yeet",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Yeet" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ops::try_trait::Yeet",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]

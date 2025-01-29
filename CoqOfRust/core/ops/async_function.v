@@ -43,7 +43,13 @@ Module ops.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| args |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -95,7 +101,13 @@ Module ops.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| args |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -149,7 +161,10 @@ Module ops.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| args |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -206,7 +221,13 @@ Module ops.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| args |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -260,7 +281,10 @@ Module ops.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| args |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

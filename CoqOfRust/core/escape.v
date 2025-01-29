@@ -5,37 +5,42 @@ Module escape.
   Definition value_HEX_DIGITS : Value.t :=
     M.run
       ltac:(M.monadic
-        (M.call_closure (|
-          M.get_associated_function (|
-            Ty.apply
-              (Ty.path "core::option::Option")
-              []
-              [
-                Ty.apply
-                  (Ty.path "&")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 16 ]
-                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                  ]
-              ],
-            "unwrap",
-            [],
-            []
-          |),
-          [
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
-                "as_ascii",
-                [ Value.Integer IntegerKind.Usize 16 ],
+        (M.deref (|
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "core::option::Option")
                 []
-              |),
-              [ M.read (| UnsupportedLiteral |) ]
-            |)
-          ]
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    ]
+                ],
+              "unwrap",
+              [],
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 16 ]
+                    [ Ty.path "u8" ],
+                  "as_ascii",
+                  [ Value.Integer IntegerKind.Usize 16 ],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| UnsupportedLiteral |) |) |) ]
+              |)
+            ]
+          |)
         |))).
   
   (*
@@ -237,7 +242,7 @@ Module escape.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u8", "as_ascii", [], [] |),
-                                [ byte ]
+                                [ M.borrow (| Pointer.Kind.Ref, byte |) ]
                               |)
                             |) in
                           let γ0_0 :=
@@ -258,7 +263,7 @@ Module escape.
                                       [],
                                       []
                                     |),
-                                    [ byte ]
+                                    [ M.borrow (| Pointer.Kind.Ref, byte |) ]
                                   |)
                                 |)
                               |)) in
@@ -626,10 +631,18 @@ Module escape.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::escape::EscapeIterInner",
-                      "data"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::escape::EscapeIterInner",
+                            "data"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -645,10 +658,18 @@ Module escape.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::escape::EscapeIterInner",
-                      "alive"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::escape::EscapeIterInner",
+                            "alive"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -685,20 +706,42 @@ Module escape.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "EscapeIterInner" |);
-              M.read (| Value.String "data" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::escape::EscapeIterInner",
-                "data"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "EscapeIterInner" |) |)
               |);
-              M.read (| Value.String "alive" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::escape::EscapeIterInner",
-                  "alive"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "data" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::escape::EscapeIterInner",
+                      "data"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "alive" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::escape::EscapeIterInner",
+                          "alive"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -889,74 +932,82 @@ Module escape.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-              "get_unchecked",
-              [],
-              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::escape::EscapeIterInner",
-                "data"
-              |);
-              Value.StructRecord
-                "core::ops::range::Range"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                  "get_unchecked",
+                  [],
+                  [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
+                |),
                 [
-                  ("start",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::convert::From",
-                        Ty.path "usize",
-                        [],
-                        [ Ty.path "u8" ],
-                        "from",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::escape::EscapeIterInner",
-                              "alive"
-                            |),
-                            "core::ops::range::Range",
-                            "start"
-                          |)
-                        |)
-                      ]
-                    |));
-                  ("end_",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::convert::From",
-                        Ty.path "usize",
-                        [],
-                        [ Ty.path "u8" ],
-                        "from",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::escape::EscapeIterInner",
-                              "alive"
-                            |),
-                            "core::ops::range::Range",
-                            "end"
-                          |)
-                        |)
-                      ]
-                    |))
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::escape::EscapeIterInner",
+                      "data"
+                    |)
+                  |);
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start",
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::convert::From",
+                            Ty.path "usize",
+                            [],
+                            [ Ty.path "u8" ],
+                            "from",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::escape::EscapeIterInner",
+                                  "alive"
+                                |),
+                                "core::ops::range::Range",
+                                "start"
+                              |)
+                            |)
+                          ]
+                        |));
+                      ("end_",
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::convert::From",
+                            Ty.path "usize",
+                            [],
+                            [ Ty.path "u8" ],
+                            "from",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::escape::EscapeIterInner",
+                                  "alive"
+                                |),
+                                "core::ops::range::Range",
+                                "end"
+                              |)
+                            |)
+                          ]
+                        |))
+                    ]
                 ]
-            ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -976,24 +1027,34 @@ Module escape.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-              "as_str",
-              [],
-              []
-            |),
-            [
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
-                  "as_ascii",
-                  [ N ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                  "as_str",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
+                          "as_ascii",
+                          [ N ],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1028,7 +1089,7 @@ Module escape.
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::escape::EscapeIterInner",
                       "alive"
                     |),
@@ -1039,7 +1100,7 @@ Module escape.
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::escape::EscapeIterInner",
                       "alive"
                     |),
@@ -1100,10 +1161,13 @@ Module escape.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::escape::EscapeIterInner",
-                                  "alive"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::escape::EscapeIterInner",
+                                    "alive"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1174,35 +1238,40 @@ Module escape.
                         |),
                         [
                           M.read (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                "get_unchecked",
-                                [],
-                                [ Ty.path "usize" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::escape::EscapeIterInner",
-                                  "data"
-                                |);
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.path "usize",
-                                    [],
-                                    [ Ty.path "u8" ],
-                                    "from",
-                                    [],
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
                                     []
-                                  |),
-                                  [ M.read (| i |) ]
-                                |)
-                              ]
+                                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                  "get_unchecked",
+                                  [],
+                                  [ Ty.path "usize" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::escape::EscapeIterInner",
+                                      "data"
+                                    |)
+                                  |);
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::convert::From",
+                                      Ty.path "usize",
+                                      [],
+                                      [ Ty.path "u8" ],
+                                      "from",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| i |) ]
+                                  |)
+                                ]
+                              |)
                             |)
                           |)
                         ]
@@ -1261,10 +1330,13 @@ Module escape.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::escape::EscapeIterInner",
-                                  "alive"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::escape::EscapeIterInner",
+                                    "alive"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1335,35 +1407,40 @@ Module escape.
                         |),
                         [
                           M.read (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                "get_unchecked",
-                                [],
-                                [ Ty.path "usize" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::escape::EscapeIterInner",
-                                  "data"
-                                |);
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.path "usize",
-                                    [],
-                                    [ Ty.path "u8" ],
-                                    "from",
-                                    [],
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
                                     []
-                                  |),
-                                  [ M.read (| i |) ]
-                                |)
-                              ]
+                                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                  "get_unchecked",
+                                  [],
+                                  [ Ty.path "usize" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::escape::EscapeIterInner",
+                                      "data"
+                                    |)
+                                  |);
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::convert::From",
+                                      Ty.path "usize",
+                                      [],
+                                      [ Ty.path "u8" ],
+                                      "from",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| i |) ]
+                                  |)
+                                ]
+                              |)
                             |)
                           |)
                         ]
@@ -1402,10 +1479,13 @@ Module escape.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::escape::EscapeIterInner",
-                "alive"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::escape::EscapeIterInner",
+                  "alive"
+                |)
               |);
               M.read (| n |)
             ]
@@ -1445,10 +1525,13 @@ Module escape.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::escape::EscapeIterInner",
-                "alive"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::escape::EscapeIterInner",
+                  "alive"
+                |)
               |);
               M.read (| n |)
             ]

@@ -193,7 +193,7 @@ Module num.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::num::dec2flt::decimal::parse_decimal", [], [] |),
-                        [ M.read (| s |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                       |)
                     |) in
                   let~ _ :=
@@ -323,7 +323,10 @@ Module num.
                                         [],
                                         []
                                       |),
-                                      [ get_shift; Value.Tuple [ M.read (| n |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, get_shift |);
+                                        Value.Tuple [ M.read (| n |) ]
+                                      ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -335,7 +338,7 @@ Module num.
                                         [],
                                         []
                                       |),
-                                      [ d; M.read (| shift |) ]
+                                      [ M.borrow (| Pointer.Kind.MutRef, d |); M.read (| shift |) ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -541,7 +544,7 @@ Module num.
                                                   []
                                                 |),
                                                 [
-                                                  get_shift;
+                                                  M.borrow (| Pointer.Kind.Ref, get_shift |);
                                                   Value.Tuple
                                                     [
                                                       M.rust_cast
@@ -570,7 +573,7 @@ Module num.
                                         [],
                                         []
                                       |),
-                                      [ d; M.read (| shift |) ]
+                                      [ M.borrow (| Pointer.Kind.MutRef, d |); M.read (| shift |) ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -730,7 +733,7 @@ Module num.
                                         [],
                                         []
                                       |),
-                                      [ d; M.read (| n |) ]
+                                      [ M.borrow (| Pointer.Kind.MutRef, d |); M.read (| n |) ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -802,7 +805,7 @@ Module num.
                           []
                         |),
                         [
-                          d;
+                          M.borrow (| Pointer.Kind.MutRef, d |);
                           BinOp.Wrap.add (|
                             M.read (|
                               M.get_constant (|
@@ -823,7 +826,7 @@ Module num.
                           [],
                           []
                         |),
-                        [ d ]
+                        [ M.borrow (| Pointer.Kind.Ref, d |) ]
                       |)
                     |) in
                   let~ _ :=
@@ -861,7 +864,10 @@ Module num.
                                     [],
                                     []
                                   |),
-                                  [ d; Value.Integer IntegerKind.Usize 1 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.MutRef, d |);
+                                    Value.Integer IntegerKind.Usize 1
+                                  ]
                                 |)
                               |) in
                             let~ _ :=
@@ -880,7 +886,7 @@ Module num.
                                     [],
                                     []
                                   |),
-                                  [ d ]
+                                  [ M.borrow (| Pointer.Kind.Ref, d |) ]
                                 |)
                               |) in
                             M.match_operator (|

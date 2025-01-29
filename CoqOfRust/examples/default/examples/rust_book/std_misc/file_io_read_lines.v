@@ -111,7 +111,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [],
                     []
                   |),
-                  [ M.read (| Value.String "./hosts" |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "./hosts" |) |)
+                    |)
+                  ]
                 |)
               ]
             |)
@@ -167,7 +172,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 [],
                                 []
                               |),
-                              [ iter ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                |)
+                              ]
                             |)
                           |),
                           [
@@ -198,45 +208,72 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "" |);
-                                                    M.read (| Value.String "
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (| Value.String "" |);
+                                                          M.read (| Value.String "
 " |)
-                                                  ]
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               |);
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [],
-                                                        [ Ty.path "alloc::string::String" ]
-                                                      |),
-                                                      [
-                                                        M.alloc (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
                                                           M.call_closure (|
                                                             M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.path "alloc::string::String";
-                                                                  Ty.path "std::io::error::Error"
-                                                                ],
-                                                              "unwrap",
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
                                                               [],
-                                                              []
+                                                              [ Ty.path "alloc::string::String" ]
                                                             |),
-                                                            [ M.read (| line |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String";
+                                                                              Ty.path
+                                                                                "std::io::error::Error"
+                                                                            ],
+                                                                          "unwrap",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| line |) ]
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
                                                           |)
-                                                        |)
-                                                      ]
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)

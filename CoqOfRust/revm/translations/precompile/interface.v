@@ -45,10 +45,18 @@ Module interface.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_precompile::interface::PrecompileOutput",
-                      "gas_used"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_precompile::interface::PrecompileOutput",
+                            "gas_used"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -64,10 +72,18 @@ Module interface.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_precompile::interface::PrecompileOutput",
-                      "bytes"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_precompile::interface::PrecompileOutput",
+                            "bytes"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -101,20 +117,42 @@ Module interface.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "PrecompileOutput" |);
-              M.read (| Value.String "gas_used" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_precompile::interface::PrecompileOutput",
-                "gas_used"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "PrecompileOutput" |) |)
               |);
-              M.read (| Value.String "bytes" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_precompile::interface::PrecompileOutput",
-                  "bytes"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "gas_used" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_precompile::interface::PrecompileOutput",
+                      "gas_used"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "bytes" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_precompile::interface::PrecompileOutput",
+                          "bytes"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -155,14 +193,14 @@ Module interface.
             BinOp.eq (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_precompile::interface::PrecompileOutput",
                   "gas_used"
                 |)
               |),
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
+                  M.deref (| M.read (| other |) |),
                   "revm_precompile::interface::PrecompileOutput",
                   "gas_used"
                 |)
@@ -180,15 +218,21 @@ Module interface.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_precompile::interface::PrecompileOutput",
-                    "bytes"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_precompile::interface::PrecompileOutput",
+                      "bytes"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "revm_precompile::interface::PrecompileOutput",
-                    "bytes"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "revm_precompile::interface::PrecompileOutput",
+                      "bytes"
+                    |)
                   |)
                 ]
               |)))
@@ -266,12 +310,20 @@ Module interface.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_precompile::interface::PrecompileOutput",
-                      "gas_used"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_precompile::interface::PrecompileOutput",
+                            "gas_used"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -287,12 +339,20 @@ Module interface.
                   [ __H ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_precompile::interface::PrecompileOutput",
-                    "bytes"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_precompile::interface::PrecompileOutput",
+                          "bytes"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| state |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |)
             |)
@@ -401,7 +461,7 @@ Module interface.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -430,7 +490,8 @@ Module interface.
                                 [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |))
                         ]
                     |)))
@@ -480,7 +541,17 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Error" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Error" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -502,10 +573,19 @@ Module interface.
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "Fatal" |);
-                          M.read (| Value.String "msg" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Fatal" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "msg" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)))
@@ -553,7 +633,7 @@ Module interface.
                     [],
                     [ Ty.path "revm_precompile::interface::PrecompileErrors" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -564,7 +644,7 @@ Module interface.
                     [],
                     [ Ty.path "revm_precompile::interface::PrecompileErrors" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -614,7 +694,10 @@ Module interface.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -648,7 +731,10 @@ Module interface.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -735,7 +821,7 @@ Module interface.
                     [],
                     [ Ty.path "revm_precompile::interface::PrecompileErrors" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -750,7 +836,13 @@ Module interface.
                     [],
                     [ __H ]
                   |),
-                  [ __self_discr; M.read (| state |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
@@ -777,7 +869,10 @@ Module interface.
                           [],
                           [ __H ]
                         |),
-                        [ M.read (| __self_0 |); M.read (| state |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -801,7 +896,10 @@ Module interface.
                           [],
                           [ __H ]
                         |),
-                        [ M.read (| __self_0 |); M.read (| state |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                        ]
                       |)
                     |)))
               ]
@@ -846,7 +944,7 @@ Module interface.
                   [],
                   []
                 |),
-                [ value ]
+                [ M.borrow (| Pointer.Kind.Ref, value |) ]
               |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -915,7 +1013,10 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| e |); M.read (| f |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -937,18 +1038,23 @@ Module interface.
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "alloc::string::String",
-                              [],
-                              [],
-                              "deref",
-                              [],
-                              []
-                            |),
-                            [ M.read (| msg |) ]
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.path "alloc::string::String",
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |) ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -1234,7 +1340,7 @@ Module interface.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)))
@@ -1282,7 +1388,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "OutOfGas" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OutOfGas" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1301,7 +1413,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Blake2WrongLength" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Blake2WrongLength" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1320,7 +1438,12 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Blake2WrongFinalIndicatorFlag" |)
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Blake2WrongFinalIndicatorFlag" |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -1340,7 +1463,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "ModexpExpOverflow" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ModexpExpOverflow" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1359,7 +1488,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "ModexpBaseOverflow" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ModexpBaseOverflow" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1378,7 +1513,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "ModexpModOverflow" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ModexpModOverflow" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1397,7 +1538,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Bn128FieldPointNotAMember" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Bn128FieldPointNotAMember" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1416,7 +1563,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Bn128AffineGFailedToCreate" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Bn128AffineGFailedToCreate" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1435,7 +1588,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Bn128PairLength" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Bn128PairLength" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1454,7 +1613,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "BlobInvalidInputLength" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BlobInvalidInputLength" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1473,7 +1638,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "BlobMismatchedVersion" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BlobMismatchedVersion" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1492,7 +1663,13 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "BlobVerifyKzgProofFailed" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BlobVerifyKzgProofFailed" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1513,7 +1690,17 @@ Module interface.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Other" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Other" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -1560,7 +1747,7 @@ Module interface.
                     [],
                     [ Ty.path "revm_precompile::interface::PrecompileError" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -1571,7 +1758,7 @@ Module interface.
                     [],
                     [ Ty.path "revm_precompile::interface::PrecompileError" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -1613,7 +1800,10 @@ Module interface.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -1684,7 +1874,7 @@ Module interface.
                     [],
                     [ Ty.path "revm_precompile::interface::PrecompileError" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -1699,7 +1889,13 @@ Module interface.
                     [],
                     [ __H ]
                   |),
-                  [ __self_discr; M.read (| state |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
@@ -1726,7 +1922,10 @@ Module interface.
                           [],
                           [ __H ]
                         |),
-                        [ M.read (| __self_0 |); M.read (| state |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1902,7 +2101,12 @@ Module interface.
                             γ,
                             "revm_precompile::interface::PrecompileError::Blake2WrongLength"
                           |) in
-                        M.alloc (| M.read (| Value.String "wrong input length for blake2" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "wrong input length for blake2" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1912,7 +2116,12 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "wrong final indicator flag for blake2" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "wrong final indicator flag for blake2" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1922,7 +2131,12 @@ Module interface.
                             γ,
                             "revm_precompile::interface::PrecompileError::ModexpExpOverflow"
                           |) in
-                        M.alloc (| M.read (| Value.String "modexp exp overflow" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "modexp exp overflow" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1931,7 +2145,12 @@ Module interface.
                             γ,
                             "revm_precompile::interface::PrecompileError::ModexpBaseOverflow"
                           |) in
-                        M.alloc (| M.read (| Value.String "modexp base overflow" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "modexp base overflow" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1940,7 +2159,12 @@ Module interface.
                             γ,
                             "revm_precompile::interface::PrecompileError::ModexpModOverflow"
                           |) in
-                        M.alloc (| M.read (| Value.String "modexp mod overflow" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "modexp mod overflow" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1950,7 +2174,12 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "field point not a member of bn128 curve" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "field point not a member of bn128 curve" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1961,8 +2190,13 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate"
                           |) in
                         M.alloc (|
-                          M.read (|
-                            Value.String "failed to create affine g point for bn128 curve"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                Value.String "failed to create affine g point for bn128 curve"
+                              |)
+                            |)
                           |)
                         |)));
                     fun γ =>
@@ -1973,7 +2207,12 @@ Module interface.
                             γ,
                             "revm_precompile::interface::PrecompileError::Bn128PairLength"
                           |) in
-                        M.alloc (| M.read (| Value.String "bn128 invalid pair length" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "bn128 invalid pair length" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1982,7 +2221,12 @@ Module interface.
                             γ,
                             "revm_precompile::interface::PrecompileError::BlobInvalidInputLength"
                           |) in
-                        M.alloc (| M.read (| Value.String "invalid blob input length" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "invalid blob input length" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1991,7 +2235,12 @@ Module interface.
                             γ,
                             "revm_precompile::interface::PrecompileError::BlobMismatchedVersion"
                           |) in
-                        M.alloc (| M.read (| Value.String "mismatched blob version" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "mismatched blob version" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2000,7 +2249,14 @@ Module interface.
                             γ,
                             "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed"
                           |) in
-                        M.alloc (| M.read (| Value.String "verifying blob kzg proof failed" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "verifying blob kzg proof failed" |)
+                            |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2012,17 +2268,22 @@ Module interface.
                           |) in
                         let s := M.alloc (| γ1_0 |) in
                         M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "alloc::string::String",
-                              [],
-                              [],
-                              "deref",
-                              [],
-                              []
-                            |),
-                            [ M.read (| s |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.path "alloc::string::String",
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                              |)
+                            |)
                           |)
                         |)))
                   ]
@@ -2031,7 +2292,10 @@ Module interface.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-                [ M.read (| f |); M.read (| s |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+                ]
               |)
             |)
           |)))

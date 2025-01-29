@@ -115,7 +115,12 @@ Module bls12_381.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| out |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| out |) |)
+                                      |)
+                                    ]
                                   |),
                                   M.read (|
                                     M.get_constant (|
@@ -142,7 +147,7 @@ Module bls12_381.
                         []
                       |),
                       [
-                        M.read (| out |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| out |) |) |);
                         M.read (|
                           M.get_constant (| "revm_precompile::bls12_381::utils::PADDING_LENGTH" |)
                         |)
@@ -165,7 +170,13 @@ Module bls12_381.
                                 [],
                                 []
                               |),
-                              [ M.read (| padding |); Value.Integer IntegerKind.U8 0 ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| padding |) |)
+                                |);
+                                Value.Integer IntegerKind.U8 0
+                              ]
                             |)
                           |) in
                         let~ _ :=
@@ -180,7 +191,12 @@ Module bls12_381.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| rest |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| rest |) |)
+                                    |)
+                                  ]
                                 |);
                                 M.read (| input |)
                               ]
@@ -239,7 +255,12 @@ Module bls12_381.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| input |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| input |) |)
+                                      |)
+                                    ]
                                   |),
                                   M.read (|
                                     M.get_constant (|
@@ -285,85 +306,136 @@ Module bls12_381.
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "Padded input should be "
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String " bytes, was "
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "Padded input should be "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            " bytes, was "
+                                                                        |)
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.match_operator (|
-                                                              M.alloc (|
-                                                                Value.Tuple
-                                                                  [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.match_operator (|
                                                                     M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path "slice")
-                                                                            []
-                                                                            [ Ty.path "u8" ],
-                                                                          "len",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| input |) ]
-                                                                      |)
-                                                                    |);
-                                                                    M.get_constant (|
-                                                                      "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
-                                                                    |)
-                                                                  ]
-                                                              |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let args := M.copy (| γ |) in
-                                                                    M.alloc (|
-                                                                      Value.Array
+                                                                      Value.Tuple
                                                                         [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [],
-                                                                              [ Ty.path "usize" ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                M.SubPointer.get_tuple_field (|
-                                                                                  args,
-                                                                                  1
-                                                                                |)
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u8"
+                                                                                    ],
+                                                                                  "len",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        input
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
                                                                               |)
-                                                                            ]
+                                                                            |)
                                                                           |);
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [],
-                                                                              [ Ty.path "usize" ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                M.SubPointer.get_tuple_field (|
-                                                                                  args,
-                                                                                  0
-                                                                                |)
-                                                                              |)
-                                                                            ]
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.get_constant (|
+                                                                              "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                                                            |)
                                                                           |)
                                                                         ]
-                                                                    |)))
-                                                              ]
+                                                                    |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let args :=
+                                                                            M.copy (| γ |) in
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "new_display",
+                                                                                    [],
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    ]
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            args,
+                                                                                            1
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |);
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "new_display",
+                                                                                    [],
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    ]
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            args,
+                                                                                            0
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                          |)))
+                                                                    ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -393,7 +465,7 @@ Module bls12_381.
                         []
                       |),
                       [
-                        M.read (| input |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |);
                         M.read (|
                           M.get_constant (| "revm_precompile::bls12_381::utils::PADDING_LENGTH" |)
                         |)
@@ -438,15 +510,26 @@ Module bls12_381.
                                               ]
                                             |),
                                             [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                    "iter",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| padding |) ]
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
+                                                      "iter",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| padding |) |)
+                                                      |)
+                                                    ]
+                                                  |)
                                                 |)
                                               |);
                                               M.closure
@@ -514,36 +597,63 @@ Module bls12_381.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String ""
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              " top bytes of input are not zero"
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.read (|
+                                                                                  Value.String ""
+                                                                                |);
+                                                                                M.read (|
+                                                                                  Value.String
+                                                                                    " top bytes of input are not zero"
+                                                                                |)
+                                                                              ]
                                                                           |)
-                                                                        ]
+                                                                        |)
+                                                                      |)
                                                                     |);
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [],
-                                                                              [ Ty.path "usize" ]
-                                                                            |),
-                                                                            [
-                                                                              M.get_constant (|
-                                                                                "revm_precompile::bls12_381::utils::PADDING_LENGTH"
-                                                                              |)
-                                                                            ]
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "new_display",
+                                                                                    [],
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    ]
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.get_constant (|
+                                                                                            "revm_precompile::bls12_381::utils::PADDING_LENGTH"
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
                                                                           |)
-                                                                        ]
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -612,7 +722,12 @@ Module bls12_381.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| unpadded |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| unpadded |) |)
+                                      |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -675,7 +790,12 @@ Module bls12_381.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| input |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| input |) |)
+                                      |)
+                                    ]
                                   |),
                                   M.read (|
                                     M.get_constant (|
@@ -721,84 +841,136 @@ Module bls12_381.
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String "Input should be "
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String " bytes, was "
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "Input should be "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            " bytes, was "
+                                                                        |)
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.match_operator (|
-                                                              M.alloc (|
-                                                                Value.Tuple
-                                                                  [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.match_operator (|
                                                                     M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path "slice")
-                                                                            []
-                                                                            [ Ty.path "u8" ],
-                                                                          "len",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| input |) ]
-                                                                      |)
-                                                                    |);
-                                                                    M.get_constant (|
-                                                                      "revm_precompile::bls12_381::utils::SCALAR_LENGTH"
-                                                                    |)
-                                                                  ]
-                                                              |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let args := M.copy (| γ |) in
-                                                                    M.alloc (|
-                                                                      Value.Array
+                                                                      Value.Tuple
                                                                         [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [],
-                                                                              [ Ty.path "usize" ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                M.SubPointer.get_tuple_field (|
-                                                                                  args,
-                                                                                  1
-                                                                                |)
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u8"
+                                                                                    ],
+                                                                                  "len",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        input
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
                                                                               |)
-                                                                            ]
+                                                                            |)
                                                                           |);
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [],
-                                                                              [ Ty.path "usize" ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                M.SubPointer.get_tuple_field (|
-                                                                                  args,
-                                                                                  0
-                                                                                |)
-                                                                              |)
-                                                                            ]
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.get_constant (|
+                                                                              "revm_precompile::bls12_381::utils::SCALAR_LENGTH"
+                                                                            |)
                                                                           |)
                                                                         ]
-                                                                    |)))
-                                                              ]
+                                                                    |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let args :=
+                                                                            M.copy (| γ |) in
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "new_display",
+                                                                                    [],
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    ]
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            args,
+                                                                                            1
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |);
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "new_display",
+                                                                                    [],
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    ]
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            args,
+                                                                                            0
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                          |)))
+                                                                    ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -838,7 +1010,10 @@ Module bls12_381.
                     M.call_closure (|
                       M.get_function (| "blst::blst_scalar_from_bendian", [], [] |),
                       [
-                        out;
+                        M.borrow (|
+                          Pointer.Kind.MutPointer,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, out |) |)
+                        |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -846,7 +1021,7 @@ Module bls12_381.
                             [],
                             []
                           |),
-                          [ M.read (| input |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                         |)
                       ]
                     |)
@@ -920,7 +1095,12 @@ Module bls12_381.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| input |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| input |) |)
+                                    |)
+                                  ]
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -930,8 +1110,11 @@ Module bls12_381.
                                     []
                                   |),
                                   [
-                                    M.get_constant (|
-                                      "revm_precompile::bls12_381::utils::MODULUS_REPR"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.get_constant (|
+                                        "revm_precompile::bls12_381::utils::MODULUS_REPR"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -971,7 +1154,12 @@ Module bls12_381.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1009,7 +1197,16 @@ Module bls12_381.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| i |); M.read (| modulo |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| i |) |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| modulo |) |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -1105,7 +1302,12 @@ Module bls12_381.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| input |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| input |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -1131,7 +1333,14 @@ Module bls12_381.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| Value.String "non-canonical fp value" |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (| Value.String "non-canonical fp value" |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                     ]
@@ -1163,7 +1372,10 @@ Module bls12_381.
                       M.call_closure (|
                         M.get_function (| "blst::blst_fp_from_bendian", [], [] |),
                         [
-                          fp;
+                          M.borrow (|
+                            Pointer.Kind.MutPointer,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, fp |) |)
+                          |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -1171,7 +1383,7 @@ Module bls12_381.
                               [],
                               []
                             |),
-                            [ M.read (| input |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                           |)
                         ]
                       |)

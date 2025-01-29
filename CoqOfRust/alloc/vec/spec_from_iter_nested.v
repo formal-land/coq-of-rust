@@ -61,7 +61,7 @@ Module vec.
                               [],
                               []
                             |),
-                            [ iterator ]
+                            [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
                           |)
                         |),
                         [
@@ -109,7 +109,7 @@ Module vec.
                                       [],
                                       []
                                     |),
-                                    [ iterator ]
+                                    [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                                   |)
                                 |),
                                 [
@@ -178,7 +178,7 @@ Module vec.
                                                     [],
                                                     []
                                                   |),
-                                                  [ vector ]
+                                                  [ M.borrow (| Pointer.Kind.MutRef, vector |) ]
                                                 |);
                                                 M.read (| element |)
                                               ]
@@ -196,7 +196,10 @@ Module vec.
                                                 [],
                                                 []
                                               |),
-                                              [ vector; Value.Integer IntegerKind.Usize 1 ]
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, vector |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |) in
@@ -221,7 +224,13 @@ Module vec.
                           [],
                           []
                         |),
-                        [ vector; M.read (| iterator |) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, vector |) |)
+                          |);
+                          M.read (| iterator |)
+                        ]
                       |)
                     |) in
                   vector
@@ -279,7 +288,7 @@ Module vec.
                           [],
                           []
                         |),
-                        [ iterator ]
+                        [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                       |)
                     |),
                     [
@@ -323,9 +332,17 @@ Module vec.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "capacity overflow" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "capacity overflow" |) ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -348,7 +365,7 @@ Module vec.
                       [],
                       []
                     |),
-                    [ vector; M.read (| iterator |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, vector |); M.read (| iterator |) ]
                   |)
                 |) in
               vector

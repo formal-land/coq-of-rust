@@ -148,7 +148,7 @@ Module table.
                     let table := M.alloc (| γ1_0 |) in
                     M.write (|
                       M.SubPointer.get_array_field (|
-                        M.read (| M.read (| table |) |),
+                        M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
                         M.alloc (| M.rust_cast (M.read (| opcode |)) |)
                       |),
                       M.read (| instruction |)
@@ -165,7 +165,7 @@ Module table.
                     let table := M.alloc (| γ1_0 |) in
                     M.write (|
                       M.SubPointer.get_array_field (|
-                        M.read (| M.read (| table |) |),
+                        M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
                         M.alloc (| M.rust_cast (M.read (| opcode |)) |)
                       |),
                       M.call_closure (|
@@ -207,66 +207,79 @@ Module table.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ],
-              "to_custom_with",
-              [],
-              [
-                Ty.function
-                  [
-                    Ty.tuple
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::table::InstructionTables")
+                        []
+                        [ WIRE; H; CI ],
+                      "to_custom_with",
+                      [],
                       [
                         Ty.function
                           [
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
+                            Ty.tuple
                               [
-                                Ty.apply
-                                  (Ty.path "revm_interpreter::interpreter::Interpreter")
-                                  []
-                                  [ WIRE ]
-                              ];
-                            Ty.apply (Ty.path "&mut") [] [ H ]
+                                Ty.function
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                          []
+                                          [ WIRE ]
+                                      ];
+                                    Ty.apply (Ty.path "&mut") [] [ H ]
+                                  ]
+                                  (Ty.tuple [])
+                              ]
                           ]
-                          (Ty.tuple [])
+                          CI
                       ]
-                  ]
-                  CI
-              ]
-            |),
-            [
-              M.read (| self |);
-              M.closure
-                (fun γ =>
-                  ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
                               ltac:(M.monadic
-                                (let i := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "revm_interpreter::table::CustomInstruction",
-                                    CI,
-                                    [],
-                                    [],
-                                    "from_base",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| i |) ]
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let i := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "revm_interpreter::table::CustomInstruction",
+                                            CI,
+                                            [],
+                                            [],
+                                            "from_base",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| i |) ]
+                                        |)))
+                                  ]
                                 |)))
-                          ]
-                        |)))
-                    | _ => M.impossible "wrong number of arguments"
-                    end))
-            ]
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -298,45 +311,71 @@ Module table.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
-          M.read (|
-            M.match_operator (|
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_interpreter::table::InstructionTables::Plain",
-                        0
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "revm_interpreter::table::InstructionTables")
-                            []
-                            [ WIRE; H; CI ],
-                          "to_custom_with_slow",
-                          [],
-                          [ F ]
-                        |),
-                        [ M.read (| self |); M.read (| f |) ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_interpreter::table::InstructionTables::Custom",
-                        0
-                      |) in
-                    let boxed := M.alloc (| γ1_0 |) in
-                    M.alloc (| M.read (| M.read (| boxed |) |) |)))
-              ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    M.match_operator (|
+                      self,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            let γ1_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "revm_interpreter::table::InstructionTables::Plain",
+                                0
+                              |) in
+                            M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm_interpreter::table::InstructionTables")
+                                        []
+                                        [ WIRE; H; CI ],
+                                      "to_custom_with_slow",
+                                      [],
+                                      [ F ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      M.read (| f |)
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            let γ1_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "revm_interpreter::table::InstructionTables::Custom",
+                                0
+                              |) in
+                            let boxed := M.alloc (| γ1_0 |) in
+                            M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.read (| M.deref (| M.read (| boxed |) |) |) |)
+                              |)
+                            |)))
+                      ]
+                    |)
+                  |)
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -373,72 +412,90 @@ Module table.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
-          M.read (|
-            M.match_operator (|
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_interpreter::table::InstructionTables::Plain",
-                        0
-                      |) in
-                    let table := M.alloc (| γ1_0 |) in
-                    let~ _ :=
-                      M.write (|
-                        M.read (| self |),
-                        Value.StructTuple
-                          "revm_interpreter::table::InstructionTables::Custom"
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 256 ]
-                                      [ CI ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                "new",
-                                [],
-                                []
-                              |),
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                M.match_operator (|
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "revm_interpreter::table::InstructionTables::Plain",
+                            0
+                          |) in
+                        let table := M.alloc (| γ1_0 |) in
+                        let~ _ :=
+                          M.write (|
+                            M.deref (| M.read (| self |) |),
+                            Value.StructTuple
+                              "revm_interpreter::table::InstructionTables::Custom"
                               [
                                 M.call_closure (|
-                                  M.get_function (|
-                                    "revm_interpreter::table::make_custom_instruction_table",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 256 ]
+                                          [ CI ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    "new",
                                     [],
-                                    [ WIRE; H; F; CI ]
+                                    []
                                   |),
-                                  [ M.read (| M.read (| table |) |); M.read (| f |) ]
+                                  [
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "revm_interpreter::table::make_custom_instruction_table",
+                                        [],
+                                        [ WIRE; H; F; CI ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (| M.deref (| M.read (| table |) |) |)
+                                          |)
+                                        |);
+                                        M.read (| f |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               ]
-                            |)
+                          |) in
+                        M.match_operator (|
+                          self,
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ := M.read (| γ |) in
+                                let γ1_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "revm_interpreter::table::InstructionTables::Custom",
+                                    0
+                                  |) in
+                                let boxed := M.alloc (| γ1_0 |) in
+                                M.alloc (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| M.deref (| M.read (| boxed |) |) |) |)
+                                  |)
+                                |)))
                           ]
-                      |) in
-                    M.match_operator (|
-                      self,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let γ1_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "revm_interpreter::table::InstructionTables::Custom",
-                                0
-                              |) in
-                            let boxed := M.alloc (| γ1_0 |) in
-                            M.alloc (| M.read (| M.read (| boxed |) |) |)))
-                      ]
-                    |)))
-              ]
+                        |)))
+                  ]
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -465,17 +522,35 @@ Module table.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let opcode := M.alloc (| opcode |) in
-          M.SubPointer.get_array_field (|
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ],
-                "to_custom",
-                [],
-                []
-              |),
-              [ M.read (| self |) ]
-            |),
-            M.alloc (| M.rust_cast (M.read (| opcode |)) |)
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_array_field (|
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "revm_interpreter::table::InstructionTables")
+                              []
+                              [ WIRE; H; CI ],
+                            "to_custom",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |),
+                      M.alloc (| M.rust_cast (M.read (| opcode |)) |)
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -505,17 +580,22 @@ Module table.
           M.read (|
             let~ _ :=
               M.write (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "revm_interpreter::table::InstructionTables")
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::table::InstructionTables")
+                        []
+                        [ WIRE; H; CI ],
+                      "get_custom",
+                      [],
                       []
-                      [ WIRE; H; CI ],
-                    "get_custom",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |); M.read (| opcode |) ]
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| opcode |)
+                    ]
+                  |)
                 |),
                 M.read (| instruction |)
               |) in
@@ -549,17 +629,25 @@ Module table.
           M.call_closure (|
             M.get_function (| "core::mem::replace", [], [ CI ] |),
             [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "revm_interpreter::table::InstructionTables")
-                    []
-                    [ WIRE; H; CI ],
-                  "get_custom",
-                  [],
-                  []
-                |),
-                [ M.read (| self |); M.read (| opcode |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::table::InstructionTables")
+                        []
+                        [ WIRE; H; CI ],
+                      "get_custom",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| opcode |)
+                    ]
+                  |)
+                |)
               |);
               M.read (| instruction |)
             ]
@@ -671,11 +759,14 @@ Module table.
                                   []
                                 |),
                                 [
-                                  f;
+                                  M.borrow (| Pointer.Kind.MutRef, f |);
                                   Value.Tuple
                                     [
                                       M.read (|
-                                        M.SubPointer.get_array_field (| M.read (| table |), i |)
+                                        M.SubPointer.get_array_field (|
+                                          M.deref (| M.read (| table |) |),
+                                          i
+                                        |)
                                       |)
                                     ]
                                 ]

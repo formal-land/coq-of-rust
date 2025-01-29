@@ -151,10 +151,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| this |),
-                          "alloc::collections::btree::node::LeafNode",
-                          "parent"
+                        M.borrow (|
+                          Pointer.Kind.MutPointer,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| this |) |),
+                            "alloc::collections::btree::node::LeafNode",
+                            "parent"
+                          |)
                         |);
                         Value.StructTuple "core::option::Option::None" []
                       ]
@@ -170,10 +173,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| this |),
-                          "alloc::collections::btree::node::LeafNode",
-                          "len"
+                        M.borrow (|
+                          Pointer.Kind.MutPointer,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| this |) |),
+                            "alloc::collections::btree::node::LeafNode",
+                            "len"
+                          |)
                         |);
                         Value.Integer IntegerKind.U16 0
                       ]
@@ -250,7 +256,7 @@ Module collections.
                             [],
                             []
                           |),
-                          [ M.read (| leaf |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| leaf |) |) |) ]
                         |)
                       ]
                     |)
@@ -377,26 +383,36 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                []
-                                [
+                        M.borrow (|
+                          Pointer.Kind.MutPointer,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
                                   Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::InternalNode")
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                     []
-                                    [ K; V ]
-                                ],
-                              "as_mut_ptr",
-                              [],
-                              []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::InternalNode")
+                                        []
+                                        [ K; V ]
+                                    ],
+                                  "as_mut_ptr",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| node |) |)
+                                  |)
+                                ]
+                              |)
                             |),
-                            [ M.read (| node |) ]
-                          |),
-                          "alloc::collections::btree::node::InternalNode",
-                          "data"
+                            "alloc::collections::btree::node::InternalNode",
+                            "data"
+                          |)
                         |)
                       ]
                     |)
@@ -516,7 +532,7 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.read (| M.read (| self |) |)))
+              M.read (| M.deref (| M.read (| self |) |) |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -837,13 +853,16 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_array_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| new_node |),
-                            "alloc::collections::btree::node::InternalNode",
-                            "edges"
-                          |),
-                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_array_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| new_node |) |),
+                              "alloc::collections::btree::node::InternalNode",
+                              "edges"
+                            |),
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                          |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -1064,23 +1083,26 @@ Module collections.
                         []
                       |),
                       [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Owned";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Internal"
+                                  ],
+                                "borrow_mut",
+                                [],
                                 []
-                                [
-                                  Ty.path "alloc::collections::btree::node::marker::Owned";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::Internal"
-                                ],
-                              "borrow_mut",
-                              [],
-                              []
-                            |),
-                            [ this ]
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, this |) ]
+                            |)
                           |)
                         |)
                       ]
@@ -1241,7 +1263,7 @@ Module collections.
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| this |),
+                        M.deref (| M.read (| this |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "node"
                       |)
@@ -1332,28 +1354,45 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.read (|
-                let~ ptr :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::Internal"
-                          ],
-                        "as_internal_ptr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    let~ ptr :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
+                              [
+                                Ty.path "alloc::collections::btree::node::marker::Mut";
+                                K;
+                                V;
+                                Ty.path "alloc::collections::btree::node::marker::Internal"
+                              ],
+                            "as_internal_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |) in
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| ptr |) |) |)
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
-                  |) in
-                M.alloc (| M.read (| ptr |) |)
+                  |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1384,83 +1423,117 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let index := M.alloc (| index |) in
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "slice")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::ptr::non_null::NonNull")
-                            []
-                            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "alloc::collections::btree::node::LeafNode")
-                                []
-                                [ K; V ]
-                            ]
-                        ]
-                    ],
-                  "get_unchecked_mut",
-                  [],
-                  [ I ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 12 ]
-                        [
-                          Ty.apply
-                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::ptr::non_null::NonNull")
+                                (Ty.path "slice")
                                 []
                                 [
                                   Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::LeafNode")
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                     []
-                                    [ K; V ]
-                                ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ptr::non_null::NonNull")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::LeafNode")
+                                            []
+                                            [ K; V ]
+                                        ]
+                                    ]
+                                ],
+                              "get_unchecked_mut",
+                              [],
+                              [ I ]
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 12 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::LeafNode")
+                                                    []
+                                                    [ K; V ]
+                                                ]
+                                            ]
+                                        ],
+                                      "as_mut_slice",
+                                      [ Value.Integer IntegerKind.Usize 12 ],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::node::NodeRef")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Mut";
+                                                    K;
+                                                    V;
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Internal"
+                                                  ],
+                                                "as_internal_mut",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |),
+                                          "alloc::collections::btree::node::InternalNode",
+                                          "edges"
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |);
+                              M.read (| index |)
                             ]
-                        ],
-                      "as_mut_slice",
-                      [ Value.Integer IntegerKind.Usize 12 ],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Internal"
-                              ],
-                            "as_internal_mut",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |),
-                        "alloc::collections::btree::node::InternalNode",
-                        "edges"
+                          |)
+                        |)
                       |)
-                    ]
-                  |);
-                  M.read (| index |)
-                ]
+                    |)
+                  |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1524,7 +1597,12 @@ Module collections.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -1586,7 +1664,14 @@ Module collections.
                                                                           [],
                                                                           []
                                                                         |),
-                                                                        [ M.read (| self |) ]
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (| self |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
                                                                       |)
                                                                     |)
                                                                   |)
@@ -1697,7 +1782,12 @@ Module collections.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| self |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| self |) |)
+                                                        |)
+                                                      ]
                                                     |);
                                                     M.read (| i |)
                                                   ]
@@ -1758,7 +1848,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -1784,7 +1874,7 @@ Module collections.
                         ]
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -1858,7 +1948,7 @@ Module collections.
                                     BinOp.Wrap.sub (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "alloc::collections::btree::node::NodeRef",
                                           "height"
                                         |)
@@ -1902,7 +1992,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ idx :=
@@ -1917,7 +2007,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| M.read (| len |) |) ]
+                      [ M.read (| M.deref (| M.read (| len |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -1954,7 +2044,7 @@ Module collections.
                     ]
                   |) in
                 let~ _ :=
-                  let β := M.read (| len |) in
+                  let β := M.deref (| M.read (| len |) |) in
                   M.write (|
                     β,
                     BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U16 1 |)
@@ -1969,25 +2059,33 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Internal"
+                                  ],
+                                "key_area_mut",
+                                [],
+                                [
+                                  Ty.path "usize";
+                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                                ]
+                              |),
                               [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Internal"
-                              ],
-                            "key_area_mut",
-                            [],
-                            [
-                              Ty.path "usize";
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                            ]
-                          |),
-                          [ M.read (| self |); M.read (| idx |) ]
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                                M.read (| idx |)
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (| key |)
                       ]
@@ -2003,25 +2101,33 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Internal"
+                                  ],
+                                "val_area_mut",
+                                [],
+                                [
+                                  Ty.path "usize";
+                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                                ]
+                              |),
                               [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Internal"
-                              ],
-                            "val_area_mut",
-                            [],
-                            [
-                              Ty.path "usize";
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                            ]
-                          |),
-                          [ M.read (| self |); M.read (| idx |) ]
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                                M.read (| idx |)
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (| val |)
                       ]
@@ -2050,41 +2156,49 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Internal"
-                              ],
-                            "edge_area_mut",
-                            [],
-                            [
-                              Ty.path "usize";
-                              Ty.apply
-                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                []
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Internal"
+                                  ],
+                                "edge_area_mut",
+                                [],
                                 [
+                                  Ty.path "usize";
                                   Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                     []
                                     [
                                       Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::LeafNode")
+                                        (Ty.path "core::ptr::non_null::NonNull")
                                         []
-                                        [ K; V ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::LeafNode")
+                                            []
+                                            [ K; V ]
+                                        ]
                                     ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.read (| self |);
-                            BinOp.Wrap.add (| M.read (| idx |), Value.Integer IntegerKind.Usize 1 |)
-                          ]
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                                BinOp.Wrap.add (|
+                                  M.read (| idx |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2157,7 +2271,8 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |);
                             BinOp.Wrap.add (| M.read (| idx |), Value.Integer IntegerKind.Usize 1 |)
                           ]
@@ -2213,17 +2328,19 @@ Module collections.
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
+                              [ BorrowType; K; V; Type_ ],
+                            "as_leaf_ptr",
+                            [],
                             []
-                            [ BorrowType; K; V; Type_ ],
-                          "as_leaf_ptr",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
                       |),
                       "alloc::collections::btree::node::LeafNode",
                       "len"
@@ -2256,7 +2373,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::collections::btree::node::NodeRef",
                   "height"
                 |)
@@ -2290,7 +2407,7 @@ Module collections.
                   ("height",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "height"
                       |)
@@ -2298,7 +2415,7 @@ Module collections.
                   ("node",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "node"
                       |)
@@ -2347,7 +2464,7 @@ Module collections.
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| this |),
+                      M.deref (| M.read (| this |) |),
                       "alloc::collections::btree::node::NodeRef",
                       "node"
                     |)
@@ -2412,7 +2529,12 @@ Module collections.
                           [],
                           []
                         |),
-                        [ self ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                          |)
+                        ]
                       |))
                   |) in
                 M.alloc (|
@@ -2547,10 +2669,13 @@ Module collections.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf_ptr |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "parent"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| leaf_ptr |) |),
+                                  "alloc::collections::btree::node::LeafNode",
+                                  "parent"
+                                |)
                               |)
                             ]
                           |);
@@ -2588,7 +2713,9 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| M.read (| parent |) |);
+                                                      M.read (|
+                                                        M.deref (| M.read (| parent |) |)
+                                                      |);
                                                       BinOp.Wrap.add (|
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
@@ -2627,7 +2754,7 @@ Module collections.
                                                         [
                                                           M.read (|
                                                             M.SubPointer.get_struct_record_field (|
-                                                              M.read (| leaf_ptr |),
+                                                              M.deref (| M.read (| leaf_ptr |) |),
                                                               "alloc::collections::btree::node::LeafNode",
                                                               "parent_idx"
                                                             |)
@@ -2731,7 +2858,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ self ]
+                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
                     |)
                   |) in
                 M.alloc (|
@@ -2796,7 +2923,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ self ]
+                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -2887,7 +3014,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ self ]
+                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -3039,11 +3166,22 @@ Module collections.
                                           []
                                         |),
                                         [
-                                          M.read (| node |);
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| other |),
-                                            "alloc::collections::btree::node::NodeRef",
-                                            "node"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| node |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| other |) |),
+                                                  "alloc::collections::btree::node::NodeRef",
+                                                  "node"
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -3070,11 +3208,17 @@ Module collections.
                                               M.alloc (|
                                                 Value.Tuple
                                                   [
-                                                    M.read (| height |);
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| other |),
-                                                      "alloc::collections::btree::node::NodeRef",
-                                                      "height"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| height |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| other |) |),
+                                                        "alloc::collections::btree::node::NodeRef",
+                                                        "height"
+                                                      |)
                                                     |)
                                                   ]
                                               |),
@@ -3098,10 +3242,14 @@ Module collections.
                                                                   UnOp.not (|
                                                                     BinOp.eq (|
                                                                       M.read (|
-                                                                        M.read (| left_val |)
+                                                                        M.deref (|
+                                                                          M.read (| left_val |)
+                                                                        |)
                                                                       |),
                                                                       M.read (|
-                                                                        M.read (| right_val |)
+                                                                        M.deref (|
+                                                                          M.read (| right_val |)
+                                                                        |)
                                                                       |)
                                                                     |)
                                                                   |)
@@ -3132,8 +3280,32 @@ Module collections.
                                                                       |),
                                                                       [
                                                                         M.read (| kind |);
-                                                                        M.read (| left_val |);
-                                                                        M.read (| right_val |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  left_val
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  right_val
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |);
                                                                         Value.StructTuple
                                                                           "core::option::Option::None"
                                                                           []
@@ -3209,10 +3381,20 @@ Module collections.
                         [],
                         []
                       |),
-                      [ self ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                        |)
+                      ]
                     |)
                   |) in
-                M.alloc (| M.read (| ptr |) |)
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ptr |) |) |) |)
+                  |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3253,62 +3435,85 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| M.read (| self |) |) ]
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
-                      "slice_assume_init_ref",
-                      [],
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "slice")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
-                          "get_unchecked",
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
+                          "slice_assume_init_ref",
                           [],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
+                          []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| leaf |),
-                            "alloc::collections::btree::node::LeafNode",
-                            "keys"
-                          |);
-                          Value.StructRecord
-                            "core::ops::range::RangeTo"
-                            [
-                              ("end_",
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.path "usize",
-                                    [],
-                                    [ Ty.path "u16" ],
-                                    "from",
-                                    [],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
                                     []
-                                  |),
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ K ]
+                                    ],
+                                  "get_unchecked",
+                                  [],
                                   [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| leaf |),
-                                        "alloc::collections::btree::node::LeafNode",
-                                        "len"
-                                      |)
-                                    |)
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::RangeTo")
+                                      []
+                                      [ Ty.path "usize" ]
                                   ]
-                                |))
-                            ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "keys"
+                                    |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeTo"
+                                    [
+                                      ("end_",
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.path "usize",
+                                            [],
+                                            [ Ty.path "u16" ],
+                                            "from",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| leaf |) |),
+                                                "alloc::collections::btree::node::LeafNode",
+                                                "len"
+                                              |)
+                                            |)
+                                          ]
+                                        |))
+                                    ]
+                                ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
-                    ]
+                    |)
                   |)
                 |)
               |)))
@@ -3454,7 +3659,7 @@ Module collections.
                           []
                         |),
                         [
-                          alloc;
+                          M.borrow (| Pointer.Kind.Ref, alloc |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -3572,7 +3777,7 @@ Module collections.
                   ("height",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "height"
                       |)
@@ -3580,7 +3785,7 @@ Module collections.
                   ("node",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "node"
                       |)
@@ -3612,23 +3817,41 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.read (|
-                let~ ptr :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ],
-                        "as_leaf_ptr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    let~ ptr :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
+                              [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_
+                              ],
+                            "as_leaf_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |) in
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| ptr |) |) |)
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
-                  |) in
-                M.alloc (| M.read (| ptr |) |)
+                  |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3655,23 +3878,46 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.read (|
-                let~ ptr :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ],
-                        "as_leaf_ptr",
-                        [],
-                        []
-                      |),
-                      [ self ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    let~ ptr :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
+                              [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_
+                              ],
+                            "as_leaf_ptr",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, self |) |)
+                            |)
+                          ]
+                        |)
+                      |) in
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| ptr |) |) |)
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
-                  |) in
-                M.alloc (| M.read (| ptr |) |)
+                  |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3702,7 +3948,7 @@ Module collections.
                   ("height",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "height"
                       |)
@@ -3710,7 +3956,7 @@ Module collections.
                   ("node",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "node"
                       |)
@@ -3746,49 +3992,91 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let index := M.alloc (| index |) in
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "slice")
-                    []
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
-                  "get_unchecked_mut",
-                  [],
-                  [ I ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 11 ]
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
-                      "as_mut_slice",
-                      [ Value.Integer IntegerKind.Usize 11 ],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_
-                              ],
-                            "as_leaf_mut",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |),
-                        "alloc::collections::btree::node::LeafNode",
-                        "keys"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                                ],
+                              "get_unchecked_mut",
+                              [],
+                              [ I ]
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 11 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ K ]
+                                        ],
+                                      "as_mut_slice",
+                                      [ Value.Integer IntegerKind.Usize 11 ],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::node::NodeRef")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Mut";
+                                                    K;
+                                                    V;
+                                                    Type_
+                                                  ],
+                                                "as_leaf_mut",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |),
+                                          "alloc::collections::btree::node::LeafNode",
+                                          "keys"
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |);
+                              M.read (| index |)
+                            ]
+                          |)
+                        |)
                       |)
-                    ]
-                  |);
-                  M.read (| index |)
-                ]
+                    |)
+                  |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3820,49 +4108,91 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let index := M.alloc (| index |) in
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "slice")
-                    []
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
-                  "get_unchecked_mut",
-                  [],
-                  [ I ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 11 ]
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
-                      "as_mut_slice",
-                      [ Value.Integer IntegerKind.Usize 11 ],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_
-                              ],
-                            "as_leaf_mut",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |),
-                        "alloc::collections::btree::node::LeafNode",
-                        "vals"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                                ],
+                              "get_unchecked_mut",
+                              [],
+                              [ I ]
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 11 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ V ]
+                                        ],
+                                      "as_mut_slice",
+                                      [ Value.Integer IntegerKind.Usize 11 ],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::node::NodeRef")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Mut";
+                                                    K;
+                                                    V;
+                                                    Type_
+                                                  ],
+                                                "as_leaf_mut",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |),
+                                          "alloc::collections::btree::node::LeafNode",
+                                          "vals"
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |);
+                              M.read (| index |)
+                            ]
+                          |)
+                        |)
                       |)
-                    ]
-                  |);
-                  M.read (| index |)
-                ]
+                    |)
+                  |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3886,21 +4216,42 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.SubPointer.get_struct_record_field (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                      []
-                      [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ],
-                    "as_leaf_mut",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |),
-                "alloc::collections::btree::node::LeafNode",
-                "len"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Type_
+                                  ],
+                                "as_leaf_mut",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
+                            |)
+                          |),
+                          "alloc::collections::btree::node::LeafNode",
+                          "len"
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3987,23 +4338,45 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.read (|
-                let~ ptr :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; Type_ ],
-                        "as_leaf_ptr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    let~ ptr :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
+                              [
+                                Ty.path "alloc::collections::btree::node::marker::Dying";
+                                K;
+                                V;
+                                Type_
+                              ],
+                            "as_leaf_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |) in
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| ptr |) |) |)
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
-                  |) in
-                M.alloc (| M.read (| ptr |) |)
+                  |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -4064,23 +4437,34 @@ Module collections.
                         [],
                         []
                       |),
-                      [ self ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, self |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 let~ keys :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| leaf |),
-                      "alloc::collections::btree::node::LeafNode",
-                      "keys"
+                    M.borrow (|
+                      Pointer.Kind.ConstPointer,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| leaf |) |),
+                        "alloc::collections::btree::node::LeafNode",
+                        "keys"
+                      |)
                     |)
                   |) in
                 let~ vals :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| leaf |),
-                      "alloc::collections::btree::node::LeafNode",
-                      "vals"
+                    M.borrow (|
+                      Pointer.Kind.MutPointer,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| leaf |) |),
+                        "alloc::collections::btree::node::LeafNode",
+                        "vals"
+                      |)
                     |)
                   |) in
                 let~ keys := M.alloc (| M.read (| keys |) |) in
@@ -4095,67 +4479,98 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "*const")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      (Ty.path "*const")
                                       []
-                                      [ K ]
-                                  ]
-                              ],
-                            "get_unchecked",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [ M.read (| keys |); M.read (| idx |) ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ K ]
+                                          ]
+                                      ],
+                                    "get_unchecked",
+                                    [],
+                                    [ Ty.path "usize" ]
+                                  |),
+                                  [ M.read (| keys |); M.read (| idx |) ]
+                                |)
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
                   |) in
                 let~ val :=
                   M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
-                        "assume_init_mut",
-                        [],
-                        []
-                      |),
-                      [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "*mut")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ V ]
-                                  ]
-                              ],
-                            "get_unchecked_mut",
+                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
+                            "assume_init_mut",
                             [],
-                            [ Ty.path "usize" ]
+                            []
                           |),
-                          [ M.read (| vals |); M.read (| idx |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ V ]
+                                              ]
+                                          ],
+                                        "get_unchecked_mut",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
+                                      [ M.read (| vals |); M.read (| idx |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   |) in
-                M.alloc (| Value.Tuple [ M.read (| key |); M.read (| val |) ] |)
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |)
+                    ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -4220,13 +4635,13 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| leaf |),
+                      M.deref (| M.read (| leaf |) |),
                       "alloc::collections::btree::node::LeafNode",
                       "parent"
                     |),
@@ -4245,10 +4660,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| leaf |),
-                          "alloc::collections::btree::node::LeafNode",
-                          "parent_idx"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| leaf |) |),
+                            "alloc::collections::btree::node::LeafNode",
+                            "parent_idx"
+                          |)
                         |);
                         M.rust_cast (M.read (| parent_idx |))
                       ]
@@ -4540,7 +4958,12 @@ Module collections.
                                 ]
                             ]
                           |),
-                          [ self ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.ConstPointer,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                            |)
+                          ]
                         |)
                       ]
                     |)
@@ -4629,7 +5052,17 @@ Module collections.
                                                         ]
                                                     ]
                                                   |),
-                                                  [ left_parent_kv ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.ConstPointer,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          left_parent_kv
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |));
                                               ("left_child",
                                                 M.call_closure (|
@@ -4779,7 +5212,17 @@ Module collections.
                                                                 ]
                                                             ]
                                                           |),
-                                                          [ right_parent_kv ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.ConstPointer,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  right_parent_kv
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
                                                         |));
                                                       ("left_child", M.read (| self |));
                                                       ("right_child",
@@ -4869,24 +5312,40 @@ Module collections.
                                                     []
                                                   |),
                                                   [
-                                                    M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "internal error: entered unreachable code: empty internal node"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "internal error: entered unreachable code: empty internal node"
+                                                                |)
+                                                              ]
                                                           |)
-                                                        ]
+                                                        |)
+                                                      |)
                                                     |);
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "none",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        []
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "none",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              []
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |)
                                                     |)
                                                   ]
@@ -4970,7 +5429,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ leaf :=
@@ -4990,13 +5449,13 @@ Module collections.
                         [],
                         []
                       |),
-                      [ root_node ]
+                      [ M.borrow (| Pointer.Kind.MutRef, root_node |) ]
                     |)
                   |) in
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| leaf |),
+                      M.deref (| M.read (| leaf |) |),
                       "alloc::collections::btree::node::LeafNode",
                       "parent"
                     |),
@@ -5131,7 +5590,7 @@ Module collections.
                         ]
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         M.closure
                           (fun γ =>
                             ltac:(M.monadic
@@ -5198,7 +5657,7 @@ Module collections.
                       ("height",
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::collections::btree::node::NodeRef",
                             "height"
                           |)
@@ -5206,7 +5665,7 @@ Module collections.
                       ("node",
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::collections::btree::node::NodeRef",
                             "node"
                           |)
@@ -5268,7 +5727,7 @@ Module collections.
                                   BinOp.gt (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "alloc::collections::btree::node::NodeRef",
                                         "height"
                                       |)
@@ -5293,7 +5752,7 @@ Module collections.
                 let~ top :=
                   M.copy (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::collections::btree::node::NodeRef",
                       "node"
                     |)
@@ -5331,35 +5790,50 @@ Module collections.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       ]
                     |)
                   |) in
                 let~ internal_node :=
                   M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::Internal"
-                          ],
-                        "as_internal_ptr",
-                        [],
-                        []
-                      |),
-                      [ internal_self ]
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Internal"
+                                  ],
+                                "as_internal_ptr",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.borrow (| Pointer.Kind.Ref, internal_self |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |) in
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::collections::btree::node::NodeRef",
                       "node"
                     |),
@@ -5384,13 +5858,16 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_array_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| internal_node |),
-                            "alloc::collections::btree::node::InternalNode",
-                            "edges"
-                          |),
-                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_array_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| internal_node |) |),
+                              "alloc::collections::btree::node::InternalNode",
+                              "edges"
+                            |),
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                          |)
                         |)
                       ]
                     |)
@@ -5398,7 +5875,7 @@ Module collections.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::collections::btree::node::NodeRef",
                       "height"
                     |) in
@@ -5423,7 +5900,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -5439,7 +5916,7 @@ Module collections.
                         []
                       |),
                       [
-                        alloc;
+                        M.borrow (| Pointer.Kind.Ref, alloc |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -5514,7 +5991,7 @@ Module collections.
                   ("height",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "height"
                       |)
@@ -5522,7 +5999,7 @@ Module collections.
                   ("node",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "node"
                       |)
@@ -5558,7 +6035,7 @@ Module collections.
                   ("height",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "height"
                       |)
@@ -5566,7 +6043,7 @@ Module collections.
                   ("node",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::NodeRef",
                         "node"
                       |)
@@ -5688,7 +6165,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ idx :=
@@ -5703,7 +6180,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| M.read (| len |) |) ]
+                      [ M.read (| M.deref (| M.read (| len |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -5740,7 +6217,7 @@ Module collections.
                     ]
                   |) in
                 let~ _ :=
-                  let β := M.read (| len |) in
+                  let β := M.deref (| M.read (| len |) |) in
                   M.write (|
                     β,
                     BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U16 1 |)
@@ -5755,25 +6232,33 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                  ],
+                                "key_area_mut",
+                                [],
+                                [
+                                  Ty.path "usize";
+                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                                ]
+                              |),
                               [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Leaf"
-                              ],
-                            "key_area_mut",
-                            [],
-                            [
-                              Ty.path "usize";
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                            ]
-                          |),
-                          [ M.read (| self |); M.read (| idx |) ]
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                                M.read (| idx |)
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (| key |)
                       ]
@@ -5789,25 +6274,33 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                  ],
+                                "val_area_mut",
+                                [],
+                                [
+                                  Ty.path "usize";
+                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                                ]
+                              |),
                               [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Leaf"
-                              ],
-                            "val_area_mut",
-                            [],
-                            [
-                              Ty.path "usize";
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                            ]
-                          |),
-                          [ M.read (| self |); M.read (| idx |) ]
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                                M.read (| idx |)
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (| val |)
                       ]
@@ -5842,7 +6335,7 @@ Module collections.
                           ("height",
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::collections::btree::node::NodeRef",
                                 "height"
                               |)
@@ -5850,7 +6343,7 @@ Module collections.
                           ("node",
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::collections::btree::node::NodeRef",
                                 "node"
                               |)
@@ -5883,46 +6376,55 @@ Module collections.
               (let self := M.alloc (| self |) in
               let key := M.alloc (| key |) in
               let val := M.alloc (| val |) in
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloc::collections::btree::node::Handle")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                        []
-                        [
-                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                          K;
-                          V;
-                          Ty.path "alloc::collections::btree::node::marker::Leaf"
-                        ];
-                      Ty.path "alloc::collections::btree::node::marker::KV"
-                    ],
-                  "into_val_mut",
-                  [],
-                  []
-                |),
-                [
+              M.borrow (|
+                Pointer.Kind.MutPointer,
+                M.deref (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
-                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                        (Ty.path "alloc::collections::btree::node::Handle")
                         []
                         [
-                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                          K;
-                          V;
-                          Ty.path "alloc::collections::btree::node::marker::Leaf"
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::Leaf"
+                            ];
+                          Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
-                      "push_with_handle",
+                      "into_val_mut",
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| key |); M.read (| val |) ]
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::Leaf"
+                            ],
+                          "push_with_handle",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                          M.read (| key |);
+                          M.read (| val |)
+                        ]
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -6162,7 +6664,7 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.read (| M.read (| self |) |)))
+              M.read (| M.deref (| M.read (| self |) |) |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -6227,7 +6729,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::collections::btree::node::Handle",
                   "idx"
                 |)
@@ -6305,7 +6807,7 @@ Module collections.
                                                   [],
                                                   []
                                                 |),
-                                                [ node ]
+                                                [ M.borrow (| Pointer.Kind.Ref, node |) ]
                                               |)
                                             |)
                                           |)
@@ -6548,20 +7050,28 @@ Module collections.
                                 []
                               |),
                               [
-                                M.read (| node |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| other |),
-                                  "alloc::collections::btree::node::Handle",
-                                  "node"
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| node |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| other |) |),
+                                        "alloc::collections::btree::node::Handle",
+                                        "node"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |),
                             ltac:(M.monadic
                               (BinOp.eq (|
-                                M.read (| M.read (| idx |) |),
+                                M.read (| M.deref (| M.read (| idx |) |) |),
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| other |),
+                                    M.deref (| M.read (| other |) |),
                                     "alloc::collections::btree::node::Handle",
                                     "idx"
                                   |)
@@ -6629,17 +7139,20 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::node::Handle",
+                            "node"
+                          |)
                         |)
                       ]
                     |));
                   ("idx",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::Handle",
                         "idx"
                       |)
@@ -6705,17 +7218,20 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::node::Handle",
+                            "node"
+                          |)
                         |)
                       ]
                     |));
                   ("idx",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::Handle",
                         "idx"
                       |)
@@ -6764,17 +7280,20 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::node::Handle",
+                            "node"
+                          |)
                         |)
                       ]
                     |));
                   ("idx",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::btree::node::Handle",
                         "idx"
                       |)
@@ -6936,7 +7455,7 @@ Module collections.
                                                   [],
                                                   []
                                                 |),
-                                                [ node ]
+                                                [ M.borrow (| Pointer.Kind.Ref, node |) ]
                                               |)
                                             |)
                                           |)
@@ -7135,10 +7654,13 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      self,
-                                      "alloc::collections::btree::node::Handle",
-                                      "node"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::Handle",
+                                        "node"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -7484,10 +8006,13 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    self,
-                                                    "alloc::collections::btree::node::Handle",
-                                                    "node"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "alloc::collections::btree::node::Handle",
+                                                      "node"
+                                                    |)
                                                   |)
                                                 ]
                                               |),
@@ -7543,10 +8068,13 @@ Module collections.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "alloc::collections::btree::node::Handle",
-                            "node"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |)
                           |)
                         ]
                       |),
@@ -7562,38 +8090,53 @@ Module collections.
                         [ K ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Leaf"
-                              ],
-                            "key_area_mut",
-                            [],
-                            [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                  ],
+                                "key_area_mut",
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ K ]
+                                    ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", M.read (| new_len |)) ]
-                          ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  [ ("end_", M.read (| new_len |)) ]
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -7615,38 +8158,53 @@ Module collections.
                         [ V ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Leaf"
-                              ],
-                            "val_area_mut",
-                            [],
-                            [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                  ],
+                                "val_area_mut",
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ V ]
+                                    ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", M.read (| new_len |)) ]
-                          ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  [ ("end_", M.read (| new_len |)) ]
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -7661,28 +8219,33 @@ Module collections.
                   |) in
                 let~ _ :=
                   M.write (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::Leaf"
+                            ],
+                          "len_mut",
+                          [],
                           []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::Leaf"
-                          ],
-                        "len_mut",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "alloc::collections::btree::node::Handle",
-                          "node"
-                        |)
-                      ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |)
+                          |)
+                        ]
+                      |)
                     |),
                     M.rust_cast (M.read (| new_len |))
                   |) in
@@ -7801,10 +8364,13 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      self,
-                                      "alloc::collections::btree::node::Handle",
-                                      "node"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::Handle",
+                                        "node"
+                                      |)
                                     |)
                                   ]
                                 |),
@@ -7866,7 +8432,7 @@ Module collections.
                                   [],
                                   []
                                 |),
-                                [ handle ]
+                                [ M.borrow (| Pointer.Kind.Ref, handle |) ]
                               |)
                             ]
                         |)));
@@ -8024,10 +8590,13 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        result,
-                                                        "alloc::collections::btree::node::SplitResult",
-                                                        "left"
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          result,
+                                                          "alloc::collections::btree::node::SplitResult",
+                                                          "left"
+                                                        |)
                                                       |)
                                                     ]
                                                   |);
@@ -8091,10 +8660,13 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        result,
-                                                        "alloc::collections::btree::node::SplitResult",
-                                                        "right"
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          result,
+                                                          "alloc::collections::btree::node::SplitResult",
+                                                          "right"
+                                                        |)
                                                       |)
                                                     ]
                                                   |);
@@ -8131,37 +8703,41 @@ Module collections.
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::Handle")
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::node::Handle")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::btree::node::NodeRef")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "alloc::collections::btree::node::marker::Mut";
+                                                        K;
+                                                        V;
+                                                        Ty.path
+                                                          "alloc::collections::btree::node::marker::Leaf"
+                                                      ];
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Edge"
+                                                  ],
+                                                "insert_fit",
+                                                [],
                                                 []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::node::NodeRef")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "alloc::collections::btree::node::marker::Mut";
-                                                      K;
-                                                      V;
-                                                      Ty.path
-                                                        "alloc::collections::btree::node::marker::Leaf"
-                                                    ];
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Edge"
-                                                ],
-                                              "insert_fit",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.read (| insertion_edge |);
-                                              M.read (| key |);
-                                              M.read (| val |)
-                                            ]
+                                              |),
+                                              [
+                                                M.read (| insertion_edge |);
+                                                M.read (| key |);
+                                                M.read (| val |)
+                                              ]
+                                            |)
                                           |)
                                         |)
                                       ]
@@ -8280,7 +8856,7 @@ Module collections.
                                   [],
                                   []
                                 |),
-                                [ alloc ]
+                                [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
                               |)
                             ]
                           |)
@@ -8485,7 +9061,12 @@ Module collections.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ alloc ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  alloc
+                                                                |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
@@ -8745,10 +9326,18 @@ Module collections.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "alloc::collections::btree::node::Handle",
-                              "node"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -8806,7 +9395,11 @@ Module collections.
                         [],
                         []
                       |),
-                      [ child; M.read (| ptr |); M.read (| idx |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, child |);
+                        M.read (| ptr |);
+                        M.read (| idx |)
+                      ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -8887,10 +9480,13 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::btree::node::Handle",
-                                                    "node"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "alloc::collections::btree::node::Handle",
+                                                      "node"
+                                                    |)
                                                   |)
                                                 ]
                                               |),
@@ -8958,7 +9554,7 @@ Module collections.
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "alloc::collections::btree::node::Handle",
                                                       "node"
                                                     |),
@@ -9015,10 +9611,13 @@ Module collections.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::btree::node::Handle",
-                            "node"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |)
                           |)
                         ]
                       |),
@@ -9034,42 +9633,57 @@ Module collections.
                         [ K ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Internal"
-                              ],
-                            "key_area_mut",
-                            [],
-                            [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Internal"
+                                  ],
+                                "key_area_mut",
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ K ]
+                                    ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", M.read (| new_len |)) ]
-                          ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  [ ("end_", M.read (| new_len |)) ]
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::collections::btree::node::Handle",
                             "idx"
                           |)
@@ -9087,42 +9701,57 @@ Module collections.
                         [ V ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Internal"
-                              ],
-                            "val_area_mut",
-                            [],
-                            [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Internal"
+                                  ],
+                                "val_area_mut",
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ V ]
+                                    ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", M.read (| new_len |)) ]
-                          ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  [ ("end_", M.read (| new_len |)) ]
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::collections::btree::node::Handle",
                             "idx"
                           |)
@@ -9150,63 +9779,75 @@ Module collections.
                         ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Internal"
-                              ],
-                            "edge_area_mut",
-                            [],
-                            [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Internal"
+                                  ],
+                                "edge_area_mut",
+                                [],
                                 [
                                   Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "slice")
                                     []
                                     [
                                       Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                         []
                                         [
                                           Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::LeafNode")
+                                            (Ty.path "core::ptr::non_null::NonNull")
                                             []
-                                            [ K; V ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::node::LeafNode")
+                                                []
+                                                [ K; V ]
+                                            ]
                                         ]
                                     ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
+                              |),
                               [
-                                ("end_",
-                                  BinOp.Wrap.add (|
-                                    M.read (| new_len |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |))
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  [
+                                    ("end_",
+                                      BinOp.Wrap.add (|
+                                        M.read (| new_len |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |))
+                                  ]
                               ]
-                          ]
+                            |)
+                          |)
                         |);
                         BinOp.Wrap.add (|
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "alloc::collections::btree::node::Handle",
                               "idx"
                             |)
@@ -9225,28 +9866,33 @@ Module collections.
                   |) in
                 let~ _ :=
                   M.write (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::Internal"
+                            ],
+                          "len_mut",
+                          [],
                           []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::Internal"
-                          ],
-                        "len_mut",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::node::Handle",
-                          "node"
-                        |)
-                      ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |)
+                          |)
+                        ]
+                      |)
                     |),
                     M.rust_cast (M.read (| new_len |))
                   |) in
@@ -9268,10 +9914,13 @@ Module collections.
                         [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::node::Handle",
+                            "node"
+                          |)
                         |);
                         Value.StructRecord
                           "core::ops::range::Range"
@@ -9280,7 +9929,7 @@ Module collections.
                               BinOp.Wrap.add (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "alloc::collections::btree::node::Handle",
                                     "idx"
                                   |)
@@ -9424,10 +10073,13 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      self,
-                                      "alloc::collections::btree::node::Handle",
-                                      "node"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::Handle",
+                                        "node"
+                                      |)
                                     |)
                                   ]
                                 |),
@@ -9461,7 +10113,12 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ self; M.read (| key |); M.read (| val |); M.read (| edge |) ]
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, self |);
+                                M.read (| key |);
+                                M.read (| val |);
+                                M.read (| edge |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -9619,10 +10276,13 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        result,
-                                                        "alloc::collections::btree::node::SplitResult",
-                                                        "left"
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          result,
+                                                          "alloc::collections::btree::node::SplitResult",
+                                                          "left"
+                                                        |)
                                                       |)
                                                     ]
                                                   |);
@@ -9686,10 +10346,13 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        result,
-                                                        "alloc::collections::btree::node::SplitResult",
-                                                        "right"
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          result,
+                                                          "alloc::collections::btree::node::SplitResult",
+                                                          "right"
+                                                        |)
                                                       |)
                                                     ]
                                                   |);
@@ -9726,7 +10389,7 @@ Module collections.
                                         []
                                       |),
                                       [
-                                        insertion_edge;
+                                        M.borrow (| Pointer.Kind.MutRef, insertion_edge |);
                                         M.read (| key |);
                                         M.read (| val |);
                                         M.read (| edge |)
@@ -9816,10 +10479,18 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
+                                "node"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -9847,45 +10518,53 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
                                 Ty.apply
-                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                  (Ty.path "slice")
                                   []
                                   [
                                     Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                       []
                                       [
                                         Ty.apply
-                                          (Ty.path "alloc::collections::btree::node::LeafNode")
+                                          (Ty.path "core::ptr::non_null::NonNull")
                                           []
-                                          [ K; V ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::node::LeafNode")
+                                              []
+                                              [ K; V ]
+                                          ]
                                       ]
-                                  ]
-                              ],
-                            "get_unchecked",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| parent_ptr |),
-                              "alloc::collections::btree::node::InternalNode",
-                              "edges"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                                  ],
+                                "get_unchecked",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| parent_ptr |) |),
+                                    "alloc::collections::btree::node::InternalNode",
+                                    "edges"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -10084,10 +10763,13 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    self,
-                                                    "alloc::collections::btree::node::Handle",
-                                                    "node"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "alloc::collections::btree::node::Handle",
+                                                      "node"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -10153,31 +10835,43 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                              ],
-                            "get_unchecked",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "keys"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ K ]
+                                  ],
+                                "get_unchecked",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| leaf |) |),
+                                    "alloc::collections::btree::node::LeafNode",
+                                    "keys"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -10192,36 +10886,54 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                              ],
-                            "get_unchecked",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "vals"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ V ]
+                                  ],
+                                "get_unchecked",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| leaf |) |),
+                                    "alloc::collections::btree::node::LeafNode",
+                                    "vals"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [ M.read (| k |); M.read (| v |) ] |)
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| k |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |)
+                    ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10260,43 +10972,74 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
-                  "assume_init_mut",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                        []
-                        [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType ],
-                      "key_area_mut",
-                      [],
-                      [
-                        Ty.path "usize";
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                      ]
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::node::Handle",
-                        "node"
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::node::Handle",
-                          "idx"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
+                              "assume_init_mut",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
+                                        [
+                                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                                          K;
+                                          V;
+                                          NodeType
+                                        ],
+                                      "key_area_mut",
+                                      [],
+                                      [
+                                        Ty.path "usize";
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ K ]
+                                      ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::btree::node::Handle",
+                                          "node"
+                                        |)
+                                      |);
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::btree::node::Handle",
+                                          "idx"
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
                         |)
                       |)
-                    ]
+                    |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10323,146 +11066,187 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.read (|
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          UnOp.not (|
-                                            BinOp.lt (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  self,
-                                                  "alloc::collections::btree::node::Handle",
-                                                  "idx"
-                                                |)
-                                              |),
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::node::NodeRef")
-                                                    []
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              UnOp.not (|
+                                                BinOp.lt (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "alloc::collections::btree::node::Handle",
+                                                      "idx"
+                                                    |)
+                                                  |),
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::node::NodeRef")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "alloc::collections::btree::node::marker::Mut";
+                                                          K;
+                                                          V;
+                                                          NodeType
+                                                        ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
                                                     [
-                                                      Ty.path
-                                                        "alloc::collections::btree::node::marker::Mut";
-                                                      K;
-                                                      V;
-                                                      NodeType
-                                                    ],
-                                                  "len",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    self,
-                                                    "alloc::collections::btree::node::Handle",
-                                                    "node"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          self,
+                                                          "alloc::collections::btree::node::Handle",
+                                                          "node"
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                ]
+                                                |)
                                               |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.call_closure (|
+                                              M.get_function (| "core::panicking::panic", [], [] |),
+                                              [
+                                                M.read (|
+                                                  Value.String
+                                                    "assertion failed: self.idx < self.node.len()"
+                                                |)
+                                              ]
                                             |)
                                           |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
-                                            |)
-                                          ]
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ leaf :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
-                          ],
-                        "into_leaf_mut",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "alloc::collections::btree::node::Handle",
-                            "node"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
-                      "assume_init_mut",
-                      [],
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "slice")
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    let~ leaf :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
+                              [
+                                Ty.path "alloc::collections::btree::node::marker::Mut";
+                                K;
+                                V;
+                                NodeType
+                              ],
+                            "into_leaf_mut",
+                            [],
                             []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
-                          "get_unchecked_mut",
-                          [],
-                          [ Ty.path "usize" ]
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| leaf |),
-                            "alloc::collections::btree::node::LeafNode",
-                            "vals"
-                          |);
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "alloc::collections::btree::node::Handle",
-                              "idx"
+                          |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
+                                "node"
+                              |)
+                            |)
+                          ]
+                        |)
+                      |) in
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ V ],
+                                  "assume_init_mut",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ V ]
+                                            ],
+                                          "get_unchecked_mut",
+                                          [],
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| leaf |) |),
+                                              "alloc::collections::btree::node::LeafNode",
+                                              "vals"
+                                            |)
+                                          |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              self,
+                                              "alloc::collections::btree::node::Handle",
+                                              "idx"
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |)
-                        ]
+                        |)
                       |)
-                    ]
+                    |)
                   |)
                 |)
               |)))
@@ -10539,10 +11323,13 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    self,
-                                                    "alloc::collections::btree::node::Handle",
-                                                    "node"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "alloc::collections::btree::node::Handle",
+                                                      "node"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -10600,83 +11387,123 @@ Module collections.
                   |) in
                 let~ k :=
                   M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
-                        "assume_init_mut",
-                        [],
-                        []
-                      |),
-                      [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                              ],
-                            "get_unchecked_mut",
+                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
+                            "assume_init_mut",
                             [],
-                            [ Ty.path "usize" ]
+                            []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "keys"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ K ]
+                                      ],
+                                    "get_unchecked_mut",
+                                    [],
+                                    [ Ty.path "usize" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| leaf |) |),
+                                        "alloc::collections::btree::node::LeafNode",
+                                        "keys"
+                                      |)
+                                    |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::Handle",
+                                        "idx"
+                                      |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |)
                           ]
                         |)
-                      ]
+                      |)
                     |)
                   |) in
                 let~ v :=
                   M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
-                        "assume_init_mut",
-                        [],
-                        []
-                      |),
-                      [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                              ],
-                            "get_unchecked_mut",
+                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
+                            "assume_init_mut",
                             [],
-                            [ Ty.path "usize" ]
+                            []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "vals"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ V ]
+                                      ],
+                                    "get_unchecked_mut",
+                                    [],
+                                    [ Ty.path "usize" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| leaf |) |),
+                                        "alloc::collections::btree::node::LeafNode",
+                                        "vals"
+                                      |)
+                                    |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::Handle",
+                                        "idx"
+                                      |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |)
                           ]
                         |)
-                      ]
+                      |)
                     |)
                   |) in
-                M.alloc (| Value.Tuple [ M.read (| k |); M.read (| v |) ] |)
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| k |) |) |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |)
+                    ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10731,7 +11558,7 @@ Module collections.
                                             BinOp.lt (|
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "alloc::collections::btree::node::Handle",
                                                   "idx"
                                                 |)
@@ -10754,10 +11581,13 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::btree::node::Handle",
-                                                    "node"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "alloc::collections::btree::node::Handle",
+                                                      "node"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -10803,10 +11633,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::node::Handle",
+                            "node"
+                          |)
                         |)
                       ]
                     |)
@@ -10821,31 +11654,43 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                              ],
-                            "get_unchecked_mut",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "keys"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ K ]
+                                  ],
+                                "get_unchecked_mut",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| leaf |) |),
+                                    "alloc::collections::btree::node::LeafNode",
+                                    "keys"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -10860,36 +11705,54 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                              ],
-                            "get_unchecked_mut",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "vals"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ V ]
+                                  ],
+                                "get_unchecked_mut",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| leaf |) |),
+                                    "alloc::collections::btree::node::LeafNode",
+                                    "vals"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [ M.read (| key |); M.read (| val |) ] |)
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| key |) |) |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |)
+                    ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10941,7 +11804,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |),
                   [
@@ -10956,11 +11819,23 @@ Module collections.
                             [
                               M.call_closure (|
                                 M.get_function (| "core::mem::replace", [], [ K ] |),
-                                [ M.read (| key |); M.read (| k |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| key |) |)
+                                  |);
+                                  M.read (| k |)
+                                ]
                               |);
                               M.call_closure (|
                                 M.get_function (| "core::mem::replace", [], [ V ] |),
-                                [ M.read (| val |); M.read (| v |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| val |) |)
+                                  |);
+                                  M.read (| v |)
+                                ]
                               |)
                             ]
                         |)))
@@ -11032,7 +11907,7 @@ Module collections.
                                             BinOp.lt (|
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "alloc::collections::btree::node::Handle",
                                                   "idx"
                                                 |)
@@ -11055,10 +11930,13 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::btree::node::Handle",
-                                                    "node"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "alloc::collections::btree::node::Handle",
+                                                      "node"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -11104,10 +11982,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::node::Handle",
+                            "node"
+                          |)
                         |)
                       ]
                     |)
@@ -11119,7 +12000,7 @@ Module collections.
                         M.read (| old_len |),
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::collections::btree::node::Handle",
                             "idx"
                           |)
@@ -11131,7 +12012,7 @@ Module collections.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| new_node |),
+                      M.deref (| M.read (| new_node |) |),
                       "alloc::collections::btree::node::LeafNode",
                       "len"
                     |),
@@ -11147,38 +12028,46 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    NodeType
+                                  ],
+                                "key_area_mut",
+                                [],
+                                [
+                                  Ty.path "usize";
+                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                                ]
+                              |),
                               [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                NodeType
-                              ],
-                            "key_area_mut",
-                            [],
-                            [
-                              Ty.path "usize";
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -11193,38 +12082,46 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    NodeType
+                                  ],
+                                "val_area_mut",
+                                [],
+                                [
+                                  Ty.path "usize";
+                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                                ]
+                              |),
                               [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                NodeType
-                              ],
-                            "val_area_mut",
-                            [],
-                            [
-                              Ty.path "usize";
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -11238,77 +12135,113 @@ Module collections.
                         [ K ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                NodeType
-                              ],
-                            "key_area_mut",
-                            [],
-                            [
-                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    NodeType
+                                  ],
+                                "key_area_mut",
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ K ]
+                                    ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::Range"
+                              |),
                               [
-                                ("start",
-                                  BinOp.Wrap.add (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::btree::node::Handle",
-                                        "idx"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |));
-                                ("end_", M.read (| old_len |))
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::Range"
+                                  [
+                                    ("start",
+                                      BinOp.Wrap.add (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::collections::btree::node::Handle",
+                                            "idx"
+                                          |)
+                                        |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |));
+                                    ("end_", M.read (| old_len |))
+                                  ]
                               ]
-                          ]
+                            |)
+                          |)
                         |);
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::index::IndexMut",
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 11 ]
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                              ],
-                            [],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
-                            ],
-                            "index_mut",
-                            [],
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| new_node |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "keys"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", M.read (| new_len |)) ]
-                          ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::index::IndexMut",
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 11 ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ K ]
+                                      ],
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeTo")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
+                                    "index_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| new_node |) |),
+                                        "alloc::collections::btree::node::LeafNode",
+                                        "keys"
+                                      |)
+                                    |);
+                                    Value.StructRecord
+                                      "core::ops::range::RangeTo"
+                                      [ ("end_", M.read (| new_len |)) ]
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -11322,106 +12255,147 @@ Module collections.
                         [ V ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                NodeType
-                              ],
-                            "val_area_mut",
-                            [],
-                            [
-                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    NodeType
+                                  ],
+                                "val_area_mut",
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ V ]
+                                    ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::Range"
+                              |),
                               [
-                                ("start",
-                                  BinOp.Wrap.add (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::btree::node::Handle",
-                                        "idx"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |));
-                                ("end_", M.read (| old_len |))
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::Range"
+                                  [
+                                    ("start",
+                                      BinOp.Wrap.add (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::collections::btree::node::Handle",
+                                            "idx"
+                                          |)
+                                        |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |));
+                                    ("end_", M.read (| old_len |))
+                                  ]
                               ]
-                          ]
+                            |)
+                          |)
                         |);
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::index::IndexMut",
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 11 ]
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                              ],
-                            [],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
-                            ],
-                            "index_mut",
-                            [],
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| new_node |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "vals"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", M.read (| new_len |)) ]
-                          ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::index::IndexMut",
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 11 ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ V ]
+                                      ],
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeTo")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
+                                    "index_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| new_node |) |),
+                                        "alloc::collections::btree::node::LeafNode",
+                                        "vals"
+                                      |)
+                                    |);
+                                    Value.StructRecord
+                                      "core::ops::range::RangeTo"
+                                      [ ("end_", M.read (| new_len |)) ]
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
                   |) in
                 let~ _ :=
                   M.write (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
+                            ],
+                          "len_mut",
+                          [],
                           []
-                          [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
-                          ],
-                        "len_mut",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::node::Handle",
-                          "node"
-                        |)
-                      ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |)
+                          |)
+                        ]
+                      |)
                     |),
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::collections::btree::node::Handle",
                           "idx"
                         |)
@@ -11586,10 +12560,13 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    self,
-                                                    "alloc::collections::btree::node::Handle",
-                                                    "node"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "alloc::collections::btree::node::Handle",
+                                                      "node"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -11635,10 +12612,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
+                            "node"
+                          |)
                         |)
                       ]
                     |)
@@ -11653,31 +12633,43 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                              ],
-                            "get_unchecked_mut",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "keys"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ K ]
+                                  ],
+                                "get_unchecked_mut",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| leaf |) |),
+                                    "alloc::collections::btree::node::LeafNode",
+                                    "keys"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -11692,31 +12684,43 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                              ],
-                            "get_unchecked_mut",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "vals"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ V ]
+                                  ],
+                                "get_unchecked_mut",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| leaf |) |),
+                                    "alloc::collections::btree::node::LeafNode",
+                                    "vals"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -11797,10 +12801,13 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    self,
-                                                    "alloc::collections::btree::node::Handle",
-                                                    "node"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "alloc::collections::btree::node::Handle",
+                                                      "node"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -11846,10 +12853,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
+                            "node"
+                          |)
                         |)
                       ]
                     |)
@@ -11864,31 +12874,43 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                              ],
-                            "get_unchecked_mut",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "keys"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ K ]
+                                  ],
+                                "get_unchecked_mut",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| leaf |) |),
+                                    "alloc::collections::btree::node::LeafNode",
+                                    "keys"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -11903,31 +12925,43 @@ Module collections.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                              ],
-                            "get_unchecked_mut",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "vals"
-                            |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "alloc::collections::btree::node::Handle",
-                                "idx"
-                              |)
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ V ]
+                                  ],
+                                "get_unchecked_mut",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| leaf |) |),
+                                    "alloc::collections::btree::node::LeafNode",
+                                    "vals"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "idx"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -12014,7 +13048,15 @@ Module collections.
                         [],
                         []
                       |),
-                      [ self; M.read (| new_node |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, self |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (| M.deref (| M.borrow (| Pointer.Kind.MutRef, new_node |) |) |)
+                          |)
+                        |)
+                      ]
                     |)
                   |) in
                 let~ right :=
@@ -12099,10 +13141,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
+                            "node"
+                          |)
                         |)
                       ]
                     |)
@@ -12116,38 +13161,53 @@ Module collections.
                         [ K ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Leaf"
-                              ],
-                            "key_area_mut",
-                            [],
-                            [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                  ],
+                                "key_area_mut",
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ K ]
+                                    ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", M.read (| old_len |)) ]
-                          ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  [ ("end_", M.read (| old_len |)) ]
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -12168,38 +13228,53 @@ Module collections.
                         [ V ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Leaf"
-                              ],
-                            "val_area_mut",
-                            [],
-                            [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                  ],
+                                "val_area_mut",
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ V ]
+                                    ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", M.read (| old_len |)) ]
-                          ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  [ ("end_", M.read (| old_len |)) ]
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -12213,28 +13288,33 @@ Module collections.
                   |) in
                 let~ _ :=
                   M.write (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::Leaf"
+                            ],
+                          "len_mut",
+                          [],
                           []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::Leaf"
-                          ],
-                        "len_mut",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "alloc::collections::btree::node::Handle",
-                          "node"
-                        |)
-                      ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |)
+                          |)
+                        ]
+                      |)
                     |),
                     M.rust_cast
                       (BinOp.Wrap.sub (| M.read (| old_len |), Value.Integer IntegerKind.Usize 1 |))
@@ -12343,10 +13423,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "alloc::collections::btree::node::Handle",
-                          "node"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
+                            "node"
+                          |)
                         |)
                       ]
                     |)
@@ -12390,11 +13473,19 @@ Module collections.
                         []
                       |),
                       [
-                        self;
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| new_node |),
-                          "alloc::collections::btree::node::InternalNode",
-                          "data"
+                        M.borrow (| Pointer.Kind.MutRef, self |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| new_node |) |),
+                                "alloc::collections::btree::node::InternalNode",
+                                "data"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -12415,7 +13506,7 @@ Module collections.
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| new_node |),
+                              M.deref (| M.read (| new_node |) |),
                               "alloc::collections::btree::node::InternalNode",
                               "data"
                             |),
@@ -12445,115 +13536,145 @@ Module collections.
                         ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Internal"
-                              ],
-                            "edge_area_mut",
-                            [],
-                            [
-                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Internal"
+                                  ],
+                                "edge_area_mut",
+                                [],
                                 [
                                   Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "slice")
                                     []
                                     [
                                       Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                         []
                                         [
                                           Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::LeafNode")
+                                            (Ty.path "core::ptr::non_null::NonNull")
                                             []
-                                            [ K; V ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::node::LeafNode")
+                                                []
+                                                [ K; V ]
+                                            ]
                                         ]
                                     ]
                                 ]
-                            ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "alloc::collections::btree::node::Handle",
-                              "node"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::Range"
+                              |),
                               [
-                                ("start",
-                                  BinOp.Wrap.add (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "alloc::collections::btree::node::Handle",
-                                        "idx"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |));
-                                ("end_",
-                                  BinOp.Wrap.add (|
-                                    M.read (| old_len |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |))
-                              ]
-                          ]
-                        |);
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::index::IndexMut",
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 12 ]
-                              [
-                                Ty.apply
-                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                  []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
+                                    "node"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::Range"
                                   [
+                                    ("start",
+                                      BinOp.Wrap.add (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "alloc::collections::btree::node::Handle",
+                                            "idx"
+                                          |)
+                                        |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |));
+                                    ("end_",
+                                      BinOp.Wrap.add (|
+                                        M.read (| old_len |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |))
+                                  ]
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::index::IndexMut",
                                     Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 12 ]
                                       [
                                         Ty.apply
-                                          (Ty.path "alloc::collections::btree::node::LeafNode")
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                           []
-                                          [ K; V ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::node::LeafNode")
+                                                  []
+                                                  [ K; V ]
+                                              ]
+                                          ]
+                                      ],
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeTo")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
+                                    "index_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| new_node |) |),
+                                        "alloc::collections::btree::node::InternalNode",
+                                        "edges"
+                                      |)
+                                    |);
+                                    Value.StructRecord
+                                      "core::ops::range::RangeTo"
+                                      [
+                                        ("end_",
+                                          BinOp.Wrap.add (|
+                                            M.read (| new_len |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |))
                                       ]
                                   ]
-                              ],
-                            [],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
-                            ],
-                            "index_mut",
-                            [],
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| new_node |),
-                              "alloc::collections::btree::node::InternalNode",
-                              "edges"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [
-                                ("end_",
-                                  BinOp.Wrap.add (|
-                                    M.read (| new_len |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |))
-                              ]
-                          ]
+                                |)
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -12660,7 +13781,12 @@ Module collections.
                             ]
                         ]
                       |),
-                      [ self ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 let~ self2 :=
@@ -12687,7 +13813,12 @@ Module collections.
                             ]
                         ]
                       |),
-                      [ self ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 M.alloc (|
@@ -12886,10 +14017,13 @@ Module collections.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::node::BalancingContext",
-                    "left_child"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::node::BalancingContext",
+                      "left_child"
+                    |)
                   |)
                 ]
               |)))
@@ -12932,10 +14066,13 @@ Module collections.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::node::BalancingContext",
-                    "right_child"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::node::BalancingContext",
+                      "right_child"
+                    |)
                   |)
                 ]
               |)))
@@ -13041,10 +14178,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::node::BalancingContext",
-                          "left_child"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::node::BalancingContext",
+                            "left_child"
+                          |)
                         |)
                       ]
                     |),
@@ -13066,10 +14206,13 @@ Module collections.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::node::BalancingContext",
-                        "right_child"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::node::BalancingContext",
+                          "right_child"
+                        |)
                       |)
                     ]
                   |)
@@ -13207,7 +14350,7 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ parent_node ]
+                              [ M.borrow (| Pointer.Kind.Ref, parent_node |) ]
                             |)
                           |) in
                         let~ left_node :=
@@ -13236,7 +14379,7 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ left_node ]
+                              [ M.borrow (| Pointer.Kind.Ref, left_node |) ]
                             |)
                           |) in
                         let~ right_node :=
@@ -13265,7 +14408,7 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ right_node ]
+                              [ M.borrow (| Pointer.Kind.Ref, right_node |) ]
                             |)
                           |) in
                         let~ new_left_len :=
@@ -13322,23 +14465,25 @@ Module collections.
                         let~ _ :=
                           let~ _ :=
                             M.write (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
+                                      [
+                                        Ty.path "alloc::collections::btree::node::marker::Mut";
+                                        K;
+                                        V;
+                                        Ty.path
+                                          "alloc::collections::btree::node::marker::LeafOrInternal"
+                                      ],
+                                    "len_mut",
+                                    [],
                                     []
-                                    [
-                                      Ty.path "alloc::collections::btree::node::marker::Mut";
-                                      K;
-                                      V;
-                                      Ty.path
-                                        "alloc::collections::btree::node::marker::LeafOrInternal"
-                                    ],
-                                  "len_mut",
-                                  [],
-                                  []
-                                |),
-                                [ left_node ]
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.MutRef, left_node |) ]
+                                |)
                               |),
                               M.rust_cast (M.read (| new_left_len |))
                             |) in
@@ -13351,42 +14496,48 @@ Module collections.
                                   [ K ]
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::Internal"
-                                        ],
-                                      "key_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Internal"
+                                            ],
+                                          "key_area_mut",
+                                          [],
                                           [
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "core::ops::range::RangeTo")
                                               []
-                                              [ K ]
+                                              [ Ty.path "usize" ];
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ K ]
+                                              ]
                                           ]
-                                      ]
-                                    |),
-                                    [
-                                      parent_node;
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
-                                        [ ("end_", M.read (| old_parent_len |)) ]
-                                    ]
+                                        |),
+                                        [
+                                          M.borrow (| Pointer.Kind.MutRef, parent_node |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [ ("end_", M.read (| old_parent_len |)) ]
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| parent_idx |)
                                 ]
@@ -13405,29 +14556,38 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "key_area_mut",
+                                          [],
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ K ]
+                                          ]
+                                        |),
                                         [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "key_area_mut",
-                                      [],
-                                      [
-                                        Ty.path "usize";
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ K ]
-                                      ]
-                                    |),
-                                    [ left_node; M.read (| old_left_len |) ]
+                                          M.borrow (| Pointer.Kind.MutRef, left_node |);
+                                          M.read (| old_left_len |)
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| parent_key |)
                                 ]
@@ -13442,86 +14602,98 @@ Module collections.
                                   [ K ]
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "key_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "key_area_mut",
+                                          [],
                                           [
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "core::ops::range::RangeTo")
                                               []
-                                              [ K ]
-                                          ]
-                                      ]
-                                    |),
-                                    [
-                                      right_node;
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
-                                        [ ("end_", M.read (| right_len |)) ]
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "key_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::Range")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
+                                              [ Ty.path "usize" ];
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "slice")
                                               []
-                                              [ K ]
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ K ]
+                                              ]
                                           ]
-                                      ]
-                                    |),
-                                    [
-                                      left_node;
-                                      Value.StructRecord
-                                        "core::ops::range::Range"
+                                        |),
                                         [
-                                          ("start",
-                                            BinOp.Wrap.add (|
-                                              M.read (| old_left_len |),
-                                              Value.Integer IntegerKind.Usize 1
-                                            |));
-                                          ("end_", M.read (| new_left_len |))
+                                          M.borrow (| Pointer.Kind.MutRef, right_node |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [ ("end_", M.read (| right_len |)) ]
                                         ]
-                                    ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "key_area_mut",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::Range")
+                                              []
+                                              [ Ty.path "usize" ];
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ K ]
+                                              ]
+                                          ]
+                                        |),
+                                        [
+                                          M.borrow (| Pointer.Kind.MutRef, left_node |);
+                                          Value.StructRecord
+                                            "core::ops::range::Range"
+                                            [
+                                              ("start",
+                                                BinOp.Wrap.add (|
+                                                  M.read (| old_left_len |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |));
+                                              ("end_", M.read (| new_left_len |))
+                                            ]
+                                        ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -13535,42 +14707,48 @@ Module collections.
                                   [ V ]
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::Internal"
-                                        ],
-                                      "val_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Internal"
+                                            ],
+                                          "val_area_mut",
+                                          [],
                                           [
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "core::ops::range::RangeTo")
                                               []
-                                              [ V ]
+                                              [ Ty.path "usize" ];
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ V ]
+                                              ]
                                           ]
-                                      ]
-                                    |),
-                                    [
-                                      parent_node;
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
-                                        [ ("end_", M.read (| old_parent_len |)) ]
-                                    ]
+                                        |),
+                                        [
+                                          M.borrow (| Pointer.Kind.MutRef, parent_node |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [ ("end_", M.read (| old_parent_len |)) ]
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| parent_idx |)
                                 ]
@@ -13589,29 +14767,38 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "val_area_mut",
+                                          [],
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ V ]
+                                          ]
+                                        |),
                                         [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "val_area_mut",
-                                      [],
-                                      [
-                                        Ty.path "usize";
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ V ]
-                                      ]
-                                    |),
-                                    [ left_node; M.read (| old_left_len |) ]
+                                          M.borrow (| Pointer.Kind.MutRef, left_node |);
+                                          M.read (| old_left_len |)
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| parent_val |)
                                 ]
@@ -13626,86 +14813,98 @@ Module collections.
                                   [ V ]
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "val_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "val_area_mut",
+                                          [],
                                           [
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "core::ops::range::RangeTo")
                                               []
-                                              [ V ]
-                                          ]
-                                      ]
-                                    |),
-                                    [
-                                      right_node;
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
-                                        [ ("end_", M.read (| right_len |)) ]
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "val_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::Range")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
+                                              [ Ty.path "usize" ];
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "slice")
                                               []
-                                              [ V ]
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ V ]
+                                              ]
                                           ]
-                                      ]
-                                    |),
-                                    [
-                                      left_node;
-                                      Value.StructRecord
-                                        "core::ops::range::Range"
+                                        |),
                                         [
-                                          ("start",
-                                            BinOp.Wrap.add (|
-                                              M.read (| old_left_len |),
-                                              Value.Integer IntegerKind.Usize 1
-                                            |));
-                                          ("end_", M.read (| new_left_len |))
+                                          M.borrow (| Pointer.Kind.MutRef, right_node |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [ ("end_", M.read (| right_len |)) ]
                                         ]
-                                    ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "val_area_mut",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::Range")
+                                              []
+                                              [ Ty.path "usize" ];
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ V ]
+                                              ]
+                                          ]
+                                        |),
+                                        [
+                                          M.borrow (| Pointer.Kind.MutRef, left_node |);
+                                          Value.StructRecord
+                                            "core::ops::range::Range"
+                                            [
+                                              ("start",
+                                                BinOp.Wrap.add (|
+                                                  M.read (| old_left_len |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |));
+                                              ("end_", M.read (| new_left_len |))
+                                            ]
+                                        ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -13729,59 +14928,77 @@ Module collections.
                                   ]
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::Internal"
-                                        ],
-                                      "edge_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::ptr::non_null::NonNull")
-                                                  []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.read (|
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::NodeRef")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Mut";
+                                                      K;
+                                                      V;
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Internal"
+                                                    ],
+                                                  "edge_area_mut",
+                                                  [],
                                                   [
                                                     Ty.apply
-                                                      (Ty.path
-                                                        "alloc::collections::btree::node::LeafNode")
+                                                      (Ty.path "core::ops::range::RangeTo")
                                                       []
-                                                      [ K; V ]
+                                                      [ Ty.path "usize" ];
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ptr::non_null::NonNull")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloc::collections::btree::node::LeafNode")
+                                                                  []
+                                                                  [ K; V ]
+                                                              ]
+                                                          ]
+                                                      ]
                                                   ]
-                                              ]
-                                          ]
-                                      ]
-                                    |),
-                                    [
-                                      parent_node;
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
-                                        [
-                                          ("end_",
-                                            BinOp.Wrap.add (|
-                                              M.read (| old_parent_len |),
-                                              Value.Integer IntegerKind.Usize 1
-                                            |))
-                                        ]
-                                    ]
+                                                |),
+                                                [
+                                                  M.borrow (| Pointer.Kind.MutRef, parent_node |);
+                                                  Value.StructRecord
+                                                    "core::ops::range::RangeTo"
+                                                    [
+                                                      ("end_",
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| old_parent_len |),
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        |))
+                                                    ]
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
                                   |);
                                   BinOp.Wrap.add (|
                                     M.read (| parent_idx |),
@@ -13813,7 +15030,7 @@ Module collections.
                                   ]
                                 |),
                                 [
-                                  parent_node;
+                                  M.borrow (| Pointer.Kind.MutRef, parent_node |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
                                     [
@@ -13829,22 +15046,24 @@ Module collections.
                             |) in
                           let~ _ :=
                             let β :=
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
+                                      [
+                                        Ty.path "alloc::collections::btree::node::marker::Mut";
+                                        K;
+                                        V;
+                                        Ty.path "alloc::collections::btree::node::marker::Internal"
+                                      ],
+                                    "len_mut",
+                                    [],
                                     []
-                                    [
-                                      Ty.path "alloc::collections::btree::node::marker::Mut";
-                                      K;
-                                      V;
-                                      Ty.path "alloc::collections::btree::node::marker::Internal"
-                                    ],
-                                  "len_mut",
-                                  [],
-                                  []
-                                |),
-                                [ parent_node ]
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.MutRef, parent_node |) ]
+                                |)
                               |) in
                             M.write (|
                               β,
@@ -13911,7 +15130,7 @@ Module collections.
                                               [],
                                               []
                                             |),
-                                            [ left_node ]
+                                            [ M.borrow (| Pointer.Kind.MutRef, left_node |) ]
                                           |)
                                         ]
                                       |)
@@ -13958,122 +15177,136 @@ Module collections.
                                           ]
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Mut";
-                                                  K;
-                                                  V;
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Internal"
-                                                ],
-                                              "edge_area_mut",
-                                              [],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::ops::range::RangeTo")
-                                                  []
-                                                  [ Ty.path "usize" ];
-                                                Ty.apply
-                                                  (Ty.path "slice")
-                                                  []
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::NodeRef")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Mut";
+                                                      K;
+                                                      V;
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Internal"
+                                                    ],
+                                                  "edge_area_mut",
+                                                  [],
                                                   [
                                                     Ty.apply
-                                                      (Ty.path
-                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                      (Ty.path "core::ops::range::RangeTo")
+                                                      []
+                                                      [ Ty.path "usize" ];
+                                                    Ty.apply
+                                                      (Ty.path "slice")
                                                       []
                                                       [
                                                         Ty.apply
-                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
                                                           []
                                                           [
                                                             Ty.apply
                                                               (Ty.path
-                                                                "alloc::collections::btree::node::LeafNode")
+                                                                "core::ptr::non_null::NonNull")
                                                               []
-                                                              [ K; V ]
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloc::collections::btree::node::LeafNode")
+                                                                  []
+                                                                  [ K; V ]
+                                                              ]
                                                           ]
                                                       ]
                                                   ]
-                                              ]
-                                            |),
-                                            [
-                                              right_node;
-                                              Value.StructRecord
-                                                "core::ops::range::RangeTo"
+                                                |),
                                                 [
-                                                  ("end_",
-                                                    BinOp.Wrap.add (|
-                                                      M.read (| right_len |),
-                                                      Value.Integer IntegerKind.Usize 1
-                                                    |))
+                                                  M.borrow (| Pointer.Kind.MutRef, right_node |);
+                                                  Value.StructRecord
+                                                    "core::ops::range::RangeTo"
+                                                    [
+                                                      ("end_",
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| right_len |),
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        |))
+                                                    ]
                                                 ]
-                                            ]
+                                              |)
+                                            |)
                                           |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Mut";
-                                                  K;
-                                                  V;
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Internal"
-                                                ],
-                                              "edge_area_mut",
-                                              [],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::ops::range::Range")
-                                                  []
-                                                  [ Ty.path "usize" ];
-                                                Ty.apply
-                                                  (Ty.path "slice")
-                                                  []
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::NodeRef")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Mut";
+                                                      K;
+                                                      V;
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Internal"
+                                                    ],
+                                                  "edge_area_mut",
+                                                  [],
                                                   [
                                                     Ty.apply
-                                                      (Ty.path
-                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                      (Ty.path "core::ops::range::Range")
+                                                      []
+                                                      [ Ty.path "usize" ];
+                                                    Ty.apply
+                                                      (Ty.path "slice")
                                                       []
                                                       [
                                                         Ty.apply
-                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
                                                           []
                                                           [
                                                             Ty.apply
                                                               (Ty.path
-                                                                "alloc::collections::btree::node::LeafNode")
+                                                                "core::ptr::non_null::NonNull")
                                                               []
-                                                              [ K; V ]
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloc::collections::btree::node::LeafNode")
+                                                                  []
+                                                                  [ K; V ]
+                                                              ]
                                                           ]
                                                       ]
                                                   ]
-                                              ]
-                                            |),
-                                            [
-                                              left_node;
-                                              Value.StructRecord
-                                                "core::ops::range::Range"
+                                                |),
                                                 [
-                                                  ("start",
-                                                    BinOp.Wrap.add (|
-                                                      M.read (| old_left_len |),
-                                                      Value.Integer IntegerKind.Usize 1
-                                                    |));
-                                                  ("end_",
-                                                    BinOp.Wrap.add (|
-                                                      M.read (| new_left_len |),
-                                                      Value.Integer IntegerKind.Usize 1
-                                                    |))
+                                                  M.borrow (| Pointer.Kind.MutRef, left_node |);
+                                                  Value.StructRecord
+                                                    "core::ops::range::Range"
+                                                    [
+                                                      ("start",
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| old_left_len |),
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        |));
+                                                      ("end_",
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| new_left_len |),
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        |))
+                                                    ]
                                                 ]
-                                            ]
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -14103,7 +15336,7 @@ Module collections.
                                           ]
                                         |),
                                         [
-                                          left_node;
+                                          M.borrow (| Pointer.Kind.MutRef, left_node |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
                                             [
@@ -14134,7 +15367,7 @@ Module collections.
                                           []
                                         |),
                                         [
-                                          alloc;
+                                          M.borrow (| Pointer.Kind.Ref, alloc |);
                                           M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
@@ -14195,7 +15428,7 @@ Module collections.
                                           []
                                         |),
                                         [
-                                          alloc;
+                                          M.borrow (| Pointer.Kind.Ref, alloc |);
                                           M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
@@ -14567,10 +15800,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "alloc::collections::btree::node::BalancingContext",
-                          "left_child"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::BalancingContext",
+                            "left_child"
+                          |)
                         |)
                       ]
                     |)
@@ -14593,10 +15829,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "alloc::collections::btree::node::BalancingContext",
-                          "right_child"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::BalancingContext",
+                            "right_child"
+                          |)
                         |)
                       ]
                     |)
@@ -14792,7 +16031,8 @@ Module collections.
                         [],
                         []
                       |),
-                      [ self; Value.Integer IntegerKind.Usize 1 ]
+                      [ M.borrow (| Pointer.Kind.MutRef, self |); Value.Integer IntegerKind.Usize 1
+                      ]
                     |)
                   |) in
                 M.alloc (|
@@ -14874,7 +16114,8 @@ Module collections.
                         [],
                         []
                       |),
-                      [ self; Value.Integer IntegerKind.Usize 1 ]
+                      [ M.borrow (| Pointer.Kind.MutRef, self |); Value.Integer IntegerKind.Usize 1
+                      ]
                     |)
                   |) in
                 M.alloc (|
@@ -15026,10 +16267,13 @@ Module collections.
                   |) in
                 let~ left_node :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::node::BalancingContext",
-                      "left_child"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::btree::node::BalancingContext",
+                        "left_child"
+                      |)
                     |)
                   |) in
                 let~ old_left_len :=
@@ -15049,15 +16293,18 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| left_node |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| left_node |) |) |) ]
                     |)
                   |) in
                 let~ right_node :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::node::BalancingContext",
-                      "right_child"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::btree::node::BalancingContext",
+                        "right_child"
+                      |)
                     |)
                   |) in
                 let~ old_right_len :=
@@ -15077,7 +16324,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| right_node |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| right_node |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -15161,43 +16408,48 @@ Module collections.
                   |) in
                 let~ _ :=
                   M.write (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                            ],
+                          "len_mut",
+                          [],
                           []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                          ],
-                        "len_mut",
-                        [],
-                        []
-                      |),
-                      [ M.read (| left_node |) ]
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| left_node |) |) |) ]
+                      |)
                     |),
                     M.rust_cast (M.read (| new_left_len |))
                   |) in
                 let~ _ :=
                   M.write (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                            ],
+                          "len_mut",
+                          [],
                           []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                          ],
-                        "len_mut",
-                        [],
-                        []
-                      |),
-                      [ M.read (| right_node |) ]
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| right_node |) |) |)
+                        ]
+                      |)
                     |),
                     M.rust_cast (M.read (| new_right_len |))
                   |) in
@@ -15211,41 +16463,50 @@ Module collections.
                           [ K ]
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
-                                [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                                ],
-                              "key_area_mut",
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeTo")
-                                  []
-                                  [ Ty.path "usize" ];
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "key_area_mut",
+                                  [],
                                   [
                                     Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      (Ty.path "core::ops::range::RangeTo")
                                       []
-                                      [ K ]
+                                      [ Ty.path "usize" ];
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ K ]
+                                      ]
                                   ]
-                              ]
-                            |),
-                            [
-                              M.read (| right_node |);
-                              Value.StructRecord
-                                "core::ops::range::RangeTo"
-                                [ ("end_", M.read (| new_right_len |)) ]
-                            ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| right_node |) |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeTo"
+                                    [ ("end_", M.read (| new_right_len |)) ]
+                                ]
+                              |)
+                            |)
                           |);
                           M.read (| count |)
                         ]
@@ -15260,41 +16521,50 @@ Module collections.
                           [ V ]
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
-                                [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                                ],
-                              "val_area_mut",
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeTo")
-                                  []
-                                  [ Ty.path "usize" ];
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "val_area_mut",
+                                  [],
                                   [
                                     Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      (Ty.path "core::ops::range::RangeTo")
                                       []
-                                      [ V ]
+                                      [ Ty.path "usize" ];
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ V ]
+                                      ]
                                   ]
-                              ]
-                            |),
-                            [
-                              M.read (| right_node |);
-                              Value.StructRecord
-                                "core::ops::range::RangeTo"
-                                [ ("end_", M.read (| new_right_len |)) ]
-                            ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| right_node |) |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeTo"
+                                    [ ("end_", M.read (| new_right_len |)) ]
+                                ]
+                              |)
+                            |)
                           |);
                           M.read (| count |)
                         ]
@@ -15309,87 +16579,108 @@ Module collections.
                           [ K ]
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
-                                [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                                ],
-                              "key_area_mut",
-                              [],
-                              [
-                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "key_area_mut",
+                                  [],
                                   [
                                     Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      (Ty.path "core::ops::range::Range")
                                       []
-                                      [ K ]
+                                      [ Ty.path "usize" ];
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ K ]
+                                      ]
                                   ]
-                              ]
-                            |),
-                            [
-                              M.read (| left_node |);
-                              Value.StructRecord
-                                "core::ops::range::Range"
+                                |),
                                 [
-                                  ("start",
-                                    BinOp.Wrap.add (|
-                                      M.read (| new_left_len |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |));
-                                  ("end_", M.read (| old_left_len |))
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| left_node |) |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [
+                                      ("start",
+                                        BinOp.Wrap.add (|
+                                          M.read (| new_left_len |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |));
+                                      ("end_", M.read (| old_left_len |))
+                                    ]
                                 ]
-                            ]
+                              |)
+                            |)
                           |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
-                                [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                                ],
-                              "key_area_mut",
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeTo")
-                                  []
-                                  [ Ty.path "usize" ];
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "key_area_mut",
+                                  [],
                                   [
                                     Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      (Ty.path "core::ops::range::RangeTo")
                                       []
-                                      [ K ]
+                                      [ Ty.path "usize" ];
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ K ]
+                                      ]
                                   ]
-                              ]
-                            |),
-                            [
-                              M.read (| right_node |);
-                              Value.StructRecord
-                                "core::ops::range::RangeTo"
+                                |),
                                 [
-                                  ("end_",
-                                    BinOp.Wrap.sub (|
-                                      M.read (| count |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |))
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| right_node |) |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeTo"
+                                    [
+                                      ("end_",
+                                        BinOp.Wrap.sub (|
+                                          M.read (| count |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |))
+                                    ]
                                 ]
-                            ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -15403,87 +16694,108 @@ Module collections.
                           [ V ]
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
-                                [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                                ],
-                              "val_area_mut",
-                              [],
-                              [
-                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "val_area_mut",
+                                  [],
                                   [
                                     Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      (Ty.path "core::ops::range::Range")
                                       []
-                                      [ V ]
+                                      [ Ty.path "usize" ];
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ V ]
+                                      ]
                                   ]
-                              ]
-                            |),
-                            [
-                              M.read (| left_node |);
-                              Value.StructRecord
-                                "core::ops::range::Range"
+                                |),
                                 [
-                                  ("start",
-                                    BinOp.Wrap.add (|
-                                      M.read (| new_left_len |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |));
-                                  ("end_", M.read (| old_left_len |))
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| left_node |) |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [
+                                      ("start",
+                                        BinOp.Wrap.add (|
+                                          M.read (| new_left_len |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |));
+                                      ("end_", M.read (| old_left_len |))
+                                    ]
                                 ]
-                            ]
+                              |)
+                            |)
                           |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
-                                [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                                ],
-                              "val_area_mut",
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeTo")
-                                  []
-                                  [ Ty.path "usize" ];
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "val_area_mut",
+                                  [],
                                   [
                                     Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      (Ty.path "core::ops::range::RangeTo")
                                       []
-                                      [ V ]
+                                      [ Ty.path "usize" ];
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ V ]
+                                      ]
                                   ]
-                              ]
-                            |),
-                            [
-                              M.read (| right_node |);
-                              Value.StructRecord
-                                "core::ops::range::RangeTo"
+                                |),
                                 [
-                                  ("end_",
-                                    BinOp.Wrap.sub (|
-                                      M.read (| count |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |))
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| right_node |) |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeTo"
+                                    [
+                                      ("end_",
+                                        BinOp.Wrap.sub (|
+                                          M.read (| count |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |))
+                                    ]
                                 ]
-                            ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -15498,25 +16810,40 @@ Module collections.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "key_area_mut",
+                                  [],
+                                  [
+                                    Ty.path "usize";
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ K ]
+                                  ]
+                                |),
                                 [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                                ],
-                              "key_area_mut",
-                              [],
-                              [
-                                Ty.path "usize";
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                              ]
-                            |),
-                            [ M.read (| left_node |); M.read (| new_left_len |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| left_node |) |)
+                                  |);
+                                  M.read (| new_left_len |)
+                                ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -15531,25 +16858,40 @@ Module collections.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "val_area_mut",
+                                  [],
+                                  [
+                                    Ty.path "usize";
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ V ]
+                                  ]
+                                |),
                                 [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                                ],
-                              "val_area_mut",
-                              [],
-                              [
-                                Ty.path "usize";
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                              ]
-                            |),
-                            [ M.read (| left_node |); M.read (| new_left_len |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| left_node |) |)
+                                  |);
+                                  M.read (| new_left_len |)
+                                ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -15578,10 +16920,13 @@ Module collections.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::btree::node::BalancingContext",
-                            "parent"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::node::BalancingContext",
+                              "parent"
+                            |)
                           |);
                           M.read (| k |);
                           M.read (| v |)
@@ -15608,35 +16953,44 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "key_area_mut",
+                                          [],
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ K ]
+                                          ]
+                                        |),
                                         [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "key_area_mut",
-                                      [],
-                                      [
-                                        Ty.path "usize";
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ K ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (| right_node |);
-                                      BinOp.Wrap.sub (|
-                                        M.read (| count |),
-                                        Value.Integer IntegerKind.Usize 1
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| right_node |) |)
+                                          |);
+                                          BinOp.Wrap.sub (|
+                                            M.read (| count |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |);
                                   M.read (| k |)
                                 ]
@@ -15655,35 +17009,44 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "val_area_mut",
+                                          [],
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ V ]
+                                          ]
+                                        |),
                                         [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "val_area_mut",
-                                      [],
-                                      [
-                                        Ty.path "usize";
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ V ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (| right_node |);
-                                      BinOp.Wrap.sub (|
-                                        M.read (| count |),
-                                        Value.Integer IntegerKind.Usize 1
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| right_node |) |)
+                                          |);
+                                          BinOp.Wrap.sub (|
+                                            M.read (| count |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |);
                                   M.read (| v |)
                                 ]
@@ -15728,7 +17091,12 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ M.read (| left_node |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| left_node |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |);
@@ -15764,7 +17132,12 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ M.read (| right_node |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| right_node |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |)
@@ -15808,58 +17181,64 @@ Module collections.
                                 ]
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path "alloc::collections::btree::node::marker::Internal"
-                                      ],
-                                    "edge_area_mut",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeTo")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::Internal"
+                                          ],
+                                        "edge_area_mut",
+                                        [],
                                         [
                                           Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            (Ty.path "core::ops::range::RangeTo")
+                                            []
+                                            [ Ty.path "usize" ];
+                                          Ty.apply
+                                            (Ty.path "slice")
                                             []
                                             [
                                               Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::node::LeafNode")
+                                                    (Ty.path "core::ptr::non_null::NonNull")
                                                     []
-                                                    [ K; V ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::node::LeafNode")
+                                                        []
+                                                        [ K; V ]
+                                                    ]
                                                 ]
                                             ]
                                         ]
-                                    ]
-                                  |),
-                                  [
-                                    right;
-                                    Value.StructRecord
-                                      "core::ops::range::RangeTo"
+                                      |),
                                       [
-                                        ("end_",
-                                          BinOp.Wrap.add (|
-                                            M.read (| new_right_len |),
-                                            Value.Integer IntegerKind.Usize 1
-                                          |))
+                                        M.borrow (| Pointer.Kind.MutRef, right |);
+                                        Value.StructRecord
+                                          "core::ops::range::RangeTo"
+                                          [
+                                            ("end_",
+                                              BinOp.Wrap.add (|
+                                                M.read (| new_right_len |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |))
+                                          ]
                                       ]
-                                  ]
+                                    |)
+                                  |)
                                 |);
                                 M.read (| count |)
                               ]
@@ -15884,110 +17263,122 @@ Module collections.
                                 ]
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path "alloc::collections::btree::node::marker::Internal"
-                                      ],
-                                    "edge_area_mut",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::Range")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::Internal"
+                                          ],
+                                        "edge_area_mut",
+                                        [],
                                         [
                                           Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ];
+                                          Ty.apply
+                                            (Ty.path "slice")
                                             []
                                             [
                                               Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::node::LeafNode")
+                                                    (Ty.path "core::ptr::non_null::NonNull")
                                                     []
-                                                    [ K; V ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::node::LeafNode")
+                                                        []
+                                                        [ K; V ]
+                                                    ]
                                                 ]
                                             ]
                                         ]
-                                    ]
-                                  |),
-                                  [
-                                    left;
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
+                                      |),
                                       [
-                                        ("start",
-                                          BinOp.Wrap.add (|
-                                            M.read (| new_left_len |),
-                                            Value.Integer IntegerKind.Usize 1
-                                          |));
-                                        ("end_",
-                                          BinOp.Wrap.add (|
-                                            M.read (| old_left_len |),
-                                            Value.Integer IntegerKind.Usize 1
-                                          |))
+                                        M.borrow (| Pointer.Kind.MutRef, left |);
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          [
+                                            ("start",
+                                              BinOp.Wrap.add (|
+                                                M.read (| new_left_len |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |));
+                                            ("end_",
+                                              BinOp.Wrap.add (|
+                                                M.read (| old_left_len |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |))
+                                          ]
                                       ]
-                                  ]
+                                    |)
+                                  |)
                                 |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path "alloc::collections::btree::node::marker::Internal"
-                                      ],
-                                    "edge_area_mut",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeTo")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::Internal"
+                                          ],
+                                        "edge_area_mut",
+                                        [],
                                         [
                                           Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            (Ty.path "core::ops::range::RangeTo")
+                                            []
+                                            [ Ty.path "usize" ];
+                                          Ty.apply
+                                            (Ty.path "slice")
                                             []
                                             [
                                               Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::node::LeafNode")
+                                                    (Ty.path "core::ptr::non_null::NonNull")
                                                     []
-                                                    [ K; V ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::node::LeafNode")
+                                                        []
+                                                        [ K; V ]
+                                                    ]
                                                 ]
                                             ]
                                         ]
-                                    ]
-                                  |),
-                                  [
-                                    right;
-                                    Value.StructRecord
-                                      "core::ops::range::RangeTo"
-                                      [ ("end_", M.read (| count |)) ]
-                                  ]
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, right |);
+                                        Value.StructRecord
+                                          "core::ops::range::RangeTo"
+                                          [ ("end_", M.read (| count |)) ]
+                                      ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -16015,7 +17406,7 @@ Module collections.
                                 ]
                               |),
                               [
-                                right;
+                                M.borrow (| Pointer.Kind.MutRef, right |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
                                   [
@@ -16176,10 +17567,13 @@ Module collections.
                   |) in
                 let~ left_node :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::node::BalancingContext",
-                      "left_child"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::btree::node::BalancingContext",
+                        "left_child"
+                      |)
                     |)
                   |) in
                 let~ old_left_len :=
@@ -16199,15 +17593,18 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| left_node |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| left_node |) |) |) ]
                     |)
                   |) in
                 let~ right_node :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::node::BalancingContext",
-                      "right_child"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::btree::node::BalancingContext",
+                        "right_child"
+                      |)
                     |)
                   |) in
                 let~ old_right_len :=
@@ -16227,7 +17624,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| right_node |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| right_node |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -16311,43 +17708,48 @@ Module collections.
                   |) in
                 let~ _ :=
                   M.write (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                            ],
+                          "len_mut",
+                          [],
                           []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                          ],
-                        "len_mut",
-                        [],
-                        []
-                      |),
-                      [ M.read (| left_node |) ]
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| left_node |) |) |) ]
+                      |)
                     |),
                     M.rust_cast (M.read (| new_left_len |))
                   |) in
                 let~ _ :=
                   M.write (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                            ],
+                          "len_mut",
+                          [],
                           []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                          ],
-                        "len_mut",
-                        [],
-                        []
-                      |),
-                      [ M.read (| right_node |) ]
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| right_node |) |) |)
+                        ]
+                      |)
                     |),
                     M.rust_cast (M.read (| new_right_len |))
                   |) in
@@ -16362,31 +17764,43 @@ Module collections.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "key_area_mut",
+                                  [],
+                                  [
+                                    Ty.path "usize";
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ K ]
+                                  ]
+                                |),
                                 [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                                ],
-                              "key_area_mut",
-                              [],
-                              [
-                                Ty.path "usize";
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                              ]
-                            |),
-                            [
-                              M.read (| right_node |);
-                              BinOp.Wrap.sub (|
-                                M.read (| count |),
-                                Value.Integer IntegerKind.Usize 1
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| right_node |) |)
+                                  |);
+                                  BinOp.Wrap.sub (|
+                                    M.read (| count |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
@@ -16401,31 +17815,43 @@ Module collections.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "val_area_mut",
+                                  [],
+                                  [
+                                    Ty.path "usize";
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ V ]
+                                  ]
+                                |),
                                 [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                                ],
-                              "val_area_mut",
-                              [],
-                              [
-                                Ty.path "usize";
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                              ]
-                            |),
-                            [
-                              M.read (| right_node |);
-                              BinOp.Wrap.sub (|
-                                M.read (| count |),
-                                Value.Integer IntegerKind.Usize 1
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| right_node |) |)
+                                  |);
+                                  BinOp.Wrap.sub (|
+                                    M.read (| count |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
@@ -16454,10 +17880,13 @@ Module collections.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::btree::node::BalancingContext",
-                            "parent"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::node::BalancingContext",
+                              "parent"
+                            |)
                           |);
                           M.read (| k |);
                           M.read (| v |)
@@ -16484,29 +17913,41 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "key_area_mut",
+                                          [],
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ K ]
+                                          ]
+                                        |),
                                         [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "key_area_mut",
-                                      [],
-                                      [
-                                        Ty.path "usize";
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ K ]
-                                      ]
-                                    |),
-                                    [ M.read (| left_node |); M.read (| old_left_len |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| left_node |) |)
+                                          |);
+                                          M.read (| old_left_len |)
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| k |)
                                 ]
@@ -16525,29 +17966,41 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "val_area_mut",
+                                          [],
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ V ]
+                                          ]
+                                        |),
                                         [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "val_area_mut",
-                                      [],
-                                      [
-                                        Ty.path "usize";
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ V ]
-                                      ]
-                                    |),
-                                    [ M.read (| left_node |); M.read (| old_left_len |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| left_node |) |)
+                                          |);
+                                          M.read (| old_left_len |)
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| v |)
                                 ]
@@ -16562,92 +18015,110 @@ Module collections.
                                   [ K ]
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "key_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "key_area_mut",
+                                          [],
                                           [
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "core::ops::range::RangeTo")
                                               []
-                                              [ K ]
+                                              [ Ty.path "usize" ];
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ K ]
+                                              ]
                                           ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (| right_node |);
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
+                                        |),
                                         [
-                                          ("end_",
-                                            BinOp.Wrap.sub (|
-                                              M.read (| count |),
-                                              Value.Integer IntegerKind.Usize 1
-                                            |))
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| right_node |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [
+                                              ("end_",
+                                                BinOp.Wrap.sub (|
+                                                  M.read (| count |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |))
+                                            ]
                                         ]
-                                    ]
+                                      |)
+                                    |)
                                   |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "key_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::Range")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "key_area_mut",
+                                          [],
                                           [
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "core::ops::range::Range")
                                               []
-                                              [ K ]
+                                              [ Ty.path "usize" ];
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ K ]
+                                              ]
                                           ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (| left_node |);
-                                      Value.StructRecord
-                                        "core::ops::range::Range"
+                                        |),
                                         [
-                                          ("start",
-                                            BinOp.Wrap.add (|
-                                              M.read (| old_left_len |),
-                                              Value.Integer IntegerKind.Usize 1
-                                            |));
-                                          ("end_", M.read (| new_left_len |))
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| left_node |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::Range"
+                                            [
+                                              ("start",
+                                                BinOp.Wrap.add (|
+                                                  M.read (| old_left_len |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |));
+                                              ("end_", M.read (| new_left_len |))
+                                            ]
                                         ]
-                                    ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -16661,92 +18132,110 @@ Module collections.
                                   [ V ]
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "val_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "val_area_mut",
+                                          [],
                                           [
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "core::ops::range::RangeTo")
                                               []
-                                              [ V ]
+                                              [ Ty.path "usize" ];
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ V ]
+                                              ]
                                           ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (| right_node |);
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
+                                        |),
                                         [
-                                          ("end_",
-                                            BinOp.Wrap.sub (|
-                                              M.read (| count |),
-                                              Value.Integer IntegerKind.Usize 1
-                                            |))
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| right_node |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [
+                                              ("end_",
+                                                BinOp.Wrap.sub (|
+                                                  M.read (| count |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |))
+                                            ]
                                         ]
-                                    ]
+                                      |)
+                                    |)
                                   |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "val_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::Range")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "val_area_mut",
+                                          [],
                                           [
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "core::ops::range::Range")
                                               []
-                                              [ V ]
+                                              [ Ty.path "usize" ];
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ V ]
+                                              ]
                                           ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (| left_node |);
-                                      Value.StructRecord
-                                        "core::ops::range::Range"
+                                        |),
                                         [
-                                          ("start",
-                                            BinOp.Wrap.add (|
-                                              M.read (| old_left_len |),
-                                              Value.Integer IntegerKind.Usize 1
-                                            |));
-                                          ("end_", M.read (| new_left_len |))
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| left_node |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::Range"
+                                            [
+                                              ("start",
+                                                BinOp.Wrap.add (|
+                                                  M.read (| old_left_len |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |));
+                                              ("end_", M.read (| new_left_len |))
+                                            ]
                                         ]
-                                    ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -16760,42 +18249,51 @@ Module collections.
                                   [ K ]
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "key_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "key_area_mut",
+                                          [],
                                           [
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "core::ops::range::RangeTo")
                                               []
-                                              [ K ]
+                                              [ Ty.path "usize" ];
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ K ]
+                                              ]
                                           ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (| right_node |);
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
-                                        [ ("end_", M.read (| old_right_len |)) ]
-                                    ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| right_node |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [ ("end_", M.read (| old_right_len |)) ]
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| count |)
                                 ]
@@ -16810,42 +18308,51 @@ Module collections.
                                   [ V ]
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ],
-                                      "val_area_mut",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          []
-                                          [ Ty.path "usize" ];
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Mut";
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::LeafOrInternal"
+                                            ],
+                                          "val_area_mut",
+                                          [],
                                           [
                                             Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              (Ty.path "core::ops::range::RangeTo")
                                               []
-                                              [ V ]
+                                              [ Ty.path "usize" ];
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ V ]
+                                              ]
                                           ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (| right_node |);
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
-                                        [ ("end_", M.read (| old_right_len |)) ]
-                                    ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| right_node |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [ ("end_", M.read (| old_right_len |)) ]
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| count |)
                                 ]
@@ -16890,7 +18397,12 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ M.read (| left_node |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| left_node |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |);
@@ -16926,7 +18438,12 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ M.read (| right_node |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| right_node |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |)
@@ -16970,110 +18487,122 @@ Module collections.
                                 ]
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path "alloc::collections::btree::node::marker::Internal"
-                                      ],
-                                    "edge_area_mut",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeTo")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::Internal"
+                                          ],
+                                        "edge_area_mut",
+                                        [],
                                         [
                                           Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            (Ty.path "core::ops::range::RangeTo")
+                                            []
+                                            [ Ty.path "usize" ];
+                                          Ty.apply
+                                            (Ty.path "slice")
                                             []
                                             [
                                               Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::node::LeafNode")
+                                                    (Ty.path "core::ptr::non_null::NonNull")
                                                     []
-                                                    [ K; V ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::node::LeafNode")
+                                                        []
+                                                        [ K; V ]
+                                                    ]
                                                 ]
                                             ]
                                         ]
-                                    ]
-                                  |),
-                                  [
-                                    right;
-                                    Value.StructRecord
-                                      "core::ops::range::RangeTo"
-                                      [ ("end_", M.read (| count |)) ]
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
+                                      |),
                                       [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path "alloc::collections::btree::node::marker::Internal"
-                                      ],
-                                    "edge_area_mut",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::Range")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::node::LeafNode")
-                                                    []
-                                                    [ K; V ]
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                  |),
-                                  [
-                                    left;
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
-                                      [
-                                        ("start",
-                                          BinOp.Wrap.add (|
-                                            M.read (| old_left_len |),
-                                            Value.Integer IntegerKind.Usize 1
-                                          |));
-                                        ("end_",
-                                          BinOp.Wrap.add (|
-                                            M.read (| new_left_len |),
-                                            Value.Integer IntegerKind.Usize 1
-                                          |))
+                                        M.borrow (| Pointer.Kind.MutRef, right |);
+                                        Value.StructRecord
+                                          "core::ops::range::RangeTo"
+                                          [ ("end_", M.read (| count |)) ]
                                       ]
-                                  ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::Internal"
+                                          ],
+                                        "edge_area_mut",
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ];
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::node::LeafNode")
+                                                        []
+                                                        [ K; V ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, left |);
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          [
+                                            ("start",
+                                              BinOp.Wrap.add (|
+                                                M.read (| old_left_len |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |));
+                                            ("end_",
+                                              BinOp.Wrap.add (|
+                                                M.read (| new_left_len |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |))
+                                          ]
+                                      ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -17097,58 +18626,64 @@ Module collections.
                                 ]
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path "alloc::collections::btree::node::marker::Internal"
-                                      ],
-                                    "edge_area_mut",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeTo")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::Internal"
+                                          ],
+                                        "edge_area_mut",
+                                        [],
                                         [
                                           Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            (Ty.path "core::ops::range::RangeTo")
+                                            []
+                                            [ Ty.path "usize" ];
+                                          Ty.apply
+                                            (Ty.path "slice")
                                             []
                                             [
                                               Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::node::LeafNode")
+                                                    (Ty.path "core::ptr::non_null::NonNull")
                                                     []
-                                                    [ K; V ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::node::LeafNode")
+                                                        []
+                                                        [ K; V ]
+                                                    ]
                                                 ]
                                             ]
                                         ]
-                                    ]
-                                  |),
-                                  [
-                                    right;
-                                    Value.StructRecord
-                                      "core::ops::range::RangeTo"
+                                      |),
                                       [
-                                        ("end_",
-                                          BinOp.Wrap.add (|
-                                            M.read (| old_right_len |),
-                                            Value.Integer IntegerKind.Usize 1
-                                          |))
+                                        M.borrow (| Pointer.Kind.MutRef, right |);
+                                        Value.StructRecord
+                                          "core::ops::range::RangeTo"
+                                          [
+                                            ("end_",
+                                              BinOp.Wrap.add (|
+                                                M.read (| old_right_len |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |))
+                                          ]
                                       ]
-                                  ]
+                                    |)
+                                  |)
                                 |);
                                 M.read (| count |)
                               ]
@@ -17177,7 +18712,7 @@ Module collections.
                                 ]
                               |),
                               [
-                                left;
+                                M.borrow (| Pointer.Kind.MutRef, left |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
                                   [
@@ -17218,7 +18753,7 @@ Module collections.
                                 ]
                               |),
                               [
-                                right;
+                                M.borrow (| Pointer.Kind.MutRef, right |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
                                   [
@@ -17778,7 +19313,7 @@ Module collections.
                 let~ new_left_len :=
                   M.copy (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::collections::btree::node::Handle",
                       "idx"
                     |)
@@ -17829,7 +19364,7 @@ Module collections.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       ]
                     |)
@@ -17851,7 +19386,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ left_node ]
+                      [ M.borrow (| Pointer.Kind.Ref, left_node |) ]
                     |)
                   |) in
                 let~ new_right_len :=
@@ -17875,7 +19410,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| right |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| right |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -17905,7 +19440,7 @@ Module collections.
                                         [],
                                         []
                                       |),
-                                      [ right_node ]
+                                      [ M.borrow (| Pointer.Kind.Ref, right_node |) ]
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -17991,45 +19526,49 @@ Module collections.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           M.write (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "len_mut",
+                                  [],
                                   []
-                                  [
-                                    Ty.path "alloc::collections::btree::node::marker::Mut";
-                                    K;
-                                    V;
-                                    Ty.path
-                                      "alloc::collections::btree::node::marker::LeafOrInternal"
-                                  ],
-                                "len_mut",
-                                [],
-                                []
-                              |),
-                              [ left_node ]
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, left_node |) ]
+                              |)
                             |),
                             M.rust_cast (M.read (| new_left_len |))
                           |) in
                         let~ _ :=
                           M.write (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "len_mut",
+                                  [],
                                   []
-                                  [
-                                    Ty.path "alloc::collections::btree::node::marker::Mut";
-                                    K;
-                                    V;
-                                    Ty.path
-                                      "alloc::collections::btree::node::marker::LeafOrInternal"
-                                  ],
-                                "len_mut",
-                                [],
-                                []
-                              |),
-                              [ right_node ]
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, right_node |) ]
+                              |)
                             |),
                             M.rust_cast (M.read (| new_right_len |))
                           |) in
@@ -18042,82 +19581,92 @@ Module collections.
                                 [ K ]
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path
-                                          "alloc::collections::btree::node::marker::LeafOrInternal"
-                                      ],
-                                    "key_area_mut",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::Range")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::LeafOrInternal"
+                                          ],
+                                        "key_area_mut",
+                                        [],
                                         [
                                           Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            (Ty.path "core::ops::range::Range")
                                             []
-                                            [ K ]
+                                            [ Ty.path "usize" ];
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ K ]
+                                            ]
                                         ]
-                                    ]
-                                  |),
-                                  [
-                                    left_node;
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
+                                      |),
                                       [
-                                        ("start", M.read (| new_left_len |));
-                                        ("end_", M.read (| old_left_len |))
+                                        M.borrow (| Pointer.Kind.MutRef, left_node |);
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          [
+                                            ("start", M.read (| new_left_len |));
+                                            ("end_", M.read (| old_left_len |))
+                                          ]
                                       ]
-                                  ]
+                                    |)
+                                  |)
                                 |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path
-                                          "alloc::collections::btree::node::marker::LeafOrInternal"
-                                      ],
-                                    "key_area_mut",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeTo")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::LeafOrInternal"
+                                          ],
+                                        "key_area_mut",
+                                        [],
                                         [
                                           Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            (Ty.path "core::ops::range::RangeTo")
                                             []
-                                            [ K ]
+                                            [ Ty.path "usize" ];
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ K ]
+                                            ]
                                         ]
-                                    ]
-                                  |),
-                                  [
-                                    right_node;
-                                    Value.StructRecord
-                                      "core::ops::range::RangeTo"
-                                      [ ("end_", M.read (| new_right_len |)) ]
-                                  ]
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, right_node |);
+                                        Value.StructRecord
+                                          "core::ops::range::RangeTo"
+                                          [ ("end_", M.read (| new_right_len |)) ]
+                                      ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -18131,82 +19680,92 @@ Module collections.
                                 [ V ]
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path
-                                          "alloc::collections::btree::node::marker::LeafOrInternal"
-                                      ],
-                                    "val_area_mut",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::Range")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::LeafOrInternal"
+                                          ],
+                                        "val_area_mut",
+                                        [],
                                         [
                                           Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            (Ty.path "core::ops::range::Range")
                                             []
-                                            [ V ]
+                                            [ Ty.path "usize" ];
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ V ]
+                                            ]
                                         ]
-                                    ]
-                                  |),
-                                  [
-                                    left_node;
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
+                                      |),
                                       [
-                                        ("start", M.read (| new_left_len |));
-                                        ("end_", M.read (| old_left_len |))
+                                        M.borrow (| Pointer.Kind.MutRef, left_node |);
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          [
+                                            ("start", M.read (| new_left_len |));
+                                            ("end_", M.read (| old_left_len |))
+                                          ]
                                       ]
-                                  ]
+                                    |)
+                                  |)
                                 |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path
-                                          "alloc::collections::btree::node::marker::LeafOrInternal"
-                                      ],
-                                    "val_area_mut",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeTo")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::LeafOrInternal"
+                                          ],
+                                        "val_area_mut",
+                                        [],
                                         [
                                           Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            (Ty.path "core::ops::range::RangeTo")
                                             []
-                                            [ V ]
+                                            [ Ty.path "usize" ];
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ V ]
+                                            ]
                                         ]
-                                    ]
-                                  |),
-                                  [
-                                    right_node;
-                                    Value.StructRecord
-                                      "core::ops::range::RangeTo"
-                                      [ ("end_", M.read (| new_right_len |)) ]
-                                  ]
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, right_node |);
+                                        Value.StructRecord
+                                          "core::ops::range::RangeTo"
+                                          [ ("end_", M.read (| new_right_len |)) ]
+                                      ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -18292,121 +19851,135 @@ Module collections.
                                         ]
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "alloc::collections::btree::node::marker::Mut";
-                                                K;
-                                                V;
-                                                Ty.path
-                                                  "alloc::collections::btree::node::marker::Internal"
-                                              ],
-                                            "edge_area_mut",
-                                            [],
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::ops::range::Range")
-                                                []
-                                                [ Ty.path "usize" ];
-                                              Ty.apply
-                                                (Ty.path "slice")
-                                                []
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::node::NodeRef")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Mut";
+                                                    K;
+                                                    V;
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Internal"
+                                                  ],
+                                                "edge_area_mut",
+                                                [],
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    (Ty.path "core::ops::range::Range")
+                                                    []
+                                                    [ Ty.path "usize" ];
+                                                  Ty.apply
+                                                    (Ty.path "slice")
                                                     []
                                                     [
                                                       Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        (Ty.path
+                                                          "core::mem::maybe_uninit::MaybeUninit")
                                                         []
                                                         [
                                                           Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::btree::node::LeafNode")
+                                                            (Ty.path "core::ptr::non_null::NonNull")
                                                             []
-                                                            [ K; V ]
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::btree::node::LeafNode")
+                                                                []
+                                                                [ K; V ]
+                                                            ]
                                                         ]
                                                     ]
                                                 ]
-                                            ]
-                                          |),
-                                          [
-                                            left;
-                                            Value.StructRecord
-                                              "core::ops::range::Range"
+                                              |),
                                               [
-                                                ("start",
-                                                  BinOp.Wrap.add (|
-                                                    M.read (| new_left_len |),
-                                                    Value.Integer IntegerKind.Usize 1
-                                                  |));
-                                                ("end_",
-                                                  BinOp.Wrap.add (|
-                                                    M.read (| old_left_len |),
-                                                    Value.Integer IntegerKind.Usize 1
-                                                  |))
+                                                M.borrow (| Pointer.Kind.MutRef, left |);
+                                                Value.StructRecord
+                                                  "core::ops::range::Range"
+                                                  [
+                                                    ("start",
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| new_left_len |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |));
+                                                    ("end_",
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| old_left_len |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |))
+                                                  ]
                                               ]
-                                          ]
+                                            |)
+                                          |)
                                         |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "alloc::collections::btree::node::marker::Mut";
-                                                K;
-                                                V;
-                                                Ty.path
-                                                  "alloc::collections::btree::node::marker::Internal"
-                                              ],
-                                            "edge_area_mut",
-                                            [],
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::ops::range::Range")
-                                                []
-                                                [ Ty.path "usize" ];
-                                              Ty.apply
-                                                (Ty.path "slice")
-                                                []
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::node::NodeRef")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Mut";
+                                                    K;
+                                                    V;
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Internal"
+                                                  ],
+                                                "edge_area_mut",
+                                                [],
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    (Ty.path "core::ops::range::Range")
+                                                    []
+                                                    [ Ty.path "usize" ];
+                                                  Ty.apply
+                                                    (Ty.path "slice")
                                                     []
                                                     [
                                                       Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        (Ty.path
+                                                          "core::mem::maybe_uninit::MaybeUninit")
                                                         []
                                                         [
                                                           Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::btree::node::LeafNode")
+                                                            (Ty.path "core::ptr::non_null::NonNull")
                                                             []
-                                                            [ K; V ]
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::btree::node::LeafNode")
+                                                                []
+                                                                [ K; V ]
+                                                            ]
                                                         ]
                                                     ]
                                                 ]
-                                            ]
-                                          |),
-                                          [
-                                            right;
-                                            Value.StructRecord
-                                              "core::ops::range::Range"
+                                              |),
                                               [
-                                                ("start", Value.Integer IntegerKind.Usize 1);
-                                                ("end_",
-                                                  BinOp.Wrap.add (|
-                                                    M.read (| new_right_len |),
-                                                    Value.Integer IntegerKind.Usize 1
-                                                  |))
+                                                M.borrow (| Pointer.Kind.MutRef, right |);
+                                                Value.StructRecord
+                                                  "core::ops::range::Range"
+                                                  [
+                                                    ("start", Value.Integer IntegerKind.Usize 1);
+                                                    ("end_",
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| new_right_len |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |))
+                                                  ]
                                               ]
-                                          ]
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -18435,7 +20008,7 @@ Module collections.
                                         ]
                                       |),
                                       [
-                                        right;
+                                        M.borrow (| Pointer.Kind.MutRef, right |);
                                         Value.StructRecord
                                           "core::ops::range::Range"
                                           [
@@ -18951,7 +20524,7 @@ Module collections.
                       [],
                       []
                     |),
-                    [ M.read (| slice |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -19008,7 +20581,7 @@ Module collections.
                       [],
                       []
                     |),
-                    [ M.read (| slice |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -19103,17 +20676,23 @@ Module collections.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "*mut")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                          "add",
-                          [],
-                          []
-                        |),
-                        [ M.read (| slice_ptr |); M.read (| idx |) ]
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
+                              "add",
+                              [],
+                              []
+                            |),
+                            [ M.read (| slice_ptr |); M.read (| idx |) ]
+                          |)
+                        |)
                       |);
                       M.read (| val |)
                     ]
@@ -19158,7 +20737,7 @@ Module collections.
                       [],
                       []
                     |),
-                    [ M.read (| slice |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -19215,7 +20794,7 @@ Module collections.
                       [],
                       []
                     |),
-                    [ M.read (| slice |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |) ]
                   |)
                 |) in
               let~ ret :=
@@ -19228,17 +20807,23 @@ Module collections.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "*mut")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                          "add",
-                          [],
-                          []
-                        |),
-                        [ M.read (| slice_ptr |); M.read (| idx |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
+                              "add",
+                              [],
+                              []
+                            |),
+                            [ M.read (| slice_ptr |); M.read (| idx |) ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -19324,7 +20909,7 @@ Module collections.
                       [],
                       []
                     |),
-                    [ M.read (| slice |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -19364,7 +20949,7 @@ Module collections.
                             [],
                             []
                           |),
-                          [ M.read (| slice |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                         |),
                         M.read (| distance |)
                       |)
@@ -19406,7 +20991,7 @@ Module collections.
                       [],
                       []
                     |),
-                    [ M.read (| slice |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -19443,7 +21028,7 @@ Module collections.
                             [],
                             []
                           |),
-                          [ M.read (| slice |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                         |),
                         M.read (| distance |)
                       |)
@@ -19499,7 +21084,12 @@ Module collections.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |)
+                                    ]
                                   |),
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -19516,7 +21106,12 @@ Module collections.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| dst |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| dst |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)
@@ -19554,7 +21149,7 @@ Module collections.
                           [],
                           []
                         |),
-                        [ M.read (| src |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
@@ -19566,7 +21161,7 @@ Module collections.
                           [],
                           []
                         |),
-                        [ M.read (| dst |) ]
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dst |) |) |) ]
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
@@ -19578,7 +21173,7 @@ Module collections.
                           [],
                           []
                         |),
-                        [ M.read (| src |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                       |)
                     ]
                   |)

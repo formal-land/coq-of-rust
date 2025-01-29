@@ -28,7 +28,7 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -60,10 +60,25 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "Choice" |);
-            M.alloc (|
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "subtle::Choice", 0 |)
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Choice" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "subtle::Choice",
+                        0
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)
           ]
         |)))
@@ -92,7 +107,11 @@ Module Impl_subtle_Choice.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.SubPointer.get_struct_tuple_field (| M.read (| self |), "subtle::Choice", 0 |)
+          M.SubPointer.get_struct_tuple_field (|
+            M.deref (| M.read (| self |) |),
+            "subtle::Choice",
+            0
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -261,7 +280,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
         M.read (|
           let~ _ :=
             M.write (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
@@ -272,7 +291,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -350,7 +369,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
         M.read (|
           let~ _ :=
             M.write (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitOr",
@@ -361,7 +380,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -439,7 +458,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
         M.read (|
           let~ _ :=
             M.write (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
@@ -450,7 +469,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -588,7 +607,17 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
         M.alloc (|
           M.call_closure (|
             M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
-            [ M.read (| M.use (M.alloc (| input |)) |) ]
+            [
+              M.read (|
+                M.use
+                  (M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.ConstPointer,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, input |) |)
+                    |)
+                  |))
+              |)
+            ]
           |)
         |)
       |)))
@@ -652,7 +681,10 @@ Module ConstantTimeEq.
           [
             M.call_closure (|
               M.get_trait_method (| "subtle::ConstantTimeEq", Self, [], [], "ct_eq", [], [] |),
-              [ M.read (| self |); M.read (| other |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+              ]
             |)
           ]
         |)))
@@ -705,7 +737,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -726,7 +758,8 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| _rhs |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| _rhs |) |) |)
+                                  ]
                                 |)
                               |)
                             |)) in
@@ -795,7 +828,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -804,7 +837,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                   [],
                                   []
                                 |),
-                                [ M.read (| _rhs |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| _rhs |) |) |) ]
                               |)
                             ]
                           |)
@@ -836,7 +869,12 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -873,18 +911,30 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "subtle::ConstantTimeEq",
-                                                        T,
-                                                        [],
-                                                        [],
-                                                        "ct_eq",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| ai |); M.read (| bi |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "subtle::ConstantTimeEq",
+                                                          T,
+                                                          [],
+                                                          [],
+                                                          "ct_eq",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| ai |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| bi |) |)
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
                                                   |)
                                                 ]
@@ -960,7 +1010,10 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
                 [],
                 []
               |),
-              [ M.read (| M.read (| self |) |); M.read (| M.read (| rhs |) |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| rhs |) |) |)
+              ]
             |)
           ]
         |)))
@@ -1081,8 +1134,19 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
         M.call_closure (|
           M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u8", [], [], "ct_eq", [], [] |),
           [
-            M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
-            M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |)
+            |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |)) |)
+                |)
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1198,8 +1262,19 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
         M.call_closure (|
           M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u16", [], [], "ct_eq", [], [] |),
           [
-            M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
-            M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |)
+            |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |)) |)
+                |)
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1315,8 +1390,19 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
         M.call_closure (|
           M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u32", [], [], "ct_eq", [], [] |),
           [
-            M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
-            M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |)
+            |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |)) |)
+                |)
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1432,8 +1518,19 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
         M.call_closure (|
           M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u64", [], [], "ct_eq", [], [] |),
           [
-            M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
-            M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |)
+            |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |)) |)
+                |)
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1563,8 +1660,19 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
             []
           |),
           [
-            M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
-            M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |)) |)
+            |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| M.rust_cast (M.read (| M.deref (| M.read (| other |) |) |)) |)
+                |)
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1595,7 +1703,7 @@ Module ConditionallySelectable.
         M.read (|
           let~ _ :=
             M.write (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               M.call_closure (|
                 M.get_trait_method (|
                   "subtle::ConditionallySelectable",
@@ -1606,7 +1714,11 @@ Module ConditionallySelectable.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| other |); M.read (| choice |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                  M.read (| choice |)
+                ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -1629,7 +1741,7 @@ Module ConditionallySelectable.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ t := M.copy (| M.read (| a |) |) in
+          let~ t := M.copy (| M.deref (| M.read (| a |) |) |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
@@ -1642,7 +1754,14 @@ Module ConditionallySelectable.
                   [],
                   []
                 |),
-                [ M.read (| a |); M.read (| b |); M.read (| choice |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.borrow (| Pointer.Kind.Ref, b |) |) |) |)
+                  |);
+                  M.read (| choice |)
+                ]
               |)
             |) in
           let~ _ :=
@@ -1657,7 +1776,11 @@ Module ConditionallySelectable.
                   [],
                   []
                 |),
-                [ M.read (| b |); t; M.read (| choice |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, t |) |) |);
+                  M.read (| choice |)
+                ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -1695,7 +1818,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
@@ -1756,12 +1879,12 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
           let~ _ :=
-            let β := M.read (| self |) in
+            let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
               BinOp.bit_xor
@@ -1769,8 +1892,8 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                 (BinOp.bit_and
                   (M.read (| mask |))
                   (BinOp.bit_xor
-                    (M.read (| M.read (| self |) |))
-                    (M.read (| M.read (| other |) |))))
+                    (M.read (| M.deref (| M.read (| self |) |) |))
+                    (M.read (| M.deref (| M.read (| other |) |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -1802,7 +1925,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
@@ -1810,13 +1933,15 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             M.alloc (|
               BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor
+                  (M.read (| M.deref (| M.read (| a |) |) |))
+                  (M.read (| M.deref (| M.read (| b |) |) |)))
             |) in
           let~ _ :=
-            let β := M.read (| a |) in
+            let β := M.deref (| M.read (| a |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
-            let β := M.read (| b |) in
+            let β := M.deref (| M.read (| b |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -1868,7 +1993,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
@@ -1936,13 +2061,13 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
             |) in
           let~ _ :=
-            let β := M.read (| self |) in
+            let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
               BinOp.bit_xor
@@ -1950,8 +2075,8 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                 (BinOp.bit_and
                   (M.read (| mask |))
                   (BinOp.bit_xor
-                    (M.read (| M.read (| self |) |))
-                    (M.read (| M.read (| other |) |))))
+                    (M.read (| M.deref (| M.read (| self |) |) |))
+                    (M.read (| M.deref (| M.read (| other |) |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -1989,7 +2114,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
@@ -1998,13 +2123,15 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             M.alloc (|
               BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor
+                  (M.read (| M.deref (| M.read (| a |) |) |))
+                  (M.read (| M.deref (| M.read (| b |) |) |)))
             |) in
           let~ _ :=
-            let β := M.read (| a |) in
+            let β := M.deref (| M.read (| a |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
-            let β := M.read (| b |) in
+            let β := M.deref (| M.read (| b |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2050,7 +2177,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
@@ -2111,12 +2238,12 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
           let~ _ :=
-            let β := M.read (| self |) in
+            let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
               BinOp.bit_xor
@@ -2124,8 +2251,8 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                 (BinOp.bit_and
                   (M.read (| mask |))
                   (BinOp.bit_xor
-                    (M.read (| M.read (| self |) |))
-                    (M.read (| M.read (| other |) |))))
+                    (M.read (| M.deref (| M.read (| self |) |) |))
+                    (M.read (| M.deref (| M.read (| other |) |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2157,7 +2284,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
@@ -2165,13 +2292,15 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             M.alloc (|
               BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor
+                  (M.read (| M.deref (| M.read (| a |) |) |))
+                  (M.read (| M.deref (| M.read (| b |) |) |)))
             |) in
           let~ _ :=
-            let β := M.read (| a |) in
+            let β := M.deref (| M.read (| a |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
-            let β := M.read (| b |) in
+            let β := M.deref (| M.read (| b |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2223,7 +2352,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
@@ -2291,13 +2420,13 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
             |) in
           let~ _ :=
-            let β := M.read (| self |) in
+            let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
               BinOp.bit_xor
@@ -2305,8 +2434,8 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                 (BinOp.bit_and
                   (M.read (| mask |))
                   (BinOp.bit_xor
-                    (M.read (| M.read (| self |) |))
-                    (M.read (| M.read (| other |) |))))
+                    (M.read (| M.deref (| M.read (| self |) |) |))
+                    (M.read (| M.deref (| M.read (| other |) |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2344,7 +2473,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
@@ -2353,13 +2482,15 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             M.alloc (|
               BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor
+                  (M.read (| M.deref (| M.read (| a |) |) |))
+                  (M.read (| M.deref (| M.read (| b |) |) |)))
             |) in
           let~ _ :=
-            let β := M.read (| a |) in
+            let β := M.deref (| M.read (| a |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
-            let β := M.read (| b |) in
+            let β := M.deref (| M.read (| b |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2405,7 +2536,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
@@ -2466,12 +2597,12 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
           let~ _ :=
-            let β := M.read (| self |) in
+            let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
               BinOp.bit_xor
@@ -2479,8 +2610,8 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                 (BinOp.bit_and
                   (M.read (| mask |))
                   (BinOp.bit_xor
-                    (M.read (| M.read (| self |) |))
-                    (M.read (| M.read (| other |) |))))
+                    (M.read (| M.deref (| M.read (| self |) |) |))
+                    (M.read (| M.deref (| M.read (| other |) |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2512,7 +2643,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
@@ -2520,13 +2651,15 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             M.alloc (|
               BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor
+                  (M.read (| M.deref (| M.read (| a |) |) |))
+                  (M.read (| M.deref (| M.read (| b |) |) |)))
             |) in
           let~ _ :=
-            let β := M.read (| a |) in
+            let β := M.deref (| M.read (| a |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
-            let β := M.read (| b |) in
+            let β := M.deref (| M.read (| b |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2578,7 +2711,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
@@ -2646,13 +2779,13 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
             |) in
           let~ _ :=
-            let β := M.read (| self |) in
+            let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
               BinOp.bit_xor
@@ -2660,8 +2793,8 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                 (BinOp.bit_and
                   (M.read (| mask |))
                   (BinOp.bit_xor
-                    (M.read (| M.read (| self |) |))
-                    (M.read (| M.read (| other |) |))))
+                    (M.read (| M.deref (| M.read (| self |) |) |))
+                    (M.read (| M.deref (| M.read (| other |) |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2699,7 +2832,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
@@ -2708,13 +2841,15 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             M.alloc (|
               BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor
+                  (M.read (| M.deref (| M.read (| a |) |) |))
+                  (M.read (| M.deref (| M.read (| b |) |) |)))
             |) in
           let~ _ :=
-            let β := M.read (| a |) in
+            let β := M.deref (| M.read (| a |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
-            let β := M.read (| b |) in
+            let β := M.deref (| M.read (| b |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2760,7 +2895,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
@@ -2821,12 +2956,12 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
           let~ _ :=
-            let β := M.read (| self |) in
+            let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
               BinOp.bit_xor
@@ -2834,8 +2969,8 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                 (BinOp.bit_and
                   (M.read (| mask |))
                   (BinOp.bit_xor
-                    (M.read (| M.read (| self |) |))
-                    (M.read (| M.read (| other |) |))))
+                    (M.read (| M.deref (| M.read (| self |) |) |))
+                    (M.read (| M.deref (| M.read (| other |) |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2867,7 +3002,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                      [ choice ]
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                     |))
                 |))
             |) in
@@ -2875,13 +3010,15 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             M.alloc (|
               BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor
+                  (M.read (| M.deref (| M.read (| a |) |) |))
+                  (M.read (| M.deref (| M.read (| b |) |) |)))
             |) in
           let~ _ :=
-            let β := M.read (| a |) in
+            let β := M.deref (| M.read (| a |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
-            let β := M.read (| b |) in
+            let β := M.deref (| M.read (| b |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2933,7 +3070,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
@@ -3001,13 +3138,13 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
             |) in
           let~ _ :=
-            let β := M.read (| self |) in
+            let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
               BinOp.bit_xor
@@ -3015,8 +3152,8 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                 (BinOp.bit_and
                   (M.read (| mask |))
                   (BinOp.bit_xor
-                    (M.read (| M.read (| self |) |))
-                    (M.read (| M.read (| other |) |))))
+                    (M.read (| M.deref (| M.read (| self |) |) |))
+                    (M.read (| M.deref (| M.read (| other |) |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -3054,7 +3191,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                           [],
                           []
                         |),
-                        [ choice ]
+                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
                       |))
                   |)
                 |))
@@ -3063,13 +3200,15 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             M.alloc (|
               BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor
+                  (M.read (| M.deref (| M.read (| a |) |) |))
+                  (M.read (| M.deref (| M.read (| b |) |) |)))
             |) in
           let~ _ :=
-            let β := M.read (| a |) in
+            let β := M.deref (| M.read (| a |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
-            let β := M.read (| b |) in
+            let β := M.deref (| M.read (| b |) |) in
             M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -3118,8 +3257,32 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (| M.read (| a |), "subtle::Choice", 0 |);
-                M.SubPointer.get_struct_tuple_field (| M.read (| b |), "subtle::Choice", 0 |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| a |) |),
+                        "subtle::Choice",
+                        0
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| b |) |),
+                        "subtle::Choice",
+                        0
+                      |)
+                    |)
+                  |)
+                |);
                 M.read (| choice |)
               ]
             |)
@@ -3173,7 +3336,14 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
                   [],
                   []
                 |),
-                [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |) ]
+                [
+                  M.read (|
+                    M.use
+                      (M.alloc (|
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                      |))
+                  |)
+                ]
               |)
             |) in
           let~ _ :=
@@ -3188,7 +3358,14 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
                   [],
                   []
                 |),
-                [ M.read (| self |); self_neg; M.read (| choice |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, self_neg |) |)
+                  |);
+                  M.read (| choice |)
+                ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -3230,10 +3407,18 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
               M.call_closure (|
                 M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "subtle::CtOption",
-                    "value"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "subtle::CtOption",
+                          "value"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |));
@@ -3249,10 +3434,18 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "subtle::CtOption",
-                    "is_some"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "subtle::CtOption",
+                          "is_some"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |))
@@ -3300,20 +3493,39 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "CtOption" |);
-            M.read (| Value.String "value" |);
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "subtle::CtOption",
-              "value"
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "CtOption" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "value" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "subtle::CtOption",
+                    "value"
+                  |)
+                |)
+              |)
             |);
-            M.read (| Value.String "is_some" |);
-            M.alloc (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "subtle::CtOption",
-                "is_some"
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "is_some" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "subtle::CtOption",
+                        "is_some"
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -3366,15 +3578,18 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
-                                    "is_some",
-                                    [],
-                                    []
-                                  |),
-                                  [ source ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
+                                      "is_some",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, source |) ]
+                                  |)
                                 |)
                               |)
                             ]
@@ -3459,24 +3674,30 @@ Module Impl_subtle_CtOption_T.
               M.alloc (|
                 Value.Tuple
                   [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "subtle::CtOption",
-                            "is_some"
-                          |)
-                        ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "subtle::CtOption",
+                                "is_some"
+                              |)
+                            |)
+                          ]
+                        |)
                       |)
                     |);
-                    M.alloc (| Value.Integer IntegerKind.U8 1 |)
+                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U8 1 |) |)
                   ]
               |),
               [
@@ -3496,8 +3717,8 @@ Module Impl_subtle_CtOption_T.
                                 (M.alloc (|
                                   UnOp.not (|
                                     BinOp.eq (|
-                                      M.read (| M.read (| left_val |) |),
-                                      M.read (| M.read (| right_val |) |)
+                                      M.read (| M.deref (| M.read (| left_val |) |) |),
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
                                     |)
                                   |)
                                 |)) in
@@ -3519,8 +3740,24 @@ Module Impl_subtle_CtOption_T.
                                       |),
                                       [
                                         M.read (| kind |);
-                                        M.read (| left_val |);
-                                        M.read (| right_val |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
                                         Value.StructTuple
                                           "core::option::Option::Some"
                                           [
@@ -3532,27 +3769,53 @@ Module Impl_subtle_CtOption_T.
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  Value.Array [ M.read (| Value.String "" |) ]
-                                                |);
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "str" ]
-                                                          ]
-                                                        |),
-                                                        [ msg ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array [ M.read (| Value.String "" |) ]
                                                       |)
-                                                    ]
+                                                    |)
+                                                  |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "new_display",
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "str" ]
+                                                                ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      msg
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -3596,24 +3859,30 @@ Module Impl_subtle_CtOption_T.
               M.alloc (|
                 Value.Tuple
                   [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "subtle::CtOption",
-                            "is_some"
-                          |)
-                        ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "subtle::CtOption",
+                                "is_some"
+                              |)
+                            |)
+                          ]
+                        |)
                       |)
                     |);
-                    M.alloc (| Value.Integer IntegerKind.U8 1 |)
+                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U8 1 |) |)
                   ]
               |),
               [
@@ -3633,8 +3902,8 @@ Module Impl_subtle_CtOption_T.
                                 (M.alloc (|
                                   UnOp.not (|
                                     BinOp.eq (|
-                                      M.read (| M.read (| left_val |) |),
-                                      M.read (| M.read (| right_val |) |)
+                                      M.read (| M.deref (| M.read (| left_val |) |) |),
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
                                     |)
                                   |)
                                 |)) in
@@ -3656,8 +3925,24 @@ Module Impl_subtle_CtOption_T.
                                       |),
                                       [
                                         M.read (| kind |);
-                                        M.read (| left_val |);
-                                        M.read (| right_val |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
                                         Value.StructTuple "core::option::Option::None" []
                                       ]
                                     |)
@@ -3705,8 +3990,16 @@ Module Impl_subtle_CtOption_T.
             []
           |),
           [
-            def;
-            M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, def |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |)
+                |)
+              |)
+            |);
             M.read (|
               M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
             |)
@@ -3746,21 +4039,37 @@ Module Impl_subtle_CtOption_T.
             []
           |),
           [
-            M.alloc (|
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::function::FnOnce",
-                  F,
-                  [],
-                  [ Ty.tuple [] ],
-                  "call_once",
-                  [],
-                  []
-                |),
-                [ M.read (| f |); Value.Tuple [] ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::function::FnOnce",
+                        F,
+                        [],
+                        [ Ty.tuple [] ],
+                        "call_once",
+                        [],
+                        []
+                      |),
+                      [ M.read (| f |); Value.Tuple [] ]
+                    |)
+                  |)
+                |)
               |)
             |);
-            M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |)
+                |)
+              |)
+            |);
             M.read (|
               M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
             |)
@@ -3786,7 +4095,7 @@ Module Impl_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "subtle::CtOption",
             "is_some"
           |)
@@ -3822,7 +4131,7 @@ Module Impl_subtle_CtOption_T.
           [
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "subtle::CtOption",
                 "is_some"
               |)
@@ -3892,24 +4201,40 @@ Module Impl_subtle_CtOption_T.
                         []
                       |),
                       [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::default::Default",
-                              T,
-                              [],
-                              [],
-                              "default",
-                              [],
-                              []
-                            |),
-                            []
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::default::Default",
+                                    T,
+                                    [],
+                                    [],
+                                    "default",
+                                    [],
+                                    []
+                                  |),
+                                  []
+                                |)
+                              |)
+                            |)
                           |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "subtle::CtOption",
-                          "value"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "subtle::CtOption",
+                                "value"
+                              |)
+                            |)
+                          |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3984,24 +4309,40 @@ Module Impl_subtle_CtOption_T.
                           []
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::default::Default",
-                                T,
-                                [],
-                                [],
-                                "default",
-                                [],
-                                []
-                              |),
-                              []
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::default::Default",
+                                      T,
+                                      [],
+                                      [],
+                                      "default",
+                                      [],
+                                      []
+                                    |),
+                                    []
+                                  |)
+                                |)
+                              |)
                             |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "subtle::CtOption",
-                            "value"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "subtle::CtOption",
+                                  "value"
+                                |)
+                              |)
+                            |)
                           |);
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -4029,7 +4370,10 @@ Module Impl_subtle_CtOption_T.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (| tmp, "subtle::CtOption", "is_some" |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (| tmp, "subtle::CtOption", "is_some" |)
+                  |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
                   |)
@@ -4074,7 +4418,7 @@ Module Impl_subtle_CtOption_T.
                   [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.Ref, self |) ]
               |)
             |) in
           let~ f :=
@@ -4103,7 +4447,14 @@ Module Impl_subtle_CtOption_T.
                 [],
                 []
               |),
-              [ self; f; M.read (| is_none |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, f |) |) |);
+                M.read (| is_none |)
+              ]
             |)
           |)
         |)))
@@ -4158,15 +4509,31 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| a |),
-                  "subtle::CtOption",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| a |) |),
+                        "subtle::CtOption",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| b |),
-                  "subtle::CtOption",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| b |) |),
+                        "subtle::CtOption",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |);
                 M.read (| choice |)
               ]
@@ -4182,15 +4549,31 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| a |),
-                  "subtle::CtOption",
-                  "is_some"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| a |) |),
+                        "subtle::CtOption",
+                        "is_some"
+                      |)
+                    |)
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| b |),
-                  "subtle::CtOption",
-                  "is_some"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| b |) |),
+                        "subtle::CtOption",
+                        "is_some"
+                      |)
+                    |)
+                  |)
                 |);
                 M.read (| choice |)
               ]
@@ -4237,7 +4620,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ b :=
@@ -4249,7 +4632,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                   [],
                   []
                 |),
-                [ M.read (| rhs |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |) ]
               |)
             |) in
           M.alloc (|
@@ -4290,15 +4673,26 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                     M.call_closure (|
                       M.get_trait_method (| "subtle::ConstantTimeEq", T, [], [], "ct_eq", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "subtle::CtOption",
-                          "value"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "subtle::CtOption",
+                            "value"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| rhs |),
-                          "subtle::CtOption",
-                          "value"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| rhs |) |),
+                                "subtle::CtOption",
+                                "value"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -5219,7 +5613,10 @@ Module ConstantTimeLess.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]
             |);
@@ -5236,7 +5633,10 @@ Module ConstantTimeLess.
               [
                 M.call_closure (|
                   M.get_trait_method (| "subtle::ConstantTimeEq", Self, [], [], "ct_eq", [], [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]
             |)

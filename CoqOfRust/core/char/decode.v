@@ -30,10 +30,18 @@ Module char.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::char::decode::DecodeUtf16",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::char::decode::DecodeUtf16",
+                              "iter"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -49,10 +57,18 @@ Module char.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::char::decode::DecodeUtf16",
-                        "buf"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::char::decode::DecodeUtf16",
+                              "buf"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -89,20 +105,42 @@ Module char.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "DecodeUtf16" |);
-                M.read (| Value.String "iter" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::char::decode::DecodeUtf16",
-                  "iter"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "DecodeUtf16" |) |)
                 |);
-                M.read (| Value.String "buf" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::char::decode::DecodeUtf16",
-                    "buf"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::char::decode::DecodeUtf16",
+                        "iter"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "buf" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::char::decode::DecodeUtf16",
+                            "buf"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -145,14 +183,28 @@ Module char.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "DecodeUtf16Error" |);
-                M.read (| Value.String "code" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::char::decode::DecodeUtf16Error",
-                    "code"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "DecodeUtf16Error" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "code" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::char::decode::DecodeUtf16Error",
+                            "code"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -192,10 +244,18 @@ Module char.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::char::decode::DecodeUtf16Error",
-                        "code"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::char::decode::DecodeUtf16Error",
+                              "code"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -266,14 +326,14 @@ Module char.
             BinOp.eq (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::char::decode::DecodeUtf16Error",
                   "code"
                 |)
               |),
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
+                  M.deref (| M.read (| other |) |),
                   "core::char::decode::DecodeUtf16Error",
                   "code"
                 |)
@@ -388,10 +448,13 @@ Module char.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::char::decode::DecodeUtf16",
-                                "buf"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::char::decode::DecodeUtf16",
+                                  "buf"
+                                |)
                               |)
                             ]
                           |)
@@ -437,10 +500,13 @@ Module char.
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::char::decode::DecodeUtf16",
-                                            "iter"
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::char::decode::DecodeUtf16",
+                                              "iter"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -600,10 +666,13 @@ Module char.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::char::decode::DecodeUtf16",
-                                                "iter"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::char::decode::DecodeUtf16",
+                                                  "iter"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -680,7 +749,7 @@ Module char.
                                                   let~ _ :=
                                                     M.write (|
                                                       M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
+                                                        M.deref (| M.read (| self |) |),
                                                         "core::char::decode::DecodeUtf16",
                                                         "buf"
                                                       |),
@@ -806,10 +875,13 @@ Module char.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::char::decode::DecodeUtf16",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::decode::DecodeUtf16",
+                          "iter"
+                        |)
                       |)
                     ]
                   |)
@@ -824,7 +896,7 @@ Module char.
                       M.match_operator (|
                         M.match_operator (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::char::decode::DecodeUtf16",
                             "buf"
                           |),
@@ -904,11 +976,14 @@ Module char.
                                         []
                                       |),
                                       [
-                                        high;
-                                        M.alloc (|
-                                          Value.StructTuple
-                                            "core::option::Option::Some"
-                                            [ Value.Integer IntegerKind.Usize 0 ]
+                                        M.borrow (| Pointer.Kind.Ref, high |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.StructTuple
+                                              "core::option::Option::Some"
+                                              [ Value.Integer IntegerKind.Usize 0 ]
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -1066,7 +1141,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::char::decode::DecodeUtf16Error",
                 "code"
               |)
@@ -1095,32 +1170,56 @@ Module char.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
-                    M.alloc (|
-                      Value.Array [ M.read (| Value.String "unpaired surrogate found: " |) ]
-                    |);
-                    M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_lower_hex",
-                              [],
-                              [ Ty.path "u16" ]
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::char::decode::DecodeUtf16Error",
-                                "code"
-                              |)
-                            ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Value.Array [ M.read (| Value.String "unpaired surrogate found: " |) ]
                           |)
-                        ]
+                        |)
+                      |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_lower_hex",
+                                    [],
+                                    [ Ty.path "u16" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::char::decode::DecodeUtf16Error",
+                                            "code"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1150,7 +1249,10 @@ Module char.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| Value.String "unpaired surrogate found" |)))
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (| M.read (| Value.String "unpaired surrogate found" |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

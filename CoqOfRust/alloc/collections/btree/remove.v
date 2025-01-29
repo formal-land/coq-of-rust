@@ -297,58 +297,62 @@ Module collections.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::Handle")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::NodeRef")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Immut";
-                                              K;
-                                              V;
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Leaf"
-                                            ];
-                                          Ty.path "alloc::collections::btree::node::marker::Edge"
-                                        ],
-                                      "into_node",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::Handle")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Mut";
-                                                  K;
-                                                  V;
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Leaf"
-                                                ];
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Edge"
-                                            ],
-                                          "reborrow",
-                                          [],
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::Handle")
                                           []
-                                        |),
-                                        [ pos ]
-                                      |)
-                                    ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Immut";
+                                                K;
+                                                V;
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Leaf"
+                                              ];
+                                            Ty.path "alloc::collections::btree::node::marker::Edge"
+                                          ],
+                                        "into_node",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::node::Handle")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::node::NodeRef")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Mut";
+                                                    K;
+                                                    V;
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Leaf"
+                                                  ];
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Edge"
+                                              ],
+                                            "reborrow",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, pos |) ]
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |)
                               ]
@@ -403,7 +407,7 @@ Module collections.
                                           [],
                                           []
                                         |),
-                                        [ pos ]
+                                        [ M.borrow (| Pointer.Kind.Ref, pos |) ]
                                       |)
                                     |) in
                                   let~ new_pos :=
@@ -531,7 +535,12 @@ Module collections.
                                                                                 [],
                                                                                 []
                                                                               |),
-                                                                              [ left_parent_kv ]
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  left_parent_kv
+                                                                                |)
+                                                                              ]
                                                                             |),
                                                                             BinOp.Wrap.sub (|
                                                                               M.read (|
@@ -598,7 +607,12 @@ Module collections.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ left_parent_kv ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  left_parent_kv
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -633,7 +647,12 @@ Module collections.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ alloc ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  alloc
+                                                                |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
@@ -679,7 +698,10 @@ Module collections.
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        left_parent_kv
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          left_parent_kv
+                                                                                        |)
                                                                                       ]
                                                                                     |),
                                                                                     M.read (|
@@ -795,7 +817,12 @@ Module collections.
                                                                                 [],
                                                                                 []
                                                                               |),
-                                                                              [ right_parent_kv ]
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  right_parent_kv
+                                                                                |)
+                                                                              ]
                                                                             |),
                                                                             BinOp.Wrap.sub (|
                                                                               M.read (|
@@ -862,7 +889,12 @@ Module collections.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ right_parent_kv ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  right_parent_kv
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -897,7 +929,12 @@ Module collections.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ alloc ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  alloc
+                                                                |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
@@ -943,7 +980,10 @@ Module collections.
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        right_parent_kv
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          right_parent_kv
+                                                                                        |)
                                                                                       ]
                                                                                     |),
                                                                                     M.read (|
@@ -1160,7 +1200,7 @@ Module collections.
                                                           [],
                                                           []
                                                         |),
-                                                        [ pos ]
+                                                        [ M.borrow (| Pointer.Kind.MutRef, pos |) ]
                                                       |)
                                                     ]
                                                   |)
@@ -1684,7 +1724,7 @@ Module collections.
                                 []
                               |),
                               [
-                                internal;
+                                M.borrow (| Pointer.Kind.MutRef, internal |);
                                 M.read (| M.SubPointer.get_tuple_field (| left_kv, 0 |) |);
                                 M.read (| M.SubPointer.get_tuple_field (| left_kv, 1 |) |)
                               ]

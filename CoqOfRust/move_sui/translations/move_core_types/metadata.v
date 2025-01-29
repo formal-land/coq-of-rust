@@ -49,10 +49,18 @@ Module metadata.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::metadata::Metadata",
-                      "key"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::metadata::Metadata",
+                            "key"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -71,10 +79,18 @@ Module metadata.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::metadata::Metadata",
-                      "value"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::metadata::Metadata",
+                            "value"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -131,15 +147,21 @@ Module metadata.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::metadata::Metadata",
-                  "key"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_core_types::metadata::Metadata",
+                    "key"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "move_core_types::metadata::Metadata",
-                  "key"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "move_core_types::metadata::Metadata",
+                    "key"
+                  |)
                 |)
               ]
             |),
@@ -163,15 +185,21 @@ Module metadata.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::metadata::Metadata",
-                    "value"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::metadata::Metadata",
+                      "value"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_core_types::metadata::Metadata",
-                    "value"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::metadata::Metadata",
+                      "value"
+                    |)
                   |)
                 ]
               |)))
@@ -243,20 +271,39 @@ Module metadata.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Metadata" |);
-              M.read (| Value.String "key" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::metadata::Metadata",
-                "key"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Metadata" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "key" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::metadata::Metadata",
+                      "key"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "value" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::metadata::Metadata",
-                  "value"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "value" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::metadata::Metadata",
+                          "value"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -366,12 +413,23 @@ Module metadata.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "key" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::metadata::Metadata",
-                              "key"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::metadata::Metadata",
+                                    "key"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -428,12 +486,23 @@ Module metadata.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "value" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::metadata::Metadata",
-                              "value"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::metadata::Metadata",
+                                    "value"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)

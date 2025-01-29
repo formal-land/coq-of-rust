@@ -29,7 +29,10 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-          [ M.read (| f |); M.read (| Value.String "FlipperError" |) ]
+          [
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FlipperError" |) |) |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -158,14 +161,14 @@ Module Impl_integration_flipper_Flipper.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "integration_flipper::Flipper",
                 "value"
               |),
               UnOp.not (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "integration_flipper::Flipper",
                     "value"
                   |)
@@ -191,7 +194,7 @@ Module Impl_integration_flipper_Flipper.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "integration_flipper::Flipper",
             "value"
           |)
@@ -222,7 +225,7 @@ Module Impl_integration_flipper_Flipper.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)

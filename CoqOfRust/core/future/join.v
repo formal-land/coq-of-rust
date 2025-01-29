@@ -52,7 +52,7 @@ Module future.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -71,7 +71,7 @@ Module future.
                               [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
                             |),
                             [
-                              M.read (| self |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                               Value.StructTuple "core::future::join::MaybeDone::Taken" []
                             ]
                           |)
@@ -156,40 +156,43 @@ Module future.
                 (M.read (|
                   let~ _ :=
                     M.match_operator (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::pin::Pin")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
-                            ],
-                          "get_unchecked_mut",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::pin::Pin")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
-                                ],
-                              "as_mut",
-                              [],
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::pin::Pin")
                               []
-                            |),
-                            [ self ]
-                          |)
-                        ]
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
+                              ],
+                            "get_unchecked_mut",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::pin::Pin")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ]
+                                      ]
+                                  ],
+                                "as_mut",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                            |)
+                          ]
+                        |)
                       |),
                       [
                         fun γ =>
@@ -228,7 +231,10 @@ Module future.
                                           |),
                                           [ M.read (| f |) ]
                                         |);
-                                        M.read (| cx |)
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| cx |) |)
+                                        |)
                                       ]
                                     |)
                                   |),
@@ -287,7 +293,7 @@ Module future.
                                     []
                                   |),
                                   [
-                                    self;
+                                    M.borrow (| Pointer.Kind.MutRef, self |);
                                     Value.StructTuple
                                       "core::future::join::MaybeDone::Done"
                                       [ M.read (| val |) ]

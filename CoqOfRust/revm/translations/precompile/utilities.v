@@ -16,32 +16,38 @@ Module utilities.
         M.call_closure (|
           M.get_function (| "revm_precompile::utilities::right_pad", [ LEN ], [] |),
           [
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
-                "unwrap_or_default",
-                [],
-                []
-              |),
-              [
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                    "get",
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ],
+                    "unwrap_or_default",
                     [],
-                    [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
+                    []
                   |),
                   [
-                    M.read (| data |);
-                    Value.StructRecord
-                      "core::ops::range::RangeFrom"
-                      [ ("start", M.read (| offset |)) ]
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
+                        Value.StructRecord
+                          "core::ops::range::RangeFrom"
+                          [ ("start", M.read (| offset |)) ]
+                      ]
+                    |)
                   ]
                 |)
-              ]
+              |)
             |)
           ]
         |)))
@@ -66,32 +72,38 @@ Module utilities.
         M.call_closure (|
           M.get_function (| "revm_precompile::utilities::right_pad_vec", [], [] |),
           [
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
-                "unwrap_or_default",
-                [],
-                []
-              |),
-              [
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                    "get",
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ],
+                    "unwrap_or_default",
                     [],
-                    [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
+                    []
                   |),
                   [
-                    M.read (| data |);
-                    Value.StructRecord
-                      "core::ops::range::RangeFrom"
-                      [ ("start", M.read (| offset |)) ]
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
+                        Value.StructRecord
+                          "core::ops::range::RangeFrom"
+                          [ ("start", M.read (| offset |)) ]
+                      ]
+                    |)
                   ]
                 |)
-              ]
+              |)
             |);
             M.read (| len |)
           ]
@@ -134,7 +146,7 @@ Module utilities.
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
-                          M.read (| data |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
                             [
@@ -188,7 +200,7 @@ Module utilities.
                                 [],
                                 []
                               |),
-                              [ M.read (| data |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                             |)
                           ]
                         |)
@@ -207,40 +219,50 @@ Module utilities.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::IndexMut",
-                              Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ],
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeTo")
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::index::IndexMut",
+                                  Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::RangeTo")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index_mut",
+                                  [],
                                   []
-                                  [ Ty.path "usize" ]
-                              ],
-                              "index_mut",
-                              [],
-                              []
-                            |),
-                            [
-                              padded;
-                              Value.StructRecord
-                                "core::ops::range::RangeTo"
+                                |),
                                 [
-                                  ("end_",
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| data |) ]
-                                    |))
+                                  M.borrow (| Pointer.Kind.MutRef, padded |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeTo"
+                                    [
+                                      ("end_",
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            "len",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| data |) |)
+                                            |)
+                                          ]
+                                        |))
+                                    ]
                                 ]
-                            ]
+                              |)
+                            |)
                           |);
-                          M.read (| data |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)
                         ]
                       |)
                     |) in
@@ -288,7 +310,7 @@ Module utilities.
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
-                          M.read (| data |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
                             [ ("end_", M.read (| len |)) ]
@@ -299,7 +321,9 @@ Module utilities.
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let data := M.copy (| γ0_0 |) in
                   M.alloc (|
-                    Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| data |) ]
+                    Value.StructTuple
+                      "alloc::borrow::Cow::Borrowed"
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -320,43 +344,53 @@ Module utilities.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::IndexMut",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeTo")
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::index::IndexMut",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::RangeTo")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index_mut",
+                                  [],
                                   []
-                                  [ Ty.path "usize" ]
-                              ],
-                              "index_mut",
-                              [],
-                              []
-                            |),
-                            [
-                              padded;
-                              Value.StructRecord
-                                "core::ops::range::RangeTo"
+                                |),
                                 [
-                                  ("end_",
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| data |) ]
-                                    |))
+                                  M.borrow (| Pointer.Kind.MutRef, padded |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeTo"
+                                    [
+                                      ("end_",
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            "len",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| data |) |)
+                                            |)
+                                          ]
+                                        |))
+                                    ]
                                 ]
-                            ]
+                              |)
+                            |)
                           |);
-                          M.read (| data |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)
                         ]
                       |)
                     |) in
@@ -404,7 +438,7 @@ Module utilities.
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
-                          M.read (| data |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
                             [
@@ -458,7 +492,7 @@ Module utilities.
                                 [],
                                 []
                               |),
-                              [ M.read (| data |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                             |)
                           ]
                         |)
@@ -477,47 +511,57 @@ Module utilities.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::IndexMut",
-                              Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ],
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeFrom")
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::index::IndexMut",
+                                  Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::RangeFrom")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index_mut",
+                                  [],
                                   []
-                                  [ Ty.path "usize" ]
-                              ],
-                              "index_mut",
-                              [],
-                              []
-                            |),
-                            [
-                              padded;
-                              Value.StructRecord
-                                "core::ops::range::RangeFrom"
+                                |),
                                 [
-                                  ("start",
-                                    BinOp.Wrap.sub (|
-                                      M.read (|
-                                        M.get_constant (|
-                                          "revm_precompile::utilities::left_pad::LEN"
-                                        |)
-                                      |),
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| data |) ]
-                                      |)
-                                    |))
+                                  M.borrow (| Pointer.Kind.MutRef, padded |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeFrom"
+                                    [
+                                      ("start",
+                                        BinOp.Wrap.sub (|
+                                          M.read (|
+                                            M.get_constant (|
+                                              "revm_precompile::utilities::left_pad::LEN"
+                                            |)
+                                          |),
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| data |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        |))
+                                    ]
                                 ]
-                            ]
+                              |)
+                            |)
                           |);
-                          M.read (| data |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)
                         ]
                       |)
                     |) in
@@ -565,7 +609,7 @@ Module utilities.
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
-                          M.read (| data |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
                             [ ("end_", M.read (| len |)) ]
@@ -576,7 +620,9 @@ Module utilities.
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let data := M.copy (| γ0_0 |) in
                   M.alloc (|
-                    Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| data |) ]
+                    Value.StructTuple
+                      "alloc::borrow::Cow::Borrowed"
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -597,46 +643,56 @@ Module utilities.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::IndexMut",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeFrom")
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::index::IndexMut",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::RangeFrom")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index_mut",
+                                  [],
                                   []
-                                  [ Ty.path "usize" ]
-                              ],
-                              "index_mut",
-                              [],
-                              []
-                            |),
-                            [
-                              padded;
-                              Value.StructRecord
-                                "core::ops::range::RangeFrom"
+                                |),
                                 [
-                                  ("start",
-                                    BinOp.Wrap.sub (|
-                                      M.read (| len |),
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| data |) ]
-                                      |)
-                                    |))
+                                  M.borrow (| Pointer.Kind.MutRef, padded |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeFrom"
+                                    [
+                                      ("start",
+                                        BinOp.Wrap.sub (|
+                                          M.read (| len |),
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| data |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        |))
+                                    ]
                                 ]
-                            ]
+                              |)
+                            |)
                           |);
-                          M.read (| data |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)
                         ]
                       |)
                     |) in
@@ -670,13 +726,23 @@ Module utilities.
             []
           |),
           [
-            M.SubPointer.get_struct_tuple_field (|
-              M.call_closure (|
-                M.get_function (| "revm_precompile::utilities::bool_to_b256", [], [] |),
-                [ M.read (| value |) ]
-              |),
-              "alloy_primitives::bits::fixed::FixedBytes",
-              0
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_function (| "revm_precompile::utilities::bool_to_b256", [], [] |),
+                        [ M.read (| value |) ]
+                      |)
+                    |),
+                    "alloy_primitives::bits::fixed::FixedBytes",
+                    0
+                  |)
+                |)
+              |)
             |)
           ]
         |)))
@@ -728,22 +794,30 @@ Module utilities.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [],
-                  "new",
-                  [ Value.Integer IntegerKind.Usize 32 ],
-                  []
-                |),
-                [
-                  M.read (|
-                    M.get_constant (| "revm_precompile::utilities::bool_to_b256::TRUE::RES" |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          [],
+                        "new",
+                        [ Value.Integer IntegerKind.Usize 32 ],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.get_constant (| "revm_precompile::utilities::bool_to_b256::TRUE::RES" |)
+                        |)
+                      ]
+                    |)
                   |)
-                ]
+                |)
               |)
             |)
           |))).
@@ -752,22 +826,32 @@ Module utilities.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [],
-                  "new",
-                  [ Value.Integer IntegerKind.Usize 32 ],
-                  []
-                |),
-                [
-                  M.read (|
-                    M.get_constant (| "revm_precompile::utilities::bool_to_b256::FALSE::RES" |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          [],
+                        "new",
+                        [ Value.Integer IntegerKind.Usize 32 ],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.get_constant (|
+                            "revm_precompile::utilities::bool_to_b256::FALSE::RES"
+                          |)
+                        |)
+                      ]
+                    |)
                   |)
-                ]
+                |)
               |)
             |)
           |))).

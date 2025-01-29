@@ -24,7 +24,7 @@ Module iter.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |),
                   [
@@ -39,11 +39,14 @@ Module iter.
                             M.alloc (|
                               Value.Tuple
                                 [
-                                  upper;
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [ M.read (| lower |) ]
+                                  M.borrow (| Pointer.Kind.Ref, upper |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ M.read (| lower |) ]
+                                    |)
                                   |)
                                 ]
                             |),
@@ -81,7 +84,15 @@ Module iter.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| left_val |); M.read (| right_val |)
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
                                                     ]
                                                   |)
                                                 |)
@@ -118,8 +129,24 @@ Module iter.
                                                     |),
                                                     [
                                                       M.read (| kind |);
-                                                      M.read (| left_val |);
-                                                      M.read (| right_val |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| left_val |) |)
+                                                          |)
+                                                        |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| right_val |) |)
+                                                          |)
+                                                        |)
+                                                      |);
                                                       Value.StructTuple
                                                         "core::option::Option::None"
                                                         []
@@ -164,7 +191,7 @@ Module iter.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |),
                 Value.Integer IntegerKind.Usize 0
               |)))
@@ -202,7 +229,12 @@ Module iter.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -228,7 +260,12 @@ Module iter.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

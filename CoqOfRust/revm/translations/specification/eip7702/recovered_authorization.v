@@ -38,20 +38,45 @@ Module eip7702.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "RecoveredAuthorization" |);
-                M.read (| Value.String "inner" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                  "inner"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "RecoveredAuthorization" |) |)
                 |);
-                M.read (| Value.String "authority" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                    "authority"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                        "inner"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "authority" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                            "authority"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -92,10 +117,18 @@ Module eip7702.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                              "inner"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -114,10 +147,18 @@ Module eip7702.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                        "authority"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                              "authority"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -158,12 +199,20 @@ Module eip7702.
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                              "inner"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -182,12 +231,20 @@ Module eip7702.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                      "authority"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                            "authority"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |)
@@ -277,15 +334,21 @@ Module eip7702.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                      "inner"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                      "inner"
+                    |)
                   |)
                 ]
               |),
@@ -309,15 +372,21 @@ Module eip7702.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                      "authority"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                        "authority"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                      "authority"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                        "authority"
+                      |)
                     |)
                   ]
                 |)))
@@ -367,10 +436,18 @@ Module eip7702.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-              "inner"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                    "inner"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -389,7 +466,7 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
                 "authority"
               |)
@@ -471,7 +548,7 @@ Module eip7702.
                           [],
                           []
                         |),
-                        [ signed_auth ]
+                        [ M.borrow (| Pointer.Kind.Ref, signed_auth |) ]
                       |)
                     ]
                   |)
@@ -518,23 +595,36 @@ Module eip7702.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::ops::deref::Deref",
-                Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
-                [],
-                [],
-                "deref",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                  "inner"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::deref::Deref",
+                    Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
+                    [],
+                    [],
+                    "deref",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                            "inner"
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

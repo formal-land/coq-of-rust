@@ -48,10 +48,18 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::repeat::Repeat",
-                          "element"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::sources::repeat::Repeat",
+                                "element"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -88,14 +96,28 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Repeat" |);
-                  M.read (| Value.String "element" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::sources::repeat::Repeat",
-                      "element"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Repeat" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "element" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::sources::repeat::Repeat",
+                              "element"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -136,10 +158,13 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::sources::repeat::Repeat",
-                        "element"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::sources::repeat::Repeat",
+                          "element"
+                        |)
                       |)
                     ]
                   |)
@@ -234,10 +259,13 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::repeat::Repeat",
-                                    "element"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::sources::repeat::Repeat",
+                                      "element"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -322,10 +350,13 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::sources::repeat::Repeat",
-                        "element"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::sources::repeat::Repeat",
+                          "element"
+                        |)
                       |)
                     ]
                   |)
@@ -401,10 +432,13 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::repeat::Repeat",
-                                    "element"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::sources::repeat::Repeat",
+                                      "element"
+                                    |)
                                   |)
                                 ]
                               |)

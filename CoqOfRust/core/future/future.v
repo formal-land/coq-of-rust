@@ -35,26 +35,43 @@ Module future.
                     []
                   |),
                   [
-                    M.read (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply
-                            (Ty.path "core::pin::Pin")
-                            []
-                            [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ] ],
-                          [],
-                          [],
-                          "deref_mut",
-                          [],
-                          []
-                        |),
-                        [ self ]
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (|
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::DerefMut",
+                                    Ty.apply
+                                      (Ty.path "core::pin::Pin")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "&mut") [] [ F ] ]
+                                      ],
+                                    [],
+                                    [],
+                                    "deref_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
                       |)
                     |)
                   ]
                 |);
-                M.read (| cx |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -108,7 +125,7 @@ Module future.
                   |),
                   [ M.read (| self |) ]
                 |);
-                M.read (| cx |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

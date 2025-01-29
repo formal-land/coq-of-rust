@@ -68,7 +68,10 @@ Module secp256k1.
                           |),
                           [ M.rust_cast (M.read (| recid |)) ]
                         |);
-                        M.read (| Value.String "recovery ID is valid" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "recovery ID is valid" |) |)
+                        |)
                       ]
                     |)
                   |) in
@@ -101,17 +104,27 @@ Module secp256k1.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                      [ Value.Integer IntegerKind.Usize 64 ]
-                                      [],
-                                    "as_slice",
-                                    [ Value.Integer IntegerKind.Usize 64 ],
-                                    []
-                                  |),
-                                  [ M.read (| sig |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                          [ Value.Integer IntegerKind.Usize 64 ]
+                                          [],
+                                        "as_slice",
+                                        [ Value.Integer IntegerKind.Usize 64 ],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| sig |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
                                 |);
                                 M.read (| recid |)
                               ]
@@ -191,7 +204,7 @@ Module secp256k1.
                       [
                         M.read (|
                           M.SubPointer.get_struct_tuple_field (|
-                            M.read (| msg |),
+                            M.deref (| M.read (| msg |) |),
                             "alloy_primitives::bits::fixed::FixedBytes",
                             0
                           |)
@@ -228,26 +241,46 @@ Module secp256k1.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.path "secp256k1::context::global::GlobalContext",
-                                    [],
-                                    [],
-                                    "deref",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.read (|
-                                        M.get_constant (| "secp256k1::context::global::SECP256K1" |)
-                                      |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.path "secp256k1::context::global::GlobalContext",
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (|
+                                              M.deref (|
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "secp256k1::context::global::SECP256K1"
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |);
-                                msg;
-                                sig
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.borrow (| Pointer.Kind.Ref, msg |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.borrow (| Pointer.Kind.Ref, sig |) |)
+                                |)
                               ]
                             |)
                           ]
@@ -327,40 +360,48 @@ Module secp256k1.
                         ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::index::Index",
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 65 ]
-                              [ Ty.path "u8" ],
-                            [],
-                            [
-                              Ty.apply
-                                (Ty.path "core::ops::range::RangeFrom")
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::index::Index",
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 65 ]
+                                  [ Ty.path "u8" ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeFrom")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ],
+                                "index",
+                                [],
                                 []
-                                [ Ty.path "usize" ]
-                            ],
-                            "index",
-                            [],
-                            []
-                          |),
-                          [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "secp256k1::key::PublicKey",
-                                  "serialize_uncompressed",
-                                  [],
-                                  []
-                                |),
-                                [ public ]
-                              |)
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeFrom"
-                              [ ("start", Value.Integer IntegerKind.Usize 1) ]
-                          ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "secp256k1::key::PublicKey",
+                                        "serialize_uncompressed",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, public |) ]
+                                    |)
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeFrom"
+                                  [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                              ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -375,26 +416,35 @@ Module secp256k1.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::index::IndexMut",
-                            Ty.apply
-                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                              [ Value.Integer IntegerKind.Usize 32 ]
-                              [],
-                            [],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
-                            ],
-                            "index_mut",
-                            [],
-                            []
-                          |),
-                          [
-                            hash;
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", Value.Integer IntegerKind.Usize 12) ]
-                          ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::index::IndexMut",
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  [],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ],
+                                "index_mut",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, hash |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  [ ("end_", Value.Integer IntegerKind.Usize 12) ]
+                              ]
+                            |)
+                          |)
                         |);
                         Value.Integer IntegerKind.U8 0
                       ]
@@ -504,30 +554,45 @@ Module secp256k1.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.path "bytes::bytes::Bytes",
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
-                              Ty.path "alloy_primitives::bytes_::Bytes",
+                              Ty.path "bytes::bytes::Bytes",
                               [],
                               [],
                               "deref",
                               [],
                               []
                             |),
-                            [ M.read (| input |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.path "alloy_primitives::bytes_::Bytes",
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| input |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
                     ]
                   |)
@@ -562,63 +627,83 @@ Module secp256k1.
                                       ]
                                     |),
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                            "iter",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::index::Index",
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 128 ]
-                                                  [ Ty.path "u8" ],
-                                                [],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::ops::range::Range")
-                                                    []
-                                                    [ Ty.path "usize" ]
-                                                ],
-                                                "index",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.apply
-                                                      (Ty.path "alloc::borrow::Cow")
-                                                      []
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                              "iter",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::index::Index",
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 128 ]
+                                                        [ Ty.path "u8" ],
+                                                      [],
                                                       [
                                                         Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 128 ]
-                                                          [ Ty.path "u8" ]
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                       ],
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ input ]
-                                                |);
-                                                Value.StructRecord
-                                                  "core::ops::range::Range"
-                                                  [
-                                                    ("start", Value.Integer IntegerKind.Usize 32);
-                                                    ("end_", Value.Integer IntegerKind.Usize 63)
-                                                  ]
-                                              ]
-                                            |)
-                                          ]
+                                                      "index",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.apply
+                                                                (Ty.path "alloc::borrow::Cow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        128
+                                                                    ]
+                                                                    [ Ty.path "u8" ]
+                                                                ],
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [ M.borrow (| Pointer.Kind.Ref, input |)
+                                                            ]
+                                                          |)
+                                                        |)
+                                                      |);
+                                                      Value.StructRecord
+                                                        "core::ops::range::Range"
+                                                        [
+                                                          ("start",
+                                                            Value.Integer IntegerKind.Usize 32);
+                                                          ("end_",
+                                                            Value.Integer IntegerKind.Usize 63)
+                                                        ]
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |);
                                       M.closure
@@ -648,25 +733,27 @@ Module secp256k1.
                                     (M.read (|
                                       M.match_operator (|
                                         M.SubPointer.get_array_field (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.apply
-                                                (Ty.path "alloc::borrow::Cow")
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.apply
+                                                  (Ty.path "alloc::borrow::Cow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 128 ]
+                                                      [ Ty.path "u8" ]
+                                                  ],
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
                                                 []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 128 ]
-                                                    [ Ty.path "u8" ]
-                                                ],
-                                              [],
-                                              [],
-                                              "deref",
-                                              [],
-                                              []
-                                            |),
-                                            [ input ]
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, input |) ]
+                                            |)
                                           |),
                                           M.alloc (| Value.Integer IntegerKind.Usize 63 |)
                                         |),
@@ -798,48 +885,62 @@ Module secp256k1.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::Index",
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 128 ]
-                                [ Ty.path "u8" ],
-                              [],
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
-                              ],
-                              "index",
-                              [],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_trait_method (|
-                                  "core::ops::deref::Deref",
+                                  "core::ops::index::Index",
                                   Ty.apply
-                                    (Ty.path "alloc::borrow::Cow")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 128 ]
-                                        [ Ty.path "u8" ]
-                                    ],
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 128 ]
+                                    [ Ty.path "u8" ],
                                   [],
-                                  [],
-                                  "deref",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index",
                                   [],
                                   []
                                 |),
-                                [ input ]
-                              |);
-                              Value.StructRecord
-                                "core::ops::range::Range"
                                 [
-                                  ("start", Value.Integer IntegerKind.Usize 0);
-                                  ("end_", Value.Integer IntegerKind.Usize 32)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloc::borrow::Cow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 128 ]
+                                                [ Ty.path "u8" ]
+                                            ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, input |) ]
+                                      |)
+                                    |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 0);
+                                      ("end_", Value.Integer IntegerKind.Usize 32)
+                                    ]
                                 ]
-                            ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -851,25 +952,27 @@ Module secp256k1.
                   BinOp.Wrap.sub (|
                     M.read (|
                       M.SubPointer.get_array_field (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.apply
-                              (Ty.path "alloc::borrow::Cow")
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "alloc::borrow::Cow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 128 ]
+                                    [ Ty.path "u8" ]
+                                ],
+                              [],
+                              [],
+                              "deref",
+                              [],
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 128 ]
-                                  [ Ty.path "u8" ]
-                              ],
-                            [],
-                            [],
-                            "deref",
-                            [],
-                            []
-                          |),
-                          [ input ]
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, input |) ]
+                          |)
                         |),
                         M.alloc (| Value.Integer IntegerKind.Usize 63 |)
                       |)
@@ -925,48 +1028,62 @@ Module secp256k1.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::Index",
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 128 ]
-                                [ Ty.path "u8" ],
-                              [],
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
-                              ],
-                              "index",
-                              [],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_trait_method (|
-                                  "core::ops::deref::Deref",
+                                  "core::ops::index::Index",
                                   Ty.apply
-                                    (Ty.path "alloc::borrow::Cow")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 128 ]
-                                        [ Ty.path "u8" ]
-                                    ],
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 128 ]
+                                    [ Ty.path "u8" ],
                                   [],
-                                  [],
-                                  "deref",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index",
                                   [],
                                   []
                                 |),
-                                [ input ]
-                              |);
-                              Value.StructRecord
-                                "core::ops::range::Range"
                                 [
-                                  ("start", Value.Integer IntegerKind.Usize 64);
-                                  ("end_", Value.Integer IntegerKind.Usize 128)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloc::borrow::Cow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 128 ]
+                                                [ Ty.path "u8" ]
+                                            ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, input |) ]
+                                      |)
+                                    |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 64);
+                                      ("end_", Value.Integer IntegerKind.Usize 128)
+                                    ]
                                 ]
-                            ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -1022,7 +1139,11 @@ Module secp256k1.
                               [],
                               []
                             |),
-                            [ M.read (| sig |); M.read (| recid |); M.read (| msg |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig |) |) |);
+                              M.read (| recid |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |)
+                            ]
                           |);
                           M.closure
                             (fun γ =>
@@ -1058,21 +1179,26 @@ Module secp256k1.
                                                     []
                                                   |),
                                                   [
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloy_primitives::bits::fixed::FixedBytes")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [],
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ o ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloy_primitives::bits::fixed::FixedBytes")
+                                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                                              [],
+                                                            [],
+                                                            [],
+                                                            "deref",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.Ref, o |) ]
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)

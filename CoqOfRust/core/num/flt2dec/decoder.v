@@ -52,7 +52,7 @@ Module num.
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Value.DeclaredButUndefined,
-                                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                                 |)))
                           ]
                         |)))
@@ -88,38 +88,87 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Decoded" |);
-                  M.read (| Value.String "mant" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::flt2dec::decoder::Decoded",
-                    "mant"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "Decoded" |) |)
                   |);
-                  M.read (| Value.String "minus" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::flt2dec::decoder::Decoded",
-                    "minus"
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "mant" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::num::flt2dec::decoder::Decoded",
+                          "mant"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| Value.String "plus" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::flt2dec::decoder::Decoded",
-                    "plus"
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "minus" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::num::flt2dec::decoder::Decoded",
+                          "minus"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| Value.String "exp" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::flt2dec::decoder::Decoded",
-                    "exp"
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "plus" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::num::flt2dec::decoder::Decoded",
+                          "plus"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| Value.String "inclusive" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::flt2dec::decoder::Decoded",
-                      "inclusive"
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "exp" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::num::flt2dec::decoder::Decoded",
+                          "exp"
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "inclusive" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::flt2dec::decoder::Decoded",
+                              "inclusive"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -163,14 +212,14 @@ Module num.
                       BinOp.eq (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::num::flt2dec::decoder::Decoded",
                             "mant"
                           |)
                         |),
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
+                            M.deref (| M.read (| other |) |),
                             "core::num::flt2dec::decoder::Decoded",
                             "mant"
                           |)
@@ -180,14 +229,14 @@ Module num.
                         (BinOp.eq (|
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::num::flt2dec::decoder::Decoded",
                               "minus"
                             |)
                           |),
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
+                              M.deref (| M.read (| other |) |),
                               "core::num::flt2dec::decoder::Decoded",
                               "minus"
                             |)
@@ -198,14 +247,14 @@ Module num.
                       (BinOp.eq (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::num::flt2dec::decoder::Decoded",
                             "plus"
                           |)
                         |),
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
+                            M.deref (| M.read (| other |) |),
                             "core::num::flt2dec::decoder::Decoded",
                             "plus"
                           |)
@@ -216,14 +265,14 @@ Module num.
                     (BinOp.eq (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::flt2dec::decoder::Decoded",
                           "exp"
                         |)
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
+                          M.deref (| M.read (| other |) |),
                           "core::num::flt2dec::decoder::Decoded",
                           "exp"
                         |)
@@ -234,14 +283,14 @@ Module num.
                   (BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::num::flt2dec::decoder::Decoded",
                         "inclusive"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::num::flt2dec::decoder::Decoded",
                         "inclusive"
                       |)
@@ -358,7 +407,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -402,7 +451,13 @@ Module num.
                               [],
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "Nan" |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "Nan" |) |)
+                              |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -421,7 +476,13 @@ Module num.
                               [],
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "Infinite" |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "Infinite" |) |)
+                              |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -440,7 +501,13 @@ Module num.
                               [],
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "Zero" |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "Zero" |) |)
+                              |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -461,7 +528,17 @@ Module num.
                               [],
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "Finite" |); __self_0 ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "Finite" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                              |)
+                            ]
                           |)
                         |)))
                   ]
@@ -508,7 +585,7 @@ Module num.
                         [],
                         [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ __arg1_discr :=
@@ -519,7 +596,7 @@ Module num.
                         [],
                         [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
                       |),
-                      [ M.read (| other |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                     |)
                   |) in
                 M.alloc (|
@@ -569,7 +646,10 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ __self_0; __arg1_0 ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                      M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                    ]
                                   |)
                                 |)));
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))

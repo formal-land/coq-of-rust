@@ -30,26 +30,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.I8 0 |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.I8 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -87,26 +93,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.I16 0 |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.I16 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -144,26 +156,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.I32 0 |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.I32 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -201,26 +219,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.I64 0 |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.I64 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -258,29 +282,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (|
-                                      M.read (| x |),
-                                      Value.Integer IntegerKind.I128 0
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.I128 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -318,29 +345,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (|
-                                      M.read (| x |),
-                                      Value.Integer IntegerKind.Isize 0
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.Isize 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -378,26 +408,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.U8 0 |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -435,26 +471,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.U16 0 |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.U16 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -492,26 +534,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.U32 0 |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.U32 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -549,26 +597,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.U64 0 |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.U64 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -606,29 +660,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (|
-                                      M.read (| x |),
-                                      Value.Integer IntegerKind.U128 0
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.U128 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -666,29 +723,32 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (|
-                                      M.read (| x |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.read (| x |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -726,26 +786,29 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (| M.read (| x |), Value.Bool false |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (| M.read (| x |), Value.Bool false |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -783,26 +846,29 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (| M.read (| x |), Value.UnicodeChar 0 |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (| M.read (| x |), Value.UnicodeChar 0 |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -840,37 +906,40 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "f32",
-                                          "to_bits",
-                                          [],
-                                          []
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "f32",
+                                            "to_bits",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| x |) ]
                                         |),
-                                        [ M.read (| x |) ]
-                                      |),
-                                      Value.Integer IntegerKind.U32 0
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                                        Value.Integer IntegerKind.U32 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -908,37 +977,40 @@ Module vec.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    BinOp.eq (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "f64",
-                                          "to_bits",
-                                          [],
-                                          []
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      BinOp.eq (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "f64",
+                                            "to_bits",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| x |) ]
                                         |),
-                                        [ M.read (| x |) ]
-                                      |),
-                                      Value.Integer IntegerKind.U64 0
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                                        Value.Integer IntegerKind.U64 0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                Value.Tuple [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -973,7 +1045,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| M.read (| self |) |) ]
+              [ M.read (| M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1003,7 +1075,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "is_null", [], [] |),
-              [ M.read (| M.read (| self |) |) ]
+              [ M.read (| M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1061,15 +1133,18 @@ Module vec.
                     [ Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool") ]
                   |),
                   [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ T ],
-                          "iter",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "slice") [] [ T ],
+                            "iter",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
                       |)
                     |);
                     M.get_trait_method (|
@@ -1162,7 +1237,12 @@ Module vec.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| value_A |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| value_A |) |)
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
@@ -1175,7 +1255,12 @@ Module vec.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| value_B |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| value_B |) |)
+                                            |)
+                                          ]
                                         |)))
                                     |),
                                     ltac:(M.monadic
@@ -1189,7 +1274,12 @@ Module vec.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| value_C |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| value_C |) |)
+                                          |)
+                                        ]
                                       |)))
                                   |),
                                   ltac:(M.monadic
@@ -1203,7 +1293,12 @@ Module vec.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| value_D |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| value_D |) |)
+                                        |)
+                                      ]
                                     |)))
                                 |),
                                 ltac:(M.monadic
@@ -1217,7 +1312,12 @@ Module vec.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value_E |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| value_E |) |)
+                                      |)
+                                    ]
                                   |)))
                               |),
                               ltac:(M.monadic
@@ -1231,7 +1331,12 @@ Module vec.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| value_F |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| value_F |) |)
+                                    |)
+                                  ]
                                 |)))
                             |),
                             ltac:(M.monadic
@@ -1245,7 +1350,12 @@ Module vec.
                                   [],
                                   []
                                 |),
-                                [ M.read (| value_G |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| value_G |) |)
+                                  |)
+                                ]
                               |)))
                           |),
                           ltac:(M.monadic
@@ -1259,7 +1369,8 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ M.read (| value_H |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              ]
                             |)))
                         |)
                       |)))
@@ -1341,7 +1452,12 @@ Module vec.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| value_B |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| value_B |) |)
+                                        |)
+                                      ]
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
@@ -1354,7 +1470,12 @@ Module vec.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| value_C |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| value_C |) |)
+                                          |)
+                                        ]
                                       |)))
                                   |),
                                   ltac:(M.monadic
@@ -1368,7 +1489,12 @@ Module vec.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| value_D |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| value_D |) |)
+                                        |)
+                                      ]
                                     |)))
                                 |),
                                 ltac:(M.monadic
@@ -1382,7 +1508,12 @@ Module vec.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value_E |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| value_E |) |)
+                                      |)
+                                    ]
                                   |)))
                               |),
                               ltac:(M.monadic
@@ -1396,7 +1527,12 @@ Module vec.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| value_F |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| value_F |) |)
+                                    |)
+                                  ]
                                 |)))
                             |),
                             ltac:(M.monadic
@@ -1410,7 +1546,12 @@ Module vec.
                                   [],
                                   []
                                 |),
-                                [ M.read (| value_G |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| value_G |) |)
+                                  |)
+                                ]
                               |)))
                           |),
                           ltac:(M.monadic
@@ -1424,7 +1565,8 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ M.read (| value_H |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              ]
                             |)))
                         |)
                       |)))
@@ -1503,7 +1645,12 @@ Module vec.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value_C |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| value_C |) |)
+                                      |)
+                                    ]
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -1516,7 +1663,12 @@ Module vec.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| value_D |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| value_D |) |)
+                                        |)
+                                      ]
                                     |)))
                                 |),
                                 ltac:(M.monadic
@@ -1530,7 +1682,12 @@ Module vec.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value_E |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| value_E |) |)
+                                      |)
+                                    ]
                                   |)))
                               |),
                               ltac:(M.monadic
@@ -1544,7 +1701,12 @@ Module vec.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| value_F |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| value_F |) |)
+                                    |)
+                                  ]
                                 |)))
                             |),
                             ltac:(M.monadic
@@ -1558,7 +1720,12 @@ Module vec.
                                   [],
                                   []
                                 |),
-                                [ M.read (| value_G |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| value_G |) |)
+                                  |)
+                                ]
                               |)))
                           |),
                           ltac:(M.monadic
@@ -1572,7 +1739,8 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ M.read (| value_H |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              ]
                             |)))
                         |)
                       |)))
@@ -1648,7 +1816,12 @@ Module vec.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| value_D |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| value_D |) |)
+                                    |)
+                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
@@ -1661,7 +1834,12 @@ Module vec.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value_E |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| value_E |) |)
+                                      |)
+                                    ]
                                   |)))
                               |),
                               ltac:(M.monadic
@@ -1675,7 +1853,12 @@ Module vec.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| value_F |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| value_F |) |)
+                                    |)
+                                  ]
                                 |)))
                             |),
                             ltac:(M.monadic
@@ -1689,7 +1872,12 @@ Module vec.
                                   [],
                                   []
                                 |),
-                                [ M.read (| value_G |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| value_G |) |)
+                                  |)
+                                ]
                               |)))
                           |),
                           ltac:(M.monadic
@@ -1703,7 +1891,8 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ M.read (| value_H |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              ]
                             |)))
                         |)
                       |)))
@@ -1776,7 +1965,12 @@ Module vec.
                                   [],
                                   []
                                 |),
-                                [ M.read (| value_E |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| value_E |) |)
+                                  |)
+                                ]
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
@@ -1789,7 +1983,12 @@ Module vec.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| value_F |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| value_F |) |)
+                                    |)
+                                  ]
                                 |)))
                             |),
                             ltac:(M.monadic
@@ -1803,7 +2002,12 @@ Module vec.
                                   [],
                                   []
                                 |),
-                                [ M.read (| value_G |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| value_G |) |)
+                                  |)
+                                ]
                               |)))
                           |),
                           ltac:(M.monadic
@@ -1817,7 +2021,8 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ M.read (| value_H |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              ]
                             |)))
                         |)
                       |)))
@@ -1882,7 +2087,8 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ M.read (| value_F |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |)
+                              ]
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
@@ -1895,7 +2101,12 @@ Module vec.
                                   [],
                                   []
                                 |),
-                                [ M.read (| value_G |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| value_G |) |)
+                                  |)
+                                ]
                               |)))
                           |),
                           ltac:(M.monadic
@@ -1909,7 +2120,8 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ M.read (| value_H |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              ]
                             |)))
                         |)
                       |)))
@@ -1971,7 +2183,7 @@ Module vec.
                               [],
                               []
                             |),
-                            [ M.read (| value_G |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |) ]
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
@@ -1984,7 +2196,8 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ M.read (| value_H |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              ]
                             |)))
                         |)
                       |)))
@@ -2043,7 +2256,7 @@ Module vec.
                             [],
                             []
                           |),
-                          [ M.read (| value_H |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |) ]
                         |)
                       |)))
                 ]
@@ -2083,7 +2296,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2126,7 +2339,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2167,7 +2380,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2207,7 +2420,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2247,7 +2460,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2287,7 +2500,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2327,7 +2540,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2367,7 +2580,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2407,7 +2620,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2447,7 +2660,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2487,7 +2700,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2527,7 +2740,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2567,7 +2780,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2607,7 +2820,7 @@ Module vec.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2647,7 +2860,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -2689,7 +2902,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -2731,7 +2944,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -2773,7 +2986,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -2815,7 +3028,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -2857,7 +3070,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -2899,7 +3112,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -2941,7 +3154,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -2983,7 +3196,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -3025,7 +3238,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -3067,7 +3280,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -3109,7 +3322,7 @@ Module vec.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |)
             |)))
@@ -3142,10 +3355,13 @@ Module vec.
             M.call_closure (|
               M.get_trait_method (| "alloc::vec::is_zero::IsZero", T, [], [], "is_zero", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::wrapping::Wrapping",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::wrapping::Wrapping",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -3179,10 +3395,13 @@ Module vec.
             M.call_closure (|
               M.get_trait_method (| "alloc::vec::is_zero::IsZero", T, [], [], "is_zero", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -3228,7 +3447,7 @@ Module vec.
                         Ty.path "u8"
                       ]
                     |),
-                    [ M.read (| M.read (| self |) |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
@@ -3281,7 +3500,7 @@ Module vec.
                         Ty.path "u8"
                       ]
                     |),
-                    [ M.read (| M.read (| self |) |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
@@ -3344,7 +3563,7 @@ Module vec.
                         Ty.path "u8"
                       ]
                     |),
-                    [ M.read (| M.read (| self |) |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)

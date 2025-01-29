@@ -31,13 +31,27 @@ Module range.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "IterRange" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::range::iter::IterRange",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "IterRange" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRange",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -79,10 +93,18 @@ Module range.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::range::iter::IterRange",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRange",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -479,10 +501,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -511,10 +536,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -574,10 +602,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -719,10 +750,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -768,14 +802,17 @@ Module range.
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::range::iter::IterRange",
-                        0
-                      |),
-                      "core::ops::range::Range",
-                      "start"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::range::iter::IterRange",
+                          0
+                        |),
+                        "core::ops::range::Range",
+                        "start"
+                      |)
                     |)
                   ]
                 |);
@@ -833,10 +870,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -866,10 +906,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -905,10 +948,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -1038,13 +1084,27 @@ Module range.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "IterRangeInclusive" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::range::iter::IterRangeInclusive",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "IterRangeInclusive" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRangeInclusive",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -1086,10 +1146,18 @@ Module range.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::range::iter::IterRangeInclusive",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRangeInclusive",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1148,10 +1216,13 @@ Module range.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        self,
-                                        "core::range::iter::IterRangeInclusive",
-                                        0
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          self,
+                                          "core::range::iter::IterRangeInclusive",
+                                          0
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1241,10 +1312,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -1273,10 +1347,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -1340,10 +1417,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -1497,10 +1577,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -1555,10 +1638,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -1588,10 +1674,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -1627,10 +1716,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -1857,13 +1949,27 @@ Module range.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "IterRangeFrom" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::range::iter::IterRangeFrom",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "IterRangeFrom" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRangeFrom",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -1905,10 +2011,18 @@ Module range.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::range::iter::IterRangeFrom",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRangeFrom",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1993,10 +2107,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeFrom",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeFrom",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -2025,10 +2142,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeFrom",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeFrom",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -2058,10 +2178,13 @@ Module range.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeFrom",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeFrom",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]

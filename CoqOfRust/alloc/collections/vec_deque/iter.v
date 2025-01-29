@@ -67,14 +67,9 @@ Module collections.
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugTuple",
-                      "field",
-                      [],
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
@@ -83,54 +78,103 @@ Module collections.
                           []
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Formatter",
-                                "debug_tuple",
-                                [],
-                                []
-                              |),
-                              [ M.read (| f |); M.read (| Value.String "Iter" |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::builders::DebugTuple",
+                                  "field",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Formatter",
+                                          "debug_tuple",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| f |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String "Iter" |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                              "as_slice",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::collections::vec_deque::iter::Iter",
+                                                  "i1"
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |);
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                "as_slice",
-                                [],
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i1"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                      "as_slice",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::vec_deque::iter::Iter",
+                                          "i2"
+                                        |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
-                              ]
+                              |)
                             |)
                           |)
                         ]
-                      |);
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                            "as_slice",
-                            [],
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::vec_deque::iter::Iter",
-                              "i2"
-                            |)
-                          ]
-                        |)
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -232,10 +276,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i1"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i1"
+                          |)
                         |)
                       ]
                     |));
@@ -251,10 +298,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i2"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i2"
+                          |)
                         |)
                       ]
                     |))
@@ -314,10 +364,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i1"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i1"
+                          |)
                         |)
                       ]
                     |)
@@ -333,7 +386,9 @@ Module collections.
                           |) in
                         let val := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -347,15 +402,31 @@ Module collections.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i1"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i1"
+                                      |)
+                                    |)
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i2"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i2"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -372,10 +443,13 @@ Module collections.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i1"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i1"
+                                |)
                               |)
                             ]
                           |)
@@ -424,10 +498,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i1"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i1"
+                          |)
                         |);
                         M.read (| n |)
                       ]
@@ -465,15 +542,31 @@ Module collections.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i1"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i1"
+                                      |)
+                                    |)
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i2"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i2"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -490,10 +583,13 @@ Module collections.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i1"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i1"
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -541,7 +637,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 M.alloc (|
@@ -594,7 +690,7 @@ Module collections.
                           |)
                         |);
                         M.read (| accum |);
-                        f
+                        M.borrow (| Pointer.Kind.MutRef, f |)
                       ]
                     |)
                   |) in
@@ -618,7 +714,7 @@ Module collections.
                         |)
                       |);
                       M.read (| accum |);
-                      f
+                      M.borrow (| Pointer.Kind.MutRef, f |)
                     ]
                   |)
                 |)
@@ -673,13 +769,16 @@ Module collections.
                                     [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::vec_deque::iter::Iter",
-                                      "i1"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i1"
+                                      |)
                                     |);
                                     M.read (| init |);
-                                    f
+                                    M.borrow (| Pointer.Kind.MutRef, f |)
                                   ]
                                 |)
                               ]
@@ -740,13 +839,16 @@ Module collections.
                           [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::vec_deque::iter::Iter",
-                            "i2"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::vec_deque::iter::Iter",
+                              "i2"
+                            |)
                           |);
                           M.read (| acc |);
-                          f
+                          M.borrow (| Pointer.Kind.MutRef, f |)
                         ]
                       |)
                     |)
@@ -776,7 +878,7 @@ Module collections.
                   [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -821,10 +923,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i1"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i1"
+                          |)
                         |)
                       ]
                     |)
@@ -851,10 +956,13 @@ Module collections.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i1"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i1"
+                                |)
                               |);
                               M.read (| idx |)
                             ]
@@ -874,10 +982,13 @@ Module collections.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i2"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i2"
+                                |)
                               |);
                               BinOp.Wrap.sub (| M.read (| idx |), M.read (| i1_len |) |)
                             ]
@@ -948,10 +1059,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i2"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i2"
+                          |)
                         |)
                       ]
                     |)
@@ -967,7 +1081,9 @@ Module collections.
                           |) in
                         let val := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -981,15 +1097,31 @@ Module collections.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i1"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i1"
+                                      |)
+                                    |)
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i2"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i2"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -1006,10 +1138,13 @@ Module collections.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i2"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i2"
+                                |)
                               |)
                             ]
                           |)
@@ -1057,10 +1192,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i2"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i2"
+                          |)
                         |);
                         M.read (| n |)
                       ]
@@ -1096,15 +1234,31 @@ Module collections.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i1"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i1"
+                                      |)
+                                    |)
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i2"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i2"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -1121,10 +1275,13 @@ Module collections.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i2"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i2"
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1186,7 +1343,7 @@ Module collections.
                           |)
                         |);
                         M.read (| accum |);
-                        f
+                        M.borrow (| Pointer.Kind.MutRef, f |)
                       ]
                     |)
                   |) in
@@ -1210,7 +1367,7 @@ Module collections.
                         |)
                       |);
                       M.read (| accum |);
-                      f
+                      M.borrow (| Pointer.Kind.MutRef, f |)
                     ]
                   |)
                 |)
@@ -1265,13 +1422,16 @@ Module collections.
                                     [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::vec_deque::iter::Iter",
-                                      "i2"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i2"
+                                      |)
                                     |);
                                     M.read (| init |);
-                                    f
+                                    M.borrow (| Pointer.Kind.MutRef, f |)
                                   ]
                                 |)
                               ]
@@ -1332,13 +1492,16 @@ Module collections.
                           [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::vec_deque::iter::Iter",
-                            "i1"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::vec_deque::iter::Iter",
+                              "i1"
+                            |)
                           |);
                           M.read (| acc |);
-                          f
+                          M.borrow (| Pointer.Kind.MutRef, f |)
                         ]
                       |)
                     |)
@@ -1389,10 +1552,13 @@ Module collections.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::vec_deque::iter::Iter",
-                      "i1"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::vec_deque::iter::Iter",
+                        "i1"
+                      |)
                     |)
                   ]
                 |),
@@ -1407,10 +1573,13 @@ Module collections.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::vec_deque::iter::Iter",
-                      "i2"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::vec_deque::iter::Iter",
+                        "i2"
+                      |)
                     |)
                   ]
                 |)
@@ -1441,10 +1610,13 @@ Module collections.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::vec_deque::iter::Iter",
-                      "i1"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::vec_deque::iter::Iter",
+                        "i1"
+                      |)
                     |)
                   ]
                 |),
@@ -1460,10 +1632,13 @@ Module collections.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::vec_deque::iter::Iter",
-                        "i2"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::vec_deque::iter::Iter",
+                          "i2"
+                        |)
                       |)
                     ]
                   |)))

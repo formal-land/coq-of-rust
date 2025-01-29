@@ -48,10 +48,18 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", G, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::iter::sources::from_coroutine::FromCoroutine",
-                        0
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::sources::from_coroutine::FromCoroutine",
+                              0
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -114,10 +122,13 @@ Module iter.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "core::iter::sources::from_coroutine::FromCoroutine",
-                              0
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::sources::from_coroutine::FromCoroutine",
+                                0
+                              |)
                             |)
                           ]
                         |);
@@ -187,15 +198,24 @@ Module iter.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_struct",
-                        [],
-                        []
-                      |),
-                      [ M.read (| f |); M.read (| Value.String "FromCoroutine" |) ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "debug_struct",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FromCoroutine" |) |)
+                          |)
+                        ]
+                      |)
                     |)
                   |)
                 ]

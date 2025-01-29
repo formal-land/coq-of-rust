@@ -75,7 +75,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ some_vector ]
+              [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
             |)
           |) in
         let~ length :=
@@ -90,14 +90,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ some_vector ]
+              [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
             |)
           |) in
         let~ my_slice :=
           M.alloc (|
-            M.call_closure (|
-              M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u32" ] |),
-              [ M.read (| pointer |); M.read (| length |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u32" ] |),
+                  [ M.read (| pointer |); M.read (| length |) ]
+                |)
+              |)
             |)
           |) in
         let~ _ :=
@@ -105,21 +110,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+                          "as_slice",
+                          [],
                           []
-                          [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-                        "as_slice",
-                        [],
-                        []
-                      |),
-                      [ some_vector ]
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
+                      |)
                     |)
                   |);
-                  my_slice
+                  M.borrow (| Pointer.Kind.Ref, my_slice |)
                 ]
             |),
             [
@@ -156,7 +164,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -187,8 +204,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)

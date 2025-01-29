@@ -51,13 +51,16 @@ Module tests.
               M.alloc (|
                 Value.Tuple
                   [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_function (| "unit_testing::add", [], [] |),
-                        [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 2 ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_function (| "unit_testing::add", [], [] |),
+                          [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 2 ]
+                        |)
                       |)
                     |);
-                    M.alloc (| Value.Integer IntegerKind.I32 3 |)
+                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.I32 3 |) |)
                   ]
               |),
               [
@@ -77,8 +80,8 @@ Module tests.
                                 (M.alloc (|
                                   UnOp.not (|
                                     BinOp.eq (|
-                                      M.read (| M.read (| left_val |) |),
-                                      M.read (| M.read (| right_val |) |)
+                                      M.read (| M.deref (| M.read (| left_val |) |) |),
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
                                     |)
                                   |)
                                 |)) in
@@ -100,8 +103,24 @@ Module tests.
                                       |),
                                       [
                                         M.read (| kind |);
-                                        M.read (| left_val |);
-                                        M.read (| right_val |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
                                         Value.StructTuple "core::option::Option::None" []
                                       ]
                                     |)
@@ -138,13 +157,16 @@ Module tests.
               M.alloc (|
                 Value.Tuple
                   [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_function (| "unit_testing::bad_add", [], [] |),
-                        [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 2 ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_function (| "unit_testing::bad_add", [], [] |),
+                          [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 2 ]
+                        |)
                       |)
                     |);
-                    M.alloc (| Value.Integer IntegerKind.I32 3 |)
+                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.I32 3 |) |)
                   ]
               |),
               [
@@ -164,8 +186,8 @@ Module tests.
                                 (M.alloc (|
                                   UnOp.not (|
                                     BinOp.eq (|
-                                      M.read (| M.read (| left_val |) |),
-                                      M.read (| M.read (| right_val |) |)
+                                      M.read (| M.deref (| M.read (| left_val |) |) |),
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
                                     |)
                                   |)
                                 |)) in
@@ -187,8 +209,24 @@ Module tests.
                                       |),
                                       [
                                         M.read (| kind |);
-                                        M.read (| left_val |);
-                                        M.read (| right_val |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
                                         Value.StructTuple "core::option::Option::None" []
                                       ]
                                     |)

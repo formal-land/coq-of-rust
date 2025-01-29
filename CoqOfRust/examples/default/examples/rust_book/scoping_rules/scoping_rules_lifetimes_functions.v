@@ -26,27 +26,48 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "`print_one`: x is " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "`print_one`: x is " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                              |),
-                              [ x ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -73,7 +94,7 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
       (let x := M.alloc (| x |) in
       M.read (|
         let~ _ :=
-          let β := M.read (| x |) in
+          let β := M.deref (| M.read (| x |) |) in
           M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |) |) in
         M.alloc (| Value.Tuple [] |)
       |)))
@@ -108,37 +129,63 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "`print_multi`: x is " |);
-                            M.read (| Value.String ", y is " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "`print_multi`: x is " |);
+                                  M.read (| Value.String ", y is " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                              |),
-                              [ x ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                              |),
-                              [ y ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, y |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -198,28 +245,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::print_one", [], [] |),
-              [ x ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::print_multi", [], [] |),
-              [ x; y ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, y |) |) |)
+              ]
             |)
           |) in
         let~ z :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::pass_x", [], [] |),
-              [ x; y ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, y |) |) |)
+              ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::print_one", [], [] |),
-              [ M.read (| z |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| z |) |) |) ]
             |)
           |) in
         let~ t := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
@@ -227,14 +280,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::add_one", [], [] |),
-              [ t ]
+              [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (| M.borrow (| Pointer.Kind.MutRef, t |) |)
+                |)
+              ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::print_one", [], [] |),
-              [ t ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, t |) |) |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

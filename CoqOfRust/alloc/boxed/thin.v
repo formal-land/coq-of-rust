@@ -63,7 +63,12 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
-                    [ value ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
+                      |)
+                    ]
                   |)
                 |) in
               let~ ptr :=
@@ -111,7 +116,12 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
-                    [ value ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
+                      |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -190,24 +200,31 @@ Module boxed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
-                  "header",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                      "with_header",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
+              M.deref (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
+                    "header",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                            "with_header",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |)
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -236,14 +253,19 @@ Module boxed.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                    "with_header",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                        "with_header",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -266,12 +288,25 @@ Module boxed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
-              (M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::boxed::thin::ThinBox",
-                "ptr"
-              |))))
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.rust_cast
+                      (M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::boxed::thin::ThinBox",
+                          "ptr"
+                        |)
+                      |))
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -354,7 +389,22 @@ Module boxed.
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (| "core::ptr::metadata::metadata", [], [ Dyn ] |),
-                            [ M.read (| M.use (M.alloc (| value |)) |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.ConstPointer,
+                                M.deref (|
+                                  M.read (|
+                                    M.use
+                                      (M.alloc (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
+                                        |)
+                                      |))
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         |) in
                       let~ ptr :=
@@ -407,19 +457,24 @@ Module boxed.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                    [],
-                    [],
-                    "deref",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -453,19 +508,24 @@ Module boxed.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                    [],
-                    [],
-                    "deref",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -511,7 +571,7 @@ Module boxed.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ metadata :=
@@ -523,7 +583,7 @@ Module boxed.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ pointer :=
@@ -537,7 +597,12 @@ Module boxed.
                     [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
                   |)
                 |) in
-              M.alloc (| M.read (| pointer |) |)
+              M.alloc (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pointer |) |) |) |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -570,43 +635,60 @@ Module boxed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              let~ value :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                      "data",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  let~ value :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                          "data",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |) in
+                  let~ metadata :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                          "meta",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |) in
+                  let~ pointer :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (|
+                          "core::ptr::metadata::from_raw_parts_mut",
+                          [],
+                          [ T; Ty.tuple [] ]
+                        |),
+                        [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
+                      |)
+                    |) in
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| pointer |) |) |)
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                |) in
-              let~ metadata :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                      "meta",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pointer :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::ptr::metadata::from_raw_parts_mut",
-                      [],
-                      [ T; Ty.tuple [] ]
-                    |),
-                    [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
-                  |)
-                |) in
-              M.alloc (| M.read (| pointer |) |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -652,10 +734,16 @@ Module boxed.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ value := M.copy (| M.use (M.alloc (| M.read (| value |) |)) |) in
+              let~ value :=
+                M.copy (|
+                  M.use
+                    (M.alloc (|
+                      M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| value |) |) |)
+                    |))
+                |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -666,14 +754,19 @@ Module boxed.
                       [ T ]
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                          "with_header",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                              "with_header",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)
                       |);
                       M.read (| value |)
                     ]
@@ -992,7 +1085,7 @@ Module boxed.
                                               [],
                                               []
                                             |),
-                                            [ layout ]
+                                            [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                           |),
                                           Value.Integer IntegerKind.Usize 0
                                         |)
@@ -1086,7 +1179,7 @@ Module boxed.
                                         [],
                                         []
                                       |),
-                                      [ layout ]
+                                      [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                     |)
                                   |)));
                               fun γ =>
@@ -1185,7 +1278,7 @@ Module boxed.
                                   [],
                                   []
                                 |),
-                                [ result ]
+                                [ M.borrow (| Pointer.Kind.Ref, result |) ]
                               |);
                               M.read (| header |)
                             ]
@@ -1211,7 +1304,7 @@ Module boxed.
                                       [],
                                       []
                                     |),
-                                    [ result ]
+                                    [ M.borrow (| Pointer.Kind.Ref, result |) ]
                                   |)
                                 ]
                               |);
@@ -1334,7 +1427,7 @@ Module boxed.
                                                   [],
                                                   []
                                                 |),
-                                                [ layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                               |),
                                               Value.Integer IntegerKind.Usize 0
                                             |)
@@ -1445,7 +1538,7 @@ Module boxed.
                                             [],
                                             []
                                           |),
-                                          [ layout ]
+                                          [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                         |)
                                       |)));
                                   fun γ =>
@@ -1551,7 +1644,7 @@ Module boxed.
                                       [],
                                       []
                                     |),
-                                    [ result ]
+                                    [ M.borrow (| Pointer.Kind.Ref, result |) ]
                                   |);
                                   M.read (| header |)
                                 ]
@@ -1580,7 +1673,7 @@ Module boxed.
                                           [],
                                           []
                                         |),
-                                        [ result ]
+                                        [ M.borrow (| Pointer.Kind.Ref, result |) ]
                                       |)
                                     ]
                                   |);
@@ -1731,7 +1824,15 @@ Module boxed.
                               []
                             |),
                             [
-                              M.read (| M.use (M.alloc (| M.read (| alloc |) |)) |);
+                              M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.ConstPointer,
+                                      M.deref (| M.read (| alloc |) |)
+                                    |)
+                                  |))
+                              |);
                               Value.Integer IntegerKind.Usize 1
                             ]
                           |)
@@ -1905,7 +2006,7 @@ Module boxed.
                       ("ptr",
                         M.read (|
                           M.SubPointer.get_struct_tuple_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::boxed::thin::WithHeader",
                             0
                           |)
@@ -1981,7 +2082,7 @@ Module boxed.
                           [
                             M.read (|
                               M.SubPointer.get_struct_tuple_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::boxed::thin::WithHeader",
                                 0
                               |)
@@ -2084,7 +2185,7 @@ Module boxed.
               [
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "alloc::boxed::thin::WithHeader",
                     0
                   |)
@@ -2140,15 +2241,18 @@ Module boxed.
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::alloc::layout::Layout",
-                      "new",
-                      [],
-                      [ H ]
-                    |),
-                    []
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::alloc::layout::Layout",
+                        "new",
+                        [],
+                        [ H ]
+                      |),
+                      []
+                    |)
                   |)
                 |);
                 M.read (| value_layout |)
@@ -2180,17 +2284,22 @@ Module boxed.
             M.call_closure (|
               M.get_trait_method (| "core::error::Error", T, [], [], "source", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                    [],
-                    [],
-                    "deref",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))

@@ -75,27 +75,52 @@ Module stack_usage_verifier.
                               [],
                               []
                             |),
-                            [ M.read (| function_context |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| function_context |) |)
+                              |)
+                            ]
                           |));
                         ("code",
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                              "code",
-                              [],
-                              []
-                            |),
-                            [ M.read (| function_context |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                                  "code",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| function_context |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
                           |));
                         ("return_",
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                              "return_",
-                              [],
-                              []
-                            |),
-                            [ M.read (| function_context |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                                  "return_",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| function_context |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
                           |))
                       ]
                   |) in
@@ -129,14 +154,24 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                                    "cfg",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| function_context |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                                        "cfg",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| function_context |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -165,7 +200,12 @@ Module stack_usage_verifier.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -217,18 +257,33 @@ Module stack_usage_verifier.
                                                       []
                                                     |),
                                                     [
-                                                      verifier;
-                                                      M.read (| config |);
+                                                      M.borrow (| Pointer.Kind.Ref, verifier |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| config |) |)
+                                                      |);
                                                       M.read (| block_id |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_bytecode_verifier::absint::FunctionContext",
-                                                          "cfg",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| function_context |) ]
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_bytecode_verifier::absint::FunctionContext",
+                                                              "cfg",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.read (| function_context |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -387,16 +442,21 @@ Module stack_usage_verifier.
               (M.read (|
                 let~ code :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                          "code"
-                        |)
-                      |),
-                      "move_binary_format::file_format::CodeUnit",
-                      "code"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                              "code"
+                            |)
+                          |)
+                        |),
+                        "move_binary_format::file_format::CodeUnit",
+                        "code"
+                      |)
                     |)
                   |) in
                 let~ stack_size_increment := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
@@ -414,7 +474,10 @@ Module stack_usage_verifier.
                         [],
                         []
                       |),
-                      [ M.read (| cfg |); M.read (| block_id |) ]
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| cfg |) |) |);
+                        M.read (| block_id |)
+                      ]
                     |)
                   |) in
                 let~ overall_push := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
@@ -462,7 +525,10 @@ Module stack_usage_verifier.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| cfg |); M.read (| block_id |) ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| cfg |) |) |);
+                                    M.read (| block_id |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -491,7 +557,12 @@ Module stack_usage_verifier.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -544,28 +615,47 @@ Module stack_usage_verifier.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| self |);
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::index::Index",
-                                                            Ty.apply
-                                                              (Ty.path "alloc::vec::Vec")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::Bytecode";
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            [],
-                                                            [ Ty.path "usize" ],
-                                                            "index",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (| code |);
-                                                            M.rust_cast (M.read (| i |))
-                                                          ]
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| self |) |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::index::Index",
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::Bytecode";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ],
+                                                                    [],
+                                                                    [ Ty.path "usize" ],
+                                                                    "index",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| code |)
+                                                                      |)
+                                                                    |);
+                                                                    M.rust_cast (M.read (| i |))
+                                                                  ]
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -685,7 +775,7 @@ Module stack_usage_verifier.
                                                           ltac:(M.monadic
                                                             (let γ :=
                                                               M.SubPointer.get_struct_record_field (|
-                                                                M.read (| config |),
+                                                                M.deref (| M.read (| config |) |),
                                                                 "move_vm_config::verifier::VerifierConfig",
                                                                 "max_push_size"
                                                               |) in
@@ -759,8 +849,13 @@ Module stack_usage_verifier.
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        M.read (|
-                                                                                          self
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              self
+                                                                                            |)
+                                                                                          |)
                                                                                         |)
                                                                                       ]
                                                                                     |);
@@ -843,7 +938,16 @@ Module stack_usage_verifier.
                                                                                 [],
                                                                                 []
                                                                               |),
-                                                                              [ M.read (| self |) ]
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              ]
                                                                             |);
                                                                             M.read (| block_start |)
                                                                           ]
@@ -932,7 +1036,16 @@ Module stack_usage_verifier.
                                                                                 [],
                                                                                 []
                                                                               |),
-                                                                              [ M.read (| self |) ]
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              ]
                                                                             |);
                                                                             M.read (| block_start |)
                                                                           ]
@@ -1018,7 +1131,16 @@ Module stack_usage_verifier.
                                                                                 [],
                                                                                 []
                                                                               |),
-                                                                              [ M.read (| self |) ]
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              ]
                                                                             |);
                                                                             M.read (| block_start |)
                                                                           ]
@@ -1043,7 +1165,9 @@ Module stack_usage_verifier.
                                                                   M.rust_cast
                                                                     (M.read (|
                                                                       M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| config |),
+                                                                        M.deref (|
+                                                                          M.read (| config |)
+                                                                        |),
                                                                         "move_vm_config::verifier::VerifierConfig",
                                                                         "max_value_stack_size"
                                                                       |)
@@ -1093,7 +1217,14 @@ Module stack_usage_verifier.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| self |) ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |);
                                                                           M.read (| block_start |)
                                                                         ]
@@ -1169,7 +1300,12 @@ Module stack_usage_verifier.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |);
                                   M.read (| block_start |)
                                 ]
@@ -2013,7 +2149,10 @@ Module stack_usage_verifier.
                         let num := M.alloc (| γ1_1 |) in
                         M.alloc (|
                           Value.Tuple
-                            [ M.read (| M.read (| num |) |); Value.Integer IntegerKind.U64 1 ]
+                            [
+                              M.read (| M.deref (| M.read (| num |) |) |);
+                              Value.Integer IntegerKind.U64 1
+                            ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2033,7 +2172,10 @@ Module stack_usage_verifier.
                         let num := M.alloc (| γ1_1 |) in
                         M.alloc (|
                           Value.Tuple
-                            [ Value.Integer IntegerKind.U64 1; M.read (| M.read (| num |) |) ]
+                            [
+                              Value.Integer IntegerKind.U64 1;
+                              M.read (| M.deref (| M.read (| num |) |) |)
+                            ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2207,11 +2349,16 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                    "return_"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                        "return_"
+                                      |)
+                                    |)
                                   |)
                                 |)
                               ]
@@ -2244,14 +2391,19 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |);
-                                M.read (| M.read (| idx |) |)
+                                M.read (| M.deref (| M.read (| idx |) |) |)
                               ]
                             |)
                           |) in
@@ -2266,29 +2418,39 @@ Module stack_usage_verifier.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "signature_at",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                          "module"
-                                        |)
-                                      |);
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| function_handle |),
-                                          "move_binary_format::file_format::FunctionHandle",
-                                          "parameters"
-                                        |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "signature_at",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                                  "module"
+                                                |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| function_handle |) |),
+                                              "move_binary_format::file_format::FunctionHandle",
+                                              "parameters"
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |))
@@ -2304,29 +2466,39 @@ Module stack_usage_verifier.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "signature_at",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                          "module"
-                                        |)
-                                      |);
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| function_handle |),
-                                          "move_binary_format::file_format::FunctionHandle",
-                                          "return_"
-                                        |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "signature_at",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                                  "module"
+                                                |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| function_handle |) |),
+                                              "move_binary_format::file_format::FunctionHandle",
+                                              "return_"
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |))
@@ -2354,14 +2526,19 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |);
-                                M.read (| M.read (| idx |) |)
+                                M.read (| M.deref (| M.read (| idx |) |) |)
                               ]
                             |)
                           |) in
@@ -2375,16 +2552,21 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |);
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| func_inst |),
+                                    M.deref (| M.read (| func_inst |) |),
                                     "move_binary_format::file_format::FunctionInstantiation",
                                     "handle"
                                   |)
@@ -2403,29 +2585,39 @@ Module stack_usage_verifier.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "signature_at",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                          "module"
-                                        |)
-                                      |);
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| function_handle |),
-                                          "move_binary_format::file_format::FunctionHandle",
-                                          "parameters"
-                                        |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "signature_at",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                                  "module"
+                                                |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| function_handle |) |),
+                                              "move_binary_format::file_format::FunctionHandle",
+                                              "parameters"
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |))
@@ -2441,29 +2633,39 @@ Module stack_usage_verifier.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "signature_at",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                          "module"
-                                        |)
-                                      |);
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| function_handle |),
-                                          "move_binary_format::file_format::FunctionHandle",
-                                          "return_"
-                                        |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "signature_at",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                                  "module"
+                                                |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| function_handle |) |),
+                                              "move_binary_format::file_format::FunctionHandle",
+                                              "return_"
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |))
@@ -2491,14 +2693,19 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |);
-                                M.read (| M.read (| idx |) |)
+                                M.read (| M.deref (| M.read (| idx |) |) |)
                               ]
                             |)
                           |) in
@@ -2506,10 +2713,13 @@ Module stack_usage_verifier.
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| struct_definition |),
-                                  "move_binary_format::file_format::StructDefinition",
-                                  "field_information"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| struct_definition |) |),
+                                    "move_binary_format::file_format::StructDefinition",
+                                    "field_information"
+                                  |)
                                 |)
                               |),
                               [
@@ -2547,7 +2757,12 @@ Module stack_usage_verifier.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| fields |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| fields |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)))
                               ]
@@ -2580,14 +2795,19 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |);
-                                M.read (| M.read (| idx |) |)
+                                M.read (| M.deref (| M.read (| idx |) |) |)
                               ]
                             |)
                           |) in
@@ -2601,16 +2821,21 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |);
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| struct_inst |),
+                                    M.deref (| M.read (| struct_inst |) |),
                                     "move_binary_format::file_format::StructDefInstantiation",
                                     "def"
                                   |)
@@ -2622,10 +2847,13 @@ Module stack_usage_verifier.
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| struct_definition |),
-                                  "move_binary_format::file_format::StructDefinition",
-                                  "field_information"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| struct_definition |) |),
+                                    "move_binary_format::file_format::StructDefinition",
+                                    "field_information"
+                                  |)
                                 |)
                               |),
                               [
@@ -2663,7 +2891,12 @@ Module stack_usage_verifier.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| fields |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| fields |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)))
                               ]
@@ -2696,14 +2929,19 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |);
-                                M.read (| M.read (| idx |) |)
+                                M.read (| M.deref (| M.read (| idx |) |) |)
                               ]
                             |)
                           |) in
@@ -2711,10 +2949,13 @@ Module stack_usage_verifier.
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| struct_definition |),
-                                  "move_binary_format::file_format::StructDefinition",
-                                  "field_information"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| struct_definition |) |),
+                                    "move_binary_format::file_format::StructDefinition",
+                                    "field_information"
+                                  |)
                                 |)
                               |),
                               [
@@ -2752,7 +2993,12 @@ Module stack_usage_verifier.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| fields |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| fields |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)))
                               ]
@@ -2785,14 +3031,19 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |);
-                                M.read (| M.read (| idx |) |)
+                                M.read (| M.deref (| M.read (| idx |) |) |)
                               ]
                             |)
                           |) in
@@ -2806,16 +3057,21 @@ Module stack_usage_verifier.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
-                                    "module"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
+                                        "module"
+                                      |)
+                                    |)
                                   |)
                                 |);
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| struct_inst |),
+                                    M.deref (| M.read (| struct_inst |) |),
                                     "move_binary_format::file_format::StructDefInstantiation",
                                     "def"
                                   |)
@@ -2827,10 +3083,13 @@ Module stack_usage_verifier.
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| struct_definition |),
-                                  "move_binary_format::file_format::StructDefinition",
-                                  "field_information"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| struct_definition |) |),
+                                    "move_binary_format::file_format::StructDefinition",
+                                    "field_information"
+                                  |)
                                 |)
                               |),
                               [
@@ -2868,7 +3127,12 @@ Module stack_usage_verifier.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| fields |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| fields |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)))
                               ]
@@ -2914,7 +3178,7 @@ Module stack_usage_verifier.
             [
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
                   "current_function"
                 |)

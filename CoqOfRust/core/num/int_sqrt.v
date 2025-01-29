@@ -38,7 +38,7 @@ Module num.
                                     [],
                                     []
                                   |),
-                                  [ result ]
+                                  [ M.borrow (| Pointer.Kind.Ref, result |) ]
                                 |)
                               |)
                             |)) in
@@ -210,13 +210,22 @@ Module num.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Negative input inside `isqrt`."
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Negative input inside `isqrt`."
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -298,13 +307,22 @@ Module num.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Negative input inside `isqrt`."
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Negative input inside `isqrt`."
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -386,13 +404,22 @@ Module num.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Negative input inside `isqrt`."
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Negative input inside `isqrt`."
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -474,13 +501,22 @@ Module num.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Negative input inside `isqrt`."
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Negative input inside `isqrt`."
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -562,13 +598,22 @@ Module num.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Negative input inside `isqrt`."
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Negative input inside `isqrt`."
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -652,14 +697,22 @@ Module num.
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "`$n` is  zero in `first_stage!`."
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "`$n` is  zero in `first_stage!`."
+                                                          |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -760,14 +813,22 @@ Module num.
                                                     []
                                                   |),
                                                   [
-                                                    M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "`$s` is  zero in `last_stage!`."
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "`$s` is  zero in `last_stage!`."
+                                                                |)
+                                                              ]
                                                           |)
-                                                        ]
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -992,14 +1053,22 @@ Module num.
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "`$n` is  zero in `first_stage!`."
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "`$n` is  zero in `first_stage!`."
+                                                          |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1101,14 +1170,22 @@ Module num.
                                                       []
                                                     |),
                                                     [
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`$s` is  zero in `middle_stage!`."
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  |)
+                                                                ]
                                                             |)
-                                                          ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -1341,14 +1418,22 @@ Module num.
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "`$s` is  zero in `last_stage!`."
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "`$s` is  zero in `last_stage!`."
+                                                                        |)
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -1646,14 +1731,22 @@ Module num.
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "`$n` is  zero in `first_stage!`."
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "`$n` is  zero in `first_stage!`."
+                                                          |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1755,14 +1848,22 @@ Module num.
                                                       []
                                                     |),
                                                     [
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`$s` is  zero in `middle_stage!`."
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  |)
+                                                                ]
                                                             |)
-                                                          ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -1996,14 +2097,22 @@ Module num.
                                                               []
                                                             |),
                                                             [
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "`$s` is  zero in `middle_stage!`."
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "`$s` is  zero in `middle_stage!`."
+                                                                          |)
+                                                                        ]
                                                                     |)
-                                                                  ]
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -2257,14 +2366,22 @@ Module num.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "`$s` is  zero in `last_stage!`."
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.read (|
+                                                                                  Value.String
+                                                                                    "`$s` is  zero in `last_stage!`."
+                                                                                |)
+                                                                              ]
                                                                           |)
-                                                                        ]
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -2626,14 +2743,22 @@ Module num.
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "`$n` is  zero in `first_stage!`."
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "`$n` is  zero in `first_stage!`."
+                                                          |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -2735,14 +2860,22 @@ Module num.
                                                       []
                                                     |),
                                                     [
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`$s` is  zero in `middle_stage!`."
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  |)
+                                                                ]
                                                             |)
-                                                          ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -2980,14 +3113,22 @@ Module num.
                                                               []
                                                             |),
                                                             [
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "`$s` is  zero in `middle_stage!`."
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "`$s` is  zero in `middle_stage!`."
+                                                                          |)
+                                                                        ]
                                                                     |)
-                                                                  ]
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -3243,14 +3384,22 @@ Module num.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "`$s` is  zero in `middle_stage!`."
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                                  |)
+                                                                                ]
                                                                             |)
-                                                                          ]
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -3514,14 +3663,22 @@ Module num.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "`$s` is  zero in `last_stage!`."
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "`$s` is  zero in `last_stage!`."
+                                                                                        |)
+                                                                                      ]
                                                                                   |)
-                                                                                ]
+                                                                                |)
+                                                                              |)
                                                                             |)
                                                                           ]
                                                                         |)
@@ -4398,13 +4555,21 @@ Module num.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (|
-                          Value.String "argument of integer square root cannot be negative"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String "argument of integer square root cannot be negative"
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 ]
               |)

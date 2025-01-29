@@ -26,8 +26,20 @@ Module foo.
                           [],
                           []
                         |),
-                        [ M.alloc (| Value.Array [ M.read (| Value.String "foo::gre::bar
-" |) ] |) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "foo::gre::bar
+" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
                     ]
                   |)
@@ -65,8 +77,18 @@ Module foo.
                         [],
                         []
                       |),
-                      [ M.alloc (| Value.Array [ M.read (| Value.String "foo::bar
-" |) ] |) ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (| Value.Array [ M.read (| Value.String "foo::bar
+" |) ] |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
                   ]
                 |)

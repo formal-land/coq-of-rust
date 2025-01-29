@@ -56,7 +56,7 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -119,7 +119,10 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-          [ M.read (| f |); M.read (| Value.String "FlipperError" |) ]
+          [
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FlipperError" |) |) |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -276,14 +279,14 @@ Module Impl_contract_ref_FlipperRef.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "contract_ref::FlipperRef",
                 "value"
               |),
               UnOp.not (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "contract_ref::FlipperRef",
                     "value"
                   |)
@@ -309,7 +312,7 @@ Module Impl_contract_ref_FlipperRef.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "contract_ref::FlipperRef",
             "value"
           |)
@@ -461,10 +464,13 @@ Module Impl_contract_ref_ContractRef.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "contract_ref::FlipperRef", "flip", [], [] |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "contract_ref::ContractRef",
-                    "flipper"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "contract_ref::ContractRef",
+                      "flipper"
+                    |)
                   |)
                 ]
               |)
@@ -489,10 +495,13 @@ Module Impl_contract_ref_ContractRef.
         M.call_closure (|
           M.get_associated_function (| Ty.path "contract_ref::FlipperRef", "get", [], [] |),
           [
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "contract_ref::ContractRef",
-              "flipper"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "contract_ref::ContractRef",
+                "flipper"
+              |)
             |)
           ]
         |)))

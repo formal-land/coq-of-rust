@@ -145,7 +145,7 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -189,10 +189,18 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
         let other := M.alloc (| other |) in
         BinOp.eq (|
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "mother::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| self |) |),
+              "mother::AccountId",
+              0
+            |)
           |),
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "mother::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| other |) |),
+              "mother::AccountId",
+              0
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -393,8 +401,22 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
             []
           |),
           [
-            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "mother::Bids", 0 |);
-            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "mother::Bids", 0 |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| self |) |),
+                "mother::Bids",
+                0
+              |)
+            |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| other |) |),
+                "mother::Bids",
+                0
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -476,7 +498,21 @@ Module Impl_core_clone_Clone_for_mother_Bids.
                 [],
                 []
               |),
-              [ M.SubPointer.get_struct_tuple_field (| M.read (| self |), "mother::Bids", 0 |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "mother::Bids",
+                        0
+                      |)
+                    |)
+                  |)
+                |)
+              ]
             |)
           ]))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -546,7 +582,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
                   [],
                   [ Ty.path "mother::Outline" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -557,7 +593,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
                   [],
                   [ Ty.path "mother::Outline" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -707,7 +743,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   [],
                   [ Ty.path "mother::Status" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -718,7 +754,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   [],
                   [ Ty.path "mother::Status" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (|
@@ -760,7 +796,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                                 [],
                                 []
                               |),
-                              [ __self_0; __arg1_0 ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -794,7 +833,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                                 [],
                                 []
                               |),
-                              [ __self_0; __arg1_0 ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -828,7 +870,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                                 [],
                                 []
                               |),
-                              [ __self_0; __arg1_0 ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -934,7 +979,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                             [],
                             []
                           |),
-                          [ M.read (| __self_0 |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                         |)
                       ]
                   |)));
@@ -958,7 +1003,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                             [],
                             []
                           |),
-                          [ M.read (| __self_0 |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                         |)
                       ]
                   |)));
@@ -982,7 +1027,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                             [],
                             []
                           |),
-                          [ M.read (| __self_0 |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                         |)
                       ]
                   |)))
@@ -1058,15 +1103,21 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "mother::Auction",
-                          "name"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "mother::Auction",
+                            "name"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "mother::Auction",
-                          "name"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "mother::Auction",
+                            "name"
+                          |)
                         |)
                       ]
                     |),
@@ -1090,15 +1141,21 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "mother::Auction",
-                            "subject"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "mother::Auction",
+                              "subject"
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "mother::Auction",
-                            "subject"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "mother::Auction",
+                              "subject"
+                            |)
                           |)
                         ]
                       |)))
@@ -1115,15 +1172,21 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "mother::Auction",
-                          "bids"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "mother::Auction",
+                            "bids"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "mother::Auction",
-                          "bids"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "mother::Auction",
+                            "bids"
+                          |)
                         |)
                       ]
                     |)))
@@ -1148,15 +1211,21 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "mother::Auction",
-                        "terms"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "mother::Auction",
+                          "terms"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "mother::Auction",
-                        "terms"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "mother::Auction",
+                          "terms"
+                        |)
                       |)
                     ]
                   |)))
@@ -1173,15 +1242,21 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "mother::Auction",
-                      "status"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "mother::Auction",
+                        "status"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "mother::Auction",
-                      "status"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "mother::Auction",
+                        "status"
+                      |)
                     |)
                   ]
                 |)))
@@ -1190,14 +1265,14 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
               (BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "mother::Auction",
                     "finalized"
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "mother::Auction",
                     "finalized"
                   |)
@@ -1224,15 +1299,21 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "mother::Auction",
-                  "vector"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "mother::Auction",
+                    "vector"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "mother::Auction",
-                  "vector"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "mother::Auction",
+                    "vector"
+                  |)
                 |)
               ]
             |)))
@@ -1349,10 +1430,18 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "mother::Auction",
-                    "name"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "mother::Auction",
+                          "name"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |));
@@ -1371,10 +1460,18 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "mother::Auction",
-                    "subject"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "mother::Auction",
+                          "subject"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |));
@@ -1390,10 +1487,18 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "mother::Auction",
-                    "bids"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "mother::Auction",
+                          "bids"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |));
@@ -1412,10 +1517,18 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "mother::Auction",
-                    "terms"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "mother::Auction",
+                          "terms"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |));
@@ -1431,10 +1544,18 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "mother::Auction",
-                    "status"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "mother::Auction",
+                          "status"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |));
@@ -1450,10 +1571,18 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "mother::Auction",
-                    "finalized"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "mother::Auction",
+                          "finalized"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |));
@@ -1472,10 +1601,18 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "mother::Auction",
-                    "vector"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "mother::Auction",
+                          "vector"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |))
@@ -1653,7 +1790,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                   [],
                   [ Ty.path "mother::Failure" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -1664,7 +1801,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                   [],
                   [ Ty.path "mother::Failure" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (|
@@ -1706,7 +1843,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                                 [],
                                 []
                               |),
-                              [ __self_0; __arg1_0 ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -1796,7 +1936,11 @@ Module Impl_mother_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "mother::Env", "caller" |)
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "mother::Env",
+            "caller"
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2013,7 +2157,12 @@ Module Impl_mother_Mother.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "Reverting instantiation" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "Reverting instantiation" |) |)
+                                |)
+                              ]
                             |)
                           ]
                       ]
@@ -2066,10 +2215,13 @@ Module Impl_mother_Mother.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "mother::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "mother::Mother", "env", [], [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "mother::Mother", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -2089,7 +2241,7 @@ Module Impl_mother_Mother.
                                 [],
                                 []
                               |),
-                              [ auction ]
+                              [ M.borrow (| Pointer.Kind.Ref, auction |) ]
                             |))
                         ]
                     ]
@@ -2149,7 +2301,14 @@ Module Impl_mother_Mother.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "Reverting on user demand!" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (| Value.String "Reverting on user demand!" |)
+                                  |)
+                                |)
+                              ]
                             |)
                           ]
                       ]
@@ -2210,25 +2369,48 @@ Module Impl_mother_Mother.
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "debug_log: " |); M.read (| Value.String "
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "debug_log: " |);
+                                    M.read (| Value.String "
 " |)
-                            ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "alloc::string::String" ]
-                                |),
-                                [ _message ]
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.path "alloc::string::String" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, _message |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)

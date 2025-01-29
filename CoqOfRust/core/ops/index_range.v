@@ -35,10 +35,18 @@ Module ops.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::index_range::IndexRange",
-                        "start"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::index_range::IndexRange",
+                              "start"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -54,10 +62,18 @@ Module ops.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::index_range::IndexRange",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::index_range::IndexRange",
+                              "end"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -91,20 +107,42 @@ Module ops.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "IndexRange" |);
-                M.read (| Value.String "start" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::index_range::IndexRange",
-                  "start"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "IndexRange" |) |)
                 |);
-                M.read (| Value.String "end" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::index_range::IndexRange",
-                    "end"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "start" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::index_range::IndexRange",
+                        "start"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "end" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ops::index_range::IndexRange",
+                            "end"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -145,14 +183,14 @@ Module ops.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::index_range::IndexRange",
                     "start"
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::ops::index_range::IndexRange",
                     "start"
                   |)
@@ -162,14 +200,14 @@ Module ops.
                 (BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::ops::index_range::IndexRange",
                       "end"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "core::ops::index_range::IndexRange",
                       "end"
                     |)
@@ -312,7 +350,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::ops::index_range::IndexRange",
                 "start"
               |)
@@ -334,7 +372,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::ops::index_range::IndexRange",
                 "end"
               |)
@@ -360,14 +398,14 @@ Module ops.
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::index_range::IndexRange",
                     "end"
                   |)
                 |);
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::index_range::IndexRange",
                     "start"
                   |)
@@ -417,14 +455,14 @@ Module ops.
                                           BinOp.lt (|
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::index_range::IndexRange",
                                                 "start"
                                               |)
                                             |),
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::index_range::IndexRange",
                                                 "end"
                                               |)
@@ -459,7 +497,7 @@ Module ops.
               let~ value :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::index_range::IndexRange",
                     "start"
                   |)
@@ -467,7 +505,7 @@ Module ops.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::index_range::IndexRange",
                     "start"
                   |),
@@ -522,14 +560,14 @@ Module ops.
                                           BinOp.lt (|
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::index_range::IndexRange",
                                                 "start"
                                               |)
                                             |),
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::ops::index_range::IndexRange",
                                                 "end"
                                               |)
@@ -568,7 +606,7 @@ Module ops.
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::ops::index_range::IndexRange",
                           "end"
                         |)
@@ -580,7 +618,7 @@ Module ops.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::index_range::IndexRange",
                     "end"
                   |),
@@ -640,7 +678,7 @@ Module ops.
                                       [],
                                       []
                                     |),
-                                    [ self ]
+                                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
                                   |)
                                 |)
                               |)) in
@@ -657,7 +695,7 @@ Module ops.
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::ops::index_range::IndexRange",
                                     "start"
                                   |)
@@ -669,7 +707,7 @@ Module ops.
                       fun γ =>
                         ltac:(M.monadic
                           (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::ops::index_range::IndexRange",
                             "end"
                           |)))
@@ -684,7 +722,7 @@ Module ops.
                       ("start",
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::ops::index_range::IndexRange",
                             "start"
                           |)
@@ -695,7 +733,7 @@ Module ops.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::index_range::IndexRange",
                     "start"
                   |),
@@ -754,7 +792,7 @@ Module ops.
                                       [],
                                       []
                                     |),
-                                    [ self ]
+                                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
                                   |)
                                 |)
                               |)) in
@@ -771,7 +809,7 @@ Module ops.
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::ops::index_range::IndexRange",
                                     "end"
                                   |)
@@ -783,7 +821,7 @@ Module ops.
                       fun γ =>
                         ltac:(M.monadic
                           (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::ops::index_range::IndexRange",
                             "start"
                           |)))
@@ -799,7 +837,7 @@ Module ops.
                       ("end_",
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::ops::index_range::IndexRange",
                             "end"
                           |)
@@ -809,7 +847,7 @@ Module ops.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::ops::index_range::IndexRange",
                     "end"
                   |),
@@ -867,7 +905,7 @@ Module ops.
                                   [],
                                   []
                                 |),
-                                [ self ]
+                                [ M.borrow (| Pointer.Kind.Ref, self |) ]
                               |),
                               Value.Integer IntegerKind.Usize 0
                             |)
@@ -884,7 +922,8 @@ Module ops.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           ]
                       |)));
@@ -918,7 +957,7 @@ Module ops.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -954,7 +993,10 @@ Module ops.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| n |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| n |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -1003,7 +1045,7 @@ Module ops.
                               [],
                               []
                             |),
-                            [ taken ]
+                            [ M.borrow (| Pointer.Kind.Ref, taken |) ]
                           |)
                         |)
                       ]
@@ -1072,7 +1114,7 @@ Module ops.
                                   [],
                                   []
                                 |),
-                                [ self ]
+                                [ M.borrow (| Pointer.Kind.Ref, self |) ]
                               |),
                               Value.Integer IntegerKind.Usize 0
                             |)
@@ -1089,7 +1131,8 @@ Module ops.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           ]
                       |)));
@@ -1124,7 +1167,10 @@ Module ops.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| n |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| n |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -1173,7 +1219,7 @@ Module ops.
                               [],
                               []
                             |),
-                            [ taken ]
+                            [ M.borrow (| Pointer.Kind.Ref, taken |) ]
                           |)
                         |)
                       ]
@@ -1219,7 +1265,7 @@ Module ops.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

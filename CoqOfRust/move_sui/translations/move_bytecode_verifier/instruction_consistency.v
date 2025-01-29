@@ -59,7 +59,7 @@ Module instruction_consistency.
                   [],
                   []
                 |),
-                [ M.read (| module |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -93,7 +93,12 @@ Module instruction_consistency.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| module |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| module |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                   ]
@@ -186,14 +191,25 @@ Module instruction_consistency.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "function_defs",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| module |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "function_defs",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| module |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -232,7 +248,12 @@ Module instruction_consistency.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -260,10 +281,13 @@ Module instruction_consistency.
                                           let func_def := M.copy (| γ1_1 |) in
                                           M.match_operator (|
                                             M.alloc (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| func_def |),
-                                                "move_binary_format::file_format::FunctionDefinition",
-                                                "code"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| func_def |) |),
+                                                  "move_binary_format::file_format::FunctionDefinition",
+                                                  "code"
+                                                |)
                                               |)
                                             |),
                                             [
@@ -330,7 +354,16 @@ Module instruction_consistency.
                                                               [],
                                                               []
                                                             |),
-                                                            [ checker; M.read (| code |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                checker
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| code |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -568,29 +601,37 @@ Module instruction_consistency.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::file_format::Bytecode";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
                                           [
-                                            Ty.path "move_binary_format::file_format::Bytecode";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| code |),
-                                          "move_binary_format::file_format::CodeUnit",
-                                          "code"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| code |) |),
+                                                "move_binary_format::file_format::CodeUnit",
+                                                "code"
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -629,7 +670,12 @@ Module instruction_consistency.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -698,10 +744,15 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
-                                                                  M.read (| field_handle_index |)
+                                                                  M.deref (|
+                                                                    M.read (| field_handle_index |)
+                                                                  |)
                                                                 |);
                                                                 Value.Bool false
                                                               ]
@@ -792,14 +843,23 @@ Module instruction_consistency.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                              "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                  "module"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |);
-                                                          M.read (| M.read (| field_inst_index |) |)
+                                                          M.read (|
+                                                            M.deref (|
+                                                              M.read (| field_inst_index |)
+                                                            |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -833,11 +893,16 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| field_inst |),
+                                                                    M.deref (|
+                                                                      M.read (| field_inst |)
+                                                                    |),
                                                                     "move_binary_format::file_format::FieldInstantiation",
                                                                     "handle"
                                                                   |)
@@ -950,10 +1015,15 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
-                                                                  M.read (| field_handle_index |)
+                                                                  M.deref (|
+                                                                    M.read (| field_handle_index |)
+                                                                  |)
                                                                 |);
                                                                 Value.Bool false
                                                               ]
@@ -1044,14 +1114,23 @@ Module instruction_consistency.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                              "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                  "module"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |);
-                                                          M.read (| M.read (| field_inst_index |) |)
+                                                          M.read (|
+                                                            M.deref (|
+                                                              M.read (| field_inst_index |)
+                                                            |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -1085,11 +1164,16 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| field_inst |),
+                                                                    M.deref (|
+                                                                      M.read (| field_inst |)
+                                                                    |),
                                                                     "move_binary_format::file_format::FieldInstantiation",
                                                                     "handle"
                                                                   |)
@@ -1202,9 +1286,14 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
-                                                                M.read (| M.read (| idx |) |);
+                                                                M.read (|
+                                                                  M.deref (| M.read (| idx |) |)
+                                                                |);
                                                                 Value.Bool false
                                                               ]
                                                             |)
@@ -1294,14 +1383,21 @@ Module instruction_consistency.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                              "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                  "module"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |);
-                                                          M.read (| M.read (| idx |) |)
+                                                          M.read (|
+                                                            M.deref (| M.read (| idx |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -1335,11 +1431,16 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| func_inst |),
+                                                                    M.deref (|
+                                                                      M.read (| func_inst |)
+                                                                    |),
                                                                     "move_binary_format::file_format::FunctionInstantiation",
                                                                     "handle"
                                                                   |)
@@ -1452,9 +1553,14 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
-                                                                M.read (| M.read (| idx |) |);
+                                                                M.read (|
+                                                                  M.deref (| M.read (| idx |) |)
+                                                                |);
                                                                 Value.Bool false
                                                               ]
                                                             |)
@@ -1544,14 +1650,21 @@ Module instruction_consistency.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                              "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                  "module"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |);
-                                                          M.read (| M.read (| idx |) |)
+                                                          M.read (|
+                                                            M.deref (| M.read (| idx |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -1585,11 +1698,16 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| struct_inst |),
+                                                                    M.deref (|
+                                                                      M.read (| struct_inst |)
+                                                                    |),
                                                                     "move_binary_format::file_format::StructDefInstantiation",
                                                                     "def"
                                                                   |)
@@ -1702,9 +1820,14 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
-                                                                M.read (| M.read (| idx |) |);
+                                                                M.read (|
+                                                                  M.deref (| M.read (| idx |) |)
+                                                                |);
                                                                 Value.Bool false
                                                               ]
                                                             |)
@@ -1794,14 +1917,21 @@ Module instruction_consistency.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                              "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                  "module"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |);
-                                                          M.read (| M.read (| idx |) |)
+                                                          M.read (|
+                                                            M.deref (| M.read (| idx |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -1835,11 +1965,16 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| struct_inst |),
+                                                                    M.deref (|
+                                                                      M.read (| struct_inst |)
+                                                                    |),
                                                                     "move_binary_format::file_format::StructDefInstantiation",
                                                                     "def"
                                                                   |)
@@ -1952,9 +2087,14 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
-                                                                M.read (| M.read (| idx |) |);
+                                                                M.read (|
+                                                                  M.deref (| M.read (| idx |) |)
+                                                                |);
                                                                 Value.Bool false
                                                               ]
                                                             |)
@@ -2044,14 +2184,21 @@ Module instruction_consistency.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                              "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                  "module"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |);
-                                                          M.read (| M.read (| idx |) |)
+                                                          M.read (|
+                                                            M.deref (| M.read (| idx |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -2085,11 +2232,16 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| struct_inst |),
+                                                                    M.deref (|
+                                                                      M.read (| struct_inst |)
+                                                                    |),
                                                                     "move_binary_format::file_format::StructDefInstantiation",
                                                                     "def"
                                                                   |)
@@ -2202,9 +2354,14 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
-                                                                M.read (| M.read (| idx |) |);
+                                                                M.read (|
+                                                                  M.deref (| M.read (| idx |) |)
+                                                                |);
                                                                 Value.Bool false
                                                               ]
                                                             |)
@@ -2294,14 +2451,21 @@ Module instruction_consistency.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                              "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                  "module"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |);
-                                                          M.read (| M.read (| idx |) |)
+                                                          M.read (|
+                                                            M.deref (| M.read (| idx |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -2335,11 +2499,16 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| struct_inst |),
+                                                                    M.deref (|
+                                                                      M.read (| struct_inst |)
+                                                                    |),
                                                                     "move_binary_format::file_format::StructDefInstantiation",
                                                                     "def"
                                                                   |)
@@ -2452,9 +2621,14 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
-                                                                M.read (| M.read (| idx |) |);
+                                                                M.read (|
+                                                                  M.deref (| M.read (| idx |) |)
+                                                                |);
                                                                 Value.Bool false
                                                               ]
                                                             |)
@@ -2544,14 +2718,21 @@ Module instruction_consistency.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                              "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                  "module"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |);
-                                                          M.read (| M.read (| idx |) |)
+                                                          M.read (|
+                                                            M.deref (| M.read (| idx |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -2585,11 +2766,16 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| struct_inst |),
+                                                                    M.deref (|
+                                                                      M.read (| struct_inst |)
+                                                                    |),
                                                                     "move_binary_format::file_format::StructDefInstantiation",
                                                                     "def"
                                                                   |)
@@ -2702,9 +2888,14 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
-                                                                M.read (| M.read (| idx |) |);
+                                                                M.read (|
+                                                                  M.deref (| M.read (| idx |) |)
+                                                                |);
                                                                 Value.Bool false
                                                               ]
                                                             |)
@@ -2794,14 +2985,21 @@ Module instruction_consistency.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                              "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                  "module"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |);
-                                                          M.read (| M.read (| idx |) |)
+                                                          M.read (|
+                                                            M.deref (| M.read (| idx |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -2835,11 +3033,16 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| struct_inst |),
+                                                                    M.deref (|
+                                                                      M.read (| struct_inst |)
+                                                                    |),
                                                                     "move_binary_format::file_format::StructDefInstantiation",
                                                                     "def"
                                                                   |)
@@ -2952,9 +3155,14 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
-                                                                M.read (| M.read (| idx |) |);
+                                                                M.read (|
+                                                                  M.deref (| M.read (| idx |) |)
+                                                                |);
                                                                 Value.Bool false
                                                               ]
                                                             |)
@@ -3044,14 +3252,21 @@ Module instruction_consistency.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                              "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                  "module"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |);
-                                                          M.read (| M.read (| idx |) |)
+                                                          M.read (|
+                                                            M.deref (| M.read (| idx |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -3085,11 +3300,16 @@ Module instruction_consistency.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| self |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |);
                                                                 M.read (| offset |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| struct_inst |),
+                                                                    M.deref (|
+                                                                      M.read (| struct_inst |)
+                                                                    |),
                                                                     "move_binary_format::file_format::StructDefInstantiation",
                                                                     "def"
                                                                   |)
@@ -3217,7 +3437,9 @@ Module instruction_consistency.
                                                                         (M.alloc (|
                                                                           BinOp.gt (|
                                                                             M.read (|
-                                                                              M.read (| num |)
+                                                                              M.deref (|
+                                                                                M.read (| num |)
+                                                                              |)
                                                                             |),
                                                                             M.rust_cast
                                                                               (M.read (|
@@ -3280,8 +3502,13 @@ Module instruction_consistency.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.read (|
-                                                                                              self
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.deref (|
+                                                                                                M.read (|
+                                                                                                  self
+                                                                                                |)
+                                                                                              |)
                                                                                             |)
                                                                                           ]
                                                                                         |);
@@ -3303,9 +3530,14 @@ Module instruction_consistency.
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "VecPack/VecUnpack argument out of range"
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              Value.String
+                                                                                                "VecPack/VecUnpack argument out of range"
+                                                                                            |)
+                                                                                          |)
                                                                                         |)
                                                                                       ]
                                                                                     |)
@@ -3904,11 +4136,16 @@ Module instruction_consistency.
                     []
                   |),
                   [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                        "module"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                            "module"
+                          |)
+                        |)
                       |)
                     |);
                     M.read (| field_handle_index |)
@@ -3924,11 +4161,11 @@ Module instruction_consistency.
                   []
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                   M.read (| offset |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| field_handle |),
+                      M.deref (| M.read (| field_handle |) |),
                       "move_binary_format::file_format::FieldHandle",
                       "owner"
                     |)
@@ -3967,7 +4204,7 @@ Module instruction_consistency.
             [
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                   "current_function"
                 |)
@@ -4022,11 +4259,16 @@ Module instruction_consistency.
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                            "module"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                "module"
+                              |)
+                            |)
                           |)
                         |);
                         M.read (| struct_def_index |)
@@ -4043,16 +4285,21 @@ Module instruction_consistency.
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                            "module"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                "module"
+                              |)
+                            |)
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| struct_def |),
+                            M.deref (| M.read (| struct_def |) |),
                             "move_binary_format::file_format::StructDefinition",
                             "struct_handle"
                           |)
@@ -4085,10 +4332,13 @@ Module instruction_consistency.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| struct_handle |),
-                                        "move_binary_format::file_format::StructHandle",
-                                        "type_parameters"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| struct_handle |) |),
+                                          "move_binary_format::file_format::StructHandle",
+                                          "type_parameters"
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -4133,7 +4383,12 @@ Module instruction_consistency.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
                                           |);
                                           M.rust_cast (M.read (| offset |))
                                         ]
@@ -4193,11 +4448,16 @@ Module instruction_consistency.
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                            "module"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                "module"
+                              |)
+                            |)
                           |)
                         |);
                         M.read (| func_handle_index |)
@@ -4228,10 +4488,13 @@ Module instruction_consistency.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| function_handle |),
-                                        "move_binary_format::file_format::FunctionHandle",
-                                        "type_parameters"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| function_handle |) |),
+                                          "move_binary_format::file_format::FunctionHandle",
+                                          "type_parameters"
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -4276,7 +4539,12 @@ Module instruction_consistency.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
                                           |);
                                           M.rust_cast (M.read (| offset |))
                                         ]

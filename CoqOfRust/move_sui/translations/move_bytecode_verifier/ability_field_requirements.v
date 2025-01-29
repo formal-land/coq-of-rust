@@ -34,7 +34,7 @@ Module ability_field_requirements.
                 [],
                 []
               |),
-              [ M.read (| module |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
             |);
             M.closure
               (fun γ =>
@@ -67,7 +67,12 @@ Module ability_field_requirements.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| module |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| module |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 ]
@@ -175,14 +180,24 @@ Module ability_field_requirements.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "struct_defs",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| module |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "struct_defs",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| module |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -221,7 +236,12 @@ Module ability_field_requirements.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -255,10 +275,13 @@ Module ability_field_requirements.
                                                 []
                                               |),
                                               [
-                                                M.read (| module |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| module |) |)
+                                                |);
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| struct_def |),
+                                                    M.deref (| M.read (| struct_def |) |),
                                                     "move_binary_format::file_format::StructDefinition",
                                                     "struct_handle"
                                                   |)
@@ -270,10 +293,13 @@ Module ability_field_requirements.
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| struct_def |),
-                                                  "move_binary_format::file_format::StructDefinition",
-                                                  "field_information"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| struct_def |) |),
+                                                    "move_binary_format::file_format::StructDefinition",
+                                                    "field_information"
+                                                  |)
                                                 |)
                                               |),
                                               [
@@ -387,7 +413,7 @@ Module ability_field_requirements.
                                                       [
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| sh |),
+                                                            M.deref (| M.read (| sh |) |),
                                                             "move_binary_format::file_format::StructHandle",
                                                             "abilities"
                                                           |)
@@ -573,30 +599,38 @@ Module ability_field_requirements.
                                                         []
                                                       |),
                                                       [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.apply
-                                                              (Ty.path "alloc::vec::Vec")
-                                                              []
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::deref::Deref",
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::StructTypeParameter";
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ],
+                                                                [],
+                                                                [],
+                                                                "deref",
+                                                                [],
+                                                                []
+                                                              |),
                                                               [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::StructTypeParameter";
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            [],
-                                                            [],
-                                                            "deref",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| sh |),
-                                                              "move_binary_format::file_format::StructHandle",
-                                                              "type_parameters"
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (| M.read (| sh |) |),
+                                                                    "move_binary_format::file_format::StructHandle",
+                                                                    "type_parameters"
+                                                                  |)
+                                                                |)
+                                                              ]
                                                             |)
-                                                          ]
+                                                          |)
                                                         |)
                                                       ]
                                                     |);
@@ -680,7 +714,17 @@ Module ability_field_requirements.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ iter ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      iter
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |),
                                                           [
@@ -738,40 +782,70 @@ Module ability_field_requirements.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                M.read (| module |);
-                                                                                M.SubPointer.get_struct_tuple_field (|
-                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
                                                                                     M.read (|
-                                                                                      field
-                                                                                    |),
-                                                                                    "move_binary_format::file_format::FieldDefinition",
-                                                                                    "signature"
-                                                                                  |),
-                                                                                  "move_binary_format::file_format::TypeSignature",
-                                                                                  0
+                                                                                      module
+                                                                                    |)
+                                                                                  |)
                                                                                 |);
-                                                                                M.call_closure (|
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::deref::Deref",
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
-                                                                                      []
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                                        M.SubPointer.get_struct_record_field (|
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              field
+                                                                                            |)
+                                                                                          |),
+                                                                                          "move_binary_format::file_format::FieldDefinition",
+                                                                                          "signature"
+                                                                                        |),
+                                                                                        "move_binary_format::file_format::TypeSignature",
+                                                                                        0
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                |);
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_trait_method (|
+                                                                                        "core::ops::deref::Deref",
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::vec::Vec")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "move_binary_format::file_format::AbilitySet";
+                                                                                            Ty.path
+                                                                                              "alloc::alloc::Global"
+                                                                                          ],
+                                                                                        [],
+                                                                                        [],
+                                                                                        "deref",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
                                                                                       [
-                                                                                        Ty.path
-                                                                                          "move_binary_format::file_format::AbilitySet";
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ],
-                                                                                    [],
-                                                                                    [],
-                                                                                    "deref",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    type_parameter_abilities
-                                                                                  ]
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              type_parameter_abilities
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               ]
                                                                             |)

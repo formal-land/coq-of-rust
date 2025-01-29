@@ -120,51 +120,61 @@ Module Impl_custom_allocator_CustomAllocator.
         M.read (|
           let~ _ :=
             M.write (|
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::IndexMut",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::index::IndexMut",
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
+                    [],
+                    [ Ty.path "usize" ],
+                    "index_mut",
+                    [],
                     []
-                    [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  [ Ty.path "usize" ],
-                  "index_mut",
-                  [],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "custom_allocator::CustomAllocator",
-                    "value"
-                  |);
-                  Value.Integer IntegerKind.Usize 0
-                ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "custom_allocator::CustomAllocator",
+                        "value"
+                      |)
+                    |);
+                    Value.Integer IntegerKind.Usize 0
+                  ]
+                |)
               |),
               UnOp.not (|
                 M.read (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::index::Index",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::index::Index",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
+                        [],
+                        [ Ty.path "usize" ],
+                        "index",
+                        [],
                         []
-                        [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
-                      [],
-                      [ Ty.path "usize" ],
-                      "index",
-                      [],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "custom_allocator::CustomAllocator",
-                        "value"
-                      |);
-                      Value.Integer IntegerKind.Usize 0
-                    ]
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "custom_allocator::CustomAllocator",
+                            "value"
+                          |)
+                        |);
+                        Value.Integer IntegerKind.Usize 0
+                      ]
+                    |)
                   |)
                 |)
               |)
@@ -187,27 +197,32 @@ Module Impl_custom_allocator_CustomAllocator.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::Index",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
+          M.deref (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::ops::index::Index",
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
+                [],
+                [ Ty.path "usize" ],
+                "index",
+                [],
                 []
-                [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
-              [],
-              [ Ty.path "usize" ],
-              "index",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "custom_allocator::CustomAllocator",
-                "value"
-              |);
-              Value.Integer IntegerKind.Usize 0
-            ]
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "custom_allocator::CustomAllocator",
+                    "value"
+                  |)
+                |);
+                Value.Integer IntegerKind.Usize 0
+              ]
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

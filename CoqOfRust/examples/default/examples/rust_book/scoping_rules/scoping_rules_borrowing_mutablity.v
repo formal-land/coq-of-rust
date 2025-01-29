@@ -36,7 +36,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
                         ltac:(M.monadic
                           (M.match_operator (|
                             Value.DeclaredButUndefined,
-                            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                           |)))
                     ]
                   |)))
@@ -89,49 +89,81 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "I immutably borrowed " |);
-                            M.read (| Value.String " - " |);
-                            M.read (| Value.String " edition
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "I immutably borrowed " |);
+                                  M.read (| Value.String " - " |);
+                                  M.read (| Value.String " edition
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| book |),
-                                  "scoping_rules_borrowing_mutablity::Book",
-                                  "title"
-                                |)
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.path "u32" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| book |),
-                                  "scoping_rules_borrowing_mutablity::Book",
-                                  "year"
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| book |) |),
+                                              "scoping_rules_borrowing_mutablity::Book",
+                                              "title"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| book |) |),
+                                              "scoping_rules_borrowing_mutablity::Book",
+                                              "year"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -162,7 +194,7 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
         let~ _ :=
           M.write (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| book |),
+              M.deref (| M.read (| book |) |),
               "scoping_rules_borrowing_mutablity::Book",
               "year"
             |),
@@ -182,49 +214,81 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "I mutably borrowed " |);
-                            M.read (| Value.String " - " |);
-                            M.read (| Value.String " edition
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "I mutably borrowed " |);
+                                  M.read (| Value.String " - " |);
+                                  M.read (| Value.String " edition
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| book |),
-                                  "scoping_rules_borrowing_mutablity::Book",
-                                  "title"
-                                |)
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.path "u32" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| book |),
-                                  "scoping_rules_borrowing_mutablity::Book",
-                                  "year"
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| book |) |),
+                                              "scoping_rules_borrowing_mutablity::Book",
+                                              "title"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| book |) |),
+                                              "scoping_rules_borrowing_mutablity::Book",
+                                              "year"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -288,21 +352,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [], [] |),
-              [ immutabook ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, immutabook |) |)
+                |)
+              ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [], [] |),
-              [ mutabook ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, mutabook |) |)
+                |)
+              ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_borrowing_mutablity::new_edition", [], [] |),
-              [ mutabook ]
+              [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (| M.borrow (| Pointer.Kind.MutRef, mutabook |) |)
+                |)
+              ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

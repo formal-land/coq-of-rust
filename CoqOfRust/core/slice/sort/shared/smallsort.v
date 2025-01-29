@@ -76,7 +76,8 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| v |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |)
+                                    ]
                                   |),
                                   Value.Integer IntegerKind.Usize 2
                                 |)
@@ -92,9 +93,12 @@ Module slice.
                                   [ T; F ]
                                 |),
                                 [
-                                  M.read (| v |);
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
                                   Value.Integer IntegerKind.Usize 1;
-                                  M.read (| is_less |)
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| is_less |) |)
+                                  |)
                                 ]
                               |)
                             |) in
@@ -176,7 +180,11 @@ Module slice.
                           [],
                           [ T; F ]
                         |),
-                        [ M.read (| v |); M.read (| scratch |); M.read (| is_less |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| scratch |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
+                        ]
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |)
@@ -255,7 +263,10 @@ Module slice.
                           [],
                           [ T; F ]
                         |),
-                        [ M.read (| v |); M.read (| is_less |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
+                        ]
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |)
@@ -342,7 +353,10 @@ Module slice.
                           [],
                           [ F ]
                         |),
-                        [ M.read (| v |); M.read (| is_less |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
+                        ]
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |)
@@ -494,7 +508,13 @@ Module slice.
                                   [],
                                   [ T; F ]
                                 |),
-                                [ M.read (| v |); M.read (| is_less |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| is_less |) |)
+                                  |)
+                                ]
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -508,7 +528,13 @@ Module slice.
                                   [],
                                   [ T; F ]
                                 |),
-                                [ M.read (| v |); M.read (| is_less |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| is_less |) |)
+                                  |)
+                                ]
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)))
@@ -743,7 +769,13 @@ Module slice.
                                   [],
                                   [ T; F ]
                                 |),
-                                [ M.read (| v |); M.read (| is_less |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| is_less |) |)
+                                  |)
+                                ]
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -789,7 +821,16 @@ Module slice.
                                           [],
                                           [ T; F ]
                                         |),
-                                        [ M.read (| v |); M.read (| is_less |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| v |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| is_less |) |)
+                                          |)
+                                        ]
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
@@ -803,7 +844,16 @@ Module slice.
                                           [],
                                           [ T; F ]
                                         |),
-                                        [ M.read (| v |); M.read (| is_less |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| v |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| is_less |) |)
+                                          |)
+                                        ]
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)))
@@ -891,7 +941,7 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| v |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                                 |),
                                 Value.Integer IntegerKind.Usize 2
                               |)
@@ -907,9 +957,12 @@ Module slice.
                                 [ T; F ]
                               |),
                               [
-                                M.read (| v |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
                                 Value.Integer IntegerKind.Usize 1;
-                                M.read (| is_less |)
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| is_less |) |)
+                                |)
                               ]
                             |)
                           |) in
@@ -967,37 +1020,42 @@ Module slice.
                   |) in
                 let~ scratch :=
                   M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::raw::from_raw_parts_mut",
-                        [],
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                      |),
-                      [
-                        M.rust_cast
-                          (M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                []
-                                [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts_mut",
+                            [],
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                          |),
+                          [
+                            M.rust_cast
+                              (M.call_closure (|
+                                M.get_associated_function (|
                                   Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 48 ]
-                                    [ T ]
-                                ],
-                              "as_mut_ptr",
-                              [],
-                              []
-                            |),
-                            [ stack_array ]
-                          |));
-                        M.read (|
-                          M.get_constant (|
-                            "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
-                          |)
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 48 ]
+                                        [ T ]
+                                    ],
+                                  "as_mut_ptr",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, stack_array |) ]
+                              |));
+                            M.read (|
+                              M.get_constant (|
+                                "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   |) in
                 let~ _ :=
@@ -1008,7 +1066,11 @@ Module slice.
                         [],
                         [ T; F ]
                       |),
-                      [ M.read (| v |); M.read (| scratch |); M.read (| is_less |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| scratch |) |) |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
+                      ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -1120,7 +1182,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -1173,7 +1235,12 @@ Module slice.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| scratch |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| scratch |) |)
+                                          |)
+                                        ]
                                       |),
                                       BinOp.Wrap.add (|
                                         M.read (| len |),
@@ -1206,7 +1273,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
                     let~ len_div_2 :=
@@ -1227,7 +1294,8 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.read (| scratch |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| scratch |) |) |)
+                            ]
                           |))
                       |) in
                     let~ presorted_len :=
@@ -1278,7 +1346,10 @@ Module slice.
                                           |),
                                           [ M.read (| scratch_base |); M.read (| len |) ]
                                         |);
-                                        M.read (| is_less |)
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| is_less |) |)
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -1324,7 +1395,10 @@ Module slice.
                                             |)
                                           ]
                                         |);
-                                        M.read (| is_less |)
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| is_less |) |)
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -1361,7 +1435,10 @@ Module slice.
                                                 (* MutToConstPointer *)
                                                 M.pointer_coercion (M.read (| v_base |));
                                                 M.read (| scratch_base |);
-                                                M.read (| is_less |)
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| is_less |) |)
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -1397,7 +1474,10 @@ Module slice.
                                                     M.read (| len_div_2 |)
                                                   ]
                                                 |);
-                                                M.read (| is_less |)
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| is_less |) |)
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -1507,7 +1587,14 @@ Module slice.
                                               [],
                                               []
                                             |),
-                                            [ iter ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -1636,7 +1723,17 @@ Module slice.
                                                                       [],
                                                                       []
                                                                     |),
-                                                                    [ iter ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            iter
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |),
                                                                 [
@@ -1736,7 +1833,14 @@ Module slice.
                                                                                   M.read (| i |)
                                                                                 ]
                                                                               |);
-                                                                              M.read (| is_less |)
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    is_less
+                                                                                  |)
+                                                                                |)
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         |) in
@@ -1774,24 +1878,38 @@ Module slice.
                             [ T; F ]
                           |),
                           [
-                            M.call_closure (|
-                              M.get_function (| "core::ptr::slice_from_raw_parts", [], [ T ] |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    drop_guard,
-                                    "core::slice::sort::shared::smallsort::CopyOnDrop",
-                                    "src"
-                                  |)
-                                |);
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    drop_guard,
-                                    "core::slice::sort::shared::smallsort::CopyOnDrop",
-                                    "len"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "core::ptr::slice_from_raw_parts",
+                                        [],
+                                        [ T ]
+                                      |),
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            drop_guard,
+                                            "core::slice::sort::shared::smallsort::CopyOnDrop",
+                                            "src"
+                                          |)
+                                        |);
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            drop_guard,
+                                            "core::slice::sort::shared::smallsort::CopyOnDrop",
+                                            "len"
+                                          |)
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |)
-                              ]
+                              |)
                             |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
@@ -1800,7 +1918,7 @@ Module slice.
                                 "dst"
                               |)
                             |);
-                            M.read (| is_less |)
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                           ]
                         |)
                       |) in
@@ -1871,21 +1989,21 @@ Module slice.
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::slice::sort::shared::smallsort::CopyOnDrop",
                               "src"
                             |)
                           |);
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::slice::sort::shared::smallsort::CopyOnDrop",
                               "dst"
                             |)
                           |);
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::slice::sort::shared::smallsort::CopyOnDrop",
                               "len"
                             |)
@@ -1994,7 +2112,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -2093,7 +2211,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
                     let~ initial_region_len :=
@@ -2116,9 +2234,23 @@ Module slice.
                       |) in
                     let~ region :=
                       M.alloc (|
-                        M.call_closure (|
-                          M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
-                          [ M.read (| v_base |); M.read (| initial_region_len |) ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_function (|
+                                    "core::ptr::slice_from_raw_parts_mut",
+                                    [],
+                                    [ T ]
+                                  |),
+                                  [ M.read (| v_base |); M.read (| initial_region_len |) ]
+                                |)
+                              |)
+                            |)
+                          |)
                         |)
                       |) in
                     let~ _ :=
@@ -2142,7 +2274,12 @@ Module slice.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| region |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| region |) |)
+                                                  |)
+                                                ]
                                               |),
                                               Value.Integer IntegerKind.Usize 13
                                             |)
@@ -2160,7 +2297,16 @@ Module slice.
                                               [],
                                               [ T; F ]
                                             |),
-                                            [ M.read (| region |); M.read (| is_less |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| region |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| is_less |) |)
+                                              |)
+                                            ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Integer IntegerKind.Usize 13 |)));
@@ -2182,7 +2328,12 @@ Module slice.
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.read (| region |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| region |) |)
+                                                          |)
+                                                        ]
                                                       |),
                                                       Value.Integer IntegerKind.Usize 9
                                                     |)
@@ -2200,7 +2351,16 @@ Module slice.
                                                       [],
                                                       [ T; F ]
                                                     |),
-                                                    [ M.read (| region |); M.read (| is_less |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| region |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| is_less |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Integer IntegerKind.Usize 9 |)));
@@ -2221,9 +2381,15 @@ Module slice.
                                   [ T; F ]
                                 |),
                                 [
-                                  M.read (| region |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| region |) |)
+                                  |);
                                   M.read (| presorted_len |);
-                                  M.read (| is_less |)
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| is_less |) |)
+                                  |)
                                 ]
                               |)
                             |) in
@@ -2264,7 +2430,12 @@ Module slice.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| region |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| region |) |)
+                                                |)
+                                              ]
                                             |),
                                             (* MutToConstPointer *)
                                             M.pointer_coercion (M.read (| v_base |))
@@ -2282,24 +2453,37 @@ Module slice.
                           let~ _ :=
                             M.write (|
                               region,
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::ptr::slice_from_raw_parts_mut",
-                                  [],
-                                  [ T ]
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| v_base |); M.read (| len_div_2 |) ]
-                                  |);
-                                  BinOp.Wrap.sub (| M.read (| len |), M.read (| len_div_2 |) |)
-                                ]
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::ptr::slice_from_raw_parts_mut",
+                                          [],
+                                          [ T ]
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "*mut") [] [ T ],
+                                              "add",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| v_base |); M.read (| len_div_2 |) ]
+                                          |);
+                                          BinOp.Wrap.sub (|
+                                            M.read (| len |),
+                                            M.read (| len_div_2 |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)))
@@ -2322,7 +2506,7 @@ Module slice.
                               [],
                               []
                             |),
-                            [ stack_array ]
+                            [ M.borrow (| Pointer.Kind.MutRef, stack_array |) ]
                           |))
                       |) in
                     let~ _ :=
@@ -2334,12 +2518,26 @@ Module slice.
                             [ T; F ]
                           |),
                           [
-                            M.call_closure (|
-                              M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
-                              [ M.read (| v_base |); M.read (| len |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "core::ptr::slice_from_raw_parts_mut",
+                                        [],
+                                        [ T ]
+                                      |),
+                                      [ M.read (| v_base |); M.read (| len |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |);
                             M.read (| scratch_base |);
-                            M.read (| is_less |)
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                           ]
                         |)
                       |) in
@@ -2448,7 +2646,24 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| is_less |); Value.Tuple [ M.read (| v_b |); M.read (| v_a |) ] ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |);
+                        Value.Tuple
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v_b |) |) |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v_a |) |) |)
+                              |)
+                            |)
+                          ]
+                      ]
                     |)
                   |) in
                 let~ left_swap :=
@@ -2514,17 +2729,30 @@ Module slice.
                     M.call_closure (|
                       M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                       [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
-                            [],
-                            [],
-                            "deref",
-                            [],
-                            []
-                          |),
-                          [ right_swap_tmp ]
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                      []
+                                      [ T ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, right_swap_tmp |) ]
+                                |)
+                              |)
+                            |)
+                          |)
                         |);
                         M.read (| v_b |);
                         Value.Integer IntegerKind.Usize 1
@@ -2607,7 +2835,8 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| v |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |)
+                                    ]
                                   |),
                                   Value.Integer IntegerKind.Usize 9
                                 |)
@@ -2634,7 +2863,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -2649,7 +2878,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 0;
                         Value.Integer IntegerKind.Usize 3;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2665,7 +2894,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 1;
                         Value.Integer IntegerKind.Usize 7;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2681,7 +2910,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 2;
                         Value.Integer IntegerKind.Usize 5;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2697,7 +2926,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 4;
                         Value.Integer IntegerKind.Usize 8;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2713,7 +2942,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 0;
                         Value.Integer IntegerKind.Usize 7;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2729,7 +2958,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 2;
                         Value.Integer IntegerKind.Usize 4;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2745,7 +2974,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 3;
                         Value.Integer IntegerKind.Usize 8;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2761,7 +2990,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 5;
                         Value.Integer IntegerKind.Usize 6;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2777,7 +3006,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 0;
                         Value.Integer IntegerKind.Usize 2;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2793,7 +3022,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 1;
                         Value.Integer IntegerKind.Usize 3;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2809,7 +3038,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 4;
                         Value.Integer IntegerKind.Usize 5;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2825,7 +3054,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 7;
                         Value.Integer IntegerKind.Usize 8;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2841,7 +3070,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 1;
                         Value.Integer IntegerKind.Usize 4;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2857,7 +3086,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 3;
                         Value.Integer IntegerKind.Usize 6;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2873,7 +3102,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 5;
                         Value.Integer IntegerKind.Usize 7;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2889,7 +3118,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 0;
                         Value.Integer IntegerKind.Usize 1;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2905,7 +3134,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 2;
                         Value.Integer IntegerKind.Usize 4;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2921,7 +3150,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 3;
                         Value.Integer IntegerKind.Usize 5;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2937,7 +3166,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 6;
                         Value.Integer IntegerKind.Usize 8;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2953,7 +3182,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 2;
                         Value.Integer IntegerKind.Usize 3;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2969,7 +3198,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 4;
                         Value.Integer IntegerKind.Usize 5;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -2985,7 +3214,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 6;
                         Value.Integer IntegerKind.Usize 7;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3001,7 +3230,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 1;
                         Value.Integer IntegerKind.Usize 2;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3017,7 +3246,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 3;
                         Value.Integer IntegerKind.Usize 4;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3033,7 +3262,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 5;
                         Value.Integer IntegerKind.Usize 6;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3133,7 +3362,8 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| v |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |)
+                                    ]
                                   |),
                                   Value.Integer IntegerKind.Usize 13
                                 |)
@@ -3160,7 +3390,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -3175,7 +3405,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 0;
                         Value.Integer IntegerKind.Usize 12;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3191,7 +3421,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 1;
                         Value.Integer IntegerKind.Usize 10;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3207,7 +3437,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 2;
                         Value.Integer IntegerKind.Usize 9;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3223,7 +3453,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 3;
                         Value.Integer IntegerKind.Usize 7;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3239,7 +3469,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 5;
                         Value.Integer IntegerKind.Usize 11;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3255,7 +3485,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 6;
                         Value.Integer IntegerKind.Usize 8;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3271,7 +3501,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 1;
                         Value.Integer IntegerKind.Usize 6;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3287,7 +3517,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 2;
                         Value.Integer IntegerKind.Usize 3;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3303,7 +3533,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 4;
                         Value.Integer IntegerKind.Usize 11;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3319,7 +3549,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 7;
                         Value.Integer IntegerKind.Usize 9;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3335,7 +3565,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 8;
                         Value.Integer IntegerKind.Usize 10;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3351,7 +3581,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 0;
                         Value.Integer IntegerKind.Usize 4;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3367,7 +3597,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 1;
                         Value.Integer IntegerKind.Usize 2;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3383,7 +3613,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 3;
                         Value.Integer IntegerKind.Usize 6;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3399,7 +3629,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 7;
                         Value.Integer IntegerKind.Usize 8;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3415,7 +3645,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 9;
                         Value.Integer IntegerKind.Usize 10;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3431,7 +3661,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 11;
                         Value.Integer IntegerKind.Usize 12;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3447,7 +3677,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 4;
                         Value.Integer IntegerKind.Usize 6;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3463,7 +3693,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 5;
                         Value.Integer IntegerKind.Usize 9;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3479,7 +3709,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 8;
                         Value.Integer IntegerKind.Usize 11;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3495,7 +3725,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 10;
                         Value.Integer IntegerKind.Usize 12;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3511,7 +3741,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 0;
                         Value.Integer IntegerKind.Usize 5;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3527,7 +3757,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 3;
                         Value.Integer IntegerKind.Usize 8;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3543,7 +3773,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 4;
                         Value.Integer IntegerKind.Usize 7;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3559,7 +3789,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 6;
                         Value.Integer IntegerKind.Usize 11;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3575,7 +3805,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 9;
                         Value.Integer IntegerKind.Usize 10;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3591,7 +3821,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 0;
                         Value.Integer IntegerKind.Usize 1;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3607,7 +3837,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 2;
                         Value.Integer IntegerKind.Usize 5;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3623,7 +3853,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 6;
                         Value.Integer IntegerKind.Usize 9;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3639,7 +3869,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 7;
                         Value.Integer IntegerKind.Usize 8;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3655,7 +3885,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 10;
                         Value.Integer IntegerKind.Usize 11;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3671,7 +3901,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 1;
                         Value.Integer IntegerKind.Usize 3;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3687,7 +3917,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 2;
                         Value.Integer IntegerKind.Usize 4;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3703,7 +3933,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 5;
                         Value.Integer IntegerKind.Usize 6;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3719,7 +3949,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 9;
                         Value.Integer IntegerKind.Usize 10;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3735,7 +3965,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 1;
                         Value.Integer IntegerKind.Usize 2;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3751,7 +3981,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 3;
                         Value.Integer IntegerKind.Usize 4;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3767,7 +3997,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 5;
                         Value.Integer IntegerKind.Usize 7;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3783,7 +4013,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 6;
                         Value.Integer IntegerKind.Usize 8;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3799,7 +4029,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 2;
                         Value.Integer IntegerKind.Usize 3;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3815,7 +4045,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 4;
                         Value.Integer IntegerKind.Usize 5;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3831,7 +4061,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 6;
                         Value.Integer IntegerKind.Usize 7;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3847,7 +4077,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 8;
                         Value.Integer IntegerKind.Usize 9;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3863,7 +4093,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 3;
                         Value.Integer IntegerKind.Usize 4;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3879,7 +4109,7 @@ Module slice.
                         M.read (| v_base |);
                         Value.Integer IntegerKind.Usize 5;
                         Value.Integer IntegerKind.Usize 6;
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -3978,8 +4208,31 @@ Module slice.
                                           []
                                         |),
                                         [
-                                          M.read (| is_less |);
-                                          Value.Tuple [ M.read (| tail |); M.read (| sift |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| is_less |) |)
+                                          |);
+                                          Value.Tuple
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| tail |) |)
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| sift |) |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
                                         ]
                                       |)
                                     |)
@@ -4023,20 +4276,30 @@ Module slice.
                           "core::slice::sort::shared::smallsort::CopyOnDrop"
                           [
                             ("src",
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                    []
-                                    [ T ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [ tmp ]
+                              M.borrow (|
+                                Pointer.Kind.ConstPointer,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                            []
+                                            [ T ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, tmp |) ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |));
                             ("dst", M.read (| tail |));
                             ("len", Value.Integer IntegerKind.Usize 1)
@@ -4133,26 +4396,49 @@ Module slice.
                                             []
                                           |),
                                           [
-                                            M.read (| is_less |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| is_less |) |)
+                                            |);
                                             Value.Tuple
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "core::mem::manually_drop::ManuallyDrop")
-                                                      []
-                                                      [ T ],
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ tmp ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::manually_drop::ManuallyDrop")
+                                                          []
+                                                          [ T ],
+                                                        [],
+                                                        [],
+                                                        "deref",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.Ref, tmp |)
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
                                                 |);
-                                                M.read (| sift |)
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| sift |) |)
+                                                    |)
+                                                  |)
+                                                |)
                                               ]
                                           ]
                                         |)
@@ -4228,7 +4514,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -4271,7 +4557,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 let~ v_end :=
@@ -4320,7 +4606,14 @@ Module slice.
                                     [],
                                     [ T; F ]
                                   |),
-                                  [ M.read (| v_base |); M.read (| tail |); M.read (| is_less |) ]
+                                  [
+                                    M.read (| v_base |);
+                                    M.read (| tail |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| is_less |) |)
+                                    |)
+                                  ]
                                 |)
                               |) in
                             let~ _ :=
@@ -4439,19 +4732,34 @@ Module slice.
                           []
                         |),
                         [
-                          M.read (| is_less |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |);
                           Value.Tuple
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [] [ T ],
-                                  "add",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| v_base |); Value.Integer IntegerKind.Usize 1 ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*const") [] [ T ],
+                                          "add",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| v_base |); Value.Integer IntegerKind.Usize 1 ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.read (| v_base |)
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v_base |) |) |)
+                                |)
+                              |)
                             ]
                         ]
                       |)
@@ -4472,26 +4780,46 @@ Module slice.
                           []
                         |),
                         [
-                          M.read (| is_less |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |);
                           Value.Tuple
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [] [ T ],
-                                  "add",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| v_base |); Value.Integer IntegerKind.Usize 3 ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*const") [] [ T ],
+                                          "add",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| v_base |); Value.Integer IntegerKind.Usize 3 ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [] [ T ],
-                                  "add",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| v_base |); Value.Integer IntegerKind.Usize 2 ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*const") [] [ T ],
+                                          "add",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| v_base |); Value.Integer IntegerKind.Usize 2 ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                         ]
@@ -4572,7 +4900,24 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| is_less |); Value.Tuple [ M.read (| c |); M.read (| a |) ] ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |);
+                          Value.Tuple
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| c |) |) |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |)
+                                |)
+                              |)
+                            ]
+                        ]
                       |)
                     |) in
                   let~ c4 :=
@@ -4590,7 +4935,24 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| is_less |); Value.Tuple [ M.read (| d |); M.read (| b |) ] ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |);
+                          Value.Tuple
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| d |) |) |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
+                                |)
+                              |)
+                            ]
+                        ]
                       |)
                     |) in
                   let~ min :=
@@ -4675,8 +5037,28 @@ Module slice.
                           []
                         |),
                         [
-                          M.read (| is_less |);
-                          Value.Tuple [ M.read (| unknown_right |); M.read (| unknown_left |) ]
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |);
+                          Value.Tuple
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| unknown_right |) |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| unknown_left |) |)
+                                  |)
+                                |)
+                              |)
+                            ]
                         ]
                       |)
                     |) in
@@ -4850,7 +5232,7 @@ Module slice.
                         [
                           (* MutToConstPointer *) M.pointer_coercion (M.read (| v_base |));
                           M.read (| scratch_base |);
-                          M.read (| is_less |)
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                         ]
                       |)
                     |) in
@@ -4883,7 +5265,7 @@ Module slice.
                             |),
                             [ M.read (| scratch_base |); Value.Integer IntegerKind.Usize 4 ]
                           |);
-                          M.read (| is_less |)
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                         ]
                       |)
                     |) in
@@ -4897,15 +5279,26 @@ Module slice.
                         [ T; F ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_function (| "core::ptr::slice_from_raw_parts", [], [ T ] |),
-                          [
-                            (* MutToConstPointer *) M.pointer_coercion (M.read (| scratch_base |));
-                            Value.Integer IntegerKind.Usize 8
-                          ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_function (| "core::ptr::slice_from_raw_parts", [], [ T ] |),
+                                  [
+                                    (* MutToConstPointer *)
+                                    M.pointer_coercion (M.read (| scratch_base |));
+                                    Value.Integer IntegerKind.Usize 8
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
                         |);
                         M.read (| dst |);
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -4977,8 +5370,28 @@ Module slice.
                             []
                           |),
                           [
-                            M.read (| is_less |);
-                            Value.Tuple [ M.read (| right_src |); M.read (| left_src |) ]
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |);
+                            Value.Tuple
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| right_src |) |)
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| left_src |) |)
+                                    |)
+                                  |)
+                                |)
+                              ]
                           ]
                         |)
                       |)
@@ -5118,8 +5531,28 @@ Module slice.
                             []
                           |),
                           [
-                            M.read (| is_less |);
-                            Value.Tuple [ M.read (| right_src |); M.read (| left_src |) ]
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |);
+                            Value.Tuple
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| right_src |) |)
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| left_src |) |)
+                                    |)
+                                  |)
+                                |)
+                              ]
                           ]
                         |)
                       |)
@@ -5300,7 +5733,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 let~ src :=
@@ -5312,7 +5745,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 let~ len_div_2 :=
@@ -5436,7 +5869,12 @@ Module slice.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -5471,7 +5909,10 @@ Module slice.
                                                     M.read (| left |);
                                                     M.read (| right |);
                                                     M.read (| dst |);
-                                                    M.read (| is_less |)
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| is_less |) |)
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -5508,7 +5949,10 @@ Module slice.
                                                     M.read (| left_rev |);
                                                     M.read (| right_rev |);
                                                     M.read (| dst_rev |);
-                                                    M.read (| is_less |)
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| is_less |) |)
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -5729,14 +6173,22 @@ Module slice.
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String
-                                "user-provided comparison function does not correctly implement a total order"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String
+                                      "user-provided comparison function does not correctly implement a total order"
+                                  |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)

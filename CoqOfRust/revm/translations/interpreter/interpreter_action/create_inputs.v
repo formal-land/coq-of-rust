@@ -47,10 +47,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "caller"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "caller"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -66,10 +74,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "scheme"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "scheme"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -88,10 +104,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "value"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "value"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -107,10 +131,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "init_code"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "init_code"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -126,10 +158,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "gas_limit"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "gas_limit"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -164,38 +204,90 @@ Module interpreter_action.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "CreateInputs" |);
-                M.read (| Value.String "caller" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                  "caller"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "CreateInputs" |) |)
                 |);
-                M.read (| Value.String "scheme" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                  "scheme"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "caller" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                        "caller"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "value" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                  "value"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "scheme" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                        "scheme"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "init_code" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                  "init_code"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "value" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "gas_limit" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                    "gas_limit"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "init_code" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                        "init_code"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "gas_limit" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "gas_limit"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -249,15 +341,21 @@ Module interpreter_action.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                          "caller"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "caller"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                          "caller"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "caller"
+                          |)
                         |)
                       ]
                     |),
@@ -273,15 +371,21 @@ Module interpreter_action.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                            "scheme"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "scheme"
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                            "scheme"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "scheme"
+                            |)
                           |)
                         ]
                       |)))
@@ -307,15 +411,21 @@ Module interpreter_action.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                          "value"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "value"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                          "value"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "value"
+                          |)
                         |)
                       ]
                     |)))
@@ -332,15 +442,21 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "init_code"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                          "init_code"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "init_code"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                          "init_code"
+                        |)
                       |)
                     ]
                   |)))
@@ -349,14 +465,14 @@ Module interpreter_action.
                 (BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                       "gas_limit"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                       "gas_limit"
                     |)
@@ -462,12 +578,20 @@ Module interpreter_action.
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "caller"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "caller"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -484,12 +608,20 @@ Module interpreter_action.
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "scheme"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "scheme"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -509,12 +641,20 @@ Module interpreter_action.
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "value"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "value"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -531,12 +671,20 @@ Module interpreter_action.
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "init_code"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                              "init_code"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -552,12 +700,20 @@ Module interpreter_action.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                      "gas_limit"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "gas_limit"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |)
@@ -596,7 +752,7 @@ Module interpreter_action.
             M.read (|
               M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                   "scheme"
                 |),
@@ -617,10 +773,13 @@ Module interpreter_action.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                              "caller"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                                "caller"
+                              |)
                             |);
                             M.read (| nonce |)
                           ]
@@ -653,10 +812,13 @@ Module interpreter_action.
                             ]
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                              "caller"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                                "caller"
+                              |)
                             |);
                             M.call_closure (|
                               M.get_associated_function (|
@@ -674,12 +836,15 @@ Module interpreter_action.
                                 ],
                                 []
                               |),
-                              [ salt ]
+                              [ M.borrow (| Pointer.Kind.Ref, salt |) ]
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                              "init_code"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                                "init_code"
+                              |)
                             |)
                           ]
                         |)

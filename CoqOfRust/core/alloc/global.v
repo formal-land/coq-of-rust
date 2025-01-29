@@ -26,7 +26,7 @@ Module alloc.
                       [],
                       []
                     |),
-                    [ layout ]
+                    [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                   |)
                 |) in
               let~ ptr :=
@@ -41,7 +41,10 @@ Module alloc.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| layout |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.read (| layout |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -117,7 +120,7 @@ Module alloc.
                           [],
                           []
                         |),
-                        [ layout ]
+                        [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                       |)
                     ]
                   |)
@@ -134,7 +137,10 @@ Module alloc.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| new_layout |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.read (| new_layout |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -181,7 +187,7 @@ Module alloc.
                                         [],
                                         []
                                       |),
-                                      [ layout ]
+                                      [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                     |);
                                     M.read (| new_size |)
                                   ]
@@ -201,7 +207,11 @@ Module alloc.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| ptr |); M.read (| layout |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| ptr |);
+                                M.read (| layout |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));

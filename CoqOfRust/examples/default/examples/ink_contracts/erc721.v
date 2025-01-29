@@ -189,7 +189,7 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -233,10 +233,18 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
         let other := M.alloc (| other |) in
         BinOp.eq (|
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "erc721::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| self |) |),
+              "erc721::AccountId",
+              0
+            |)
           |),
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "erc721::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| other |) |),
+              "erc721::AccountId",
+              0
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -468,7 +476,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
                   [],
                   [ Ty.path "erc721::Error" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -479,7 +487,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
                   [],
                   [ Ty.path "erc721::Error" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -530,7 +538,7 @@ Module Impl_core_clone_Clone_for_erc721_Error.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.read (| self |) |)))
+        M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -628,7 +636,11 @@ Module Impl_erc721_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "erc721::Env", "caller" |)
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "erc721::Env",
+            "caller"
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -732,12 +744,15 @@ Module Impl_erc721_Erc721.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "erc721::Erc721",
-                  "owned_tokens_count"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "erc721::Erc721",
+                    "owned_tokens_count"
+                  |)
                 |);
-                M.read (| of |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| of |) |) |)
               ]
             |);
             M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |)
@@ -774,10 +789,13 @@ Module Impl_erc721_Erc721.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "erc721::Erc721",
-                    "token_approvals"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "erc721::Erc721",
+                      "token_approvals"
+                    |)
                   |);
                   M.read (| id |)
                 ]
@@ -815,12 +833,23 @@ Module Impl_erc721_Erc721.
             []
           |),
           [
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "erc721::Erc721",
-              "operator_approvals"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "erc721::Erc721",
+                "operator_approvals"
+              |)
             |);
-            M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
+                |)
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -848,12 +877,15 @@ Module Impl_erc721_Erc721.
             []
           |),
           [
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "erc721::Erc721",
-              "token_owner"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "erc721::Erc721",
+                "token_owner"
+              |)
             |);
-            id
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, id |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -885,7 +917,8 @@ Module Impl_erc721_Erc721.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [], [] |),
-                [ M.read (| self |); M.read (| id |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| id |)
+                ]
               |)
             |) in
           M.alloc (|
@@ -901,34 +934,37 @@ Module Impl_erc721_Erc721.
                   []
                 |),
                 [
-                  from;
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::convert::From",
-                            Ty.path "erc721::AccountId",
-                            [],
+                  M.borrow (| Pointer.Kind.Ref, from |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::From",
+                              Ty.path "erc721::AccountId",
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  [ Ty.path "u8" ]
+                              ],
+                              "from",
+                              [],
+                              []
+                            |),
                             [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 32 ]
-                                [ Ty.path "u8" ]
-                            ],
-                            "from",
-                            [],
-                            []
-                          |),
-                          [
-                            repeat (|
-                              Value.Integer IntegerKind.U8 0,
-                              Value.Integer IntegerKind.Usize 32
-                            |)
-                          ]
-                        |)
-                      ]
+                              repeat (|
+                                Value.Integer IntegerKind.U8 0,
+                                Value.Integer IntegerKind.Usize 32
+                              |)
+                            ]
+                          |)
+                        ]
+                    |)
                   |)
                 ]
               |),
@@ -953,7 +989,10 @@ Module Impl_erc721_Erc721.
                         [],
                         []
                       |),
-                      [ from; owner ]
+                      [
+                        M.borrow (| Pointer.Kind.Ref, from |);
+                        M.borrow (| Pointer.Kind.Ref, owner |)
+                      ]
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
@@ -975,26 +1014,35 @@ Module Impl_erc721_Erc721.
                           []
                         |),
                         [
-                          from;
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "erc721::Mapping")
+                          M.borrow (| Pointer.Kind.Ref, from |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "erc721::Mapping")
+                                    []
+                                    [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
+                                  "get",
+                                  [],
                                   []
-                                  [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
-                                "get",
-                                [],
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "erc721::Erc721",
-                                  "token_approvals"
-                                |);
-                                id
-                              ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "erc721::Erc721",
+                                      "token_approvals"
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, id |) |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |)
                         ]
@@ -1009,7 +1057,7 @@ Module Impl_erc721_Erc721.
                         []
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -1020,7 +1068,13 @@ Module Impl_erc721_Erc721.
                             [],
                             []
                           |),
-                          [ M.read (| owner |); M.read (| Value.String "Error with AccountId" |) ]
+                          [
+                            M.read (| owner |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Error with AccountId" |) |)
+                            |)
+                          ]
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1032,7 +1086,13 @@ Module Impl_erc721_Erc721.
                             [],
                             []
                           |),
-                          [ M.read (| from |); M.read (| Value.String "Error with AccountId" |) ]
+                          [
+                            M.read (| from |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Error with AccountId" |) |)
+                            |)
+                          ]
                         |)
                       ]
                     |)))
@@ -1065,12 +1125,15 @@ Module Impl_erc721_Erc721.
             []
           |),
           [
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "erc721::Erc721",
-              "token_owner"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "erc721::Erc721",
+                "token_owner"
+              |)
             |);
-            id
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, id |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1091,7 +1154,10 @@ Module Impl_erc721_Erc721.
         let owner := M.alloc (| owner |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "erc721::Erc721", "balance_of_or_zero", [], [] |),
-          [ M.read (| self |); owner ]
+          [
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, owner |) |) |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1117,12 +1183,15 @@ Module Impl_erc721_Erc721.
             []
           |),
           [
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "erc721::Erc721",
-              "token_approvals"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "erc721::Erc721",
+                "token_approvals"
+              |)
             |);
-            id
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, id |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1144,7 +1213,11 @@ Module Impl_erc721_Erc721.
         let operator := M.alloc (| operator |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "erc721::Erc721", "approved_for_all", [], [] |),
-          [ M.read (| self |); M.read (| owner |); M.read (| operator |) ]
+          [
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+            M.read (| owner |);
+            M.read (| operator |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1188,10 +1261,13 @@ Module Impl_erc721_Erc721.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -1216,7 +1292,10 @@ Module Impl_erc721_Erc721.
                                   [],
                                   []
                                 |),
-                                [ to; caller ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, to |);
+                                  M.borrow (| Pointer.Kind.Ref, caller |)
+                                ]
                               |)
                             |)) in
                         let _ :=
@@ -1240,10 +1319,13 @@ Module Impl_erc721_Erc721.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       Value.StructTuple
@@ -1286,10 +1368,13 @@ Module Impl_erc721_Erc721.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "erc721::Erc721",
-                                  "operator_approvals"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "erc721::Erc721",
+                                    "operator_approvals"
+                                  |)
                                 |);
                                 Value.Tuple [ M.read (| caller |); M.read (| to |) ];
                                 Value.Tuple []
@@ -1316,10 +1401,13 @@ Module Impl_erc721_Erc721.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "erc721::Erc721",
-                                  "operator_approvals"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "erc721::Erc721",
+                                    "operator_approvals"
+                                  |)
                                 |);
                                 Value.Tuple [ M.read (| caller |); M.read (| to |) ]
                               ]
@@ -1377,7 +1465,11 @@ Module Impl_erc721_Erc721.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| to |); M.read (| approved |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.read (| to |);
+                            M.read (| approved |)
+                          ]
                         |)
                       ]
                     |)
@@ -1488,10 +1580,13 @@ Module Impl_erc721_Erc721.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -1501,7 +1596,10 @@ Module Impl_erc721_Erc721.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [], [] |),
-                    [ M.read (| self |); M.read (| id |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.read (| id |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -1534,11 +1632,14 @@ Module Impl_erc721_Erc721.
                                       []
                                     |),
                                     [
-                                      owner;
-                                      M.alloc (|
-                                        Value.StructTuple
-                                          "core::option::Option::Some"
-                                          [ M.read (| caller |) ]
+                                      M.borrow (| Pointer.Kind.Ref, owner |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [ M.read (| caller |) ]
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -1551,7 +1652,10 @@ Module Impl_erc721_Erc721.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
@@ -1564,7 +1668,12 @@ Module Impl_erc721_Erc721.
                                           |),
                                           [
                                             M.read (| owner |);
-                                            M.read (| Value.String "Error with AccountId" |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (| Value.String "Error with AccountId" |)
+                                              |)
+                                            |)
                                           ]
                                         |);
                                         M.read (| caller |)
@@ -1609,29 +1718,32 @@ Module Impl_erc721_Erc721.
                                   []
                                 |),
                                 [
-                                  M.read (| to |);
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::From",
-                                        Ty.path "erc721::AccountId",
-                                        [],
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| to |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::convert::From",
+                                          Ty.path "erc721::AccountId",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                              [ Ty.path "u8" ]
+                                          ],
+                                          "from",
+                                          [],
+                                          []
+                                        |),
                                         [
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 32 ]
-                                            [ Ty.path "u8" ]
-                                        ],
-                                        "from",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        repeat (|
-                                          Value.Integer IntegerKind.U8 0,
-                                          Value.Integer IntegerKind.Usize 32
-                                        |)
-                                      ]
+                                          repeat (|
+                                            Value.Integer IntegerKind.U8 0,
+                                            Value.Integer IntegerKind.Usize 32
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -1673,12 +1785,18 @@ Module Impl_erc721_Erc721.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "erc721::Erc721",
-                                    "token_approvals"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "erc721::Erc721",
+                                      "token_approvals"
+                                    |)
                                   |);
-                                  id
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, id |) |)
+                                  |)
                                 ]
                               |)
                             |)) in
@@ -1710,13 +1828,16 @@ Module Impl_erc721_Erc721.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "erc721::Erc721",
-                                  "token_approvals"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "erc721::Erc721",
+                                    "token_approvals"
+                                  |)
                                 |);
                                 M.read (| id |);
-                                M.read (| M.read (| to |) |)
+                                M.read (| M.deref (| M.read (| to |) |) |)
                               ]
                             |)
                           |) in
@@ -1728,10 +1849,13 @@ Module Impl_erc721_Erc721.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       Value.StructTuple
@@ -1741,7 +1865,7 @@ Module Impl_erc721_Erc721.
                             "erc721::Approval"
                             [
                               ("from", M.read (| caller |));
-                              ("to", M.read (| M.read (| to |) |));
+                              ("to", M.read (| M.deref (| M.read (| to |) |) |));
                               ("id", M.read (| id |))
                             ]
                         ]
@@ -1796,7 +1920,14 @@ Module Impl_erc721_Erc721.
                             [],
                             []
                           |),
-                          [ M.read (| self |); to; M.read (| id |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, to |) |)
+                            |);
+                            M.read (| id |)
+                          ]
                         |)
                       ]
                     |)
@@ -1934,7 +2065,16 @@ Module Impl_erc721_Erc721.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| token_owner |); id ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| token_owner |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, id |) |)
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |)) in
@@ -2012,7 +2152,16 @@ Module Impl_erc721_Erc721.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| owned_tokens_count |); M.read (| from |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| owned_tokens_count |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| from |) |)
+                                              |)
+                                            ]
                                           |);
                                           M.closure
                                             (fun γ =>
@@ -2114,8 +2263,11 @@ Module Impl_erc721_Erc721.
                               []
                             |),
                             [
-                              M.read (| owned_tokens_count |);
-                              M.read (| M.read (| from |) |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.read (| owned_tokens_count |) |)
+                              |);
+                              M.read (| M.deref (| M.read (| from |) |) |);
                               M.read (| count |)
                             ]
                           |)
@@ -2132,7 +2284,13 @@ Module Impl_erc721_Erc721.
                               [],
                               []
                             |),
-                            [ M.read (| token_owner |); M.read (| id |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| token_owner |) |)
+                              |);
+                              M.read (| id |)
+                            ]
                           |)
                         |) in
                       M.alloc (|
@@ -2231,10 +2389,13 @@ Module Impl_erc721_Erc721.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -2264,7 +2425,18 @@ Module Impl_erc721_Erc721.
                             [],
                             []
                           |),
-                          [ M.read (| self |); caller; destination; M.read (| id |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, caller |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, destination |) |)
+                            |);
+                            M.read (| id |)
+                          ]
                         |)
                       ]
                     |)
@@ -2376,7 +2548,18 @@ Module Impl_erc721_Erc721.
                             [],
                             []
                           |),
-                          [ M.read (| self |); from; to; M.read (| id |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, from |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, to |) |)
+                            |);
+                            M.read (| id |)
+                          ]
                         |)
                       ]
                     |)
@@ -2469,10 +2652,13 @@ Module Impl_erc721_Erc721.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -2502,7 +2688,14 @@ Module Impl_erc721_Erc721.
                             [],
                             []
                           |),
-                          [ M.read (| self |); caller; M.read (| id |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, caller |) |)
+                            |);
+                            M.read (| id |)
+                          ]
                         |)
                       ]
                     |)
@@ -2565,10 +2758,13 @@ Module Impl_erc721_Erc721.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       Value.StructTuple

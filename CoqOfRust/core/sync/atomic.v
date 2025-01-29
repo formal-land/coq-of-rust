@@ -186,7 +186,7 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -211,7 +211,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
                     self,
@@ -221,31 +221,56 @@ Module sync.
                           (let γ := M.read (| γ |) in
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
-                          M.alloc (| M.read (| Value.String "Relaxed" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Relaxed" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
-                          M.alloc (| M.read (| Value.String "Release" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Release" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
-                          M.alloc (| M.read (| Value.String "Acquire" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Acquire" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
-                          M.alloc (| M.read (| Value.String "AcqRel" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "AcqRel" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
-                          M.alloc (| M.read (| Value.String "SeqCst" |) |)))
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "SeqCst" |) |)
+                            |)
+                          |)))
                     ]
                   |)
                 |)
@@ -318,7 +343,7 @@ Module sync.
                       [],
                       [ Ty.path "core::sync::atomic::Ordering" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -329,7 +354,7 @@ Module sync.
                       [],
                       [ Ty.path "core::sync::atomic::Ordering" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -364,7 +389,7 @@ Module sync.
                       [],
                       [ Ty.path "core::sync::atomic::Ordering" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -378,7 +403,13 @@ Module sync.
                     [],
                     [ __H ]
                   |),
-                  [ __self_discr; M.read (| state |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -451,14 +482,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "bool" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicBool" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "bool" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicBool" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -476,22 +517,45 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
-              (M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                  "get",
-                  [],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::sync::atomic::AtomicBool",
-                    "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                                  "get",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::sync::atomic::AtomicBool",
+                                      "v"
+                                    |)
+                                  |)
+                                ]
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                ]
-              |))))
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -509,7 +573,36 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| v |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -526,7 +619,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -545,7 +667,36 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| v |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -614,10 +765,13 @@ Module sync.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::sync::atomic::AtomicBool",
-                          "v"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicBool",
+                            "v"
+                          |)
                         |)
                       ]
                     |));
@@ -661,10 +815,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicBool",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicBool",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -725,7 +882,14 @@ Module sync.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); Value.Bool true; M.read (| order |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    Value.Bool true;
+                                    M.read (| order |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -738,7 +902,14 @@ Module sync.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); Value.Bool false; M.read (| order |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    Value.Bool false;
+                                    M.read (| order |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -762,10 +933,13 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::sync::atomic::AtomicBool",
-                                    "v"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::sync::atomic::AtomicBool",
+                                      "v"
+                                    |)
                                   |)
                                 ]
                               |);
@@ -811,7 +985,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -983,14 +1157,22 @@ Module sync.
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "there is no such thing as an acquire-release failure ordering"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "there is no such thing as an acquire-release failure ordering"
+                                                          |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1078,14 +1260,22 @@ Module sync.
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "there is no such thing as a release failure ordering"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "there is no such thing as a release failure ordering"
+                                                          |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1138,7 +1328,14 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |); Value.Bool false; M.read (| order |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
+                                        Value.Bool false;
+                                        M.read (| order |)
+                                      ]
                                     |)
                                   |)));
                               fun γ =>
@@ -1151,7 +1348,14 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |); M.read (| new |); M.read (| order |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
+                                        M.read (| new |);
+                                        M.read (| order |)
+                                      ]
                                     |)
                                   |)))
                             ]
@@ -1201,10 +1405,13 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::sync::atomic::AtomicBool",
-                                    "v"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::sync::atomic::AtomicBool",
+                                      "v"
+                                    |)
                                   |)
                                 ]
                               |);
@@ -1311,7 +1518,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| current |);
                                         M.read (| new |);
                                         M.read (| success |);
@@ -1342,10 +1552,13 @@ Module sync.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::sync::atomic::AtomicBool",
-                                "v"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::sync::atomic::AtomicBool",
+                                  "v"
+                                |)
                               |)
                             ]
                           |);
@@ -1420,10 +1633,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicBool",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicBool",
+                          "v"
+                        |)
                       |)
                     ]
                   |);
@@ -1478,7 +1694,11 @@ Module sync.
                             [],
                             []
                           |),
-                          [ M.read (| self |); Value.Bool true; M.read (| order |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.Bool true;
+                            M.read (| order |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1491,7 +1711,11 @@ Module sync.
                             [],
                             []
                           |),
-                          [ M.read (| self |); Value.Bool true; M.read (| order |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.Bool true;
+                            M.read (| order |)
+                          ]
                         |)
                       |)))
                 ]
@@ -1527,10 +1751,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicBool",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicBool",
+                          "v"
+                        |)
                       |)
                     ]
                   |);
@@ -1570,10 +1797,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicBool",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicBool",
+                          "v"
+                        |)
                       |)
                     ]
                   |);
@@ -1606,7 +1836,11 @@ Module sync.
                 [],
                 []
               |),
-              [ M.read (| self |); Value.Bool true; M.read (| order |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                Value.Bool true;
+                M.read (| order |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1639,10 +1873,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicBool",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicBool",
+                        "v"
+                      |)
                     |)
                   ]
                 |)
@@ -1693,7 +1930,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -1716,7 +1956,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -1736,7 +1979,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -1848,14 +2094,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
-                "cast",
-                [],
-                [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
+                        "cast",
+                        [],
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1875,23 +2131,36 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::cell::UnsafeCell")
-                  []
-                  [ Ty.apply (Ty.path "*mut") [] [ T ] ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicPtr",
-                  "p"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::cell::UnsafeCell")
+                          []
+                          [ Ty.apply (Ty.path "*mut") [] [ T ] ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicPtr",
+                            "p"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1916,16 +2185,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1952,7 +2250,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1980,7 +2307,36 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| v |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2059,10 +2415,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicPtr",
-                        "p"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicPtr",
+                          "p"
+                        |)
                       |)
                     ]
                   |));
@@ -2113,10 +2472,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicPtr",
-                            "p"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicPtr",
+                              "p"
+                            |)
                           |)
                         ]
                       |);
@@ -2166,10 +2528,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicPtr",
-                      "p"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicPtr",
+                        "p"
+                      |)
                     |)
                   ]
                 |);
@@ -2217,7 +2582,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -2308,10 +2673,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicPtr",
-                      "p"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicPtr",
+                        "p"
+                      |)
                     |)
                   ]
                 |);
@@ -2376,10 +2744,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicPtr",
-                      "p"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicPtr",
+                        "p"
+                      |)
                     |)
                   ]
                 |);
@@ -2442,7 +2813,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -2465,7 +2839,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -2485,7 +2862,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -2572,7 +2952,7 @@ Module sync.
                 []
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
                   [
@@ -2616,7 +2996,7 @@ Module sync.
                 []
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
                   [
@@ -2674,10 +3054,13 @@ Module sync.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::sync::atomic::AtomicPtr",
-                          "p"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicPtr",
+                            "p"
+                          |)
                         |)
                       ]
                     |);
@@ -2737,10 +3120,13 @@ Module sync.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::sync::atomic::AtomicPtr",
-                          "p"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicPtr",
+                            "p"
+                          |)
                         |)
                       ]
                     |);
@@ -2795,10 +3181,13 @@ Module sync.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::sync::atomic::AtomicPtr",
-                          "p"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicPtr",
+                            "p"
+                          |)
                         |)
                       ]
                     |);
@@ -2853,10 +3242,13 @@ Module sync.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::sync::atomic::AtomicPtr",
-                          "p"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicPtr",
+                            "p"
+                          |)
                         |)
                       ]
                     |);
@@ -2911,10 +3303,13 @@ Module sync.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::sync::atomic::AtomicPtr",
-                          "p"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicPtr",
+                            "p"
+                          |)
                         |)
                       ]
                     |);
@@ -2956,10 +3351,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicPtr",
-                  "p"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicPtr",
+                    "p"
+                  |)
                 |)
               ]
             |)))
@@ -3129,21 +3527,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "i8", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicI8",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicI8",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3211,14 +3617,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicI8" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicI8" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3235,20 +3651,33 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicI8",
-                  "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicI8",
+                            "v"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3270,16 +3699,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3298,7 +3756,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3320,16 +3807,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3395,10 +3911,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicI8",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicI8",
+                          "v"
+                        |)
                       |)
                     ]
                   |));
@@ -3437,10 +3956,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicI8",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicI8",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -3480,10 +4002,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -3529,7 +4054,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -3608,10 +4133,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -3663,10 +4191,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -3706,10 +4237,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -3746,10 +4280,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -3786,10 +4323,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -3826,10 +4366,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -3866,10 +4409,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -3906,10 +4452,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -3958,7 +4507,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -3981,7 +4533,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -4001,7 +4556,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -4085,10 +4643,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -4125,10 +4686,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -4159,10 +4723,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicI8",
-                  "v"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicI8",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -4261,21 +4828,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "u8", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicU8",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicU8",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4343,14 +4918,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicU8" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicU8" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4367,20 +4952,33 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicU8",
-                  "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicU8",
+                            "v"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4402,16 +5000,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4430,7 +5057,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4452,16 +5108,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4527,10 +5212,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicU8",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicU8",
+                          "v"
+                        |)
                       |)
                     ]
                   |));
@@ -4569,10 +5257,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicU8",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicU8",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -4612,10 +5303,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -4661,7 +5355,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -4740,10 +5434,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -4795,10 +5492,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -4838,10 +5538,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -4878,10 +5581,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -4918,10 +5624,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -4958,10 +5667,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -4998,10 +5710,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -5038,10 +5753,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -5090,7 +5808,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -5113,7 +5834,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -5133,7 +5857,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -5217,10 +5944,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -5257,10 +5987,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU8",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU8",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -5291,10 +6024,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicU8",
-                  "v"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicU8",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -5403,21 +6139,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "i16", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicI16",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicI16",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5485,14 +6229,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "i16" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicI16" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "i16" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicI16" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5509,20 +6263,33 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicI16",
-                  "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicI16",
+                            "v"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5544,16 +6311,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5572,7 +6368,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5594,16 +6419,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5669,10 +6523,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicI16",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicI16",
+                          "v"
+                        |)
                       |)
                     ]
                   |));
@@ -5711,10 +6568,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicI16",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicI16",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -5754,10 +6614,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -5803,7 +6666,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -5882,10 +6745,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -5937,10 +6803,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -5980,10 +6849,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -6020,10 +6892,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -6060,10 +6935,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -6100,10 +6978,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -6140,10 +7021,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -6180,10 +7064,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -6232,7 +7119,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -6255,7 +7145,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -6275,7 +7168,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -6359,10 +7255,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -6399,10 +7298,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -6433,10 +7335,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicI16",
-                  "v"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicI16",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -6545,21 +7450,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "u16", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicU16",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicU16",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6627,14 +7540,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicU16" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicU16" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6651,20 +7574,33 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicU16",
-                  "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicU16",
+                            "v"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6686,16 +7622,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6714,7 +7679,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6736,16 +7730,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6811,10 +7834,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicU16",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicU16",
+                          "v"
+                        |)
                       |)
                     ]
                   |));
@@ -6853,10 +7879,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicU16",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicU16",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -6896,10 +7925,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -6945,7 +7977,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -7024,10 +8056,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -7079,10 +8114,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -7122,10 +8160,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -7162,10 +8203,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -7202,10 +8246,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -7242,10 +8289,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -7282,10 +8332,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -7322,10 +8375,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -7374,7 +8430,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -7397,7 +8456,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -7417,7 +8479,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -7501,10 +8566,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -7541,10 +8609,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU16",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU16",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -7575,10 +8646,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicU16",
-                  "v"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicU16",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -7687,21 +8761,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "i32", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicI32",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicI32",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7769,14 +8851,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "i32" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicI32" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "i32" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicI32" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7793,20 +8885,33 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicI32",
-                  "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicI32",
+                            "v"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7828,16 +8933,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7856,7 +8990,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7878,16 +9041,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7953,10 +9145,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicI32",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicI32",
+                          "v"
+                        |)
                       |)
                     ]
                   |));
@@ -7995,10 +9190,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicI32",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicI32",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -8038,10 +9236,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8087,7 +9288,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -8166,10 +9367,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8221,10 +9425,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8264,10 +9471,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8304,10 +9514,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8344,10 +9557,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8384,10 +9600,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8424,10 +9643,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8464,10 +9686,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8516,7 +9741,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -8539,7 +9767,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -8559,7 +9790,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -8643,10 +9877,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8683,10 +9920,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -8717,10 +9957,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicI32",
-                  "v"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicI32",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -8829,21 +10072,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "u32", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicU32",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicU32",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8911,14 +10162,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "u32" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicU32" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u32" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicU32" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8935,20 +10196,33 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicU32",
-                  "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicU32",
+                            "v"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8970,16 +10244,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8998,7 +10301,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9020,16 +10352,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -9095,10 +10456,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicU32",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicU32",
+                          "v"
+                        |)
                       |)
                     ]
                   |));
@@ -9137,10 +10501,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicU32",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicU32",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -9180,10 +10547,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9229,7 +10599,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -9308,10 +10678,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9363,10 +10736,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9406,10 +10782,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9446,10 +10825,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9486,10 +10868,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9526,10 +10911,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9566,10 +10954,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9606,10 +10997,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9658,7 +11052,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -9681,7 +11078,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -9701,7 +11101,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -9785,10 +11188,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9825,10 +11231,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU32",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU32",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -9859,10 +11268,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicU32",
-                  "v"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicU32",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -9971,21 +11383,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "i64", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicI64",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicI64",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -10053,14 +11473,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "i64" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicI64" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "i64" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicI64" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10077,20 +11507,33 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicI64",
-                  "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicI64",
+                            "v"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10112,16 +11555,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -10140,7 +11612,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10162,16 +11663,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -10237,10 +11767,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicI64",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicI64",
+                          "v"
+                        |)
                       |)
                     ]
                   |));
@@ -10279,10 +11812,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicI64",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicI64",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -10322,10 +11858,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -10371,7 +11910,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -10450,10 +11989,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -10505,10 +12047,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -10548,10 +12093,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -10588,10 +12136,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -10628,10 +12179,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -10668,10 +12222,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -10708,10 +12265,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -10748,10 +12308,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -10800,7 +12363,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -10823,7 +12389,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -10843,7 +12412,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -10927,10 +12499,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -10967,10 +12542,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicI64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicI64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -11001,10 +12579,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicI64",
-                  "v"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicI64",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -11113,21 +12694,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "u64", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicU64",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicU64",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -11195,14 +12784,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicU64" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicU64" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11219,20 +12818,33 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicU64",
-                  "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicU64",
+                            "v"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11254,16 +12866,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -11282,7 +12923,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11304,16 +12974,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -11379,10 +13078,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicU64",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicU64",
+                          "v"
+                        |)
                       |)
                     ]
                   |));
@@ -11421,10 +13123,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicU64",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicU64",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -11464,10 +13169,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -11513,7 +13221,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -11592,10 +13300,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -11647,10 +13358,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -11690,10 +13404,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -11730,10 +13447,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -11770,10 +13490,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -11810,10 +13533,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -11850,10 +13576,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -11890,10 +13619,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -11942,7 +13674,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -11965,7 +13700,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -11985,7 +13723,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -12069,10 +13810,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -12109,10 +13853,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicU64",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicU64",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -12143,10 +13890,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicU64",
-                  "v"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicU64",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -12255,21 +14005,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "isize", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicIsize",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicIsize",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -12337,14 +14095,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "isize" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicIsize" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "isize" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicIsize" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12361,20 +14129,33 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicIsize",
-                  "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicIsize",
+                            "v"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12396,16 +14177,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -12424,7 +14234,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12446,16 +14285,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -12521,10 +14389,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicIsize",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicIsize",
+                          "v"
+                        |)
                       |)
                     ]
                   |));
@@ -12567,10 +14438,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicIsize",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicIsize",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -12610,10 +14484,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -12659,7 +14536,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -12738,10 +14615,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -12793,10 +14673,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -12836,10 +14719,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -12876,10 +14762,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -12916,10 +14805,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -12956,10 +14848,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -12996,10 +14891,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -13036,10 +14934,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -13088,7 +14989,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -13111,7 +15015,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -13131,7 +15038,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -13215,10 +15125,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -13255,10 +15168,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicIsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicIsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -13289,10 +15205,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicIsize",
-                  "v"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicIsize",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -13401,21 +15320,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "usize", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicUsize",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicUsize",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13483,14 +15410,24 @@ Module sync.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ Ty.path "usize" ],
-                "cast",
-                [],
-                [ Ty.path "core::sync::atomic::AtomicUsize" ]
-              |),
-              [ M.read (| ptr |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "usize" ],
+                        "cast",
+                        [],
+                        [ Ty.path "core::sync::atomic::AtomicUsize" ]
+                      |),
+                      [ M.read (| ptr |) ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13507,20 +15444,33 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
-                "get_mut",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicUsize",
-                  "v"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicUsize",
+                            "v"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13542,16 +15492,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13570,7 +15549,36 @@ Module sync.
         | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| this |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13592,16 +15600,45 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
-                      |)))
-                ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  M.match_operator (|
+                    M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.rust_cast
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              |))
+                                          |))
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13667,10 +15704,13 @@ Module sync.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::sync::atomic::AtomicUsize",
-                        "v"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::sync::atomic::AtomicUsize",
+                          "v"
+                        |)
                       |)
                     ]
                   |));
@@ -13713,10 +15753,13 @@ Module sync.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::sync::atomic::AtomicUsize",
-                            "v"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicUsize",
+                              "v"
+                            |)
                           |)
                         ]
                       |);
@@ -13756,10 +15799,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -13805,7 +15851,7 @@ Module sync.
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| current |);
                       M.read (| new |);
                       M.read (| order |);
@@ -13884,10 +15930,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -13939,10 +15988,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -13982,10 +16034,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -14022,10 +16077,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -14062,10 +16120,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -14102,10 +16163,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -14142,10 +16206,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -14182,10 +16249,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -14234,7 +16304,10 @@ Module sync.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| fetch_order |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| fetch_order |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -14257,7 +16330,10 @@ Module sync.
                                         [],
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| prev |) ]
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -14277,7 +16353,10 @@ Module sync.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| prev |);
                                         M.read (| next |);
                                         M.read (| set_order |);
@@ -14361,10 +16440,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -14401,10 +16483,13 @@ Module sync.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::sync::atomic::AtomicUsize",
-                      "v"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::atomic::AtomicUsize",
+                        "v"
+                      |)
                     |)
                   ]
                 |);
@@ -14435,10 +16520,13 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::sync::atomic::AtomicUsize",
-                  "v"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::sync::atomic::AtomicUsize",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -14599,13 +16687,22 @@ Module sync.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "there is no such thing as an acquire store"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "there is no such thing as an acquire store"
+                                            |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -14629,14 +16726,22 @@ Module sync.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "there is no such thing as an acquire-release store"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "there is no such thing as an acquire-release store"
+                                            |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -14719,13 +16824,22 @@ Module sync.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "there is no such thing as a release load"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "there is no such thing as a release load"
+                                            |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -14749,14 +16863,22 @@ Module sync.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "there is no such thing as an acquire-release load"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "there is no such thing as an acquire-release load"
+                                            |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -15342,14 +17464,22 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "there is no such thing as an acquire-release failure ordering"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "there is no such thing as an acquire-release failure ordering"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -15376,14 +17506,22 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "there is no such thing as a release failure ordering"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "there is no such thing as a release failure ordering"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -15767,14 +17905,22 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "there is no such thing as an acquire-release failure ordering"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "there is no such thing as an acquire-release failure ordering"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -15801,14 +17947,22 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "there is no such thing as a release failure ordering"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "there is no such thing as a release failure ordering"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -16551,13 +18705,22 @@ Module sync.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "there is no such thing as a relaxed fence"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "there is no such thing as a relaxed fence"
+                                            |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -16664,14 +18827,22 @@ Module sync.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "there is no such thing as a relaxed compiler fence"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "there is no such thing as a relaxed compiler fence"
+                                            |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -16705,21 +18876,29 @@ Module sync.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", Ty.path "bool", [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::sync::atomic::AtomicBool",
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicBool",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -16760,21 +18939,29 @@ Module sync.
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -16816,21 +19003,29 @@ Module sync.
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
-                      "load",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

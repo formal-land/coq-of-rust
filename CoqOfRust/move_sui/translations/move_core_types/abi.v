@@ -60,7 +60,7 @@ Module abi.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -88,7 +88,7 @@ Module abi.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)))
@@ -138,7 +138,17 @@ Module abi.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "TransactionScript" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TransactionScript" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -159,7 +169,17 @@ Module abi.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "ScriptFunction" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ScriptFunction" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -195,7 +215,7 @@ Module abi.
                     [],
                     [ Ty.path "move_core_types::abi::ScriptABI" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -210,7 +230,13 @@ Module abi.
                     [],
                     [ __H ]
                   |),
-                  [ __self_discr; M.read (| state |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
@@ -237,7 +263,10 @@ Module abi.
                           [],
                           [ __H ]
                         |),
-                        [ M.read (| __self_0 |); M.read (| state |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -261,7 +290,10 @@ Module abi.
                           [],
                           [ __H ]
                         |),
-                        [ M.read (| __self_0 |); M.read (| state |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                        ]
                       |)
                     |)))
               ]
@@ -346,7 +378,7 @@ Module abi.
                     [],
                     [ Ty.path "move_core_types::abi::ScriptABI" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -357,7 +389,7 @@ Module abi.
                     [],
                     [ Ty.path "move_core_types::abi::ScriptABI" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -407,7 +439,10 @@ Module abi.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -449,7 +484,10 @@ Module abi.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -492,7 +530,7 @@ Module abi.
             let __serializer := M.alloc (| __serializer |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -519,7 +557,7 @@ Module abi.
                             M.read (| Value.String "ScriptABI" |);
                             Value.Integer IntegerKind.U32 0;
                             M.read (| Value.String "TransactionScript" |);
-                            M.read (| __field0 |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
                       |)));
@@ -548,7 +586,7 @@ Module abi.
                             M.read (| Value.String "ScriptABI" |);
                             Value.Integer IntegerKind.U32 1;
                             M.read (| Value.String "ScriptFunction" |);
-                            M.read (| __field0 |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
                       |)))
@@ -705,12 +743,23 @@ Module abi.
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "name" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::ScriptFunctionABI",
-                              "name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::ScriptFunctionABI",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -762,12 +811,23 @@ Module abi.
                             [ Ty.path "move_core_types::language_storage::ModuleId" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "module_name" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::ScriptFunctionABI",
-                              "module_name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::ScriptFunctionABI",
+                                    "module_name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -819,12 +879,23 @@ Module abi.
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "doc" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::ScriptFunctionABI",
-                              "doc"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::ScriptFunctionABI",
+                                    "doc"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -884,12 +955,23 @@ Module abi.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "ty_args" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::ScriptFunctionABI",
-                              "ty_args"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::ScriptFunctionABI",
+                                    "ty_args"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -949,12 +1031,23 @@ Module abi.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "args" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::ScriptFunctionABI",
-                              "args"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::ScriptFunctionABI",
+                                    "args"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1156,12 +1249,23 @@ Module abi.
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "name" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::TransactionScriptABI",
-                              "name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::TransactionScriptABI",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1213,12 +1317,23 @@ Module abi.
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "doc" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::TransactionScriptABI",
-                              "doc"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::TransactionScriptABI",
+                                    "doc"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1270,23 +1385,43 @@ Module abi.
                             [ Ty.path "move_core_types::abi::_'4::serialize::__SerializeWith" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "code" |);
-                            M.alloc (|
-                              Value.StructRecord
-                                "move_core_types::abi::_'4::serialize::__SerializeWith"
-                                [
-                                  ("values",
-                                    Value.Tuple
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.StructRecord
+                                      "move_core_types::abi::_'4::serialize::__SerializeWith"
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_core_types::abi::TransactionScriptABI",
-                                          "code"
-                                        |)
-                                      ]);
-                                  ("phantom", Value.StructTuple "core::marker::PhantomData" [])
-                                ]
+                                        ("values",
+                                          Value.Tuple
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "move_core_types::abi::TransactionScriptABI",
+                                                      "code"
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]);
+                                        ("phantom",
+                                          Value.StructTuple "core::marker::PhantomData" [])
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1346,12 +1481,23 @@ Module abi.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "ty_args" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::TransactionScriptABI",
-                              "ty_args"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::TransactionScriptABI",
+                                    "ty_args"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1411,12 +1557,23 @@ Module abi.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "args" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::TransactionScriptABI",
-                              "args"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::TransactionScriptABI",
+                                    "args"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1609,12 +1766,23 @@ Module abi.
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "name" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::ArgumentABI",
-                              "name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::ArgumentABI",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1666,12 +1834,23 @@ Module abi.
                             [ Ty.path "move_core_types::language_storage::TypeTag" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "type_tag" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::ArgumentABI",
-                              "type_tag"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::ArgumentABI",
+                                    "type_tag"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1861,12 +2040,23 @@ Module abi.
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "name" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::abi::TypeArgumentABI",
-                              "name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::abi::TypeArgumentABI",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -2021,10 +2211,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -2040,10 +2238,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "module_name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "module_name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -2059,10 +2265,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "doc"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "doc"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -2084,10 +2298,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "ty_args"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "ty_args"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -2107,10 +2329,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "args"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "args"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -2144,38 +2374,87 @@ Module abi.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "ScriptFunctionABI" |);
-              M.read (| Value.String "name" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::ScriptFunctionABI",
-                "name"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "ScriptFunctionABI" |) |)
               |);
-              M.read (| Value.String "module_name" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::ScriptFunctionABI",
-                "module_name"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::ScriptFunctionABI",
+                      "name"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "doc" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::ScriptFunctionABI",
-                "doc"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "module_name" |) |)
               |);
-              M.read (| Value.String "ty_args" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::ScriptFunctionABI",
-                "ty_args"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::ScriptFunctionABI",
+                      "module_name"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "args" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::ScriptFunctionABI",
-                  "args"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "doc" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::ScriptFunctionABI",
+                      "doc"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ty_args" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::ScriptFunctionABI",
+                      "ty_args"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "args" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "args"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -2215,12 +2494,20 @@ Module abi.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -2237,12 +2524,20 @@ Module abi.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "module_name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "module_name"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -2259,12 +2554,20 @@ Module abi.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "doc"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "doc"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -2287,12 +2590,20 @@ Module abi.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "ty_args"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "ty_args"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -2311,12 +2622,20 @@ Module abi.
                   [ __H ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::abi::ScriptFunctionABI",
-                    "args"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "args"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| state |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |)
             |)
@@ -2420,15 +2739,21 @@ Module abi.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_core_types::abi::ScriptFunctionABI",
-                        "name"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "name"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "move_core_types::abi::ScriptFunctionABI",
-                        "name"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "name"
+                        |)
                       |)
                     ]
                   |),
@@ -2444,15 +2769,21 @@ Module abi.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_core_types::abi::ScriptFunctionABI",
-                          "module_name"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "module_name"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "move_core_types::abi::ScriptFunctionABI",
-                          "module_name"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_core_types::abi::ScriptFunctionABI",
+                            "module_name"
+                          |)
                         |)
                       ]
                     |)))
@@ -2469,15 +2800,21 @@ Module abi.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_core_types::abi::ScriptFunctionABI",
-                        "doc"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "doc"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "move_core_types::abi::ScriptFunctionABI",
-                        "doc"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "doc"
+                        |)
                       |)
                     ]
                   |)))
@@ -2508,15 +2845,21 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "ty_args"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::abi::ScriptFunctionABI",
+                        "ty_args"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_core_types::abi::ScriptFunctionABI",
-                      "ty_args"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "move_core_types::abi::ScriptFunctionABI",
+                        "ty_args"
+                      |)
                     |)
                   ]
                 |)))
@@ -2542,15 +2885,21 @@ Module abi.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::abi::ScriptFunctionABI",
-                    "args"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::ScriptFunctionABI",
+                      "args"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_core_types::abi::ScriptFunctionABI",
-                    "args"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::abi::ScriptFunctionABI",
+                      "args"
+                    |)
                   |)
                 ]
               |)))
@@ -2619,10 +2968,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -2638,10 +2995,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "doc"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "doc"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -2660,10 +3025,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "code"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "code"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -2685,10 +3058,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "ty_args"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "ty_args"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -2708,10 +3089,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "args"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "args"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -2745,38 +3134,84 @@ Module abi.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "TransactionScriptABI" |);
-              M.read (| Value.String "name" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TransactionScriptABI",
-                "name"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "TransactionScriptABI" |) |)
               |);
-              M.read (| Value.String "doc" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TransactionScriptABI",
-                "doc"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::TransactionScriptABI",
+                      "name"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "code" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TransactionScriptABI",
-                "code"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "doc" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::TransactionScriptABI",
+                      "doc"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "ty_args" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TransactionScriptABI",
-                "ty_args"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "code" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::TransactionScriptABI",
+                      "code"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "args" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::TransactionScriptABI",
-                  "args"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ty_args" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::TransactionScriptABI",
+                      "ty_args"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "args" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "args"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -2816,12 +3251,20 @@ Module abi.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -2838,12 +3281,20 @@ Module abi.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "doc"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "doc"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -2863,12 +3314,20 @@ Module abi.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "code"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "code"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -2891,12 +3350,20 @@ Module abi.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "ty_args"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "ty_args"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -2915,12 +3382,20 @@ Module abi.
                   [ __H ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::abi::TransactionScriptABI",
-                    "args"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "args"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| state |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |)
             |)
@@ -3024,15 +3499,21 @@ Module abi.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_core_types::abi::TransactionScriptABI",
-                        "name"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "name"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "move_core_types::abi::TransactionScriptABI",
-                        "name"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "name"
+                        |)
                       |)
                     ]
                   |),
@@ -3048,15 +3529,21 @@ Module abi.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_core_types::abi::TransactionScriptABI",
-                          "doc"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "doc"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "move_core_types::abi::TransactionScriptABI",
-                          "doc"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_core_types::abi::TransactionScriptABI",
+                            "doc"
+                          |)
                         |)
                       ]
                     |)))
@@ -3081,15 +3568,21 @@ Module abi.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_core_types::abi::TransactionScriptABI",
-                        "code"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "code"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "move_core_types::abi::TransactionScriptABI",
-                        "code"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "code"
+                        |)
                       |)
                     ]
                   |)))
@@ -3120,15 +3613,21 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "ty_args"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::abi::TransactionScriptABI",
+                        "ty_args"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_core_types::abi::TransactionScriptABI",
-                      "ty_args"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "move_core_types::abi::TransactionScriptABI",
+                        "ty_args"
+                      |)
                     |)
                   ]
                 |)))
@@ -3154,15 +3653,21 @@ Module abi.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::abi::TransactionScriptABI",
-                    "args"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::TransactionScriptABI",
+                      "args"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_core_types::abi::TransactionScriptABI",
-                    "args"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::abi::TransactionScriptABI",
+                      "args"
+                    |)
                   |)
                 ]
               |)))
@@ -3216,10 +3721,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ArgumentABI",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ArgumentABI",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -3235,10 +3748,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ArgumentABI",
-                      "type_tag"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ArgumentABI",
+                            "type_tag"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -3272,20 +3793,42 @@ Module abi.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "ArgumentABI" |);
-              M.read (| Value.String "name" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::ArgumentABI",
-                "name"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "ArgumentABI" |) |)
               |);
-              M.read (| Value.String "type_tag" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::ArgumentABI",
-                  "type_tag"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::ArgumentABI",
+                      "name"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "type_tag" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ArgumentABI",
+                          "type_tag"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -3325,12 +3868,20 @@ Module abi.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::ArgumentABI",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::ArgumentABI",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -3346,12 +3897,20 @@ Module abi.
                   [ __H ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::abi::ArgumentABI",
-                    "type_tag"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ArgumentABI",
+                          "type_tag"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| state |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |)
             |)
@@ -3438,15 +3997,21 @@ Module abi.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::ArgumentABI",
-                  "name"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_core_types::abi::ArgumentABI",
+                    "name"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "move_core_types::abi::ArgumentABI",
-                  "name"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "move_core_types::abi::ArgumentABI",
+                    "name"
+                  |)
                 |)
               ]
             |),
@@ -3462,15 +4027,21 @@ Module abi.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::abi::ArgumentABI",
-                    "type_tag"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::ArgumentABI",
+                      "type_tag"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_core_types::abi::ArgumentABI",
-                    "type_tag"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::abi::ArgumentABI",
+                      "type_tag"
+                    |)
                   |)
                 ]
               |)))
@@ -3520,10 +4091,18 @@ Module abi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::abi::TypeArgumentABI",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::abi::TypeArgumentABI",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -3557,14 +4136,28 @@ Module abi.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "TypeArgumentABI" |);
-              M.read (| Value.String "name" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::TypeArgumentABI",
-                  "name"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "TypeArgumentABI" |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TypeArgumentABI",
+                          "name"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -3601,12 +4194,20 @@ Module abi.
               [ __H ]
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TypeArgumentABI",
-                "name"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::abi::TypeArgumentABI",
+                      "name"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| state |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3683,15 +4284,21 @@ Module abi.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TypeArgumentABI",
-                "name"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::abi::TypeArgumentABI",
+                  "name"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "move_core_types::abi::TypeArgumentABI",
-                "name"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| other |) |),
+                  "move_core_types::abi::TypeArgumentABI",
+                  "name"
+                |)
               |)
             ]
           |)))
@@ -3761,23 +4368,36 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "alloc::string::String",
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TransactionScriptABI",
-                "name"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "name"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3794,23 +4414,36 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "alloc::string::String",
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TransactionScriptABI",
-                "doc"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "doc"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3827,26 +4460,39 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TransactionScriptABI",
-                "code"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "code"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3863,26 +4509,42 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "move_core_types::abi::TypeArgumentABI"; Ty.path "alloc::alloc::Global" ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TransactionScriptABI",
-                "ty_args"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::abi::TypeArgumentABI";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "ty_args"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3899,26 +4561,39 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TransactionScriptABI",
-                "args"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "args"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3979,23 +4654,36 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "alloc::string::String",
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::ScriptFunctionABI",
-                "name"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "name"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4012,10 +4700,18 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_core_types::abi::ScriptFunctionABI",
-            "module_name"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::abi::ScriptFunctionABI",
+                  "module_name"
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4032,23 +4728,36 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "alloc::string::String",
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::ScriptFunctionABI",
-                "doc"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "doc"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4065,26 +4774,42 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "move_core_types::abi::TypeArgumentABI"; Ty.path "alloc::alloc::Global" ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::ScriptFunctionABI",
-                "ty_args"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::abi::TypeArgumentABI";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "ty_args"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4101,26 +4826,39 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::ScriptFunctionABI",
-                "args"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "args"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4216,53 +4954,68 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::abi::ScriptABI::TransactionScript",
-                        0
-                      |) in
-                    let abi := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::abi::TransactionScriptABI",
-                          "name",
-                          [],
-                          []
-                        |),
-                        [ M.read (| abi |) ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::abi::ScriptABI::ScriptFunction",
-                        0
-                      |) in
-                    let abi := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::abi::ScriptFunctionABI",
-                          "name",
-                          [],
-                          []
-                        |),
-                        [ M.read (| abi |) ]
-                      |)
-                    |)))
-              ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.match_operator (|
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "move_core_types::abi::ScriptABI::TransactionScript",
+                            0
+                          |) in
+                        let abi := M.alloc (| γ1_0 |) in
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::abi::TransactionScriptABI",
+                                  "name",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| abi |) |) |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "move_core_types::abi::ScriptABI::ScriptFunction",
+                            0
+                          |) in
+                        let abi := M.alloc (| γ1_0 |) in
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::abi::ScriptFunctionABI",
+                                  "name",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| abi |) |) |) ]
+                              |)
+                            |)
+                          |)
+                        |)))
+                  ]
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4283,53 +5036,68 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::abi::ScriptABI::TransactionScript",
-                        0
-                      |) in
-                    let abi := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::abi::TransactionScriptABI",
-                          "doc",
-                          [],
-                          []
-                        |),
-                        [ M.read (| abi |) ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::abi::ScriptABI::ScriptFunction",
-                        0
-                      |) in
-                    let abi := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::abi::ScriptFunctionABI",
-                          "doc",
-                          [],
-                          []
-                        |),
-                        [ M.read (| abi |) ]
-                      |)
-                    |)))
-              ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.match_operator (|
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "move_core_types::abi::ScriptABI::TransactionScript",
+                            0
+                          |) in
+                        let abi := M.alloc (| γ1_0 |) in
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::abi::TransactionScriptABI",
+                                  "doc",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| abi |) |) |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "move_core_types::abi::ScriptABI::ScriptFunction",
+                            0
+                          |) in
+                        let abi := M.alloc (| γ1_0 |) in
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::abi::ScriptFunctionABI",
+                                  "doc",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| abi |) |) |) ]
+                              |)
+                            |)
+                          |)
+                        |)))
+                  ]
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4350,53 +5118,68 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::abi::ScriptABI::TransactionScript",
-                        0
-                      |) in
-                    let abi := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::abi::TransactionScriptABI",
-                          "ty_args",
-                          [],
-                          []
-                        |),
-                        [ M.read (| abi |) ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::abi::ScriptABI::ScriptFunction",
-                        0
-                      |) in
-                    let abi := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::abi::ScriptFunctionABI",
-                          "ty_args",
-                          [],
-                          []
-                        |),
-                        [ M.read (| abi |) ]
-                      |)
-                    |)))
-              ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.match_operator (|
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "move_core_types::abi::ScriptABI::TransactionScript",
+                            0
+                          |) in
+                        let abi := M.alloc (| γ1_0 |) in
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::abi::TransactionScriptABI",
+                                  "ty_args",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| abi |) |) |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "move_core_types::abi::ScriptABI::ScriptFunction",
+                            0
+                          |) in
+                        let abi := M.alloc (| γ1_0 |) in
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::abi::ScriptFunctionABI",
+                                  "ty_args",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| abi |) |) |) ]
+                              |)
+                            |)
+                          |)
+                        |)))
+                  ]
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4417,53 +5200,68 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::abi::ScriptABI::TransactionScript",
-                        0
-                      |) in
-                    let abi := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::abi::TransactionScriptABI",
-                          "args",
-                          [],
-                          []
-                        |),
-                        [ M.read (| abi |) ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::abi::ScriptABI::ScriptFunction",
-                        0
-                      |) in
-                    let abi := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::abi::ScriptFunctionABI",
-                          "args",
-                          [],
-                          []
-                        |),
-                        [ M.read (| abi |) ]
-                      |)
-                    |)))
-              ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.match_operator (|
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "move_core_types::abi::ScriptABI::TransactionScript",
+                            0
+                          |) in
+                        let abi := M.alloc (| γ1_0 |) in
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::abi::TransactionScriptABI",
+                                  "args",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| abi |) |) |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "move_core_types::abi::ScriptABI::ScriptFunction",
+                            0
+                          |) in
+                        let abi := M.alloc (| γ1_0 |) in
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::abi::ScriptFunctionABI",
+                                  "args",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| abi |) |) |) ]
+                              |)
+                            |)
+                          |)
+                        |)))
+                  ]
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4504,23 +5302,36 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "alloc::string::String",
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::ArgumentABI",
-                "name"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ArgumentABI",
+                          "name"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4537,10 +5348,18 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_core_types::abi::ArgumentABI",
-            "type_tag"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::abi::ArgumentABI",
+                  "type_tag"
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4579,23 +5398,36 @@ Module abi.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "alloc::string::String",
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::abi::TypeArgumentABI",
-                "name"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TypeArgumentABI",
+                          "name"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

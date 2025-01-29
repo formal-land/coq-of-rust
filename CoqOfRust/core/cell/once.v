@@ -75,23 +75,36 @@ Module cell.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::cell::UnsafeCell")
-                      []
-                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                    "get",
-                    [],
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::cell::once::OnceCell",
-                      "inner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::cell::UnsafeCell")
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                            "get",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::cell::once::OnceCell",
+                                "inner"
+                              |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -121,23 +134,31 @@ Module cell.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::cell::UnsafeCell")
-                      []
-                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                    "get_mut",
-                    [],
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::cell::once::OnceCell",
-                      "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::cell::UnsafeCell")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::cell::once::OnceCell",
+                            "inner"
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -173,7 +194,10 @@ Module cell.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| value |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.read (| value |)
+                    ]
                   |)
                 |),
                 [
@@ -251,7 +275,8 @@ Module cell.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -267,7 +292,16 @@ Module cell.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
-                                      [ Value.Tuple [ M.read (| old |); M.read (| value |) ] ]
+                                      [
+                                        Value.Tuple
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| old |) |)
+                                            |);
+                                            M.read (| value |)
+                                          ]
+                                      ]
                                   |)
                                 |)
                               |)
@@ -277,37 +311,58 @@ Module cell.
                     |) in
                   let~ slot :=
                     M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::cell::UnsafeCell")
-                            []
-                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::cell::once::OnceCell",
-                            "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::cell::UnsafeCell")
+                                    []
+                                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                                  "get",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::cell::once::OnceCell",
+                                      "inner"
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |)
                           |)
-                        ]
+                        |)
                       |)
                     |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                            "insert",
-                            [],
-                            []
-                          |),
-                          [ M.read (| slot |); M.read (| value |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                "insert",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slot |) |) |);
+                                M.read (| value |)
+                              ]
+                            |)
+                          |)
                         |)
                       ]
                   |)
@@ -353,7 +408,7 @@ Module cell.
                       ]
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.closure
                         (fun γ =>
                           ltac:(M.monadic
@@ -398,7 +453,9 @@ Module cell.
                           0
                         |) in
                       let val := M.copy (| γ0_0 |) in
-                      M.alloc (| M.read (| val |) |)))
+                      M.alloc (|
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |)
+                      |)))
                 ]
               |)
             |)))
@@ -431,69 +488,84 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
-                      "get_mut_or_try_init",
-                      [],
-                      [
-                        Ty.function
-                          [ Ty.tuple [] ]
-                          (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "never" ]);
-                        Ty.path "never"
-                      ]
-                    |),
-                    [
-                      M.read (| self |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.read (|
+                      M.match_operator (|
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
+                              "get_mut_or_try_init",
+                              [],
+                              [
+                                Ty.function
+                                  [ Ty.tuple [] ]
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ T; Ty.path "never" ]);
+                                Ty.path "never"
+                              ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.closure
+                                (fun γ =>
+                                  ltac:(M.monadic
+                                    match γ with
+                                    | [ α0 ] =>
                                       ltac:(M.monadic
-                                        (Value.StructTuple
-                                          "core::result::Result::Ok"
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
                                           [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnOnce",
-                                                F,
-                                                [],
-                                                [ Ty.tuple [] ],
-                                                "call_once",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| f |); Value.Tuple [] ]
-                                            |)
-                                          ]))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    ]
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (Value.StructTuple
+                                                  "core::result::Result::Ok"
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnOnce",
+                                                        F,
+                                                        [],
+                                                        [ Ty.tuple [] ],
+                                                        "call_once",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.read (| f |); Value.Tuple [] ]
+                                                    |)
+                                                  ]))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
+                                    end))
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Ok",
+                                  0
+                                |) in
+                              let val := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |)
+                              |)))
+                        ]
+                      |)
+                    |)
                   |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let val := M.copy (| γ0_0 |) in
-                      M.alloc (| M.read (| val |) |)))
-                ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -544,7 +616,8 @@ Module cell.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -560,7 +633,12 @@ Module cell.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Ok"
-                                      [ M.read (| val |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| val |) |)
+                                        |)
+                                      ]
                                   |)
                                 |)
                               |)
@@ -576,7 +654,10 @@ Module cell.
                         [],
                         [ F; E ]
                       |),
-                      [ M.read (| self |); M.read (| f |) ]
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                        M.read (| f |)
+                      ]
                     |)
                   |)
                 |)))
@@ -634,18 +715,26 @@ Module cell.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::cell::once::OnceCell")
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::cell::once::OnceCell")
+                                                []
+                                                [ T ],
+                                              "get",
+                                              [],
                                               []
-                                              [ T ],
-                                            "get",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| self |) ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -677,7 +766,13 @@ Module cell.
                                           [],
                                           [ F; E ]
                                         |),
-                                        [ M.read (| self |); M.read (| f |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.read (| f |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -740,27 +835,37 @@ Module cell.
                     Value.StructTuple
                       "core::result::Result::Ok"
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                            "unwrap",
-                            [],
-                            []
-                          |),
-                          [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
-                                "get_mut",
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                                "unwrap",
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
+                                    "get_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                   |)
@@ -891,7 +996,10 @@ Module cell.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |); M.read (| val |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                  M.read (| val |)
+                                ]
                               |)
                             |) in
                           let γ0_0 :=
@@ -902,7 +1010,9 @@ Module cell.
                             |) in
                           let val := M.copy (| γ0_0 |) in
                           M.alloc (|
-                            Value.StructTuple "core::result::Result::Ok" [ M.read (| val |) ]
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -919,8 +1029,17 @@ Module cell.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "reentrant init" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "reentrant init" |) ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1004,7 +1123,7 @@ Module cell.
                     [],
                     [ Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ] ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               ]
             |)))
@@ -1080,7 +1199,13 @@ Module cell.
                       [],
                       []
                     |),
-                    [ M.read (| f |); M.read (| Value.String "OnceCell" |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "OnceCell" |) |)
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -1093,7 +1218,7 @@ Module cell.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |),
                   [
@@ -1114,38 +1239,63 @@ Module cell.
                               [],
                               []
                             |),
-                            [ d; M.read (| v |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, d |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |)
+                            ]
                           |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                         M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::builders::DebugTuple",
-                              "field",
-                              [],
-                              []
-                            |),
-                            [
-                              d;
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::Arguments",
-                                    "new_const",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "<uninit>" |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::builders::DebugTuple",
+                                  "field",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, d |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Arguments",
+                                              "new_const",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [ M.read (| Value.String "<uninit>" |) ]
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
+                                      |)
                                     |)
-                                  ]
-                                |)
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |)
                         |)))
                   ]
@@ -1158,7 +1308,7 @@ Module cell.
                     [],
                     []
                   |),
-                  [ d ]
+                  [ M.borrow (| Pointer.Kind.MutRef, d |) ]
                 |)
               |)
             |)))
@@ -1223,7 +1373,7 @@ Module cell.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |) in
                         let γ0_0 :=
@@ -1243,7 +1393,7 @@ Module cell.
                                 []
                               |),
                               [
-                                res;
+                                M.borrow (| Pointer.Kind.Ref, res |);
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::clone::Clone",
@@ -1254,7 +1404,12 @@ Module cell.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| value |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| value |) |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -1335,26 +1490,32 @@ Module cell.
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| other |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                    |)
                   |)
                 |)
               ]

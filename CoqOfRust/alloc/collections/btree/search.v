@@ -244,7 +244,13 @@ Module collections.
                                       [],
                                       [ Q ]
                                     |),
-                                    [ M.read (| self |); M.read (| key |) ]
+                                    [
+                                      M.read (| self |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| key |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -498,7 +504,7 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ M.read (| range |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| range |) |) |) ]
                             |);
                             M.call_closure (|
                               M.get_trait_method (|
@@ -510,7 +516,7 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ M.read (| range |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| range |) |) |) ]
                             |)
                           ]
                       |),
@@ -555,7 +561,10 @@ Module collections.
                                               [],
                                               []
                                             |),
-                                            [ s; e ]
+                                            [
+                                              M.borrow (| Pointer.Kind.Ref, s |);
+                                              M.borrow (| Pointer.Kind.Ref, e |)
+                                            ]
                                           |)
                                         |) in
                                       let _ :=
@@ -591,14 +600,22 @@ Module collections.
                                                           []
                                                         |),
                                                         [
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "range start and end are equal and excluded in BTreeSet"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "range start and end are equal and excluded in BTreeSet"
+                                                                      |)
+                                                                    ]
                                                                 |)
-                                                              ]
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -625,14 +642,22 @@ Module collections.
                                                           []
                                                         |),
                                                         [
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "range start and end are equal and excluded in BTreeMap"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "range start and end are equal and excluded in BTreeMap"
+                                                                      |)
+                                                                    ]
                                                                 |)
-                                                              ]
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -717,7 +742,21 @@ Module collections.
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ s; M.alloc (| M.read (| e |) |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    s
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (| M.read (| e |) |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |) in
                                                           let _ :=
@@ -754,14 +793,22 @@ Module collections.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "range start is greater than range end in BTreeSet"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              "range start is greater than range end in BTreeSet"
+                                                                                          |)
+                                                                                        ]
                                                                                     |)
-                                                                                  ]
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |)
@@ -789,14 +836,22 @@ Module collections.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "range start is greater than range end in BTreeMap"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              "range start is greater than range end in BTreeMap"
+                                                                                          |)
+                                                                                        ]
                                                                                     |)
-                                                                                  ]
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |)
@@ -869,7 +924,10 @@ Module collections.
                                               [],
                                               [ Q ]
                                             |),
-                                            [ self; M.read (| lower_bound |) ]
+                                            [
+                                              M.borrow (| Pointer.Kind.Ref, self |);
+                                              M.read (| lower_bound |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -900,7 +958,7 @@ Module collections.
                                                       [ Q ]
                                                     |),
                                                     [
-                                                      self;
+                                                      M.borrow (| Pointer.Kind.Ref, self |);
                                                       M.read (| upper_bound |);
                                                       M.read (| lower_edge_idx |)
                                                     ]
@@ -988,8 +1046,14 @@ Module collections.
                                                                     M.alloc (|
                                                                       Value.Tuple
                                                                         [
-                                                                          lower_edge_idx;
-                                                                          upper_edge_idx
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            lower_edge_idx
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            upper_edge_idx
+                                                                          |)
                                                                         ]
                                                                     |),
                                                                     [
@@ -1022,13 +1086,17 @@ Module collections.
                                                                                         UnOp.not (|
                                                                                           BinOp.eq (|
                                                                                             M.read (|
-                                                                                              M.read (|
-                                                                                                left_val
+                                                                                              M.deref (|
+                                                                                                M.read (|
+                                                                                                  left_val
+                                                                                                |)
                                                                                               |)
                                                                                             |),
                                                                                             M.read (|
-                                                                                              M.read (|
-                                                                                                right_val
+                                                                                              M.deref (|
+                                                                                                M.read (|
+                                                                                                  right_val
+                                                                                                |)
                                                                                               |)
                                                                                             |)
                                                                                           |)
@@ -1067,11 +1135,31 @@ Module collections.
                                                                                               M.read (|
                                                                                                 kind
                                                                                               |);
-                                                                                              M.read (|
-                                                                                                left_val
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        left_val
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                |)
                                                                                               |);
-                                                                                              M.read (|
-                                                                                                right_val
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        right_val
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                |)
                                                                                               |);
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::None"
@@ -1302,7 +1390,7 @@ Module collections.
                         [],
                         [ Q ]
                       |),
-                      [ self; M.read (| bound |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, self |); M.read (| bound |) ]
                     |)
                   |),
                   [
@@ -1397,7 +1485,11 @@ Module collections.
                         [],
                         [ Q ]
                       |),
-                      [ self; M.read (| bound |); Value.Integer IntegerKind.Usize 0 ]
+                      [
+                        M.borrow (| Pointer.Kind.Ref, self |);
+                        M.read (| bound |);
+                        Value.Integer IntegerKind.Usize 0
+                      ]
                     |)
                   |),
                   [
@@ -1493,7 +1585,11 @@ Module collections.
                         [],
                         [ Q ]
                       |),
-                      [ self; M.read (| key |); Value.Integer IntegerKind.Usize 0 ]
+                      [
+                        M.borrow (| Pointer.Kind.Ref, self |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |);
+                        Value.Integer IntegerKind.Usize 0
+                      ]
                     |)
                   |),
                   [
@@ -1623,7 +1719,7 @@ Module collections.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |) in
                     let~ keys :=
@@ -1643,7 +1739,7 @@ Module collections.
                             [],
                             []
                           |),
-                          [ node ]
+                          [ M.borrow (| Pointer.Kind.Ref, node |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -1677,7 +1773,12 @@ Module collections.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| keys |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| keys |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)
                                               |)
@@ -1744,24 +1845,32 @@ Module collections.
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ K ],
-                                            "get_unchecked",
-                                            [],
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::ops::range::RangeFrom")
-                                                []
-                                                [ Ty.path "usize" ]
-                                            ]
-                                          |),
-                                          [
-                                            M.read (| keys |);
-                                            Value.StructRecord
-                                              "core::ops::range::RangeFrom"
-                                              [ ("start", M.read (| start_index |)) ]
-                                          ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "slice") [] [ K ],
+                                                "get_unchecked",
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::range::RangeFrom")
+                                                    []
+                                                    [ Ty.path "usize" ]
+                                                ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| keys |) |)
+                                                |);
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeFrom"
+                                                  [ ("start", M.read (| start_index |)) ]
+                                              ]
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -1798,7 +1907,14 @@ Module collections.
                                               [],
                                               []
                                             |),
-                                            [ iter ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -1839,18 +1955,31 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| key |);
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::borrow::Borrow",
-                                                          K,
-                                                          [],
-                                                          [ Q ],
-                                                          "borrow",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| k |) ]
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| key |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::borrow::Borrow",
+                                                              K,
+                                                              [],
+                                                              [ Q ],
+                                                              "borrow",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| k |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -1929,7 +2058,7 @@ Module collections.
                               [],
                               []
                             |),
-                            [ M.read (| keys |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| keys |) |) |) ]
                           |)
                         ]
                     |)
@@ -2006,8 +2135,8 @@ Module collections.
                                 [ Q ]
                               |),
                               [
-                                M.read (| self |);
-                                M.read (| key |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |);
                                 Value.Integer IntegerKind.Usize 0
                               ]
                             |)
@@ -2065,8 +2194,8 @@ Module collections.
                                 [ Q ]
                               |),
                               [
-                                M.read (| self |);
-                                M.read (| key |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |);
                                 Value.Integer IntegerKind.Usize 0
                               ]
                             |)
@@ -2141,7 +2270,7 @@ Module collections.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |);
                               Value.StructTuple
                                 "alloc::collections::btree::search::SearchBound::AllExcluded"
@@ -2223,7 +2352,11 @@ Module collections.
                                 [],
                                 [ Q ]
                               |),
-                              [ M.read (| self |); M.read (| key |); M.read (| start_index |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |);
+                                M.read (| start_index |)
+                              ]
                             |)
                           |),
                           [
@@ -2281,7 +2414,11 @@ Module collections.
                                 [],
                                 [ Q ]
                               |),
-                              [ M.read (| self |); M.read (| key |); M.read (| start_index |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |);
+                                M.read (| start_index |)
+                              ]
                             |)
                           |),
                           [
@@ -2335,7 +2472,7 @@ Module collections.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |);
                               Value.StructTuple
                                 "alloc::collections::btree::search::SearchBound::AllIncluded"

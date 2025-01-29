@@ -49,7 +49,7 @@ Module alloc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -91,7 +91,10 @@ Module alloc.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-            [ M.read (| f |); M.read (| Value.String "Global" |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Global" |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -125,7 +128,20 @@ Module alloc.
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
-                [ M.read (| M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |) |)
+                [
+                  M.borrow (|
+                    Pointer.Kind.ConstPointer,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
                 ]
               |)
             |) in
@@ -140,7 +156,7 @@ Module alloc.
                     [],
                     []
                   |),
-                  [ layout ]
+                  [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
@@ -149,7 +165,7 @@ Module alloc.
                     [],
                     []
                   |),
-                  [ layout ]
+                  [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                 |)
               ]
             |)
@@ -177,7 +193,7 @@ Module alloc.
             M.read (| ptr |);
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [], [] |),
-              [ layout ]
+              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
             |);
             M.call_closure (|
               M.get_associated_function (|
@@ -186,7 +202,7 @@ Module alloc.
                 [],
                 []
               |),
-              [ layout ]
+              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
             |)
           ]
         |)))
@@ -213,7 +229,7 @@ Module alloc.
             M.read (| ptr |);
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [], [] |),
-              [ layout ]
+              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
             |);
             M.call_closure (|
               M.get_associated_function (|
@@ -222,7 +238,7 @@ Module alloc.
                 [],
                 []
               |),
-              [ layout ]
+              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
             |);
             M.read (| new_size |)
           ]
@@ -253,7 +269,20 @@ Module alloc.
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
-                [ M.read (| M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |) |)
+                [
+                  M.borrow (|
+                    Pointer.Kind.ConstPointer,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
                 ]
               |)
             |) in
@@ -268,7 +297,7 @@ Module alloc.
                     [],
                     []
                   |),
-                  [ layout ]
+                  [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
@@ -277,7 +306,7 @@ Module alloc.
                     [],
                     []
                   |),
-                  [ layout ]
+                  [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                 |)
               ]
             |)
@@ -323,7 +352,7 @@ Module alloc.
                         [],
                         []
                       |),
-                      [ layout ]
+                      [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                     |)
                   |),
                   [
@@ -356,7 +385,7 @@ Module alloc.
                                       [],
                                       []
                                     |),
-                                    [ layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                   |);
                                   Value.Integer IntegerKind.Usize 0
                                 ]
@@ -631,7 +660,7 @@ Module alloc.
                                                   [],
                                                   []
                                                 |),
-                                                [ new_layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                                               |),
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -640,7 +669,7 @@ Module alloc.
                                                   [],
                                                   []
                                                 |),
-                                                [ old_layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                                               |)
                                             |)
                                           |)
@@ -663,14 +692,22 @@ Module alloc.
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.read (|
+                                                              Value.String
+                                                                "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                            |)
+                                                          ]
                                                       |)
-                                                    ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -694,7 +731,7 @@ Module alloc.
                         [],
                         []
                       |),
-                      [ old_layout ]
+                      [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                     |)
                   |),
                   [
@@ -713,7 +750,11 @@ Module alloc.
                               [],
                               []
                             |),
-                            [ M.read (| self |); M.read (| new_layout |); M.read (| zeroed |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.read (| new_layout |);
+                              M.read (| zeroed |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -729,7 +770,7 @@ Module alloc.
                                   [],
                                   []
                                 |),
-                                [ old_layout ]
+                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                               |),
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -738,7 +779,7 @@ Module alloc.
                                   [],
                                   []
                                 |),
-                                [ new_layout ]
+                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                               |)
                             |)
                           |) in
@@ -753,7 +794,7 @@ Module alloc.
                                 [],
                                 []
                               |),
-                              [ new_layout ]
+                              [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                             |)
                           |) in
                         let~ _ :=
@@ -770,7 +811,7 @@ Module alloc.
                                       [],
                                       []
                                     |),
-                                    [ old_layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                                   |)
                                 |)
                               ]
@@ -1017,7 +1058,10 @@ Module alloc.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| new_layout |);
                                         M.read (| zeroed |)
                                       ]
@@ -1141,7 +1185,11 @@ Module alloc.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| ptr |);
+                                M.read (| old_layout |)
+                              ]
                             |)
                           |) in
                         M.alloc (|
@@ -1173,7 +1221,11 @@ Module alloc.
           let layout := M.alloc (| layout |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [], [] |),
-            [ M.read (| self |); M.read (| layout |); Value.Bool false ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.read (| layout |);
+              Value.Bool false
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1191,7 +1243,11 @@ Module alloc.
           let layout := M.alloc (| layout |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [], [] |),
-            [ M.read (| self |); M.read (| layout |); Value.Bool true ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.read (| layout |);
+              Value.Bool true
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1229,7 +1285,7 @@ Module alloc.
                                 [],
                                 []
                               |),
-                              [ layout ]
+                              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                             |),
                             Value.Integer IntegerKind.Usize 0
                           |)
@@ -1281,7 +1337,7 @@ Module alloc.
           M.call_closure (|
             M.get_associated_function (| Ty.path "alloc::alloc::Global", "grow_impl", [], [] |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
               M.read (| ptr |);
               M.read (| old_layout |);
               M.read (| new_layout |);
@@ -1313,7 +1369,7 @@ Module alloc.
           M.call_closure (|
             M.get_associated_function (| Ty.path "alloc::alloc::Global", "grow_impl", [], [] |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
               M.read (| ptr |);
               M.read (| old_layout |);
               M.read (| new_layout |);
@@ -1404,7 +1460,7 @@ Module alloc.
                                                   [],
                                                   []
                                                 |),
-                                                [ new_layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                                               |),
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -1413,7 +1469,7 @@ Module alloc.
                                                   [],
                                                   []
                                                 |),
-                                                [ old_layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                                               |)
                                             |)
                                           |)
@@ -1436,14 +1492,22 @@ Module alloc.
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.read (|
+                                                              Value.String
+                                                                "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
+                                                            |)
+                                                          ]
                                                       |)
-                                                    ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -1467,7 +1531,7 @@ Module alloc.
                         [],
                         []
                       |),
-                      [ new_layout ]
+                      [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                     |)
                   |),
                   [
@@ -1490,7 +1554,11 @@ Module alloc.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| ptr |);
+                                M.read (| old_layout |)
+                              ]
                             |)
                           |) in
                         M.alloc (|
@@ -1515,7 +1583,7 @@ Module alloc.
                                       [],
                                       []
                                     |),
-                                    [ new_layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                                   |);
                                   Value.Integer IntegerKind.Usize 0
                                 ]
@@ -1535,7 +1603,7 @@ Module alloc.
                                   [],
                                   []
                                 |),
-                                [ old_layout ]
+                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                               |),
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1544,7 +1612,7 @@ Module alloc.
                                   [],
                                   []
                                 |),
-                                [ new_layout ]
+                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                               |)
                             |)
                           |) in
@@ -1564,7 +1632,7 @@ Module alloc.
                                       [],
                                       []
                                     |),
-                                    [ old_layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                                   |)
                                 |)
                               ]
@@ -1770,7 +1838,13 @@ Module alloc.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |); M.read (| new_layout |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
+                                        M.read (| new_layout |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -1891,7 +1965,11 @@ Module alloc.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| ptr |);
+                                M.read (| old_layout |)
+                              ]
                             |)
                           |) in
                         M.alloc (|
@@ -1960,7 +2038,13 @@ Module alloc.
                   [],
                   []
                 |),
-                [ M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |); M.read (| layout |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                  |);
+                  M.read (| layout |)
+                ]
               |)
             |),
             [
@@ -2085,8 +2169,16 @@ Module alloc.
                           []
                         |),
                         [
-                          M.alloc (|
-                            Value.Array [ M.read (| Value.String "allocation failed" |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "allocation failed" |) ]
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -2121,7 +2213,7 @@ Module alloc.
                   [],
                   []
                 |),
-                [ layout ]
+                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
               |);
               M.call_closure (|
                 M.get_associated_function (|
@@ -2130,7 +2222,7 @@ Module alloc.
                   [],
                   []
                 |),
-                [ layout ]
+                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
               |)
             ]
           |)))
@@ -2176,9 +2268,11 @@ Module alloc.
                         (M.alloc (|
                           BinOp.ne (|
                             M.read (|
-                              M.read (|
-                                M.get_constant (|
-                                  "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic"
+                              M.deref (|
+                                M.read (|
+                                  M.get_constant (|
+                                    "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic"
+                                  |)
                                 |)
                               |)
                             |),
@@ -2198,26 +2292,47 @@ Module alloc.
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "memory allocation of " |);
-                                    M.read (| Value.String " bytes failed" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [ size ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "memory allocation of " |);
+                                          M.read (| Value.String " bytes failed" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "usize" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, size |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -2238,26 +2353,47 @@ Module alloc.
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "memory allocation of " |);
-                                    M.read (| Value.String " bytes failed" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [ size ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "memory allocation of " |);
+                                          M.read (| Value.String " bytes failed" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "usize" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, size |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |);

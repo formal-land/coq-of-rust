@@ -25,7 +25,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 [],
                 []
               |),
-              [ M.read (| Value.String "Fn" |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Fn" |) |) |) ]
             |)
           |) in
         M.alloc (|
@@ -54,27 +54,50 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "This is a: " |);
-                                                M.read (| Value.String "
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "This is a: " |);
+                                                      M.read (| Value.String "
 " |)
-                                              ]
-                                          |);
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [],
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [ text ]
+                                                    ]
                                                 |)
-                                              ]
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [],
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (| Pointer.Kind.Ref, text |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -123,7 +146,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 [],
                 []
               |),
-              [ M.read (| Value.String "FnMut" |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FnMut" |) |) |) ]
             |)
           |) in
         M.alloc (|
@@ -152,27 +175,50 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "This is a: " |);
-                                                M.read (| Value.String "
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "This is a: " |);
+                                                      M.read (| Value.String "
 " |)
-                                              ]
-                                          |);
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [],
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [ text ]
+                                                    ]
                                                 |)
-                                              ]
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [],
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (| Pointer.Kind.Ref, text |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -221,7 +267,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                 [],
                 []
               |),
-              [ M.read (| Value.String "FnOnce" |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FnOnce" |) |) |) ]
             |)
           |) in
         M.alloc (|
@@ -250,27 +296,50 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "This is a: " |);
-                                                M.read (| Value.String "
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "This is a: " |);
+                                                      M.read (| Value.String "
 " |)
-                                              ]
-                                          |);
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [],
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [ text ]
+                                                    ]
                                                 |)
-                                              ]
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [],
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (| Pointer.Kind.Ref, text |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -344,7 +413,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ fn_plain; Value.Tuple [] ]
+              [ M.borrow (| Pointer.Kind.Ref, fn_plain |); Value.Tuple [] ]
             |)
           |) in
         let~ _ :=
@@ -359,7 +428,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ fn_mut; Value.Tuple [] ]
+              [ M.borrow (| Pointer.Kind.MutRef, fn_mut |); Value.Tuple [] ]
             |)
           |) in
         let~ _ :=

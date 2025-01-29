@@ -42,15 +42,31 @@ Module account_address.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::account_address::AccountAddress",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::account_address::AccountAddress",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::account_address::AccountAddress",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::account_address::AccountAddress",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -87,15 +103,31 @@ Module account_address.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::account_address::AccountAddress",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::account_address::AccountAddress",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::account_address::AccountAddress",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::account_address::AccountAddress",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -174,15 +206,21 @@ Module account_address.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::account_address::AccountAddress",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::account_address::AccountAddress",
+                  0
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::account_address::AccountAddress",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "move_core_types::account_address::AccountAddress",
+                  0
+                |)
               |)
             ]
           |)))
@@ -218,12 +256,20 @@ Module account_address.
               [ __H ]
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::account_address::AccountAddress",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::account_address::AccountAddress",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| state |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -249,7 +295,7 @@ Module account_address.
           M.read (|
             M.match_operator (|
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -465,7 +511,7 @@ Module account_address.
                         [ Ty.path "u8" ]
                     ]
                   |),
-                  [ rng ]
+                  [ M.borrow (| Pointer.Kind.MutRef, rng |) ]
                 |)
               |) in
             M.alloc (|
@@ -501,15 +547,21 @@ Module account_address.
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "move_core_types::account_address::AccountAddress",
-                    "to_canonical_display",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |); M.read (| with_prefix |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "move_core_types::account_address::AccountAddress",
+                      "to_canonical_display",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.read (| with_prefix |)
+                    ]
+                  |)
                 |)
               |)
             ]
@@ -552,10 +604,18 @@ Module account_address.
             "move_core_types::account_address::to_canonical_display::HexDisplay"
             [
               ("data",
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::account_address::AccountAddress",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::account_address::AccountAddress",
+                        0
+                      |)
+                    |)
+                  |)
                 |));
               ("with_prefix", M.read (| with_prefix |))
             ]))
@@ -594,52 +654,65 @@ Module account_address.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "str",
-                        "trim_start_matches",
-                        [],
-                        [ Ty.path "char" ]
-                      |),
-                      [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
                         M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.path "alloc::string::String",
+                          M.get_associated_function (|
+                            Ty.path "str",
+                            "trim_start_matches",
                             [],
-                            [],
-                            "deref",
-                            [],
-                            []
+                            [ Ty.path "char" ]
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_function (|
-                                  "hex::encode",
-                                  [],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.path "alloc::string::String",
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
                                   [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                      [ Ty.path "u8" ]
-                                  ]
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      M.read (| self |),
-                                      "move_core_types::account_address::AccountAddress",
-                                      0
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "hex::encode",
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 32 ]
+                                                [ Ty.path "u8" ]
+                                            ]
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "move_core_types::account_address::AccountAddress",
+                                                0
+                                              |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
-                            |)
+                            |);
+                            Value.UnicodeChar 48
                           ]
-                        |);
-                        Value.UnicodeChar 48
-                      ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -659,7 +732,7 @@ Module account_address.
                               [],
                               []
                             |),
-                            [ hex_str ]
+                            [ M.borrow (| Pointer.Kind.Ref, hex_str |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -674,7 +747,12 @@ Module account_address.
                           [],
                           []
                         |),
-                        [ M.read (| Value.String "0" |) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "0" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ => ltac:(M.monadic hex_str)
@@ -705,10 +783,13 @@ Module account_address.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::account_address::AccountAddress",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::account_address::AccountAddress",
+                  0
+                |)
               |)
             ]
           |)))
@@ -785,7 +866,13 @@ Module account_address.
                                       [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                     |),
-                                    [ M.read (| literal |); M.read (| Value.String "0x" |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| literal |) |)
+                                      |);
+                                      M.read (| Value.String "0x" |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -814,7 +901,7 @@ Module account_address.
                     BinOp.Wrap.sub (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                        [ M.read (| literal |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| literal |) |) |) ]
                       |),
                       Value.Integer IntegerKind.Usize 2
                     |)
@@ -918,7 +1005,14 @@ Module account_address.
                                                   [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -949,7 +1043,13 @@ Module account_address.
                                                           [],
                                                           []
                                                         |),
-                                                        [ hex_str; Value.UnicodeChar 48 ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            hex_str
+                                                          |);
+                                                          Value.UnicodeChar 48
+                                                        ]
                                                       |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)))
@@ -969,28 +1069,41 @@ Module account_address.
                                 []
                               |),
                               [
-                                hex_str;
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::index::Index",
-                                    Ty.path "str",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeFrom")
-                                        []
-                                        [ Ty.path "usize" ]
-                                    ],
-                                    "index",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (| literal |);
-                                    Value.StructRecord
-                                      "core::ops::range::RangeFrom"
-                                      [ ("start", Value.Integer IntegerKind.Usize 2) ]
-                                  ]
+                                M.borrow (| Pointer.Kind.MutRef, hex_str |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::index::Index",
+                                            Ty.path "str",
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ops::range::RangeFrom")
+                                                []
+                                                [ Ty.path "usize" ]
+                                            ],
+                                            "index",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| literal |) |)
+                                            |);
+                                            Value.StructRecord
+                                              "core::ops::range::RangeFrom"
+                                              [ ("start", Value.Integer IntegerKind.Usize 2) ]
+                                          ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -1017,27 +1130,35 @@ Module account_address.
                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.path "str",
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeFrom")
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::index::Index",
+                                      Ty.path "str",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::RangeFrom")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
+                                      "index",
+                                      [],
                                       []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (| literal |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeFrom"
-                                    [ ("start", Value.Integer IntegerKind.Usize 2) ]
-                                ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| literal |) |)
+                                      |);
+                                      Value.StructRecord
+                                        "core::ops::range::RangeFrom"
+                                        [ ("start", Value.Integer IntegerKind.Usize 2) ]
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1079,33 +1200,62 @@ Module account_address.
                             []
                           |),
                           [
-                            M.alloc (| Value.Array [ M.read (| Value.String "0x" |) ] |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [],
-                                      [ Ty.path "alloc::string::String" ]
-                                    |),
-                                    [
-                                      M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (| Value.Array [ M.read (| Value.String "0x" |) ] |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.path
-                                              "move_core_types::account_address::AccountAddress",
-                                            "short_str_lossless",
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
                                             [],
-                                            []
+                                            [ Ty.path "alloc::string::String" ]
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_core_types::account_address::AccountAddress",
+                                                        "short_str_lossless",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| self |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      |)
-                                    ]
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1258,28 +1408,49 @@ Module account_address.
                             []
                           |),
                           [
-                            M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_lower_hex",
-                                      [],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
                                       [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_lower_hex",
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddress"
+                                                ]
+                                            ]
+                                          |),
                                           [
-                                            Ty.path
-                                              "move_core_types::account_address::AccountAddress"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                                            |)
                                           ]
+                                        |)
                                       ]
-                                    |),
-                                    [ self ]
                                   |)
-                                ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1386,7 +1557,7 @@ Module account_address.
                           [],
                           []
                         |),
-                        [ bytes ]
+                        [ M.borrow (| Pointer.Kind.Ref, bytes |) ]
                       |)
                     ]
                   |);
@@ -1467,10 +1638,18 @@ Module account_address.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_tuple_field (|
-            M.read (| self |),
-            "move_core_types::account_address::AccountAddress",
-            0
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::account_address::AccountAddress",
+                  0
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1506,10 +1685,18 @@ Module account_address.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_tuple_field (|
-            M.read (| self |),
-            "move_core_types::account_address::AccountAddress",
-            0
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::account_address::AccountAddress",
+                  0
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1540,29 +1727,50 @@ Module account_address.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_lower_hex",
-                            [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
                             [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_core_types::account_address::AccountAddress" ]
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_lower_hex",
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::account_address::AccountAddress" ]
+                                  ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                                  |)
+                                ]
+                              |)
                             ]
-                          |),
-                          [ self ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1596,29 +1804,50 @@ Module account_address.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_lower_hex",
-                            [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
                             [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_core_types::account_address::AccountAddress" ]
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_lower_hex",
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::account_address::AccountAddress" ]
+                                  ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                                  |)
+                                ]
+                              |)
                             ]
-                          |),
-                          [ self ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1676,7 +1905,7 @@ Module account_address.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| f |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                                 |)
                               |)) in
                           let _ :=
@@ -1706,7 +1935,10 @@ Module account_address.
                                         []
                                       |),
                                       [
-                                        M.read (| f |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| f |) |)
+                                        |);
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
@@ -1715,8 +1947,16 @@ Module account_address.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array [ M.read (| Value.String "0x" |) ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array [ M.read (| Value.String "0x" |) ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -1805,10 +2045,13 @@ Module account_address.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "move_core_types::account_address::AccountAddress",
-                              0
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_core_types::account_address::AccountAddress",
+                                0
+                              |)
                             |)
                           ]
                         |)
@@ -1835,7 +2078,12 @@ Module account_address.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1883,7 +2131,10 @@ Module account_address.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| f |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| f |) |)
+                                                        |);
                                                         M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
@@ -1892,65 +2143,100 @@ Module account_address.
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [ M.read (| Value.String "" |) ]
-                                                            |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_lower_hex",
-                                                                      [],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [ Ty.path "u8" ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [ M.read (| Value.String "" |)
                                                                       ]
-                                                                    |),
-                                                                    [ byte ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Placeholder",
-                                                                      "new",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        0;
-                                                                      Value.UnicodeChar 32;
-                                                                      Value.StructTuple
-                                                                        "core::fmt::rt::Alignment::Unknown"
-                                                                        [];
-                                                                      Value.Integer
-                                                                        IntegerKind.U32
-                                                                        8;
-                                                                      Value.StructTuple
-                                                                        "core::fmt::rt::Count::Implied"
-                                                                        [];
-                                                                      Value.StructTuple
-                                                                        "core::fmt::rt::Count::Is"
-                                                                        [
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            2
-                                                                        ]
-                                                                    ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_lower_hex",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u8" ]
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  byte
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
+                                                                            "new",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              0;
+                                                                            Value.UnicodeChar 32;
+                                                                            Value.StructTuple
+                                                                              "core::fmt::rt::Alignment::Unknown"
+                                                                              [];
+                                                                            Value.Integer
+                                                                              IntegerKind.U32
+                                                                              8;
+                                                                            Value.StructTuple
+                                                                              "core::fmt::rt::Count::Implied"
+                                                                              [];
+                                                                            Value.StructTuple
+                                                                              "core::fmt::rt::Count::Is"
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  2
+                                                                              ]
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |);
                                                             M.call_closure (|
                                                               M.get_associated_function (|
@@ -2087,7 +2373,7 @@ Module account_address.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| f |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                                 |)
                               |)) in
                           let _ :=
@@ -2117,7 +2403,10 @@ Module account_address.
                                         []
                                       |),
                                       [
-                                        M.read (| f |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| f |) |)
+                                        |);
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
@@ -2126,8 +2415,16 @@ Module account_address.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array [ M.read (| Value.String "0x" |) ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array [ M.read (| Value.String "0x" |) ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -2216,10 +2513,13 @@ Module account_address.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "move_core_types::account_address::AccountAddress",
-                              0
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_core_types::account_address::AccountAddress",
+                                0
+                              |)
                             |)
                           ]
                         |)
@@ -2246,7 +2546,12 @@ Module account_address.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -2294,7 +2599,10 @@ Module account_address.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| f |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| f |) |)
+                                                        |);
                                                         M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
@@ -2303,65 +2611,100 @@ Module account_address.
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [ M.read (| Value.String "" |) ]
-                                                            |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_upper_hex",
-                                                                      [],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [ Ty.path "u8" ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [ M.read (| Value.String "" |)
                                                                       ]
-                                                                    |),
-                                                                    [ byte ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Placeholder",
-                                                                      "new",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        0;
-                                                                      Value.UnicodeChar 32;
-                                                                      Value.StructTuple
-                                                                        "core::fmt::rt::Alignment::Unknown"
-                                                                        [];
-                                                                      Value.Integer
-                                                                        IntegerKind.U32
-                                                                        8;
-                                                                      Value.StructTuple
-                                                                        "core::fmt::rt::Count::Implied"
-                                                                        [];
-                                                                      Value.StructTuple
-                                                                        "core::fmt::rt::Count::Is"
-                                                                        [
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            2
-                                                                        ]
-                                                                    ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_upper_hex",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u8" ]
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  byte
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
+                                                                            "new",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              0;
+                                                                            Value.UnicodeChar 32;
+                                                                            Value.StructTuple
+                                                                              "core::fmt::rt::Alignment::Unknown"
+                                                                              [];
+                                                                            Value.Integer
+                                                                              IntegerKind.U32
+                                                                              8;
+                                                                            Value.StructTuple
+                                                                              "core::fmt::rt::Count::Implied"
+                                                                              [];
+                                                                            Value.StructTuple
+                                                                              "core::fmt::rt::Count::Is"
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  2
+                                                                              ]
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |);
                                                             M.call_closure (|
                                                               M.get_associated_function (|
@@ -2608,10 +2951,13 @@ Module account_address.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                addr,
-                "move_core_types::account_address::AccountAddress",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  addr,
+                  "move_core_types::account_address::AccountAddress",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2649,10 +2995,13 @@ Module account_address.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| addr |),
-                "move_core_types::account_address::AccountAddress",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| addr |) |),
+                  "move_core_types::account_address::AccountAddress",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2728,7 +3077,7 @@ Module account_address.
           (let addr := M.alloc (| addr |) in
           M.read (|
             M.SubPointer.get_struct_tuple_field (|
-              M.read (| addr |),
+              M.deref (| M.read (| addr |) |),
               "move_core_types::account_address::AccountAddress",
               0
             |)
@@ -2778,7 +3127,7 @@ Module account_address.
                   [],
                   []
                 |),
-                [ M.read (| addr |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| addr |) |) |) ]
               |)
             ]
           |)))
@@ -2871,7 +3220,7 @@ Module account_address.
                             [],
                             []
                           |),
-                          [ M.read (| s |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                         |)
                       |) in
                     let γ0_0 :=
@@ -2958,7 +3307,7 @@ Module account_address.
                                   [],
                                   []
                                 |),
-                                [ deserializer ]
+                                [ M.borrow (| Pointer.Kind.Ref, deserializer |) ]
                               |)
                             |)) in
                         let _ :=
@@ -3089,17 +3438,27 @@ Module account_address.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.path "alloc::string::String",
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [ s ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.path "alloc::string::String",
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |);
@@ -3295,7 +3654,7 @@ Module account_address.
                               [],
                               []
                             |),
-                            [ serializer ]
+                            [ M.borrow (| Pointer.Kind.Ref, serializer |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3311,15 +3670,18 @@ Module account_address.
                           [ S ]
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_core_types::account_address::AccountAddress",
-                                "to_hex",
-                                [],
-                                []
-                              |),
-                              [ M.read (| self |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::account_address::AccountAddress",
+                                  "to_hex",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
                             |)
                           |);
                           M.read (| serializer |)
@@ -3347,10 +3709,18 @@ Module account_address.
                         [
                           M.read (| serializer |);
                           M.read (| Value.String "AccountAddress" |);
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.read (| self |),
-                            "move_core_types::account_address::AccountAddress",
-                            0
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_core_types::account_address::AccountAddress",
+                                  0
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -3386,7 +3756,7 @@ Module account_address.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -3421,7 +3791,13 @@ Module account_address.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-            [ M.read (| f |); M.read (| Value.String "AccountAddressParseError" |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "AccountAddressParseError" |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3455,33 +3831,61 @@ Module account_address.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (|
-                          Value.String
-                            "Unable to parse AccountAddress (must be hex string of length "
-                        |);
-                        M.read (| Value.String ")" |)
-                      ]
-                  |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [ M.get_constant (| "move_core_types::account_address::LENGTH" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String
+                                  "Unable to parse AccountAddress (must be hex string of length "
+                              |);
+                              M.read (| Value.String ")" |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [],
+                                  [ Ty.path "usize" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.get_constant (|
+                                          "move_core_types::account_address::LENGTH"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)

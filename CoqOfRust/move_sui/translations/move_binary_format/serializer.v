@@ -106,40 +106,79 @@ Module serializer.
                                                           []
                                                         |),
                                                         [
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (| Value.String "value (" |);
-                                                                M.read (|
-                                                                  Value.String ") cannot exceed ("
-                                                                |);
-                                                                M.read (| Value.String ")" |)
-                                                              ]
-                                                          |);
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [],
-                                                                    [ Ty.path "u64" ]
-                                                                  |),
-                                                                  [ x ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [],
-                                                                    [ Ty.path "u64" ]
-                                                                  |),
-                                                                  [ max ]
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String "value ("
+                                                                      |);
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          ") cannot exceed ("
+                                                                      |);
+                                                                      M.read (| Value.String ")" |)
+                                                                    ]
                                                                 |)
-                                                              ]
+                                                              |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_display",
+                                                                          [],
+                                                                          [ Ty.path "u64" ]
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                x
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_display",
+                                                                          [],
+                                                                          [ Ty.path "u64" ]
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                max
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -167,7 +206,10 @@ Module serializer.
                     [],
                     []
                   |),
-                  [ M.read (| binary |); M.read (| x |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                    M.read (| x |)
+                  ]
                 |)
               |)
             |)))
@@ -196,10 +238,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::SignatureIndex",
                 0
               |)
@@ -239,10 +281,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::ModuleHandleIndex",
                 0
               |)
@@ -278,10 +320,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::IdentifierIndex",
                 0
               |)
@@ -321,10 +363,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::StructHandleIndex",
                 0
               |)
@@ -367,10 +409,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::AddressIdentifierIndex",
                 0
               |)
@@ -406,10 +448,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::StructDefinitionIndex",
                 0
               |)
@@ -452,10 +494,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::FunctionHandleIndex",
                 0
               |)
@@ -497,10 +539,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::FieldHandleIndex",
                 0
               |)
@@ -539,10 +581,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::FieldInstantiationIndex",
                 0
               |)
@@ -585,10 +627,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::FunctionInstantiationIndex",
                 0
               |)
@@ -631,10 +673,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::StructDefInstantiationIndex",
                 0
               |)
@@ -672,7 +714,7 @@ Module serializer.
             [ Ty.path "u32"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (| offset |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::TABLE_OFFSET_MAX" |)
@@ -703,7 +745,7 @@ Module serializer.
             [ Ty.path "u32"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (| size |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::TABLE_SIZE_MAX" |)
@@ -738,10 +780,10 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| idx |),
+                M.deref (| M.read (| idx |) |),
                 "move_binary_format::file_format::ConstantPoolIndex",
                 0
               |)
@@ -777,7 +819,7 @@ Module serializer.
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.rust_cast (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::BYTECODE_COUNT_MAX" |)
@@ -810,7 +852,7 @@ Module serializer.
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.rust_cast (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX" |)
@@ -843,7 +885,7 @@ Module serializer.
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.rust_cast (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::CONSTANT_SIZE_MAX" |)
@@ -878,7 +920,7 @@ Module serializer.
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.rust_cast (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX" |)
@@ -915,7 +957,7 @@ Module serializer.
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.rust_cast (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX" |)
@@ -948,7 +990,7 @@ Module serializer.
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.rust_cast (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::FIELD_COUNT_MAX" |)
@@ -979,7 +1021,7 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (| offset |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::FIELD_OFFSET_MAX" |)
@@ -1010,7 +1052,7 @@ Module serializer.
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.rust_cast (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX" |)
@@ -1043,7 +1085,7 @@ Module serializer.
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.rust_cast (M.read (| len |));
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX" |)
@@ -1080,7 +1122,7 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (| idx |);
             M.read (|
               M.get_constant (|
@@ -1119,7 +1161,7 @@ Module serializer.
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.rust_cast (M.read (| len |));
             M.read (|
               M.get_constant (|
@@ -1154,7 +1196,7 @@ Module serializer.
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (| offset |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::BYTECODE_INDEX_MAX" |)
@@ -1187,7 +1229,7 @@ Module serializer.
             [ Ty.path "u8"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (| len |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::TABLE_COUNT_MAX" |)
@@ -1218,7 +1260,7 @@ Module serializer.
             [ Ty.path "u8"; Ty.path "u64" ]
           |),
           [
-            M.read (| binary |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
             M.read (| idx |);
             M.read (|
               M.get_constant (| "move_binary_format::file_format_common::LOCAL_INDEX_MAX" |)
@@ -1273,32 +1315,38 @@ Module serializer.
                                   [ Ty.path "u32" ]
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeInclusive")
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::RangeInclusive")
+                                            []
+                                            [ Ty.path "u32" ],
+                                          "new",
+                                          [],
                                           []
-                                          [ Ty.path "u32" ],
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.get_constant (|
-                                            "move_binary_format::file_format_common::VERSION_MIN"
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.get_constant (|
+                                              "move_binary_format::file_format_common::VERSION_MIN"
+                                            |)
+                                          |);
+                                          M.read (|
+                                            M.get_constant (|
+                                              "move_binary_format::file_format_common::VERSION_MAX"
+                                            |)
                                           |)
-                                        |);
-                                        M.read (|
-                                          M.get_constant (|
-                                            "move_binary_format::file_format_common::VERSION_MAX"
-                                          |)
-                                        |)
-                                      ]
+                                        ]
+                                      |)
                                     |)
                                   |);
-                                  version
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, version |) |)
+                                  |)
                                 ]
                               |)
                             |)
@@ -1340,60 +1388,109 @@ Module serializer.
                                                         []
                                                       |),
                                                       [
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "The requested bytecode version "
-                                                              |);
-                                                              M.read (|
-                                                                Value.String
-                                                                  " is not supported. Only "
-                                                              |);
-                                                              M.read (| Value.String " to " |);
-                                                              M.read (| Value.String " are." |)
-                                                            ]
-                                                        |);
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [],
-                                                                  [ Ty.path "u32" ]
-                                                                |),
-                                                                [ version ]
-                                                              |);
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [],
-                                                                  [ Ty.path "u32" ]
-                                                                |),
-                                                                [
-                                                                  M.get_constant (|
-                                                                    "move_binary_format::file_format_common::VERSION_MIN"
-                                                                  |)
-                                                                ]
-                                                              |);
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [],
-                                                                  [ Ty.path "u32" ]
-                                                                |),
-                                                                [
-                                                                  M.get_constant (|
-                                                                    "move_binary_format::file_format_common::VERSION_MAX"
-                                                                  |)
-                                                                ]
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        "The requested bytecode version "
+                                                                    |);
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        " is not supported. Only "
+                                                                    |);
+                                                                    M.read (|
+                                                                      Value.String " to "
+                                                                    |);
+                                                                    M.read (|
+                                                                      Value.String " are."
+                                                                    |)
+                                                                  ]
                                                               |)
-                                                            ]
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_display",
+                                                                        [],
+                                                                        [ Ty.path "u32" ]
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              version
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |);
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_display",
+                                                                        [],
+                                                                        [ Ty.path "u32" ]
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.get_constant (|
+                                                                                "move_binary_format::file_format_common::VERSION_MIN"
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |);
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_display",
+                                                                        [],
+                                                                        [ Ty.path "u32" ]
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.get_constant (|
+                                                                                "move_binary_format::file_format_common::VERSION_MAX"
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -1448,9 +1545,9 @@ Module serializer.
               []
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
               Value.StructTuple "core::option::Option::None" [];
-              M.read (| binary |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1627,7 +1724,7 @@ Module serializer.
                             [],
                             []
                           |),
-                          [ M.read (| binary |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |) ]
                         |)
                       ]
                     |)
@@ -1680,7 +1777,14 @@ Module serializer.
                               [],
                               []
                             |),
-                            [ ser; temp; M.read (| self |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, ser |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, temp |) |)
+                              |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -1755,7 +1859,7 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ temp ]
+                                    [ M.borrow (| Pointer.Kind.Ref, temp |) ]
                                   |),
                                   M.rust_cast
                                     (M.call_closure (|
@@ -1811,68 +1915,109 @@ Module serializer.
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "table content size ("
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String ") cannot exceed ("
-                                                                  |);
-                                                                  M.read (| Value.String ")" |)
-                                                                ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "table content size ("
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            ") cannot exceed ("
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String ")"
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [],
-                                                                      [ Ty.path "usize" ]
-                                                                    |),
-                                                                    [
-                                                                      M.alloc (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
                                                                         M.call_closure (|
                                                                           M.get_associated_function (|
                                                                             Ty.path
-                                                                              "move_binary_format::file_format_common::BinaryData",
-                                                                            "len",
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
                                                                             [],
-                                                                            []
+                                                                            [ Ty.path "usize" ]
                                                                           |),
-                                                                          [ temp ]
-                                                                        |)
-                                                                      |)
-                                                                    ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [],
-                                                                      [ Ty.path "u32" ]
-                                                                    |),
-                                                                    [
-                                                                      M.alloc (|
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format_common::BinaryData",
+                                                                                        "len",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          temp
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
                                                                         M.call_closure (|
                                                                           M.get_associated_function (|
-                                                                            Ty.path "u32",
-                                                                            "max_value",
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
                                                                             [],
-                                                                            []
+                                                                            [ Ty.path "u32" ]
                                                                           |),
-                                                                          []
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "u32",
+                                                                                        "max_value",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      []
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |)
-                                                                      |)
-                                                                    ]
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -1918,12 +2063,18 @@ Module serializer.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                ser,
-                                "move_binary_format::serializer::ModuleSerializer",
-                                "common"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  ser,
+                                  "move_binary_format::serializer::ModuleSerializer",
+                                  "common"
+                                |)
                               |);
-                              binary_data
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, binary_data |) |)
+                              |)
                             ]
                           |)
                         ]
@@ -2006,7 +2157,13 @@ Module serializer.
                               [],
                               []
                             |),
-                            [ ser; binary_data ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, ser |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, binary_data |) |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -2089,15 +2246,20 @@ Module serializer.
                               []
                             |),
                             [
-                              binary_data;
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format_common::BinaryData",
-                                  "as_inner",
-                                  [],
-                                  []
-                                |),
-                                [ temp ]
+                              M.borrow (| Pointer.Kind.MutRef, binary_data |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format_common::BinaryData",
+                                      "as_inner",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, temp |) ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -2181,11 +2343,22 @@ Module serializer.
                               []
                             |),
                             [
-                              binary_data;
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_binary_format::file_format::CompiledModule",
-                                "self_module_handle_idx"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, binary_data |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_binary_format::file_format::CompiledModule",
+                                      "self_module_handle_idx"
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -2247,7 +2420,7 @@ Module serializer.
                   |) in
                 let~ _ :=
                   M.write (|
-                    M.read (| binary |),
+                    M.deref (| M.read (| binary |) |),
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format_common::BinaryData",
@@ -2302,86 +2475,223 @@ Module serializer.
           M.read (|
             let~ names :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.read (| Value.String "major_version" |);
-                      M.read (| Value.String "table_count" |);
-                      M.read (| Value.String "module_handles" |);
-                      M.read (| Value.String "struct_handles" |);
-                      M.read (| Value.String "function_handles" |);
-                      M.read (| Value.String "function_instantiations" |);
-                      M.read (| Value.String "signatures" |);
-                      M.read (| Value.String "identifiers" |);
-                      M.read (| Value.String "address_identifiers" |);
-                      M.read (| Value.String "constant_pool" |);
-                      M.read (| Value.String "metadata" |)
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "major_version" |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "table_count" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "module_handles" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "struct_handles" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "function_handles" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "function_instantiations" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "signatures" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "identifiers" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "address_identifiers" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "constant_pool" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "metadata" |) |)
+                            |)
+                          ]
+                      |)
+                    |)
+                  |)
                 |)
               |) in
             let~ values :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::CommonSerializer",
-                        "major_version"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::CommonSerializer",
-                        "table_count"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::CommonSerializer",
-                        "module_handles"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::CommonSerializer",
-                        "struct_handles"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::CommonSerializer",
-                        "function_handles"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::CommonSerializer",
-                        "function_instantiations"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::CommonSerializer",
-                        "signatures"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::CommonSerializer",
-                        "identifiers"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::CommonSerializer",
-                        "address_identifiers"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::CommonSerializer",
-                        "constant_pool"
-                      |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.alloc (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::serializer::CommonSerializer",
-                          "metadata"
-                        |)
+                        Value.Array
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::CommonSerializer",
+                                    "major_version"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::CommonSerializer",
+                                    "table_count"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::CommonSerializer",
+                                    "module_handles"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::CommonSerializer",
+                                    "struct_handles"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::CommonSerializer",
+                                    "function_handles"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::CommonSerializer",
+                                    "function_instantiations"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::CommonSerializer",
+                                    "signatures"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::CommonSerializer",
+                                    "identifiers"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::CommonSerializer",
+                                    "address_identifiers"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::CommonSerializer",
+                                    "constant_pool"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "metadata"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                       |)
-                    ]
+                    |)
+                  |)
                 |)
               |) in
             M.alloc (|
@@ -2393,10 +2703,13 @@ Module serializer.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "CommonSerializer" |);
-                  M.read (| names |);
-                  M.read (| values |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "CommonSerializer" |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
             |)
@@ -2442,62 +2755,155 @@ Module serializer.
           M.read (|
             let~ names :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.read (| Value.String "common" |);
-                      M.read (| Value.String "struct_defs" |);
-                      M.read (| Value.String "struct_def_instantiations" |);
-                      M.read (| Value.String "function_defs" |);
-                      M.read (| Value.String "field_handles" |);
-                      M.read (| Value.String "field_instantiations" |);
-                      M.read (| Value.String "friend_decls" |)
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "common" |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "struct_defs" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "struct_def_instantiations" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "function_defs" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "field_handles" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "field_instantiations" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "friend_decls" |) |)
+                            |)
+                          ]
+                      |)
+                    |)
+                  |)
                 |)
               |) in
             let~ values :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::ModuleSerializer",
-                        "common"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::ModuleSerializer",
-                        "struct_defs"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::ModuleSerializer",
-                        "struct_def_instantiations"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::ModuleSerializer",
-                        "function_defs"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::ModuleSerializer",
-                        "field_handles"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::serializer::ModuleSerializer",
-                        "field_instantiations"
-                      |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.alloc (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::serializer::ModuleSerializer",
-                          "friend_decls"
-                        |)
+                        Value.Array
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::ModuleSerializer",
+                                    "common"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::ModuleSerializer",
+                                    "struct_defs"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::ModuleSerializer",
+                                    "struct_def_instantiations"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::ModuleSerializer",
+                                    "function_defs"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::ModuleSerializer",
+                                    "field_handles"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::serializer::ModuleSerializer",
+                                    "field_instantiations"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::ModuleSerializer",
+                                        "friend_decls"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                       |)
-                    ]
+                    |)
+                  |)
                 |)
               |) in
             M.alloc (|
@@ -2509,10 +2915,13 @@ Module serializer.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "ModuleSerializer" |);
-                  M.read (| names |);
-                  M.read (| values |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "ModuleSerializer" |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
             |)
@@ -2613,54 +3022,89 @@ Module serializer.
                                                           []
                                                         |),
                                                         [
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "Compilation unit too big ("
-                                                                |);
-                                                                M.read (|
-                                                                  Value.String ") cannot exceed "
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "Compilation unit too big ("
+                                                                      |);
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          ") cannot exceed "
+                                                                      |)
+                                                                    ]
                                                                 |)
-                                                              ]
+                                                              |)
+                                                            |)
                                                           |);
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [],
-                                                                    [ Ty.path "usize" ]
-                                                                  |),
-                                                                  [ index ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [],
-                                                                    [ Ty.path "u32" ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
                                                                       M.call_closure (|
                                                                         M.get_associated_function (|
-                                                                          Ty.path "u32",
-                                                                          "max_value",
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_display",
                                                                           [],
-                                                                          []
+                                                                          [ Ty.path "usize" ]
                                                                         |),
-                                                                        []
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                index
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_display",
+                                                                          [],
+                                                                          [ Ty.path "u32" ]
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.alloc (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path "u32",
+                                                                                      "max_value",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    []
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
                                                                       |)
-                                                                    |)
-                                                                  ]
+                                                                    ]
                                                                 |)
-                                                              ]
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -2755,7 +3199,13 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| binary |); M.rust_cast (M.read (| kind |)) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| binary |) |)
+                                      |);
+                                      M.rust_cast (M.read (| kind |))
+                                    ]
                                   |)
                                 ]
                               |)
@@ -2836,7 +3286,13 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| binary |); M.read (| offset |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| binary |) |)
+                                      |);
+                                      M.read (| offset |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -2917,7 +3373,13 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| binary |); M.read (| count |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| binary |) |)
+                                      |);
+                                      M.read (| count |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -3026,7 +3488,13 @@ Module serializer.
                           [],
                           []
                         |),
-                        [ M.get_constant (| "move_binary_format::file_format_common::MOVE_MAGIC" |)
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.get_constant (|
+                              "move_binary_format::file_format_common::MOVE_MAGIC"
+                            |)
+                          |)
                         ]
                       |)
                     |),
@@ -3052,7 +3520,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -3098,8 +3571,11 @@ Module serializer.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| binary |);
-                                                      M.read (| M.read (| byte |) |)
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.read (| M.deref (| M.read (| byte |) |) |)
                                                     ]
                                                   |)
                                                 ]
@@ -3194,29 +3670,42 @@ Module serializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::ModuleHandle";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
                 [
-                  Ty.path "move_binary_format::file_format::ModuleHandle";
-                  Ty.path "alloc::alloc::Global"
-                ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format::CompiledModule",
-                "module_handles"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format::CompiledModule",
+                          "module_handles"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3231,29 +3720,42 @@ Module serializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::StructHandle";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
                 [
-                  Ty.path "move_binary_format::file_format::StructHandle";
-                  Ty.path "alloc::alloc::Global"
-                ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format::CompiledModule",
-                "struct_handles"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format::CompiledModule",
+                          "struct_handles"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3268,29 +3770,42 @@ Module serializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::FunctionHandle";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
                 [
-                  Ty.path "move_binary_format::file_format::FunctionHandle";
-                  Ty.path "alloc::alloc::Global"
-                ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format::CompiledModule",
-                "function_handles"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format::CompiledModule",
+                          "function_handles"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3309,29 +3824,42 @@ Module serializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::FunctionInstantiation";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
                 [
-                  Ty.path "move_binary_format::file_format::FunctionInstantiation";
-                  Ty.path "alloc::alloc::Global"
-                ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format::CompiledModule",
-                "function_instantiations"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format::CompiledModule",
+                          "function_instantiations"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3346,27 +3874,42 @@ Module serializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "move_core_types::identifier::Identifier"; Ty.path "alloc::alloc::Global"
-                ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format::CompiledModule",
-                "identifiers"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::identifier::Identifier";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format::CompiledModule",
+                          "identifiers"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3381,29 +3924,42 @@ Module serializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::account_address::AccountAddress";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
                 [
-                  Ty.path "move_core_types::account_address::AccountAddress";
-                  Ty.path "alloc::alloc::Global"
-                ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format::CompiledModule",
-                "address_identifiers"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format::CompiledModule",
+                          "address_identifiers"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3418,29 +3974,42 @@ Module serializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::Constant";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
                 [
-                  Ty.path "move_binary_format::file_format::Constant";
-                  Ty.path "alloc::alloc::Global"
-                ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format::CompiledModule",
-                "constant_pool"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format::CompiledModule",
+                          "constant_pool"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3455,29 +4024,42 @@ Module serializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::Signature";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
                 [
-                  Ty.path "move_binary_format::file_format::Signature";
-                  Ty.path "alloc::alloc::Global"
-                ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format::CompiledModule",
-                "signatures"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format::CompiledModule",
+                          "signatures"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3492,26 +4074,40 @@ Module serializer.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "move_core_types::metadata::Metadata"; Ty.path "alloc::alloc::Global" ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::file_format::CompiledModule",
-                "metadata"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "move_core_types::metadata::Metadata"; Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::file_format::CompiledModule",
+                          "metadata"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3575,11 +4171,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| module_handle |),
-                              "move_binary_format::file_format::ModuleHandle",
-                              "address"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| module_handle |) |),
+                                    "move_binary_format::file_format::ModuleHandle",
+                                    "address"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3663,11 +4267,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| module_handle |),
-                              "move_binary_format::file_format::ModuleHandle",
-                              "name"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| module_handle |) |),
+                                    "move_binary_format::file_format::ModuleHandle",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3777,11 +4389,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| struct_handle |),
-                              "move_binary_format::file_format::StructHandle",
-                              "module"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| struct_handle |) |),
+                                    "move_binary_format::file_format::StructHandle",
+                                    "module"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3865,11 +4485,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| struct_handle |),
-                              "move_binary_format::file_format::StructHandle",
-                              "name"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| struct_handle |) |),
+                                    "move_binary_format::file_format::StructHandle",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3953,10 +4581,10 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| struct_handle |),
+                                M.deref (| M.read (| struct_handle |) |),
                                 "move_binary_format::file_format::StructHandle",
                                 "abilities"
                               |)
@@ -4027,30 +4655,43 @@ Module serializer.
                     []
                   |),
                   [
-                    M.read (| binary |);
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::StructTypeParameter";
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
                           [
-                            Ty.path "move_binary_format::file_format::StructTypeParameter";
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| struct_handle |),
-                          "move_binary_format::file_format::StructHandle",
-                          "type_parameters"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| struct_handle |) |),
+                                    "move_binary_format::file_format::StructHandle",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |)
@@ -4108,7 +4749,7 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -4120,7 +4761,12 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| type_parameters |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| type_parameters |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |)
@@ -4230,7 +4876,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -4273,7 +4924,16 @@ Module serializer.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| binary |); M.read (| type_param |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| type_param |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -4395,10 +5055,10 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| type_param |),
+                                M.deref (| M.read (| type_param |) |),
                                 "move_binary_format::file_format::StructTypeParameter",
                                 "constraints"
                               |)
@@ -4469,11 +5129,11 @@ Module serializer.
                     [ Ty.path "u8"; Ty.path "u64" ]
                   |),
                   [
-                    M.read (| binary |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| type_param |),
+                          M.deref (| M.read (| type_param |) |),
                           "move_binary_format::file_format::StructTypeParameter",
                           "is_phantom"
                         |)
@@ -4537,11 +5197,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| function_handle |),
-                              "move_binary_format::file_format::FunctionHandle",
-                              "module"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| function_handle |) |),
+                                    "move_binary_format::file_format::FunctionHandle",
+                                    "module"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -4625,11 +5293,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| function_handle |),
-                              "move_binary_format::file_format::FunctionHandle",
-                              "name"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| function_handle |) |),
+                                    "move_binary_format::file_format::FunctionHandle",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -4713,11 +5389,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| function_handle |),
-                              "move_binary_format::file_format::FunctionHandle",
-                              "parameters"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| function_handle |) |),
+                                    "move_binary_format::file_format::FunctionHandle",
+                                    "parameters"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -4801,11 +5485,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| function_handle |),
-                              "move_binary_format::file_format::FunctionHandle",
-                              "return_"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| function_handle |) |),
+                                    "move_binary_format::file_format::FunctionHandle",
+                                    "return_"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -4873,30 +5565,43 @@ Module serializer.
                     []
                   |),
                   [
-                    M.read (| binary |);
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::AbilitySet";
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
                           [
-                            Ty.path "move_binary_format::file_format::AbilitySet";
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| function_handle |),
-                          "move_binary_format::file_format::FunctionHandle",
-                          "type_parameters"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| function_handle |) |),
+                                    "move_binary_format::file_format::FunctionHandle",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |)
@@ -4958,11 +5663,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| func_inst |),
-                              "move_binary_format::file_format::FunctionInstantiation",
-                              "handle"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| func_inst |) |),
+                                    "move_binary_format::file_format::FunctionInstantiation",
+                                    "handle"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -5046,11 +5759,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| func_inst |),
-                              "move_binary_format::file_format::FunctionInstantiation",
-                              "type_parameters"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| func_inst |) |),
+                                    "move_binary_format::file_format::FunctionInstantiation",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -5144,7 +5865,7 @@ Module serializer.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                    [ M.read (| string |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| string |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -5171,7 +5892,7 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -5179,7 +5900,7 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| bytes |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
                             |)
                           ]
                         |)
@@ -5281,7 +6002,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -5327,8 +6053,11 @@ Module serializer.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| binary |);
-                                                      M.read (| M.read (| byte |) |)
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.read (| M.deref (| M.read (| byte |) |) |)
                                                     ]
                                                   |)
                                                 ]
@@ -5452,7 +6181,7 @@ Module serializer.
                               [],
                               []
                             |),
-                            [ M.read (| address |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| address |) |) |) ]
                           |)
                         ]
                       |)
@@ -5479,7 +6208,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -5525,8 +6259,11 @@ Module serializer.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| binary |);
-                                                      M.read (| M.read (| byte |) |)
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.read (| M.deref (| M.read (| byte |) |) |)
                                                     ]
                                                   |)
                                                 ]
@@ -5644,11 +6381,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| constant |),
-                              "move_binary_format::file_format::Constant",
-                              "type_"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| constant |) |),
+                                    "move_binary_format::file_format::Constant",
+                                    "type_"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -5729,32 +6474,45 @@ Module serializer.
                     ]
                   |),
                   [
-                    M.read (| binary |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                     M.get_function (|
                       "move_binary_format::serializer::serialize_constant_size",
                       [],
                       []
                     |);
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| constant |),
-                          "move_binary_format::file_format::Constant",
-                          "data"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| constant |) |),
+                                    "move_binary_format::file_format::Constant",
+                                    "data"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |)
@@ -5820,32 +6578,45 @@ Module serializer.
                             ]
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.get_function (|
                               "move_binary_format::serializer::serialize_metadata_key_size",
                               [],
                               []
                             |);
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| metadata |),
-                                  "move_core_types::metadata::Metadata",
-                                  "key"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| metadata |) |),
+                                            "move_core_types::metadata::Metadata",
+                                            "key"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |)
                             |)
                           ]
                         |)
@@ -5926,32 +6697,45 @@ Module serializer.
                     ]
                   |),
                   [
-                    M.read (| binary |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                     M.get_function (|
                       "move_binary_format::serializer::serialize_metadata_value_size",
                       [],
                       []
                     |);
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| metadata |),
-                          "move_core_types::metadata::Metadata",
-                          "value"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| metadata |) |),
+                                    "move_core_types::metadata::Metadata",
+                                    "value"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |)
@@ -6027,10 +6811,13 @@ Module serializer.
                             []
                           |),
                           [
-                            size_serializer;
+                            M.borrow (| Pointer.Kind.Ref, size_serializer |);
                             Value.Tuple
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -6038,7 +6825,8 @@ Module serializer.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| blob |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| blob |) |) |)
+                                  ]
                                 |)
                               ]
                           ]
@@ -6141,7 +6929,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -6187,8 +6980,11 @@ Module serializer.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| binary |);
-                                                      M.read (| M.read (| byte |) |)
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.read (| M.deref (| M.read (| byte |) |) |)
                                                     ]
                                                   |)
                                                 ]
@@ -6319,11 +7115,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| struct_definition |),
-                              "move_binary_format::file_format::StructDefinition",
-                              "struct_handle"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| struct_definition |) |),
+                                    "move_binary_format::file_format::StructDefinition",
+                                    "struct_handle"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -6385,10 +7189,13 @@ Module serializer.
                 |) in
               M.match_operator (|
                 M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| struct_definition |),
-                    "move_binary_format::file_format::StructDefinition",
-                    "field_information"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| struct_definition |) |),
+                      "move_binary_format::file_format::StructDefinition",
+                      "field_information"
+                    |)
                   |)
                 |),
                 [
@@ -6409,7 +7216,7 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.rust_cast
                               (BinOp.Wrap.add (|
                                 M.get_constant (|
@@ -6455,7 +7262,10 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.read (| binary |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| binary |) |)
+                                    |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
@@ -6529,24 +7339,34 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::FieldDefinition";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
                                   [
-                                    Ty.path "move_binary_format::file_format::FieldDefinition";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [ M.read (| fields |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| fields |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -6610,11 +7430,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| struct_inst |),
-                              "move_binary_format::file_format::StructDefInstantiation",
-                              "def"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| struct_inst |) |),
+                                    "move_binary_format::file_format::StructDefInstantiation",
+                                    "def"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -6698,11 +7526,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| struct_inst |),
-                              "move_binary_format::file_format::StructDefInstantiation",
-                              "type_parameters"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| struct_inst |) |),
+                                    "move_binary_format::file_format::StructDefInstantiation",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -6819,7 +7655,7 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -6830,7 +7666,7 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| fields |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fields |) |) |) ]
                             |)
                           ]
                         |)
@@ -6940,7 +7776,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -6984,8 +7825,14 @@ Module serializer.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| binary |);
-                                                      M.read (| field_definition |)
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| field_definition |) |)
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -7108,11 +7955,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| field_definition |),
-                              "move_binary_format::file_format::FieldDefinition",
-                              "name"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| field_definition |) |),
+                                    "move_binary_format::file_format::FieldDefinition",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7180,15 +8035,23 @@ Module serializer.
                     []
                   |),
                   [
-                    M.read (| binary |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| field_definition |),
-                        "move_binary_format::file_format::FieldDefinition",
-                        "signature"
-                      |),
-                      "move_binary_format::file_format::TypeSignature",
-                      0
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| field_definition |) |),
+                              "move_binary_format::file_format::FieldDefinition",
+                              "signature"
+                            |),
+                            "move_binary_format::file_format::TypeSignature",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -7243,11 +8106,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| field_handle |),
-                              "move_binary_format::file_format::FieldHandle",
-                              "owner"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| field_handle |) |),
+                                    "move_binary_format::file_format::FieldHandle",
+                                    "owner"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7331,10 +8202,10 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| field_handle |),
+                                M.deref (| M.read (| field_handle |) |),
                                 "move_binary_format::file_format::FieldHandle",
                                 "field"
                               |)
@@ -7453,11 +8324,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| field_inst |),
-                              "move_binary_format::file_format::FieldInstantiation",
-                              "handle"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| field_inst |) |),
+                                    "move_binary_format::file_format::FieldInstantiation",
+                                    "handle"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7541,11 +8420,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| field_inst |),
-                              "move_binary_format::file_format::FieldInstantiation",
-                              "type_parameters"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| field_inst |) |),
+                                    "move_binary_format::file_format::FieldInstantiation",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7658,7 +8545,7 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -7670,7 +8557,8 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| indices |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| indices |) |) |)
+                              ]
                             |)
                           ]
                         |)
@@ -7780,7 +8668,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -7823,7 +8716,16 @@ Module serializer.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| binary |); M.read (| def_idx |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| def_idx |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -7915,30 +8817,43 @@ Module serializer.
         M.call_closure (|
           M.get_function (| "move_binary_format::serializer::serialize_signature_tokens", [], [] |),
           [
-            M.read (| binary |);
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::ops::deref::Deref",
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::deref::Deref",
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::SignatureToken";
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    [],
+                    [],
+                    "deref",
+                    [],
+                    []
+                  |),
                   [
-                    Ty.path "move_binary_format::file_format::SignatureToken";
-                    Ty.path "alloc::alloc::Global"
-                  ],
-                [],
-                [],
-                "deref",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| signature |),
-                  "move_binary_format::file_format::Signature",
-                  0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| signature |) |),
+                            "move_binary_format::file_format::Signature",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)
           ]
         |)))
@@ -7990,7 +8905,7 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -8001,7 +8916,7 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| tokens |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| tokens |) |) |) ]
                             |)
                           ]
                         |)
@@ -8111,7 +9026,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -8154,7 +9074,16 @@ Module serializer.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| binary |); M.read (| token |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| token |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -8325,7 +9254,10 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.read (| binary |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| binary |) |)
+                                    |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
@@ -8423,7 +9355,10 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.read (| binary |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| binary |) |)
+                                    |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
@@ -8521,7 +9456,10 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.read (| binary |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| binary |) |)
+                                    |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
@@ -8619,7 +9557,10 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.read (| binary |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| binary |) |)
+                                    |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
@@ -8717,7 +9658,10 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.read (| binary |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| binary |) |)
+                                    |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
@@ -8815,7 +9759,10 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.read (| binary |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| binary |) |)
+                                    |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
@@ -8913,7 +9860,10 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.read (| binary |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| binary |) |)
+                                    |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
@@ -9011,7 +9961,10 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.read (| binary |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| binary |) |)
+                                    |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
@@ -9109,7 +10062,10 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.read (| binary |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| binary |) |)
+                                    |);
                                     M.rust_cast
                                       (BinOp.Wrap.add (|
                                         M.get_constant (|
@@ -9209,7 +10165,10 @@ Module serializer.
                                       []
                                     |),
                                     [
-                                      M.read (| binary |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| binary |) |)
+                                      |);
                                       M.rust_cast
                                         (BinOp.Wrap.add (|
                                           M.get_constant (|
@@ -9311,7 +10270,10 @@ Module serializer.
                                       []
                                     |),
                                     [
-                                      M.read (| binary |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| binary |) |)
+                                      |);
                                       M.rust_cast
                                         (BinOp.Wrap.add (|
                                           M.get_constant (|
@@ -9400,7 +10362,16 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| binary |); M.read (| idx |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| binary |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| idx |) |)
+                                      |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -9470,7 +10441,12 @@ Module serializer.
                           |) in
                         let struct_inst := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          M.alloc (| M.read (| M.read (| struct_inst |) |) |),
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| M.deref (| M.read (| struct_inst |) |) |) |)
+                            |)
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -9505,7 +10481,10 @@ Module serializer.
                                               []
                                             |),
                                             [
-                                              M.read (| binary |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| binary |) |)
+                                              |);
                                               M.rust_cast
                                                 (BinOp.Wrap.add (|
                                                   M.get_constant (|
@@ -9594,7 +10573,16 @@ Module serializer.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| binary |); M.read (| idx |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| binary |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| idx |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -9676,7 +10664,10 @@ Module serializer.
                                               []
                                             |),
                                             [
-                                              M.read (| binary |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| binary |) |)
+                                              |);
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
@@ -9691,7 +10682,12 @@ Module serializer.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| type_params |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| type_params |) |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                           |)
@@ -9788,7 +10784,10 @@ Module serializer.
                                       []
                                     |),
                                     [
-                                      M.read (| binary |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| binary |) |)
+                                      |);
                                       M.rust_cast
                                         (BinOp.Wrap.add (|
                                           M.get_constant (|
@@ -9889,7 +10888,10 @@ Module serializer.
                                       []
                                     |),
                                     [
-                                      M.read (| binary |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| binary |) |)
+                                      |);
                                       M.rust_cast
                                         (BinOp.Wrap.add (|
                                           M.get_constant (|
@@ -9991,7 +10993,10 @@ Module serializer.
                                       []
                                     |),
                                     [
-                                      M.read (| binary |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| binary |) |)
+                                      |);
                                       M.rust_cast
                                         (BinOp.Wrap.add (|
                                           M.get_constant (|
@@ -10080,7 +11085,13 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| binary |); M.read (| M.read (| idx |) |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| binary |) |)
+                                      |);
+                                      M.read (| M.deref (| M.read (| idx |) |) |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -10199,7 +11210,7 @@ Module serializer.
                               [],
                               []
                             |),
-                            [ M.read (| token |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| token |) |) |) ]
                           |)
                         ]
                       |)
@@ -10224,7 +11235,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -10296,14 +11312,22 @@ Module serializer.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "max recursion depth reached"
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "max recursion depth reached"
+                                                                                        |)
+                                                                                      ]
                                                                                   |)
-                                                                                ]
+                                                                                |)
+                                                                              |)
                                                                             |)
                                                                           ]
                                                                         |)
@@ -10344,7 +11368,16 @@ Module serializer.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| binary |); M.read (| token |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| token |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -10463,7 +11496,7 @@ Module serializer.
                             [ Ty.path "u8"; Ty.path "u8" ]
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::AbilitySet",
@@ -10595,7 +11628,7 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -10606,7 +11639,7 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| sets |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sets |) |) |) ]
                             |)
                           ]
                         |)
@@ -10713,7 +11746,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -10757,8 +11795,11 @@ Module serializer.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| binary |);
-                                                      M.read (| M.read (| set |) |)
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.read (| M.deref (| M.read (| set |) |) |)
                                                     ]
                                                   |)
                                                 ]
@@ -10877,11 +11918,19 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| code |),
-                              "move_binary_format::file_format::CodeUnit",
-                              "locals"
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| code |) |),
+                                    "move_binary_format::file_format::CodeUnit",
+                                    "locals"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -10946,30 +11995,43 @@ Module serializer.
                   M.get_function (| "move_binary_format::serializer::serialize_code", [], [] |),
                   [
                     M.read (| major_version |);
-                    M.read (| binary |);
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::Bytecode";
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
                           [
-                            Ty.path "move_binary_format::file_format::Bytecode";
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| code |),
-                          "move_binary_format::file_format::CodeUnit",
-                          "code"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| code |) |),
+                                    "move_binary_format::file_format::CodeUnit",
+                                    "code"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |)
@@ -11361,29 +12423,56 @@ Module serializer.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "Loading or casting u16, u32, u256 integers not supported in bytecode version "
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.read (|
+                                                                                  Value.String
+                                                                                    "Loading or casting u16, u32, u256 integers not supported in bytecode version "
+                                                                                |)
+                                                                              ]
                                                                           |)
-                                                                        ]
+                                                                        |)
+                                                                      |)
                                                                     |);
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [],
-                                                                              [ Ty.path "u32" ]
-                                                                            |),
-                                                                            [ major_version ]
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "new_display",
+                                                                                    [],
+                                                                                    [ Ty.path "u32"
+                                                                                    ]
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          major_version
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
                                                                           |)
-                                                                        ]
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -11429,7 +12518,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -11457,7 +12549,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -11485,7 +12580,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -11532,7 +12630,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -11605,7 +12706,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| code_offset |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| code_offset |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -11644,7 +12751,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -11717,7 +12827,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| code_offset |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| code_offset |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -11756,7 +12872,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -11829,7 +12948,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| code_offset |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| code_offset |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -11868,7 +12993,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -11942,7 +13070,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| value |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| value |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -11981,7 +13115,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -12054,7 +13191,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| value |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| value |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -12093,7 +13236,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -12166,7 +13312,15 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| M.read (| value |) |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (|
+                                  M.deref (| M.read (| M.deref (| M.read (| value |) |) |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -12186,7 +13340,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -12214,7 +13371,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -12242,7 +13402,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -12289,7 +13452,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -12362,7 +13528,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| const_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| const_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -12382,7 +13557,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -12410,7 +13588,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -12457,7 +13638,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -12530,7 +13714,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| local_idx |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| local_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -12569,7 +13759,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -12642,7 +13835,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| local_idx |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| local_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -12681,7 +13880,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -12754,7 +13956,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| local_idx |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| local_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -12793,7 +14001,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -12866,7 +14077,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| local_idx |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| local_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -12905,7 +14122,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -12978,7 +14198,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| local_idx |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| local_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -13017,7 +14243,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -13090,7 +14319,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| field_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| field_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -13129,7 +14367,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -13202,7 +14443,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| field_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| field_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -13241,7 +14491,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -13314,7 +14567,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| field_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| field_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -13353,7 +14615,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -13426,7 +14691,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| field_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| field_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -13465,7 +14739,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -13538,7 +14815,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| method_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| method_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -13577,7 +14863,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -13650,7 +14939,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -13689,7 +14987,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -13762,7 +15063,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -13801,7 +15111,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -13874,7 +15187,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| method_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| method_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -13913,7 +15235,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -13986,7 +15311,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -14025,7 +15359,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -14098,7 +15435,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -14118,7 +15464,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14146,7 +15495,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14174,7 +15526,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14202,7 +15557,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14230,7 +15588,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14258,7 +15619,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14286,7 +15650,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14314,7 +15681,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14342,7 +15712,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14370,7 +15743,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14398,7 +15774,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14426,7 +15805,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14454,7 +15836,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14482,7 +15867,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14510,7 +15898,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14538,7 +15929,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14566,7 +15960,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14594,7 +15991,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14622,7 +16022,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14650,7 +16053,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14678,7 +16084,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14706,7 +16115,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14734,7 +16146,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -14781,7 +16196,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -14854,7 +16272,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -14893,7 +16320,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -14966,7 +16396,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -15005,7 +16444,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -15078,7 +16520,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -15117,7 +16568,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -15190,7 +16644,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -15229,7 +16692,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -15302,7 +16768,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -15341,7 +16816,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -15414,7 +16892,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -15453,7 +16940,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -15526,7 +17016,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -15565,7 +17064,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -15638,7 +17140,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -15677,7 +17188,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -15750,7 +17264,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -15789,7 +17312,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -15862,7 +17388,16 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| class_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| class_idx |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -15908,7 +17443,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -15997,7 +17535,16 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| binary |); M.read (| sig_idx |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| sig_idx |) |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -16062,7 +17609,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| num |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| num |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -16101,7 +17654,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -16174,7 +17730,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| sig_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -16213,7 +17775,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -16286,7 +17851,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| sig_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -16325,7 +17896,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -16398,7 +17972,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| sig_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -16437,7 +18017,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -16510,7 +18093,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| sig_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -16549,7 +18138,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -16622,7 +18214,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| sig_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -16668,7 +18266,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -16757,7 +18358,16 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| binary |); M.read (| sig_idx |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| sig_idx |) |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -16822,7 +18432,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| num |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| num |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -16861,7 +18477,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -16934,7 +18553,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| sig_idx |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -16973,7 +18598,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -17046,7 +18674,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| value |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| value |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -17085,7 +18719,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -17158,7 +18795,13 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| value |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (| M.deref (| M.read (| value |) |) |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -17197,7 +18840,10 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (BinOp.Wrap.add (|
                                             M.get_constant (|
@@ -17270,7 +18916,15 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| binary |); M.read (| M.read (| M.read (| value |) |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
+                                M.read (|
+                                  M.deref (| M.read (| M.deref (| M.read (| value |) |) |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -17290,7 +18944,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -17318,7 +18975,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -17346,7 +19006,10 @@ Module serializer.
                                 []
                               |),
                               [
-                                M.read (| binary |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| binary |) |)
+                                |);
                                 M.rust_cast
                                   (BinOp.Wrap.add (|
                                     M.get_constant (|
@@ -17486,7 +19149,7 @@ Module serializer.
                             []
                           |),
                           [
-                            M.read (| binary |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -17497,7 +19160,7 @@ Module serializer.
                                 [],
                                 []
                               |),
-                              [ M.read (| code |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |) ]
                             |)
                           ]
                         |)
@@ -17604,7 +19267,12 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -17649,8 +19317,14 @@ Module serializer.
                                                     |),
                                                     [
                                                       M.read (| major_version |);
-                                                      M.read (| binary |);
-                                                      M.read (| opcode |)
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| binary |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| opcode |) |)
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -17781,7 +19455,8 @@ Module serializer.
                                   [],
                                   []
                                 |),
-                                [ M.read (| binary |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |)
+                                ]
                               |)
                             ]
                           |)
@@ -17868,10 +19543,21 @@ Module serializer.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "table start must be before end" |)
-                                        ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  Value.String "table start must be before end"
+                                                |)
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -17990,7 +19676,8 @@ Module serializer.
                               [],
                               []
                             |),
-                            [ M.read (| binary |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -18072,10 +19759,10 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "major_version"
                                 |)
@@ -18244,10 +19931,10 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "table_count"
                                 |)
@@ -18334,14 +20021,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::MODULE_HANDLES"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "module_handles"
                                   |),
@@ -18351,7 +20038,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "module_handles"
                                   |),
@@ -18440,14 +20127,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::STRUCT_HANDLES"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "struct_handles"
                                   |),
@@ -18457,7 +20144,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "struct_handles"
                                   |),
@@ -18546,14 +20233,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FUNCTION_HANDLES"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "function_handles"
                                   |),
@@ -18563,7 +20250,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "function_handles"
                                   |),
@@ -18652,14 +20339,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FUNCTION_INST"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "function_instantiations"
                                   |),
@@ -18669,7 +20356,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "function_instantiations"
                                   |),
@@ -18758,14 +20445,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::SIGNATURES"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "signatures"
                                   |),
@@ -18775,7 +20462,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "signatures"
                                   |),
@@ -18864,14 +20551,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::IDENTIFIERS"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "identifiers"
                                   |),
@@ -18881,7 +20568,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "identifiers"
                                   |),
@@ -18970,14 +20657,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::ADDRESS_IDENTIFIERS"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "address_identifiers"
                                   |),
@@ -18987,7 +20674,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "address_identifiers"
                                   |),
@@ -19076,14 +20763,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::CONSTANT_POOL"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "constant_pool"
                                   |),
@@ -19093,7 +20780,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::CommonSerializer",
                                     "constant_pool"
                                   |),
@@ -19170,7 +20857,7 @@ Module serializer.
                                 BinOp.ge (|
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "move_binary_format::serializer::CommonSerializer",
                                       "major_version"
                                     |)
@@ -19208,14 +20895,17 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         Value.StructTuple
                                           "move_binary_format::file_format_common::TableType::METADATA"
                                           [];
                                         M.read (|
                                           M.SubPointer.get_tuple_field (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "move_binary_format::serializer::CommonSerializer",
                                               "metadata"
                                             |),
@@ -19225,7 +20915,7 @@ Module serializer.
                                         M.read (|
                                           M.SubPointer.get_tuple_field (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "move_binary_format::serializer::CommonSerializer",
                                               "metadata"
                                             |),
@@ -19357,7 +21047,7 @@ Module serializer.
                                             BinOp.eq (|
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "table_count"
                                                 |)
@@ -19415,19 +21105,29 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "move_binary_format::serializer::CommonTables",
-                                  T,
-                                  [],
-                                  [],
-                                  "get_module_handles",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| tables |) ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "move_binary_format::serializer::CommonTables",
+                                      T,
+                                      [],
+                                      [],
+                                      "get_module_handles",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| tables |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -19512,19 +21212,29 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "move_binary_format::serializer::CommonTables",
-                                  T,
-                                  [],
-                                  [],
-                                  "get_struct_handles",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| tables |) ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "move_binary_format::serializer::CommonTables",
+                                      T,
+                                      [],
+                                      [],
+                                      "get_struct_handles",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| tables |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -19609,19 +21319,29 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "move_binary_format::serializer::CommonTables",
-                                  T,
-                                  [],
-                                  [],
-                                  "get_function_handles",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| tables |) ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "move_binary_format::serializer::CommonTables",
+                                      T,
+                                      [],
+                                      [],
+                                      "get_function_handles",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| tables |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -19703,7 +21423,7 @@ Module serializer.
                                             BinOp.lt (|
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "table_count"
                                                 |)
@@ -19761,19 +21481,29 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "move_binary_format::serializer::CommonTables",
-                                  T,
-                                  [],
-                                  [],
-                                  "get_function_instantiations",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| tables |) ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "move_binary_format::serializer::CommonTables",
+                                      T,
+                                      [],
+                                      [],
+                                      "get_function_instantiations",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| tables |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -19858,19 +21588,29 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "move_binary_format::serializer::CommonTables",
-                                  T,
-                                  [],
-                                  [],
-                                  "get_signatures",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| tables |) ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "move_binary_format::serializer::CommonTables",
+                                      T,
+                                      [],
+                                      [],
+                                      "get_signatures",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| tables |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -19955,19 +21695,29 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "move_binary_format::serializer::CommonTables",
-                                  T,
-                                  [],
-                                  [],
-                                  "get_identifiers",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| tables |) ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "move_binary_format::serializer::CommonTables",
+                                      T,
+                                      [],
+                                      [],
+                                      "get_identifiers",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| tables |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -20052,19 +21802,29 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "move_binary_format::serializer::CommonTables",
-                                  T,
-                                  [],
-                                  [],
-                                  "get_address_identifiers",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| tables |) ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "move_binary_format::serializer::CommonTables",
+                                      T,
+                                      [],
+                                      [],
+                                      "get_address_identifiers",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| tables |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -20149,19 +21909,29 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "move_binary_format::serializer::CommonTables",
-                                  T,
-                                  [],
-                                  [],
-                                  "get_constant_pool",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| tables |) ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "move_binary_format::serializer::CommonTables",
+                                      T,
+                                      [],
+                                      [],
+                                      "get_constant_pool",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| tables |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -20233,7 +22003,7 @@ Module serializer.
                                 BinOp.ge (|
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "move_binary_format::serializer::CommonSerializer",
                                       "major_version"
                                     |)
@@ -20272,19 +22042,35 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
-                                        M.read (| binary |);
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "move_binary_format::serializer::CommonTables",
-                                            T,
-                                            [],
-                                            [],
-                                            "get_metadata",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| tables |) ]
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "move_binary_format::serializer::CommonTables",
+                                                T,
+                                                [],
+                                                [],
+                                                "get_metadata",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| tables |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -20404,7 +22190,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| module_handles |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module_handles |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -20413,7 +22204,7 @@ Module serializer.
                           let~ _ :=
                             let β :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "move_binary_format::serializer::CommonSerializer",
                                 "table_count"
                               |) in
@@ -20425,7 +22216,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "module_handles"
                                 |),
@@ -20463,7 +22254,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -20578,7 +22374,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -20628,8 +22431,18 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| module_handle |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| module_handle |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -20707,7 +22520,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "module_handles"
                                 |),
@@ -20737,11 +22550,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "module_handles"
                                                 |),
@@ -20868,7 +22684,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| struct_handles |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| struct_handles |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -20877,7 +22698,7 @@ Module serializer.
                           let~ _ :=
                             let β :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "move_binary_format::serializer::CommonSerializer",
                                 "table_count"
                               |) in
@@ -20889,7 +22710,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "struct_handles"
                                 |),
@@ -20927,7 +22748,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -21042,7 +22868,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -21092,8 +22925,18 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| struct_handle |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| struct_handle |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -21171,7 +23014,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "struct_handles"
                                 |),
@@ -21201,11 +23044,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "struct_handles"
                                                 |),
@@ -21338,7 +23184,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| function_handles |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| function_handles |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -21347,7 +23198,7 @@ Module serializer.
                           let~ _ :=
                             let β :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "move_binary_format::serializer::CommonSerializer",
                                 "table_count"
                               |) in
@@ -21359,7 +23210,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "function_handles"
                                 |),
@@ -21397,7 +23248,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -21512,7 +23368,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -21562,8 +23425,18 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| function_handle |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| function_handle |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -21641,7 +23514,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "function_handles"
                                 |),
@@ -21671,11 +23544,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "function_handles"
                                                 |),
@@ -21810,7 +23686,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| function_instantiations |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| function_instantiations |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -21819,7 +23700,7 @@ Module serializer.
                           let~ _ :=
                             let β :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "move_binary_format::serializer::CommonSerializer",
                                 "table_count"
                               |) in
@@ -21831,7 +23712,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "function_instantiations"
                                 |),
@@ -21869,7 +23750,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -21984,7 +23870,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -22035,9 +23928,19 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (|
-                                                                    function_instantiation
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        function_instantiation
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -22116,7 +24019,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "function_instantiations"
                                 |),
@@ -22146,11 +24049,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "function_instantiations"
                                                 |),
@@ -22281,7 +24187,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| identifiers |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| identifiers |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -22290,7 +24201,7 @@ Module serializer.
                           let~ _ :=
                             let β :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "move_binary_format::serializer::CommonSerializer",
                                 "table_count"
                               |) in
@@ -22302,7 +24213,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "identifiers"
                                 |),
@@ -22340,7 +24251,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -22452,7 +24368,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -22502,30 +24425,54 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "move_core_types::identifier::IdentStr",
-                                                                      "as_str",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
                                                                       M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::deref::Deref",
+                                                                        M.get_associated_function (|
                                                                           Ty.path
-                                                                            "move_core_types::identifier::Identifier",
-                                                                          [],
-                                                                          [],
-                                                                          "deref",
+                                                                            "move_core_types::identifier::IdentStr",
+                                                                          "as_str",
                                                                           [],
                                                                           []
                                                                         |),
-                                                                        [ M.read (| identifier |) ]
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.call_closure (|
+                                                                                M.get_trait_method (|
+                                                                                  "core::ops::deref::Deref",
+                                                                                  Ty.path
+                                                                                    "move_core_types::identifier::Identifier",
+                                                                                  [],
+                                                                                  [],
+                                                                                  "deref",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        identifier
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
                                                                       |)
-                                                                    ]
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -22604,7 +24551,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "identifiers"
                                 |),
@@ -22634,11 +24581,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "identifiers"
                                                 |),
@@ -22771,7 +24721,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| addresses |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| addresses |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -22780,7 +24735,7 @@ Module serializer.
                           let~ _ :=
                             let β :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "move_binary_format::serializer::CommonSerializer",
                                 "table_count"
                               |) in
@@ -22792,7 +24747,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "address_identifiers"
                                 |),
@@ -22830,7 +24785,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -22945,7 +24905,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -22995,8 +24962,18 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| address |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| address |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -23074,7 +25051,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "address_identifiers"
                                 |),
@@ -23104,11 +25081,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "address_identifiers"
                                                 |),
@@ -23235,7 +25215,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| constants |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| constants |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -23244,7 +25229,7 @@ Module serializer.
                           let~ _ :=
                             let β :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "move_binary_format::serializer::CommonSerializer",
                                 "table_count"
                               |) in
@@ -23256,7 +25241,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "constant_pool"
                                 |),
@@ -23294,7 +25279,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -23406,7 +25396,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -23456,8 +25453,18 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| constant |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| constant |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -23535,7 +25542,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "constant_pool"
                                 |),
@@ -23565,11 +25572,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "constant_pool"
                                                 |),
@@ -23692,7 +25702,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| metadata |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| metadata |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -23701,7 +25716,7 @@ Module serializer.
                           let~ _ :=
                             let β :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "move_binary_format::serializer::CommonSerializer",
                                 "table_count"
                               |) in
@@ -23713,7 +25728,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "metadata"
                                 |),
@@ -23751,7 +25766,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -23863,7 +25883,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -23913,8 +25940,16 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| entry |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| entry |) |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -23992,7 +26027,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "metadata"
                                 |),
@@ -24022,11 +26057,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "metadata"
                                                 |),
@@ -24153,7 +26191,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| signatures |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| signatures |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -24162,7 +26205,7 @@ Module serializer.
                           let~ _ :=
                             let β :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "move_binary_format::serializer::CommonSerializer",
                                 "table_count"
                               |) in
@@ -24174,7 +26217,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "signatures"
                                 |),
@@ -24212,7 +26255,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -24324,7 +26372,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -24374,8 +26429,18 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| signature |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| signature |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -24453,7 +26518,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::CommonSerializer",
                                   "signatures"
                                 |),
@@ -24483,11 +26548,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "signatures"
                                                 |),
@@ -24579,7 +26647,7 @@ Module serializer.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "move_binary_format::serializer::CommonSerializer",
               "major_version"
             |)
@@ -24689,13 +26757,16 @@ Module serializer.
                               [ Ty.path "move_binary_format::file_format::CompiledModule" ]
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_binary_format::serializer::ModuleSerializer",
-                                "common"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::serializer::ModuleSerializer",
+                                  "common"
+                                |)
                               |);
-                              M.read (| binary |);
-                              M.read (| module |)
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |)
                             ]
                           |)
                         ]
@@ -24779,31 +26850,45 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::StructDefinition";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
                                     [
-                                      Ty.path "move_binary_format::file_format::StructDefinition";
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| module |),
-                                    "move_binary_format::file_format::CompiledModule",
-                                    "struct_defs"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| module |) |),
+                                              "move_binary_format::file_format::CompiledModule",
+                                              "struct_defs"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |)
                             ]
                           |)
@@ -24888,32 +26973,45 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::StructDefInstantiation";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
                                     [
-                                      Ty.path
-                                        "move_binary_format::file_format::StructDefInstantiation";
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| module |),
-                                    "move_binary_format::file_format::CompiledModule",
-                                    "struct_def_instantiations"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| module |) |),
+                                              "move_binary_format::file_format::CompiledModule",
+                                              "struct_def_instantiations"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |)
                             ]
                           |)
@@ -24998,31 +27096,45 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::FunctionDefinition";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
                                     [
-                                      Ty.path "move_binary_format::file_format::FunctionDefinition";
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| module |),
-                                    "move_binary_format::file_format::CompiledModule",
-                                    "function_defs"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| module |) |),
+                                              "move_binary_format::file_format::CompiledModule",
+                                              "function_defs"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |)
                             ]
                           |)
@@ -25107,31 +27219,44 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::file_format::FieldHandle";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
                                     [
-                                      Ty.path "move_binary_format::file_format::FieldHandle";
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| module |),
-                                    "move_binary_format::file_format::CompiledModule",
-                                    "field_handles"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| module |) |),
+                                              "move_binary_format::file_format::CompiledModule",
+                                              "field_handles"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |)
                             ]
                           |)
@@ -25216,31 +27341,45 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| self |);
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::FieldInstantiation";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
                                     [
-                                      Ty.path "move_binary_format::file_format::FieldInstantiation";
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| module |),
-                                    "move_binary_format::file_format::CompiledModule",
-                                    "field_instantiations"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| module |) |),
+                                              "move_binary_format::file_format::CompiledModule",
+                                              "field_instantiations"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |)
                             ]
                           |)
@@ -25309,31 +27448,44 @@ Module serializer.
                       []
                     |),
                     [
-                      M.read (| self |);
-                      M.read (| binary |);
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::file_format::ModuleHandle";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
                             [
-                              Ty.path "move_binary_format::file_format::ModuleHandle";
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| module |),
-                            "move_binary_format::file_format::CompiledModule",
-                            "friend_decls"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| module |) |),
+                                      "move_binary_format::file_format::CompiledModule",
+                                      "friend_decls"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
                     ]
                   |)
@@ -25422,12 +27574,15 @@ Module serializer.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_binary_format::serializer::ModuleSerializer",
-                                "common"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::serializer::ModuleSerializer",
+                                  "common"
+                                |)
                               |);
-                              M.read (| binary |)
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |)
                             ]
                           |)
                         ]
@@ -25510,14 +27665,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::STRUCT_DEFS"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "struct_defs"
                                   |),
@@ -25527,7 +27682,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "struct_defs"
                                   |),
@@ -25616,14 +27771,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::STRUCT_DEF_INST"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "struct_def_instantiations"
                                   |),
@@ -25633,7 +27788,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "struct_def_instantiations"
                                   |),
@@ -25722,14 +27877,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FUNCTION_DEFS"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "function_defs"
                                   |),
@@ -25739,7 +27894,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "function_defs"
                                   |),
@@ -25828,14 +27983,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FIELD_HANDLE"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "field_handles"
                                   |),
@@ -25845,7 +28000,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "field_handles"
                                   |),
@@ -25934,14 +28089,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FIELD_INST"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "field_instantiations"
                                   |),
@@ -25951,7 +28106,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "field_instantiations"
                                   |),
@@ -26040,14 +28195,14 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FRIEND_DECLS"
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "friend_decls"
                                   |),
@@ -26057,7 +28212,7 @@ Module serializer.
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "move_binary_format::serializer::ModuleSerializer",
                                     "friend_decls"
                                   |),
@@ -26185,7 +28340,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| struct_definitions |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| struct_definitions |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -26195,7 +28355,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "common"
                                 |),
@@ -26213,7 +28373,7 @@ Module serializer.
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "move_binary_format::serializer::ModuleSerializer",
                                         "common"
                                       |),
@@ -26229,7 +28389,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "struct_defs"
                                 |),
@@ -26267,7 +28427,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -26382,7 +28547,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -26432,8 +28604,18 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| struct_definition |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| struct_definition |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -26511,7 +28693,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "struct_defs"
                                 |),
@@ -26541,11 +28723,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::ModuleSerializer",
                                                   "struct_defs"
                                                 |),
@@ -26680,7 +28865,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| struct_def_instantiations |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| struct_def_instantiations |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -26690,7 +28880,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "common"
                                 |),
@@ -26708,7 +28898,7 @@ Module serializer.
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "move_binary_format::serializer::ModuleSerializer",
                                         "common"
                                       |),
@@ -26724,7 +28914,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "struct_def_instantiations"
                                 |),
@@ -26762,7 +28952,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -26877,7 +29072,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -26927,8 +29129,20 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| struct_instantiation |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        struct_instantiation
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -27006,7 +29220,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "struct_def_instantiations"
                                 |),
@@ -27036,11 +29250,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::ModuleSerializer",
                                                   "struct_def_instantiations"
                                                 |),
@@ -27170,7 +29387,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| field_handles |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| field_handles |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -27180,7 +29402,7 @@ Module serializer.
                             let β :=
                               M.SubPointer.get_struct_record_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "common"
                                 |),
@@ -27195,7 +29417,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "field_handles"
                                 |),
@@ -27233,7 +29455,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -27346,7 +29573,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -27396,8 +29630,18 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| field_handle |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| field_handle |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -27475,7 +29719,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "field_handles"
                                 |),
@@ -27505,11 +29749,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::ModuleSerializer",
                                                   "field_handles"
                                                 |),
@@ -27644,7 +29891,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| field_instantiations |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| field_instantiations |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -27654,7 +29906,7 @@ Module serializer.
                             let β :=
                               M.SubPointer.get_struct_record_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "common"
                                 |),
@@ -27669,7 +29921,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "field_instantiations"
                                 |),
@@ -27707,7 +29959,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -27822,7 +30079,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -27872,8 +30136,20 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| field_instantiation |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        field_instantiation
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -27951,7 +30227,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "field_instantiations"
                                 |),
@@ -27981,11 +30257,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::ModuleSerializer",
                                                   "field_instantiations"
                                                 |),
@@ -28119,7 +30398,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| function_definitions |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| function_definitions |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -28129,7 +30413,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "common"
                                 |),
@@ -28147,7 +30431,7 @@ Module serializer.
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "move_binary_format::serializer::ModuleSerializer",
                                         "common"
                                       |),
@@ -28163,7 +30447,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "function_defs"
                                 |),
@@ -28201,7 +30485,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -28316,7 +30605,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -28368,9 +30664,24 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| self |);
-                                                                  M.read (| binary |);
-                                                                  M.read (| function_definition |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (| M.read (| self |) |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        function_definition
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -28448,7 +30759,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "function_defs"
                                 |),
@@ -28478,11 +30789,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::ModuleSerializer",
                                                   "function_defs"
                                                 |),
@@ -28636,11 +30950,19 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| function_definition |),
-                                "move_binary_format::file_format::FunctionDefinition",
-                                "function"
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| function_definition |) |),
+                                      "move_binary_format::file_format::FunctionDefinition",
+                                      "function"
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -28714,7 +31036,7 @@ Module serializer.
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "move_binary_format::serializer::ModuleSerializer",
                                         "common"
                                       |),
@@ -28757,22 +31079,30 @@ Module serializer.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| function_definition |),
-                                                    "move_binary_format::file_format::FunctionDefinition",
-                                                    "visibility"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (|
+                                                        M.read (| function_definition |)
+                                                      |),
+                                                      "move_binary_format::file_format::FunctionDefinition",
+                                                      "visibility"
+                                                    |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "move_binary_format::file_format::Visibility::Public"
-                                                      []
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.StructTuple
+                                                        "move_binary_format::file_format::Visibility::Public"
+                                                        []
+                                                    |)
                                                   |)
                                                 ]
                                               |),
                                               ltac:(M.monadic
                                                 (M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| function_definition |),
+                                                    M.deref (| M.read (| function_definition |) |),
                                                     "move_binary_format::file_format::FunctionDefinition",
                                                     "is_entry"
                                                   |)
@@ -28793,7 +31123,7 @@ Module serializer.
                                         M.rust_cast
                                           (M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| function_definition |),
+                                              M.deref (| M.read (| function_definition |) |),
                                               "move_binary_format::file_format::FunctionDefinition",
                                               "visibility"
                                             |)
@@ -28827,7 +31157,13 @@ Module serializer.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| binary |); M.read (| visibility |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
+                                        M.read (| visibility |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -28914,11 +31250,14 @@ Module serializer.
                                         []
                                       |),
                                       [
-                                        M.read (| binary |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
                                         M.rust_cast
                                           (M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| function_definition |),
+                                              M.deref (| M.read (| function_definition |) |),
                                               "move_binary_format::file_format::FunctionDefinition",
                                               "visibility"
                                             |)
@@ -28989,7 +31328,7 @@ Module serializer.
                                   (let γ :=
                                     M.use
                                       (M.SubPointer.get_struct_record_field (|
-                                        M.read (| function_definition |),
+                                        M.deref (| M.read (| function_definition |) |),
                                         "move_binary_format::file_format::FunctionDefinition",
                                         "is_entry"
                                       |)) in
@@ -29032,7 +31371,12 @@ Module serializer.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| function_definition |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| function_definition |) |)
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -29073,7 +31417,10 @@ Module serializer.
                               [],
                               []
                             |),
-                            [ M.read (| binary |); M.read (| flags |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.read (| flags |)
+                            ]
                           |)
                         ]
                       |)
@@ -29155,31 +31502,44 @@ Module serializer.
                               []
                             |),
                             [
-                              M.read (| binary |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::StructDefinitionIndex";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
                                     [
-                                      Ty.path
-                                        "move_binary_format::file_format::StructDefinitionIndex";
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| function_definition |),
-                                    "move_binary_format::file_format::FunctionDefinition",
-                                    "acquires_global_resources"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| function_definition |) |),
+                                              "move_binary_format::file_format::FunctionDefinition",
+                                              "acquires_global_resources"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |)
                             ]
                           |)
@@ -29247,10 +31607,13 @@ Module serializer.
                         ltac:(M.monadic
                           (let γ :=
                             M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| function_definition |),
-                                "move_binary_format::file_format::FunctionDefinition",
-                                "code"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| function_definition |) |),
+                                  "move_binary_format::file_format::FunctionDefinition",
+                                  "code"
+                                |)
                               |)
                             |) in
                           let γ := M.read (| γ |) in
@@ -29294,15 +31657,24 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "move_binary_format::serializer::ModuleSerializer",
-                                              "common"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "move_binary_format::serializer::ModuleSerializer",
+                                                "common"
+                                              |)
                                             |)
                                           ]
                                         |);
-                                        M.read (| binary |);
-                                        M.read (| code |)
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| binary |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| code |) |)
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -29425,7 +31797,12 @@ Module serializer.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| friend_declarations |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| friend_declarations |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -29435,7 +31812,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "common"
                                 |),
@@ -29453,7 +31830,7 @@ Module serializer.
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "move_binary_format::serializer::ModuleSerializer",
                                         "common"
                                       |),
@@ -29469,7 +31846,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "friend_decls"
                                 |),
@@ -29507,7 +31884,12 @@ Module serializer.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| binary |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| binary |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -29622,7 +32004,14 @@ Module serializer.
                                                     [],
                                                     []
                                                   |),
-                                                  [ iter ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -29672,8 +32061,18 @@ Module serializer.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| binary |);
-                                                                  M.read (| module |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (| binary |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| module |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -29751,7 +32150,7 @@ Module serializer.
                             M.write (|
                               M.SubPointer.get_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_binary_format::serializer::ModuleSerializer",
                                   "friend_decls"
                                 |),
@@ -29781,11 +32180,14 @@ Module serializer.
                                             []
                                           |),
                                           [
-                                            M.read (| binary |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| binary |) |)
+                                            |);
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "move_binary_format::serializer::ModuleSerializer",
                                                   "friend_decls"
                                                 |),

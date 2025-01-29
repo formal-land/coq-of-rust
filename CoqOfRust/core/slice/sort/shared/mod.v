@@ -67,7 +67,7 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| v |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                       |)
                     |) in
                   let~ _ :=
@@ -110,26 +110,42 @@ Module slice.
                           []
                         |),
                         [
-                          M.read (| is_less |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |);
                           Value.Tuple
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "get_unchecked",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [ M.read (| v |); Value.Integer IntegerKind.Usize 1 ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "get_unchecked",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |)
+                                |)
                               |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "get_unchecked",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [ M.read (| v |); Value.Integer IntegerKind.Usize 0 ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "get_unchecked",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |);
+                                      Value.Integer IntegerKind.Usize 0
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                         ]
@@ -177,32 +193,62 @@ Module slice.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| is_less |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| is_less |) |)
+                                                      |);
                                                       Value.Tuple
                                                         [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.apply (Ty.path "slice") [] [ T ],
-                                                              "get_unchecked",
-                                                              [],
-                                                              [ Ty.path "usize" ]
-                                                            |),
-                                                            [ M.read (| v |); M.read (| run_len |) ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.apply (Ty.path "slice") [] [ T ],
-                                                              "get_unchecked",
-                                                              [],
-                                                              [ Ty.path "usize" ]
-                                                            |),
-                                                            [
-                                                              M.read (| v |);
-                                                              BinOp.Wrap.sub (|
-                                                                M.read (| run_len |),
-                                                                Value.Integer IntegerKind.Usize 1
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ T ],
+                                                                  "get_unchecked",
+                                                                  [],
+                                                                  [ Ty.path "usize" ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| v |) |)
+                                                                  |);
+                                                                  M.read (| run_len |)
+                                                                ]
                                                               |)
-                                                            ]
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ T ],
+                                                                  "get_unchecked",
+                                                                  [],
+                                                                  [ Ty.path "usize" ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| v |) |)
+                                                                  |);
+                                                                  BinOp.Wrap.sub (|
+                                                                    M.read (| run_len |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                     ]
@@ -276,33 +322,62 @@ Module slice.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| is_less |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| is_less |) |)
+                                                        |);
                                                         Value.Tuple
                                                           [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply (Ty.path "slice") [] [ T ],
-                                                                "get_unchecked",
-                                                                [],
-                                                                [ Ty.path "usize" ]
-                                                              |),
-                                                              [ M.read (| v |); M.read (| run_len |)
-                                                              ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply (Ty.path "slice") [] [ T ],
-                                                                "get_unchecked",
-                                                                [],
-                                                                [ Ty.path "usize" ]
-                                                              |),
-                                                              [
-                                                                M.read (| v |);
-                                                                BinOp.Wrap.sub (|
-                                                                  M.read (| run_len |),
-                                                                  Value.Integer IntegerKind.Usize 1
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      []
+                                                                      [ T ],
+                                                                    "get_unchecked",
+                                                                    [],
+                                                                    [ Ty.path "usize" ]
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (| M.read (| v |) |)
+                                                                    |);
+                                                                    M.read (| run_len |)
+                                                                  ]
                                                                 |)
-                                                              ]
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      []
+                                                                      [ T ],
+                                                                    "get_unchecked",
+                                                                    [],
+                                                                    [ Ty.path "usize" ]
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (| M.read (| v |) |)
+                                                                    |);
+                                                                    BinOp.Wrap.sub (|
+                                                                      M.read (| run_len |),
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                       ]

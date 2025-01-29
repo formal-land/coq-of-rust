@@ -42,10 +42,18 @@ Module mem.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::mem::manually_drop::ManuallyDrop",
-                        "value"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::mem::manually_drop::ManuallyDrop",
+                              "value"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -82,14 +90,28 @@ Module mem.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "ManuallyDrop" |);
-                M.read (| Value.String "value" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::mem::manually_drop::ManuallyDrop",
-                    "value"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "ManuallyDrop" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "value" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::mem::manually_drop::ManuallyDrop",
+                            "value"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -165,15 +187,21 @@ Module mem.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::mem::manually_drop::ManuallyDrop",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::mem::manually_drop::ManuallyDrop",
+                    "value"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::mem::manually_drop::ManuallyDrop",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::mem::manually_drop::ManuallyDrop",
+                    "value"
+                  |)
                 |)
               ]
             |)))
@@ -239,15 +267,31 @@ Module mem.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::mem::manually_drop::ManuallyDrop",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::mem::manually_drop::ManuallyDrop",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::mem::manually_drop::ManuallyDrop",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::mem::manually_drop::ManuallyDrop",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -278,15 +322,31 @@ Module mem.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::mem::manually_drop::ManuallyDrop",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::mem::manually_drop::ManuallyDrop",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::mem::manually_drop::ManuallyDrop",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::mem::manually_drop::ManuallyDrop",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -317,12 +377,20 @@ Module mem.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::mem::manually_drop::ManuallyDrop",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::mem::manually_drop::ManuallyDrop",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -403,10 +471,18 @@ Module mem.
             M.call_closure (|
               M.get_function (| "core::ptr::read", [], [ T ] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| slot |),
-                  "core::mem::manually_drop::ManuallyDrop",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.ConstPointer,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| slot |) |),
+                        "core::mem::manually_drop::ManuallyDrop",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -433,10 +509,18 @@ Module mem.
             M.call_closure (|
               M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| slot |),
-                  "core::mem::manually_drop::ManuallyDrop",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.MutPointer,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| slot |) |),
+                        "core::mem::manually_drop::ManuallyDrop",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -467,10 +551,18 @@ Module mem.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "core::mem::manually_drop::ManuallyDrop",
-              "value"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::mem::manually_drop::ManuallyDrop",
+                    "value"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -500,10 +592,23 @@ Module mem.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "core::mem::manually_drop::ManuallyDrop",
-              "value"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::mem::manually_drop::ManuallyDrop",
+                        "value"
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

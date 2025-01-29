@@ -5735,14 +5735,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -6583,7 +6591,8 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -6622,7 +6631,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -6739,7 +6748,10 @@ Module num.
                                           [
                                             M.read (| radix |);
                                             M.read (| is_signed_ty |);
-                                            M.read (| digits |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| digits |) |)
+                                            |)
                                           ]
                                         |)
                                       |)) in
@@ -6800,7 +6812,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -6856,7 +6870,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -6918,7 +6938,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -6974,7 +6996,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -7061,7 +7089,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -7222,7 +7252,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -7294,7 +7330,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -7455,7 +7493,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -13240,14 +13284,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -14088,7 +14140,8 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -14127,7 +14180,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -14244,7 +14297,10 @@ Module num.
                                           [
                                             M.read (| radix |);
                                             M.read (| is_signed_ty |);
-                                            M.read (| digits |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| digits |) |)
+                                            |)
                                           ]
                                         |)
                                       |)) in
@@ -14305,7 +14361,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -14361,7 +14419,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -14423,7 +14487,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -14479,7 +14545,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -14566,7 +14638,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -14727,7 +14801,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -14799,7 +14879,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -14960,7 +15042,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -20745,14 +20833,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -21593,7 +21689,8 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -21632,7 +21729,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -21749,7 +21846,10 @@ Module num.
                                           [
                                             M.read (| radix |);
                                             M.read (| is_signed_ty |);
-                                            M.read (| digits |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| digits |) |)
+                                            |)
                                           ]
                                         |)
                                       |)) in
@@ -21810,7 +21910,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -21866,7 +21968,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -21928,7 +22036,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -21984,7 +22094,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -22071,7 +22187,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -22232,7 +22350,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -22304,7 +22428,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -22465,7 +22591,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -28250,14 +28382,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -29098,7 +29238,8 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -29137,7 +29278,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -29254,7 +29395,10 @@ Module num.
                                           [
                                             M.read (| radix |);
                                             M.read (| is_signed_ty |);
-                                            M.read (| digits |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| digits |) |)
+                                            |)
                                           ]
                                         |)
                                       |)) in
@@ -29315,7 +29459,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -29371,7 +29517,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -29433,7 +29585,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -29489,7 +29643,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -29576,7 +29736,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -29737,7 +29899,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -29809,7 +29977,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -29970,7 +30140,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -35795,14 +35971,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -36643,7 +36827,8 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -36682,7 +36867,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -36799,7 +36984,10 @@ Module num.
                                           [
                                             M.read (| radix |);
                                             M.read (| is_signed_ty |);
-                                            M.read (| digits |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| digits |) |)
+                                            |)
                                           ]
                                         |)
                                       |)) in
@@ -36860,7 +37048,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -36916,7 +37106,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -36978,7 +37174,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -37034,7 +37232,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -37121,7 +37325,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -37282,7 +37488,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -37354,7 +37566,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -37515,7 +37729,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -43358,14 +43578,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -44077,7 +44305,10 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "from_str_radix", [], [] |),
-                  [ M.read (| src |); M.read (| radix |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+                    M.read (| radix |)
+                  ]
                 |)
               |),
               [
@@ -45562,14 +45793,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -49587,7 +49826,10 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.le (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U8 127 |)))
+          BinOp.le (|
+            M.read (| M.deref (| M.read (| self |) |) |),
+            Value.Integer IntegerKind.U8 127
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -49610,7 +49852,7 @@ Module num.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |) ]
+            [ M.read (| M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -49629,12 +49871,12 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.bit_xor
-            (M.read (| M.read (| self |) |))
+            (M.read (| M.deref (| M.read (| self |) |) |))
             (BinOp.Wrap.mul (|
               M.rust_cast
                 (M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "is_ascii_lowercase", [], [] |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)),
               M.read (| M.get_constant (| "core::num::ASCII_CASE_MASK" |) |)
             |))))
@@ -49656,12 +49898,12 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.bit_or
-            (M.read (| M.read (| self |) |))
+            (M.read (| M.deref (| M.read (| self |) |) |))
             (BinOp.Wrap.mul (|
               M.rust_cast
                 (M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "is_ascii_uppercase", [], [] |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)),
               M.read (| M.get_constant (| "core::num::ASCII_CASE_MASK" |) |)
             |))))
@@ -49686,7 +49928,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.bit_xor
-            (M.read (| M.read (| self |) |))
+            (M.read (| M.deref (| M.read (| self |) |) |))
             (M.read (| M.get_constant (| "core::num::ASCII_CASE_MASK" |) |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -49708,11 +49950,11 @@ Module num.
           BinOp.eq (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [], [] |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |),
             M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [], [] |),
-              [ M.read (| other |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -49734,10 +49976,10 @@ Module num.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "to_ascii_uppercase", [], [] |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -49761,10 +50003,10 @@ Module num.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [], [] |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -49787,7 +50029,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -49826,7 +50068,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -49851,7 +50093,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -49878,7 +50120,7 @@ Module num.
             (BinOp.bit_or
               (M.read (|
                 M.match_operator (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   [
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -49887,7 +50129,7 @@ Module num.
               |))
               (M.read (|
                 M.match_operator (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   [
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -49896,7 +50138,7 @@ Module num.
               |)))
             (M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -49921,7 +50163,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -49946,7 +50188,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -49973,7 +50215,7 @@ Module num.
             (BinOp.bit_or
               (M.read (|
                 M.match_operator (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   [
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -49982,7 +50224,7 @@ Module num.
               |))
               (M.read (|
                 M.match_operator (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   [
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -49991,7 +50233,7 @@ Module num.
               |)))
             (M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -50022,7 +50264,7 @@ Module num.
               (BinOp.bit_or
                 (M.read (|
                   M.match_operator (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     [
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -50031,7 +50273,7 @@ Module num.
                 |))
                 (M.read (|
                   M.match_operator (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     [
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -50040,7 +50282,7 @@ Module num.
                 |)))
               (M.read (|
                 M.match_operator (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   [
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -50049,7 +50291,7 @@ Module num.
               |)))
             (M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -50074,7 +50316,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -50099,7 +50341,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -50176,7 +50418,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -50397,7 +50639,8 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -50436,7 +50679,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -50553,7 +50796,10 @@ Module num.
                                           [
                                             M.read (| radix |);
                                             M.read (| is_signed_ty |);
-                                            M.read (| digits |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| digits |) |)
+                                            |)
                                           ]
                                         |)
                                       |)) in
@@ -50614,7 +50860,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -50670,7 +50918,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -50732,7 +50986,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -50788,7 +51044,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -50875,7 +51137,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -51036,7 +51300,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -51108,7 +51378,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -51269,7 +51541,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -52762,14 +53040,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -56953,7 +57239,8 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -56992,7 +57279,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -57109,7 +57396,10 @@ Module num.
                                           [
                                             M.read (| radix |);
                                             M.read (| is_signed_ty |);
-                                            M.read (| digits |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| digits |) |)
+                                            |)
                                           ]
                                         |)
                                       |)) in
@@ -57170,7 +57460,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -57226,7 +57518,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -57288,7 +57586,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -57344,7 +57644,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -57431,7 +57737,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -57592,7 +57900,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -57664,7 +57978,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -57825,7 +58141,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -59318,14 +59640,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -63484,7 +63814,8 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -63523,7 +63854,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -63640,7 +63971,10 @@ Module num.
                                           [
                                             M.read (| radix |);
                                             M.read (| is_signed_ty |);
-                                            M.read (| digits |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| digits |) |)
+                                            |)
                                           ]
                                         |)
                                       |)) in
@@ -63701,7 +64035,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -63757,7 +64093,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -63819,7 +64161,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -63875,7 +64219,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -63961,7 +64311,9 @@ Module num.
                                                                     [
                                                                       M.rust_cast
                                                                         (M.read (|
-                                                                          M.read (| c |)
+                                                                          M.deref (|
+                                                                            M.read (| c |)
+                                                                          |)
                                                                         |));
                                                                       M.read (| radix |)
                                                                     ]
@@ -64121,7 +64473,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -64192,7 +64550,9 @@ Module num.
                                                                     [
                                                                       M.rust_cast
                                                                         (M.read (|
-                                                                          M.read (| c |)
+                                                                          M.deref (|
+                                                                            M.read (| c |)
+                                                                          |)
                                                                         |));
                                                                       M.read (| radix |)
                                                                     ]
@@ -64352,7 +64712,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -65845,14 +66211,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -70011,7 +70385,8 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -70050,7 +70425,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -70167,7 +70542,10 @@ Module num.
                                           [
                                             M.read (| radix |);
                                             M.read (| is_signed_ty |);
-                                            M.read (| digits |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| digits |) |)
+                                            |)
                                           ]
                                         |)
                                       |)) in
@@ -70228,7 +70606,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -70284,7 +70664,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -70346,7 +70732,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -70402,7 +70790,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -70489,7 +70883,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -70650,7 +71046,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -70722,7 +71124,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -70883,7 +71287,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -72376,14 +72786,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -76489,7 +76907,8 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -76528,7 +76947,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -76645,7 +77064,10 @@ Module num.
                                           [
                                             M.read (| radix |);
                                             M.read (| is_signed_ty |);
-                                            M.read (| digits |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| digits |) |)
+                                            |)
                                           ]
                                         |)
                                       |)) in
@@ -76706,7 +77128,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -76762,7 +77186,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -76824,7 +77254,9 @@ Module num.
                                                                   |),
                                                                   [
                                                                     M.rust_cast
-                                                                      (M.read (| M.read (| c |) |));
+                                                                      (M.read (|
+                                                                        M.deref (| M.read (| c |) |)
+                                                                      |));
                                                                     M.read (| radix |)
                                                                   ]
                                                                 |)
@@ -76880,7 +77312,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -76967,7 +77405,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -77128,7 +77568,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -77200,7 +77646,9 @@ Module num.
                                                                       [
                                                                         M.rust_cast
                                                                           (M.read (|
-                                                                            M.read (| c |)
+                                                                            M.deref (|
+                                                                              M.read (| c |)
+                                                                            |)
                                                                           |));
                                                                         M.read (| radix |)
                                                                       ]
@@ -77361,7 +77809,13 @@ Module num.
                                                             |)
                                                           |) in
                                                         let~ _ :=
-                                                          M.write (| digits, M.read (| rest |) |) in
+                                                          M.write (|
+                                                            digits,
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -78850,14 +79304,22 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "base of integer logarithm must be at least 2"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "base of integer logarithm must be at least 2"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -83029,7 +83491,10 @@ Module num.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "from_str_radix", [], [] |),
-                  [ M.read (| src |); M.read (| radix |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+                    M.read (| radix |)
+                  ]
                 |)
               |),
               [
@@ -83114,7 +83579,7 @@ Module num.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -83156,7 +83621,7 @@ Module num.
                     [],
                     [ Ty.path "core::num::FpCategory" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -83167,7 +83632,7 @@ Module num.
                     [],
                     [ Ty.path "core::num::FpCategory" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -83222,7 +83687,7 @@ Module num.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -83231,27 +83696,52 @@ Module num.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Nan" |) in
-                        M.alloc (| M.read (| Value.String "Nan" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Nan" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Infinite" |) in
-                        M.alloc (| M.read (| Value.String "Infinite" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Infinite" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Zero" |) in
-                        M.alloc (| M.read (| Value.String "Zero" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Zero" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Subnormal" |) in
-                        M.alloc (| M.read (| Value.String "Subnormal" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Subnormal" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Normal" |) in
-                        M.alloc (| M.read (| Value.String "Normal" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Normal" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -83286,7 +83776,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "isize", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83318,7 +83811,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i8", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83350,7 +83846,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i16", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83382,7 +83881,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i32", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83414,7 +83916,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i64", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83446,7 +83951,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "i128", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83478,7 +83986,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "usize", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83510,7 +84021,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u8", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83542,7 +84056,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u16", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83574,7 +84091,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u32", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83606,7 +84126,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u64", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83638,7 +84161,10 @@ Module num.
           (let src := M.alloc (| src |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "u128", "from_str_radix", [], [] |),
-            [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+              Value.Integer IntegerKind.U32 10
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -83675,7 +84201,7 @@ Module num.
                   [],
                   []
                 |),
-                [ M.read (| digits |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| digits |) |) |) ]
               |),
               BinOp.Wrap.sub (|
                 BinOp.Wrap.mul (|
@@ -83707,13 +84233,21 @@ Module num.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
               [
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.read (|
-                        Value.String "from_str_radix_int: must lie in the range `[2, 36]`"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (|
+                              Value.String "from_str_radix_int: must lie in the range `[2, 36]`"
+                            |)
+                          ]
                       |)
-                    ]
+                    |)
+                  |)
                 |)
               ]
             |)
@@ -83741,27 +84275,49 @@ Module num.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
               [
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.read (|
-                        Value.String "from_str_radix_int: must lie in the range `[2, 36]` - found "
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (|
+                              Value.String
+                                "from_str_radix_int: must lie in the range `[2, 36]` - found "
+                            |)
+                          ]
                       |)
-                    ]
+                    |)
+                  |)
                 |);
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::rt::Argument",
-                          "new_display",
-                          [],
-                          [ Ty.path "u32" ]
-                        |),
-                        [ radix ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [],
+                                [ Ty.path "u32" ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.borrow (| Pointer.Kind.Ref, radix |) |)
+                                |)
+                              ]
+                            |)
+                          ]
                       |)
-                    ]
+                    |)
+                  |)
                 |)
               ]
             |)

@@ -30,10 +30,18 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::cloned::Cloned",
-                          "it"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::cloned::Cloned",
+                                "it"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -70,14 +78,25 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Cloned" |);
-                  M.read (| Value.String "it" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::cloned::Cloned",
-                      "it"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Cloned" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "it" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::cloned::Cloned",
+                              "it"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -159,7 +178,7 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          f;
+                                          M.borrow (| Pointer.Kind.MutRef, f |);
                                           Value.Tuple
                                             [
                                               M.read (| acc |);
@@ -173,7 +192,12 @@ Module iter.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| elt |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| elt |) |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                         ]
@@ -231,10 +255,13 @@ Module iter.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::cloned::Cloned",
-                        "it"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::cloned::Cloned",
+                          "it"
+                        |)
                       |)
                     ]
                   |)
@@ -270,10 +297,13 @@ Module iter.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::cloned::Cloned",
-                    "it"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::cloned::Cloned",
+                      "it"
+                    |)
                   |)
                 ]
               |)))
@@ -314,10 +344,13 @@ Module iter.
                   [ B; Ty.associated; R ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::cloned::Cloned",
-                    "it"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::cloned::Cloned",
+                      "it"
+                    |)
                   |);
                   M.read (| init |);
                   M.call_closure (|
@@ -416,16 +449,33 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                 [
-                  M.call_closure (|
-                    M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [], [ I ] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::cloned::Cloned",
-                        "it"
-                      |);
-                      M.read (| idx |)
-                    ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_function (|
+                          "core::iter::adapters::zip::try_get_unchecked",
+                          [],
+                          [ I ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::cloned::Cloned",
+                                  "it"
+                                |)
+                              |)
+                            |)
+                          |);
+                          M.read (| idx |)
+                        ]
+                      |)
+                    |)
                   |)
                 ]
               |)))
@@ -488,10 +538,13 @@ Module iter.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::cloned::Cloned",
-                        "it"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::cloned::Cloned",
+                          "it"
+                        |)
                       |)
                     ]
                   |)
@@ -534,10 +587,13 @@ Module iter.
                   [ B; Ty.associated; R ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::cloned::Cloned",
-                    "it"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::cloned::Cloned",
+                      "it"
+                    |)
                   |);
                   M.read (| init |);
                   M.call_closure (|
@@ -651,10 +707,13 @@ Module iter.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::cloned::Cloned",
-                    "it"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::cloned::Cloned",
+                      "it"
+                    |)
                   |)
                 ]
               |)))
@@ -688,10 +747,13 @@ Module iter.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::cloned::Cloned",
-                    "it"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::cloned::Cloned",
+                      "it"
+                    |)
                   |)
                 ]
               |)))
@@ -808,10 +870,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::cloned::Cloned",
-                          "it"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::cloned::Cloned",
+                            "it"
+                          |)
                         |)
                       ]
                     |)
@@ -819,7 +884,7 @@ Module iter.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
-                    [ M.read (| item |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| item |) |) |) ]
                   |)
                 |)
               |)))
@@ -894,23 +959,46 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::iter::adapters::SourceIter",
-                  I,
-                  [],
-                  [],
-                  "as_inner",
-                  [],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::cloned::Cloned",
-                    "it"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::adapters::SourceIter",
+                              I,
+                              [],
+                              [],
+                              "as_inner",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::cloned::Cloned",
+                                      "it"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

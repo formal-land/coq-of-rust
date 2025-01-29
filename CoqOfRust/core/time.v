@@ -49,7 +49,7 @@ Module time.
           M.read (|
             M.match_operator (|
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -98,14 +98,14 @@ Module time.
           BinOp.eq (|
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::time::Nanoseconds",
                 0
               |)
             |),
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
+                M.deref (| M.read (| other |) |),
                 "core::time::Nanoseconds",
                 0
               |)
@@ -174,15 +174,31 @@ Module time.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::time::Nanoseconds",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::time::Nanoseconds",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "core::time::Nanoseconds",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::time::Nanoseconds",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -210,15 +226,31 @@ Module time.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], [], "cmp", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::time::Nanoseconds",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::time::Nanoseconds",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "core::time::Nanoseconds",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::time::Nanoseconds",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -246,12 +278,20 @@ Module time.
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], [], "hash", [], [ __H ] |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::time::Nanoseconds",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::time::Nanoseconds",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| state |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -327,7 +367,7 @@ Module time.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                      [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                     |)))
               ]
             |)
@@ -379,14 +419,14 @@ Module time.
             BinOp.eq (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "secs"
                 |)
               |),
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
+                  M.deref (| M.read (| other |) |),
                   "core::time::Duration",
                   "secs"
                 |)
@@ -404,15 +444,21 @@ Module time.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::time::Duration",
-                    "nanos"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::time::Duration",
+                      "nanos"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "core::time::Duration",
-                    "nanos"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::time::Duration",
+                      "nanos"
+                    |)
                   |)
                 ]
               |)))
@@ -490,15 +536,31 @@ Module time.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::time::Duration",
-                      "secs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::time::Duration",
+                            "secs"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "core::time::Duration",
-                      "secs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "core::time::Duration",
+                            "secs"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -525,15 +587,31 @@ Module time.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::time::Duration",
-                            "nanos"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::time::Duration",
+                                  "nanos"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "core::time::Duration",
-                            "nanos"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "core::time::Duration",
+                                  "nanos"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -572,15 +650,31 @@ Module time.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::time::Duration",
-                      "secs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::time::Duration",
+                            "secs"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "core::time::Duration",
-                      "secs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "core::time::Duration",
+                            "secs"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -601,15 +695,31 @@ Module time.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::time::Duration",
-                            "nanos"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::time::Duration",
+                                  "nanos"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "core::time::Duration",
-                            "nanos"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "core::time::Duration",
+                                  "nanos"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -656,12 +766,20 @@ Module time.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::time::Duration",
-                      "secs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::time::Duration",
+                            "secs"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -677,12 +795,20 @@ Module time.
                   [ __H ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::time::Duration",
-                    "nanos"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::time::Duration",
+                          "nanos"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| state |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |)
             |)
@@ -935,13 +1061,21 @@ Module time.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "overflow in Duration::new"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String "overflow in Duration::new"
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -1209,10 +1343,21 @@ Module time.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "overflow in Duration::from_weeks" |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "overflow in Duration::from_weeks"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1301,10 +1446,21 @@ Module time.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "overflow in Duration::from_days" |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "overflow in Duration::from_days"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1387,10 +1543,21 @@ Module time.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "overflow in Duration::from_hours" |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "overflow in Duration::from_hours"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1467,10 +1634,21 @@ Module time.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "overflow in Duration::from_mins" |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "overflow in Duration::from_mins"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1512,7 +1690,7 @@ Module time.
             BinOp.eq (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "secs"
                 |)
@@ -1524,7 +1702,7 @@ Module time.
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -1552,7 +1730,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "core::time::Duration",
               "secs"
             |)
@@ -1576,7 +1754,7 @@ Module time.
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "nanos"
                 |),
@@ -1606,7 +1784,7 @@ Module time.
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "nanos"
                 |),
@@ -1635,7 +1813,7 @@ Module time.
           M.read (|
             M.SubPointer.get_struct_tuple_field (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::time::Duration",
                 "nanos"
               |),
@@ -1663,7 +1841,7 @@ Module time.
               M.rust_cast
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "secs"
                   |)
@@ -1675,7 +1853,7 @@ Module time.
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -1706,7 +1884,7 @@ Module time.
               M.rust_cast
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "secs"
                   |)
@@ -1718,7 +1896,7 @@ Module time.
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -1749,7 +1927,7 @@ Module time.
               M.rust_cast
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "secs"
                   |)
@@ -1760,7 +1938,7 @@ Module time.
               (M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "nanos"
                   |),
@@ -2995,7 +3173,7 @@ Module time.
             M.rust_cast
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "secs"
                 |)
@@ -3005,7 +3183,7 @@ Module time.
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -3035,7 +3213,7 @@ Module time.
             M.rust_cast
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "secs"
                 |)
@@ -3045,7 +3223,7 @@ Module time.
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -3077,7 +3255,7 @@ Module time.
               M.rust_cast
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "secs"
                   |)
@@ -3089,7 +3267,7 @@ Module time.
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -3122,7 +3300,7 @@ Module time.
               M.rust_cast
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "secs"
                   |)
@@ -3134,7 +3312,7 @@ Module time.
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -3199,15 +3377,23 @@ Module time.
                             []
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::time::TryFromFloatSecsError",
-                                  "description",
-                                  [],
-                                  []
-                                |),
-                                [ e ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::time::TryFromFloatSecsError",
+                                        "description",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, e |) ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             |)
                           ]
@@ -3271,15 +3457,23 @@ Module time.
                             []
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::time::TryFromFloatSecsError",
-                                  "description",
-                                  [],
-                                  []
-                                |),
-                                [ e ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::time::TryFromFloatSecsError",
+                                        "description",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, e |) ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             |)
                           ]
@@ -3318,7 +3512,7 @@ Module time.
                     [],
                     []
                   |),
-                  [ self ]
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |)
               |)
             ]
@@ -3351,7 +3545,7 @@ Module time.
                     [],
                     []
                   |),
-                  [ self ]
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |)
               |)
             ]
@@ -3383,7 +3577,7 @@ Module time.
                     [],
                     []
                   |),
-                  [ self ]
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |),
                 M.read (| rhs |)
               |)
@@ -3416,7 +3610,7 @@ Module time.
                     [],
                     []
                   |),
-                  [ self ]
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |),
                 M.read (| rhs |)
               |)
@@ -4893,7 +5087,10 @@ Module time.
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              M.read (| Value.String "overflow when adding durations" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "overflow when adding durations" |) |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4924,7 +5121,7 @@ Module time.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Add",
@@ -4935,7 +5132,7 @@ Module time.
                     [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -4985,7 +5182,10 @@ Module time.
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              M.read (| Value.String "overflow when subtracting durations" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "overflow when subtracting durations" |) |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5016,7 +5216,7 @@ Module time.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Sub",
@@ -5027,7 +5227,7 @@ Module time.
                     [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -5077,7 +5277,12 @@ Module time.
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              M.read (| Value.String "overflow when multiplying duration by scalar" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (| Value.String "overflow when multiplying duration by scalar" |)
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5148,7 +5353,7 @@ Module time.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Mul",
@@ -5159,7 +5364,7 @@ Module time.
                     [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -5209,7 +5414,12 @@ Module time.
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              M.read (| Value.String "divide by zero error when dividing duration by scalar" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (| Value.String "divide by zero error when dividing duration by scalar" |)
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5240,7 +5450,7 @@ Module time.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Div",
@@ -5251,7 +5461,7 @@ Module time.
                     [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -5319,7 +5529,12 @@ Module time.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -5371,8 +5586,14 @@ Module time.
                                                   |)
                                                 ]
                                               |);
-                                              M.read (|
-                                                Value.String "overflow in iter::sum over durations"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    Value.String
+                                                      "overflow in iter::sum over durations"
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -5459,9 +5680,14 @@ Module time.
                                                                 |)
                                                               ]
                                                             |);
-                                                            M.read (|
-                                                              Value.String
-                                                                "overflow in iter::sum over durations"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "overflow in iter::sum over durations"
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -5524,7 +5750,10 @@ Module time.
                         |)
                       ]
                     |);
-                    M.read (| Value.String "overflow in iter::sum over durations" |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "overflow in iter::sum over durations" |) |)
+                    |)
                   ]
                 |)
               |) in
@@ -5606,7 +5835,12 @@ Module time.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -5651,15 +5885,21 @@ Module time.
                                                   M.read (| total_secs |);
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| entry |),
+                                                      M.deref (| M.read (| entry |) |),
                                                       "core::time::Duration",
                                                       "secs"
                                                     |)
                                                   |)
                                                 ]
                                               |);
-                                              M.read (|
-                                                Value.String "overflow in iter::sum over durations"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    Value.String
+                                                      "overflow in iter::sum over durations"
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -5683,7 +5923,7 @@ Module time.
                                                       (M.read (|
                                                         M.SubPointer.get_struct_tuple_field (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| entry |),
+                                                            M.deref (| M.read (| entry |) |),
                                                             "core::time::Duration",
                                                             "nanos"
                                                           |),
@@ -5746,9 +5986,14 @@ Module time.
                                                                 |)
                                                               ]
                                                             |);
-                                                            M.read (|
-                                                              Value.String
-                                                                "overflow in iter::sum over durations"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "overflow in iter::sum over durations"
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -5768,7 +6013,7 @@ Module time.
                                                           (M.read (|
                                                             M.SubPointer.get_struct_tuple_field (|
                                                               M.SubPointer.get_struct_record_field (|
-                                                                M.read (| entry |),
+                                                                M.deref (| M.read (| entry |) |),
                                                                 "core::time::Duration",
                                                                 "nanos"
                                                               |),
@@ -5811,7 +6056,10 @@ Module time.
                         |)
                       ]
                     |);
-                    M.read (| Value.String "overflow in iter::sum over durations" |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "overflow in iter::sum over durations" |) |)
+                    |)
                   ]
                 |)
               |) in
@@ -6058,13 +6306,20 @@ Module time.
                                   [],
                                   []
                                 |),
-                                [ M.read (| f |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         Value.String "+"));
-                    fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "" |) |)))
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |) in
@@ -6079,7 +6334,7 @@ Module time.
                           BinOp.gt (|
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::time::Duration",
                                 "secs"
                               |)
@@ -6092,10 +6347,10 @@ Module time.
                       M.call_closure (|
                         M.get_associated_function (| Self, "fmt_decimal.fmt", [], [] |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::time::Duration",
                               "secs"
                             |)
@@ -6103,7 +6358,7 @@ Module time.
                           M.read (|
                             M.SubPointer.get_struct_tuple_field (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::time::Duration",
                                 "nanos"
                               |),
@@ -6115,8 +6370,11 @@ Module time.
                             M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |),
                             Value.Integer IntegerKind.U32 10
                           |);
-                          M.read (| prefix |);
-                          M.read (| Value.String "s" |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| prefix |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "s" |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -6134,7 +6392,7 @@ Module time.
                                     M.read (|
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::time::Duration",
                                           "nanos"
                                         |),
@@ -6151,13 +6409,13 @@ Module time.
                               M.call_closure (|
                                 M.get_associated_function (| Self, "fmt_decimal.fmt", [], [] |),
                                 [
-                                  M.read (| f |);
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.rust_cast
                                     (BinOp.Wrap.div (|
                                       M.read (|
                                         M.SubPointer.get_struct_tuple_field (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::time::Duration",
                                             "nanos"
                                           |),
@@ -6173,7 +6431,7 @@ Module time.
                                     M.read (|
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::time::Duration",
                                           "nanos"
                                         |),
@@ -6187,8 +6445,14 @@ Module time.
                                     M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |),
                                     Value.Integer IntegerKind.U32 10
                                   |);
-                                  M.read (| prefix |);
-                                  M.read (| Value.String "ms" |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| prefix |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "ms" |) |)
+                                  |)
                                 ]
                               |)
                             |)));
@@ -6206,7 +6470,7 @@ Module time.
                                             M.read (|
                                               M.SubPointer.get_struct_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::time::Duration",
                                                   "nanos"
                                                 |),
@@ -6233,13 +6497,16 @@ Module time.
                                           []
                                         |),
                                         [
-                                          M.read (| f |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| f |) |)
+                                          |);
                                           M.rust_cast
                                             (BinOp.Wrap.div (|
                                               M.read (|
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::time::Duration",
                                                     "nanos"
                                                   |),
@@ -6255,7 +6522,7 @@ Module time.
                                             M.read (|
                                               M.SubPointer.get_struct_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::time::Duration",
                                                   "nanos"
                                                 |),
@@ -6273,8 +6540,16 @@ Module time.
                                             |),
                                             Value.Integer IntegerKind.U32 10
                                           |);
-                                          M.read (| prefix |);
-                                          M.read (| Value.String (String.String "181" "s") |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| prefix |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (| Value.String (String.String "181" "s") |)
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     |)));
@@ -6289,12 +6564,15 @@ Module time.
                                           []
                                         |),
                                         [
-                                          M.read (| f |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| f |) |)
+                                          |);
                                           M.rust_cast
                                             (M.read (|
                                               M.SubPointer.get_struct_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::time::Duration",
                                                   "nanos"
                                                 |),
@@ -6304,8 +6582,14 @@ Module time.
                                             |));
                                           Value.Integer IntegerKind.U32 0;
                                           Value.Integer IntegerKind.U32 1;
-                                          M.read (| prefix |);
-                                          M.read (| Value.String "ns" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| prefix |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String "ns" |) |)
+                                          |)
                                         ]
                                       |)
                                     |)))
@@ -6353,14 +6637,28 @@ Module time.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "TryFromFloatSecsError" |);
-              M.read (| Value.String "kind" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::time::TryFromFloatSecsError",
-                  "kind"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "TryFromFloatSecsError" |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::time::TryFromFloatSecsError",
+                          "kind"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -6400,10 +6698,18 @@ Module time.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::time::TryFromFloatSecsError",
-                      "kind"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::time::TryFromFloatSecsError",
+                            "kind"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -6451,15 +6757,21 @@ Module time.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::time::TryFromFloatSecsError",
-                "kind"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::time::TryFromFloatSecsError",
+                  "kind"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "core::time::TryFromFloatSecsError",
-                "kind"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::time::TryFromFloatSecsError",
+                  "kind"
+                |)
               |)
             ]
           |)))
@@ -6528,7 +6840,7 @@ Module time.
           M.read (|
             M.match_operator (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::time::TryFromFloatSecsError",
                 "kind"
               |),
@@ -6576,16 +6888,21 @@ Module time.
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::time::TryFromFloatSecsError",
-                  "description",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::time::TryFromFloatSecsError",
+                      "description",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6633,7 +6950,7 @@ Module time.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -6646,7 +6963,12 @@ Module time.
                             γ,
                             "core::time::TryFromFloatSecsErrorKind::Negative"
                           |) in
-                        M.alloc (| M.read (| Value.String "Negative" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Negative" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -6655,7 +6977,12 @@ Module time.
                             γ,
                             "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
                           |) in
-                        M.alloc (| M.read (| Value.String "OverflowOrNan" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OverflowOrNan" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -6751,7 +7078,7 @@ Module time.
                     [],
                     [ Ty.path "core::time::TryFromFloatSecsErrorKind" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -6762,7 +7089,7 @@ Module time.
                     [],
                     [ Ty.path "core::time::TryFromFloatSecsErrorKind" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)

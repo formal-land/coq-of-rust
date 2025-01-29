@@ -93,7 +93,12 @@ Module identifier.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| b |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| b |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
@@ -119,7 +124,7 @@ Module identifier.
                                                   M.rust_cast
                                                     (M.read (|
                                                       M.SubPointer.get_array_field (|
-                                                        M.read (| b |),
+                                                        M.deref (| M.read (| b |) |),
                                                         i
                                                       |)
                                                     |))
@@ -197,7 +202,7 @@ Module identifier.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                [ M.read (| s |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
               |)
             |) in
           M.match_operator (|
@@ -273,7 +278,10 @@ Module identifier.
                                   [],
                                   []
                                 |),
-                                [ M.read (| b |); Value.Integer IntegerKind.Usize 1 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
+                                  Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             |)))
                         | _ => M.impossible "wrong number of arguments"
@@ -299,7 +307,7 @@ Module identifier.
                             [],
                             []
                           |),
-                          [ M.read (| b |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
                         |),
                         Value.Integer IntegerKind.Usize 1
                       |)
@@ -308,7 +316,10 @@ Module identifier.
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "move_core_types::identifier::all_bytes_valid", [], [] |),
-                      [ M.read (| b |); Value.Integer IntegerKind.Usize 1 ]
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
+                        Value.Integer IntegerKind.Usize 1
+                      ]
                     |)
                   |)));
               fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -360,10 +371,18 @@ Module identifier.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::identifier::Identifier",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::identifier::Identifier",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -397,13 +416,24 @@ Module identifier.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Identifier" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::identifier::Identifier",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Identifier" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::identifier::Identifier",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -474,12 +504,20 @@ Module identifier.
               [ __H ]
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::Identifier",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::identifier::Identifier",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| state |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -517,15 +555,31 @@ Module identifier.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::Identifier",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::identifier::Identifier",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::identifier::Identifier",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::identifier::Identifier",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -580,15 +634,21 @@ Module identifier.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::Identifier",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::identifier::Identifier",
+                  0
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::identifier::Identifier",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "move_core_types::identifier::Identifier",
+                  0
+                |)
               |)
             ]
           |)))
@@ -632,15 +692,31 @@ Module identifier.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::Identifier",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::identifier::Identifier",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::identifier::Identifier",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::identifier::Identifier",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -684,10 +760,18 @@ Module identifier.
               [
                 M.read (| __serializer |);
                 M.read (| Value.String "Identifier" |);
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::identifier::Identifier",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::identifier::Identifier",
+                        0
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -810,7 +894,7 @@ Module identifier.
                                       ]
                                   ]
                                 |),
-                                [ s ]
+                                [ M.borrow (| Pointer.Kind.Ref, s |) ]
                               |)
                             |)) in
                         let _ :=
@@ -866,40 +950,66 @@ Module identifier.
                                                           []
                                                         |),
                                                         [
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "Invalid identifier '"
-                                                                |);
-                                                                M.read (| Value.String "'" |)
-                                                              ]
-                                                          |);
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [],
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
                                                                     [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "alloc::boxed::Box")
-                                                                        []
-                                                                        [
-                                                                          Ty.path "str";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ]
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "Invalid identifier '"
+                                                                      |);
+                                                                      M.read (| Value.String "'" |)
                                                                     ]
-                                                                  |),
-                                                                  [ s ]
                                                                 |)
-                                                              ]
+                                                              |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_display",
+                                                                          [],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::boxed::Box")
+                                                                              []
+                                                                              [
+                                                                                Ty.path "str";
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ]
+                                                                          ]
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                s
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -939,17 +1049,22 @@ Module identifier.
           M.call_closure (|
             M.get_function (| "move_core_types::identifier::is_valid", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::convert::AsRef",
-                  impl_AsRef_str_,
-                  [],
-                  [ Ty.path "str" ],
-                  "as_ref",
-                  [],
-                  []
-                |),
-                [ s ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::convert::AsRef",
+                      impl_AsRef_str_,
+                      [],
+                      [ Ty.path "str" ],
+                      "as_ref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, s |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -979,16 +1094,24 @@ Module identifier.
               []
             |),
             [
-              M.alloc (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::identifier::Identifier",
-                    0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::identifier::Identifier",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               |);
-              Value.String "<SELF>"
+              M.borrow (| Pointer.Kind.Ref, Value.String "<SELF>" |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1128,17 +1251,22 @@ Module identifier.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "move_core_types::identifier::Identifier",
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "move_core_types::identifier::Identifier",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1273,7 +1401,7 @@ Module identifier.
               [],
               []
             |),
-            [ M.read (| ident_str |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ident_str |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1300,17 +1428,22 @@ Module identifier.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "move_core_types::identifier::Identifier",
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "move_core_types::identifier::Identifier",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1341,25 +1474,40 @@ Module identifier.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "ref_cast::RefCast",
-              Ty.path "move_core_types::identifier::IdentStr",
-              [],
-              [],
-              "ref_cast",
-              [],
-              []
-            |),
-            [
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::identifier::Identifier",
-                  0
-                |)
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "ref_cast::RefCast",
+                  Ty.path "move_core_types::identifier::IdentStr",
+                  [],
+                  [],
+                  "ref_cast",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::identifier::Identifier",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1390,42 +1538,69 @@ Module identifier.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
                             [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
+                                      ]
+                                  ]
+                                |),
                                 [
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
-                                    [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_core_types::identifier::Identifier",
+                                              0
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
                                 ]
-                            ]
-                          |),
-                          [
-                            M.alloc (|
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.read (| self |),
-                                "move_core_types::identifier::Identifier",
-                                0
                               |)
-                            |)
-                          ]
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1468,13 +1643,24 @@ Module identifier.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "IdentStr" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::identifier::IdentStr",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IdentStr" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::identifier::IdentStr",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -1534,12 +1720,20 @@ Module identifier.
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hash", Ty.path "str", [], [], "hash", [], [ __H ] |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::IdentStr",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::identifier::IdentStr",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| state |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1566,15 +1760,31 @@ Module identifier.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::Ord", Ty.path "str", [], [], "cmp", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::IdentStr",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::identifier::IdentStr",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::identifier::IdentStr",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::identifier::IdentStr",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -1621,15 +1831,21 @@ Module identifier.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::IdentStr",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::identifier::IdentStr",
+                  0
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::identifier::IdentStr",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "move_core_types::identifier::IdentStr",
+                  0
+                |)
               |)
             ]
           |)))
@@ -1665,15 +1881,31 @@ Module identifier.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::IdentStr",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::identifier::IdentStr",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::identifier::IdentStr",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::identifier::IdentStr",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -1720,7 +1952,28 @@ Module identifier.
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| _from |) |)) |)) |)
+            M.alloc (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.rust_cast
+                        (M.read (|
+                          M.use
+                            (M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.ConstPointer,
+                                M.deref (| M.read (| _from |) |)
+                              |)
+                            |))
+                        |))
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1731,27 +1984,60 @@ Module identifier.
       | [], [], [ _from ] =>
         ltac:(M.monadic
           (let _from := M.alloc (| _from |) in
-          M.read (|
-            let~ _ :=
-              let~ _ :=
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ _ :=
+                  let~ _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (|
+                          "ref_cast::layout::assert_layout",
+                          [],
+                          [ Ty.path "move_core_types::identifier::IdentStr"; Ty.path "str" ]
+                        |),
+                        [
+                          M.read (| Value.String "IdentStr" |);
+                          M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::SIZE" |) |);
+                          M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::SIZE" |) |);
+                          M.read (|
+                            M.get_constant (| "ref_cast::layout::LayoutUnsized::ALIGN" |)
+                          |);
+                          M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::ALIGN" |) |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |) in
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_function (|
-                      "ref_cast::layout::assert_layout",
-                      [],
-                      [ Ty.path "move_core_types::identifier::IdentStr"; Ty.path "str" ]
-                    |),
-                    [
-                      M.read (| Value.String "IdentStr" |);
-                      M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::SIZE" |) |);
-                      M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::SIZE" |) |);
-                      M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::ALIGN" |) |);
-                      M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::ALIGN" |) |)
-                    ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.rust_cast
+                                (M.read (|
+                                  M.use
+                                    (M.alloc (|
+                                      M.borrow (|
+                                        Pointer.Kind.MutPointer,
+                                        M.deref (| M.read (| _from |) |)
+                                      |)
+                                    |))
+                                |))
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| _from |) |)) |)) |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1813,17 +2099,23 @@ Module identifier.
                           Value.StructTuple
                             "core::result::Result::Ok"
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "ref_cast::RefCast",
-                                  Ty.path "move_core_types::identifier::IdentStr",
-                                  [],
-                                  [],
-                                  "ref_cast",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| s |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "ref_cast::RefCast",
+                                      Ty.path "move_core_types::identifier::IdentStr",
+                                      [],
+                                      [],
+                                      "ref_cast",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                         |)));
@@ -1869,35 +2161,61 @@ Module identifier.
                                                           []
                                                         |),
                                                         [
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "Invalid identifier '"
-                                                                |);
-                                                                M.read (| Value.String "'" |)
-                                                              ]
-                                                          |);
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [],
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
                                                                     [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [ Ty.path "str" ]
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "Invalid identifier '"
+                                                                      |);
+                                                                      M.read (| Value.String "'" |)
                                                                     ]
-                                                                  |),
-                                                                  [ s ]
                                                                 |)
-                                                              ]
+                                                              |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_display",
+                                                                          [],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ]
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                s
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -1937,17 +2255,22 @@ Module identifier.
           M.call_closure (|
             M.get_function (| "move_core_types::identifier::is_valid", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::convert::AsRef",
-                  impl_AsRef_str_,
-                  [],
-                  [ Ty.path "str" ],
-                  "as_ref",
-                  [],
-                  []
-                |),
-                [ s ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::convert::AsRef",
+                      impl_AsRef_str_,
+                      [],
+                      [ Ty.path "str" ],
+                      "as_ref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, s |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -1969,10 +2292,13 @@ Module identifier.
           M.call_closure (|
             M.get_associated_function (| Ty.path "str", "len", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::IdentStr",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::identifier::IdentStr",
+                  0
+                |)
               |)
             ]
           |)))
@@ -1994,10 +2320,13 @@ Module identifier.
           M.call_closure (|
             M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::IdentStr",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::identifier::IdentStr",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2016,10 +2345,18 @@ Module identifier.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_tuple_field (|
-            M.read (| self |),
-            "move_core_types::identifier::IdentStr",
-            0
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::identifier::IdentStr",
+                  0
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2036,15 +2373,23 @@ Module identifier.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-            [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::identifier::IdentStr",
-                0
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::identifier::IdentStr",
+                      0
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2084,7 +2429,7 @@ Module identifier.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |))
             ]
           |)))
@@ -2108,17 +2453,22 @@ Module identifier.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "move_core_types::identifier::Identifier",
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "move_core_types::identifier::Identifier",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2167,10 +2517,13 @@ Module identifier.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::identifier::IdentStr",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::identifier::IdentStr",
+                      0
+                    |)
                   |)
                 ]
               |)
@@ -2204,32 +2557,59 @@ Module identifier.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                          |),
-                          [
-                            M.alloc (|
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.read (| self |),
-                                "move_core_types::identifier::IdentStr",
-                                0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_core_types::identifier::IdentStr",
+                                              0
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
-                            |)
-                          ]
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 ]
               |)

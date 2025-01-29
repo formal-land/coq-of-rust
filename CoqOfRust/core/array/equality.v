@@ -34,7 +34,10 @@ Module array.
                 [ N ],
                 []
               |),
-              [ M.read (| self |); M.read (| other |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -67,7 +70,10 @@ Module array.
                 [ N ],
                 []
               |),
-              [ M.read (| self |); M.read (| other |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -120,7 +126,7 @@ Module array.
                       [],
                       []
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -146,7 +152,10 @@ Module array.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| b |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -199,7 +208,7 @@ Module array.
                       [],
                       []
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -225,7 +234,10 @@ Module array.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| b |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -291,7 +303,7 @@ Module array.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -317,7 +329,10 @@ Module array.
                             [],
                             []
                           |),
-                          [ M.read (| b |); M.read (| other |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -370,7 +385,7 @@ Module array.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -396,7 +411,10 @@ Module array.
                             [],
                             []
                           |),
-                          [ M.read (| b |); M.read (| other |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -455,7 +473,13 @@ Module array.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -488,7 +512,13 @@ Module array.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -536,7 +566,13 @@ Module array.
                 [],
                 []
               |),
-              [ M.read (| M.read (| self |) |); M.read (| other |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -569,7 +605,13 @@ Module array.
                 [],
                 []
               |),
-              [ M.read (| M.read (| self |) |); M.read (| other |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -615,7 +657,13 @@ Module array.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -648,7 +696,13 @@ Module array.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| M.read (| other |) |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -696,7 +750,13 @@ Module array.
                 [],
                 []
               |),
-              [ M.read (| M.read (| self |) |); M.read (| other |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -729,7 +789,13 @@ Module array.
                 [],
                 []
               |),
-              [ M.read (| M.read (| self |) |); M.read (| other |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -791,29 +857,45 @@ Module array.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ N ] [ T ],
-                    [],
-                    [ Ty.path "core::ops::range::RangeFull" ],
-                    "index",
-                    [],
-                    []
-                  |),
-                  [ M.read (| a |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::index::Index",
+                        Ty.apply (Ty.path "array") [ N ] [ T ],
+                        [],
+                        [ Ty.path "core::ops::range::RangeFull" ],
+                        "index",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
+                        Value.StructTuple "core::ops::range::RangeFull" []
+                      ]
+                    |)
+                  |)
                 |);
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ N ] [ Other ],
-                    [],
-                    [ Ty.path "core::ops::range::RangeFull" ],
-                    "index",
-                    [],
-                    []
-                  |),
-                  [ M.read (| b |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::index::Index",
+                        Ty.apply (Ty.path "array") [ N ] [ Other ],
+                        [],
+                        [ Ty.path "core::ops::range::RangeFull" ],
+                        "index",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
+                        Value.StructTuple "core::ops::range::RangeFull" []
+                      ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -849,29 +931,45 @@ Module array.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ N ] [ T ],
-                    [],
-                    [ Ty.path "core::ops::range::RangeFull" ],
-                    "index",
-                    [],
-                    []
-                  |),
-                  [ M.read (| a |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::index::Index",
+                        Ty.apply (Ty.path "array") [ N ] [ T ],
+                        [],
+                        [ Ty.path "core::ops::range::RangeFull" ],
+                        "index",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
+                        Value.StructTuple "core::ops::range::RangeFull" []
+                      ]
+                    |)
+                  |)
                 |);
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ N ] [ Other ],
-                    [],
-                    [ Ty.path "core::ops::range::RangeFull" ],
-                    "index",
-                    [],
-                    []
-                  |),
-                  [ M.read (| b |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::index::Index",
+                        Ty.apply (Ty.path "array") [ N ] [ Other ],
+                        [],
+                        [ Ty.path "core::ops::range::RangeFull" ],
+                        "index",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
+                        Value.StructTuple "core::ops::range::RangeFull" []
+                      ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -922,7 +1020,7 @@ Module array.
                 [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
               |),
               [
-                M.read (| a |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::transmute",
@@ -968,7 +1066,10 @@ Module array.
                   [ N ],
                   []
                 |),
-                [ M.read (| a |); M.read (| b |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
+                ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

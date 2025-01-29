@@ -143,17 +143,27 @@ Module bls12_381.
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::deref::Deref",
-                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                          [],
-                                          [],
-                                          "deref",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| input |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.path "alloy_primitives::bytes_::Bytes",
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| input |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -213,101 +223,151 @@ Module bls12_381.
                                                                 []
                                                               |),
                                                               [
-                                                                M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "MAP_FP_TO_G1 input should be "
-                                                                      |);
-                                                                      M.read (|
-                                                                        Value.String " bytes, was "
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "MAP_FP_TO_G1 input should be "
+                                                                            |);
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                " bytes, was "
+                                                                            |)
+                                                                          ]
                                                                       |)
-                                                                    ]
+                                                                    |)
+                                                                  |)
                                                                 |);
-                                                                M.match_operator (|
-                                                                  M.alloc (|
-                                                                    Value.Tuple
-                                                                      [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.match_operator (|
                                                                         M.alloc (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "bytes::bytes::Bytes",
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
+                                                                          Value.Tuple
                                                                             [
-                                                                              M.call_closure (|
-                                                                                M.get_trait_method (|
-                                                                                  "core::ops::deref::Deref",
-                                                                                  Ty.path
-                                                                                    "alloy_primitives::bytes_::Bytes",
-                                                                                  [],
-                                                                                  [],
-                                                                                  "deref",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [ M.read (| input |)
-                                                                                ]
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        |);
-                                                                        M.get_constant (|
-                                                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
-                                                                        |)
-                                                                      ]
-                                                                  |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let args :=
-                                                                          M.copy (| γ |) in
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_display",
-                                                                                  [],
-                                                                                  [ Ty.path "usize"
-                                                                                  ]
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    M.SubPointer.get_tuple_field (|
-                                                                                      args,
-                                                                                      1
-                                                                                    |)
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.alloc (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "bytes::bytes::Bytes",
+                                                                                      "len",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.call_closure (|
+                                                                                            M.get_trait_method (|
+                                                                                              "core::ops::deref::Deref",
+                                                                                              Ty.path
+                                                                                                "alloy_primitives::bytes_::Bytes",
+                                                                                              [],
+                                                                                              [],
+                                                                                              "deref",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    input
+                                                                                                  |)
+                                                                                                |)
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    ]
                                                                                   |)
-                                                                                ]
+                                                                                |)
                                                                               |);
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_display",
-                                                                                  [],
-                                                                                  [ Ty.path "usize"
-                                                                                  ]
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    M.SubPointer.get_tuple_field (|
-                                                                                      args,
-                                                                                      0
-                                                                                    |)
-                                                                                  |)
-                                                                                ]
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.get_constant (|
+                                                                                  "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                                                                |)
                                                                               |)
                                                                             ]
-                                                                        |)))
-                                                                  ]
+                                                                        |),
+                                                                        [
+                                                                          fun γ =>
+                                                                            ltac:(M.monadic
+                                                                              (let args :=
+                                                                                M.copy (| γ |) in
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "core::fmt::rt::Argument",
+                                                                                        "new_display",
+                                                                                        [],
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        ]
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              M.SubPointer.get_tuple_field (|
+                                                                                                args,
+                                                                                                1
+                                                                                              |)
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
+                                                                                    |);
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "core::fmt::rt::Argument",
+                                                                                        "new_display",
+                                                                                        [],
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        ]
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              M.SubPointer.get_tuple_field (|
+                                                                                                args,
+                                                                                                0
+                                                                                              |)
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
+                                                                              |)))
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 |)
                                                               ]
                                                             |)
@@ -365,30 +425,45 @@ Module bls12_381.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.path "bytes::bytes::Bytes",
-                                    [],
-                                    [],
-                                    "deref",
-                                    [],
-                                    []
-                                  |),
-                                  [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
-                                        Ty.path "alloy_primitives::bytes_::Bytes",
+                                        Ty.path "bytes::bytes::Bytes",
                                         [],
                                         [],
                                         "deref",
                                         [],
                                         []
                                       |),
-                                      [ M.read (| input |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.path "alloy_primitives::bytes_::Bytes",
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| input |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |)
@@ -479,7 +554,8 @@ Module bls12_381.
                                 [],
                                 []
                               |),
-                              [ M.read (| input_p0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input_p0 |) |) |)
+                              ]
                             |)
                           ]
                         |)
@@ -561,8 +637,14 @@ Module bls12_381.
                     M.call_closure (|
                       M.get_function (| "blst::blst_map_to_g1", [], [] |),
                       [
-                        p;
-                        fp;
+                        M.borrow (|
+                          Pointer.Kind.MutPointer,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, p |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, fp |) |)
+                        |);
                         M.call_closure (|
                           M.get_function (| "core::ptr::null", [], [ Ty.path "blst::blst_fp" ] |),
                           []
@@ -589,7 +671,16 @@ Module bls12_381.
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "blst::blst_p1_to_affine", [], [] |),
-                      [ p_aff; p ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutPointer,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, p_aff |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, p |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 let~ out :=
@@ -600,7 +691,12 @@ Module bls12_381.
                         [],
                         []
                       |),
-                      [ p_aff ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, p_aff |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 M.alloc (|

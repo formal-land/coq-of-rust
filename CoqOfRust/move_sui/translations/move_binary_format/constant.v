@@ -245,27 +245,37 @@ Module constant.
                                                   []
                                                 |),
                                                 [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::convert::AsRef",
-                                                      Ty.apply
-                                                        (Ty.path "alloc::boxed::Box")
-                                                        []
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::convert::AsRef",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::boxed::Box")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::SignatureToken";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ],
+                                                          "as_ref",
+                                                          [],
+                                                          []
+                                                        |),
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::SignatureToken";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ],
-                                                      [],
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"
-                                                      ],
-                                                      "as_ref",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| v |) ]
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| v |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -628,27 +638,37 @@ Module constant.
                                                   []
                                                 |),
                                                 [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::convert::AsRef",
-                                                      Ty.apply
-                                                        (Ty.path "alloc::boxed::Box")
-                                                        []
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::convert::AsRef",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::boxed::Box")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::runtime_value::MoveTypeLayout";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::runtime_value::MoveTypeLayout"
+                                                          ],
+                                                          "as_ref",
+                                                          [],
+                                                          []
+                                                        |),
                                                         [
-                                                          Ty.path
-                                                            "move_core_types::runtime_value::MoveTypeLayout";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ],
-                                                      [],
-                                                      [
-                                                        Ty.path
-                                                          "move_core_types::runtime_value::MoveTypeLayout"
-                                                      ],
-                                                      "as_ref",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| v |) ]
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| v |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -800,7 +820,8 @@ Module constant.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| ty |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ty |) |) |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -889,7 +910,8 @@ Module constant.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| v |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -996,10 +1018,18 @@ Module constant.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "move_binary_format::file_format::Constant",
-                                  "type_"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::file_format::Constant",
+                                        "type_"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -1080,28 +1110,44 @@ Module constant.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                              [],
-                              [],
-                              "deref",
-                              [],
-                              []
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_binary_format::file_format::Constant",
-                                "data"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::file_format::Constant",
+                                          "data"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |);
-                          ty
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, ty |) |)
+                          |)
                         ]
                       |)
                     ]

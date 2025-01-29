@@ -526,7 +526,11 @@ pub(crate) fn compile_expr<'a>(
             })
             .alloc()
         }
-        thir::ExprKind::Deref { arg } => compile_expr(env, generics, thir, arg).read(),
+        thir::ExprKind::Deref { arg } => Rc::new(Expr::Call {
+            func: Expr::local_var("M.deref"),
+            args: vec![compile_expr(env, generics, thir, arg).read()],
+            kind: CallKind::Effectful,
+        }),
         thir::ExprKind::Binary { op, lhs, rhs } => {
             let (path, kind) = path_of_bin_op(op);
             let lhs = compile_expr(env, generics, thir, lhs);
@@ -757,13 +761,36 @@ pub(crate) fn compile_expr<'a>(
 
             Rc::new(Expr::LocalVar(name))
         }
-        thir::ExprKind::Borrow {
-            borrow_kind: _,
-            arg,
-        }
-        | thir::ExprKind::RawBorrow { mutability: _, arg } => {
-            compile_expr(env, generics, thir, arg).alloc()
-        }
+        thir::ExprKind::Borrow { borrow_kind, arg } => Rc::new(Expr::Call {
+            func: Expr::local_var("M.borrow"),
+            args: vec![
+                Expr::local_var(
+                    if matches!(borrow_kind, rustc_middle::mir::BorrowKind::Mut { .. }) {
+                        "Pointer.Kind.MutRef"
+                    } else {
+                        "Pointer.Kind.Ref"
+                    },
+                ),
+                compile_expr(env, generics, thir, arg),
+            ],
+            kind: CallKind::Effectful,
+        })
+        .alloc(),
+        thir::ExprKind::RawBorrow { mutability, arg } => Rc::new(Expr::Call {
+            func: Expr::local_var("M.borrow"),
+            args: vec![
+                Expr::local_var(
+                    if matches!(mutability, rustc_middle::mir::Mutability::Mut) {
+                        "Pointer.Kind.MutPointer"
+                    } else {
+                        "Pointer.Kind.ConstPointer"
+                    },
+                ),
+                compile_expr(env, generics, thir, arg),
+            ],
+            kind: CallKind::Effectful,
+        })
+        .alloc(),
         thir::ExprKind::Break { .. } => Rc::new(Expr::ControlFlow(LoopControlFlow::Break)),
         thir::ExprKind::Continue { .. } => Rc::new(Expr::ControlFlow(LoopControlFlow::Continue)),
         thir::ExprKind::Return { value } => {

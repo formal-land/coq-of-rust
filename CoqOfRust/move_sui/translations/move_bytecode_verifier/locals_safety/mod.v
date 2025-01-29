@@ -52,7 +52,13 @@ Module locals_safety.
                               [],
                               []
                             |),
-                            [ M.read (| module |); M.read (| function_context |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| function_context |) |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -126,14 +132,17 @@ Module locals_safety.
                     [ impl_Meter__plus___Sized ]
                   |),
                   [
-                    M.alloc (|
-                      Value.StructTuple
-                        "move_bytecode_verifier::locals_safety::LocalsSafetyAnalysis"
-                        []
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.alloc (|
+                        Value.StructTuple
+                          "move_bytecode_verifier::locals_safety::LocalsSafetyAnalysis"
+                          []
+                      |)
                     |);
                     M.read (| initial_state |);
-                    M.read (| function_context |);
-                    M.read (| meter |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| function_context |) |) |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
                   ]
                 |)
               |)
@@ -318,7 +327,7 @@ Module locals_safety.
                             []
                           |),
                           [
-                            M.read (| meter |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                             M.read (|
                               M.get_constant (|
@@ -410,7 +419,10 @@ Module locals_safety.
                                 [],
                                 []
                               |),
-                              [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |);
+                                M.read (| M.deref (| M.read (| idx |) |) |)
+                              ]
                             |)
                           |),
                           [
@@ -462,8 +474,11 @@ Module locals_safety.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| state |);
-                                                        M.read (| M.read (| idx |) |)
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| state |) |)
+                                                        |);
+                                                        M.read (| M.deref (| M.read (| idx |) |) |)
                                                       ]
                                                     |)
                                                   ]
@@ -491,7 +506,10 @@ Module locals_safety.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| state |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| state |) |)
+                                                          |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR"
                                                             [];
@@ -517,7 +535,13 @@ Module locals_safety.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| state |) |)
+                                      |);
+                                      M.read (| M.deref (| M.read (| idx |) |) |)
+                                    ]
                                   |)
                                 |)))
                           ]
@@ -542,7 +566,10 @@ Module locals_safety.
                                 [],
                                 []
                               |),
-                              [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |);
+                                M.read (| M.deref (| M.read (| idx |) |) |)
+                              ]
                             |)
                           |),
                           [
@@ -589,7 +616,10 @@ Module locals_safety.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| state |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| state |) |)
+                                                          |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::MOVELOC_UNAVAILABLE_ERROR"
                                                             [];
@@ -620,7 +650,13 @@ Module locals_safety.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| state |) |)
+                                      |);
+                                      M.read (| M.deref (| M.read (| idx |) |) |)
+                                    ]
                                   |)
                                 |)))
                           ]
@@ -645,7 +681,10 @@ Module locals_safety.
                                 [],
                                 []
                               |),
-                              [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |);
+                                M.read (| M.deref (| M.read (| idx |) |) |)
+                              ]
                             |)
                           |),
                           [
@@ -692,7 +731,10 @@ Module locals_safety.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| state |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| state |) |)
+                                                          |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::COPYLOC_UNAVAILABLE_ERROR"
                                                             [];
@@ -760,7 +802,13 @@ Module locals_safety.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| state |) |)
+                                          |);
+                                          M.read (| M.deref (| M.read (| idx |) |) |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -807,7 +855,12 @@ Module locals_safety.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (| state |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| state |)
+                                                                      |)
+                                                                    |);
                                                                     Value.StructTuple
                                                                       "move_core_types::vm_status::StatusCode::BORROWLOC_UNAVAILABLE_ERROR"
                                                                       [];
@@ -853,7 +906,7 @@ Module locals_safety.
                                 [],
                                 []
                               |),
-                              [ M.read (| state |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |) ]
                             |)
                           |) in
                         let~ _ :=
@@ -887,7 +940,10 @@ Module locals_safety.
                                       []
                                     |),
                                     [
-                                      M.read (| meter |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| meter |) |)
+                                      |);
                                       Value.StructTuple
                                         "move_bytecode_verifier_meter::Scope::Function"
                                         [];
@@ -910,7 +966,12 @@ Module locals_safety.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| local_states |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| local_states |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -985,7 +1046,7 @@ Module locals_safety.
                                 [],
                                 []
                               |),
-                              [ M.read (| state |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |) ]
                             |)
                           |) in
                         let~ _ :=
@@ -1013,7 +1074,12 @@ Module locals_safety.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| local_states |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| local_states |) |)
+                                                |)
+                                              ]
                                             |),
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -1029,7 +1095,12 @@ Module locals_safety.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| all_local_abilities |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| all_local_abilities |) |)
+                                                |)
+                                              ]
                                             |)
                                           |)
                                         |)
@@ -1129,24 +1200,34 @@ Module locals_safety.
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
                                                 [
-                                                  Ty.path
-                                                    "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              [],
-                                              [],
-                                              "deref",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| local_states |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| local_states |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |);
@@ -1193,7 +1274,14 @@ Module locals_safety.
                                                 [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -1266,8 +1354,10 @@ Module locals_safety.
                                                                           |),
                                                                           [
                                                                             M.read (|
-                                                                              M.read (|
-                                                                                local_abilities
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  local_abilities
+                                                                                |)
                                                                               |)
                                                                             |)
                                                                           ]
@@ -1295,8 +1385,13 @@ Module locals_safety.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    state
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        state
+                                                                                      |)
+                                                                                    |)
                                                                                   |);
                                                                                   Value.StructTuple
                                                                                     "move_core_types::vm_status::StatusCode::UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP"
@@ -2072,7 +2167,12 @@ Module locals_safety.
               [],
               [ impl_Meter__plus___Sized ]
             |),
-            [ M.read (| state |); M.read (| bytecode |); M.read (| index |); M.read (| meter |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytecode |) |) |);
+              M.read (| index |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

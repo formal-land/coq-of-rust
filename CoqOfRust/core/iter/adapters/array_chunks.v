@@ -46,20 +46,45 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "ArrayChunks" |);
-                  M.read (| Value.String "iter" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::array_chunks::ArrayChunks",
-                    "iter"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "ArrayChunks" |) |)
                   |);
-                  M.read (| Value.String "remainder" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::array_chunks::ArrayChunks",
-                      "remainder"
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::array_chunks::ArrayChunks",
+                          "iter"
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "remainder" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::array_chunks::ArrayChunks",
+                              "remainder"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -100,10 +125,18 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::array_chunks::ArrayChunks",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::array_chunks::ArrayChunks",
+                                "iter"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -123,10 +156,18 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::array_chunks::ArrayChunks",
-                          "remainder"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::array_chunks::ArrayChunks",
+                                "remainder"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -199,10 +240,21 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "chunk size must be non-zero" |)
-                                          ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String "chunk size must be non-zero"
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -275,10 +327,13 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      self,
-                                      "core::iter::adapters::array_chunks::ArrayChunks",
-                                      "remainder"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::iter::adapters::array_chunks::ArrayChunks",
+                                        "remainder"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -308,7 +363,7 @@ Module iter.
                                               [],
                                               []
                                             |),
-                                            [ self ]
+                                            [ M.borrow (| Pointer.Kind.MutRef, self |) ]
                                           |)
                                         |) in
                                       let γ0_0 :=
@@ -411,10 +466,13 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::iter::adapters::array_chunks::ArrayChunks",
-                                          "remainder"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::iter::adapters::array_chunks::ArrayChunks",
+                                            "remainder"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -444,10 +502,13 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::array_chunks::ArrayChunks",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::array_chunks::ArrayChunks",
+                                  "iter"
+                                |)
                               |)
                             ]
                           |),
@@ -492,54 +553,65 @@ Module iter.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "core::iter::adapters::rev::Rev")
-                                        []
-                                        [ Ty.apply (Ty.path "&mut") [] [ I ] ],
-                                      [],
-                                      [],
-                                      "take",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::iter::traits::iterator::Iterator",
-                                          Ty.apply (Ty.path "&mut") [] [ I ],
-                                          [],
-                                          [],
-                                          "rev",
-                                          [],
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::rev::Rev")
                                           []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
-                                              I,
-                                              [],
-                                              [],
-                                              "by_ref",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::iter::adapters::array_chunks::ArrayChunks",
-                                                "iter"
+                                          [ Ty.apply (Ty.path "&mut") [] [ I ] ],
+                                        [],
+                                        [],
+                                        "take",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::iter::traits::iterator::Iterator",
+                                            Ty.apply (Ty.path "&mut") [] [ I ],
+                                            [],
+                                            [],
+                                            "rev",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::iter::traits::iterator::Iterator",
+                                                    I,
+                                                    [],
+                                                    [],
+                                                    "by_ref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::iter::adapters::array_chunks::ArrayChunks",
+                                                        "iter"
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
                                               |)
-                                            ]
-                                          |)
-                                        ]
-                                      |);
-                                      M.read (| rem |)
-                                    ]
+                                            |)
+                                          ]
+                                        |);
+                                        M.read (| rem |)
+                                      ]
+                                    |)
                                   |)
                                 |)
                               ]
@@ -557,17 +629,22 @@ Module iter.
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::array::iter::IntoIter")
-                                  [ N ]
-                                  [ Ty.associated ],
-                                "as_mut_slice",
-                                [ N ],
-                                []
-                              |),
-                              [ remainder ]
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::array::iter::IntoIter")
+                                      [ N ]
+                                      [ Ty.associated ],
+                                    "as_mut_slice",
+                                    [ N ],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.MutRef, remainder |) ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -575,7 +652,7 @@ Module iter.
                     let~ _ :=
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::array_chunks::ArrayChunks",
                           "remainder"
                         |),
@@ -653,7 +730,7 @@ Module iter.
                       ]
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                       M.constructor_as_closure "core::ops::control_flow::ControlFlow::Break"
                     ]
                   |)
@@ -695,10 +772,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::array_chunks::ArrayChunks",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::array_chunks::ArrayChunks",
+                            "iter"
+                          |)
                         |)
                       ]
                     |)
@@ -863,10 +943,13 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::array_chunks::ArrayChunks",
-                                  "iter"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::array_chunks::ArrayChunks",
+                                    "iter"
+                                  |)
                                 |)
                               ]
                             |)
@@ -917,7 +1000,7 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                f;
+                                                M.borrow (| Pointer.Kind.MutRef, f |);
                                                 Value.Tuple [ M.read (| acc |); M.read (| chunk |) ]
                                               ]
                                             |)
@@ -998,10 +1081,13 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::iter::adapters::array_chunks::ArrayChunks",
-                                                "remainder"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::iter::adapters::array_chunks::ArrayChunks",
+                                                  "remainder"
+                                                |)
                                               |);
                                               M.read (| remainder |)
                                             ]
@@ -1135,7 +1221,7 @@ Module iter.
                       ]
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                       Value.Tuple [];
                       M.closure
                         (fun γ =>
@@ -1225,7 +1311,7 @@ Module iter.
                             [ N ],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |) in
                     let~ acc := M.copy (| init |) in
@@ -1248,10 +1334,18 @@ Module iter.
                             Value.StructTuple
                               "core::iter::adapters::by_ref_sized::ByRefSized"
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::array_chunks::ArrayChunks",
-                                  "iter"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::array_chunks::ArrayChunks",
+                                        "iter"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                           ]
@@ -1286,7 +1380,7 @@ Module iter.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
                                       |)
                                     |) in
                                   let γ0_0 :=
@@ -1305,7 +1399,7 @@ Module iter.
                                           [],
                                           []
                                         |),
-                                        [ chunk ]
+                                        [ M.borrow (| Pointer.Kind.MutRef, chunk |) ]
                                       |)
                                     |) in
                                   M.write (|
@@ -1344,7 +1438,7 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  f;
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
                                                   Value.Tuple
                                                     [ M.read (| acc |); M.read (| chunk |) ]
                                                 ]
@@ -1476,7 +1570,7 @@ Module iter.
                         ]
                       |),
                       [
-                        self;
+                        M.borrow (| Pointer.Kind.MutRef, self |);
                         M.read (| init |);
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1571,10 +1665,13 @@ Module iter.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::array_chunks::ArrayChunks",
-                      "iter"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::iter::adapters::array_chunks::ArrayChunks",
+                        "iter"
+                      |)
                     |)
                   ]
                 |),
@@ -1612,10 +1709,13 @@ Module iter.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::array_chunks::ArrayChunks",
-                      "iter"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::iter::adapters::array_chunks::ArrayChunks",
+                        "iter"
+                      |)
                     |)
                   ]
                 |),
@@ -1688,7 +1788,7 @@ Module iter.
                         ]
                       |),
                       [
-                        self;
+                        M.borrow (| Pointer.Kind.MutRef, self |);
                         M.read (| init |);
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1780,10 +1880,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::iter::adapters::array_chunks::ArrayChunks",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::iter::adapters::array_chunks::ArrayChunks",
+                            "iter"
+                          |)
                         |)
                       ]
                     |)
@@ -1856,10 +1959,13 @@ Module iter.
                                                                 []
                                                               |),
                                                               [
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  self,
-                                                                  "core::iter::adapters::array_chunks::ArrayChunks",
-                                                                  "iter"
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    self,
+                                                                    "core::iter::adapters::array_chunks::ArrayChunks",
+                                                                    "iter"
+                                                                  |)
                                                                 |);
                                                                 M.read (| idx |)
                                                               ]
@@ -1889,7 +1995,10 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ f; Value.Tuple [ M.read (| accum |); M.read (| chunk |) ] ]
+                                    [
+                                      M.borrow (| Pointer.Kind.MutRef, f |);
+                                      Value.Tuple [ M.read (| accum |); M.read (| chunk |) ]
+                                    ]
                                   |)
                                 |) in
                               let~ _ :=
@@ -1959,23 +2068,46 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::iter::adapters::SourceIter",
-                  I,
-                  [],
-                  [],
-                  "as_inner",
-                  [],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::array_chunks::ArrayChunks",
-                    "iter"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::adapters::SourceIter",
+                              I,
+                              [],
+                              [],
+                              "as_inner",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::array_chunks::ArrayChunks",
+                                      "iter"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

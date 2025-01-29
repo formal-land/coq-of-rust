@@ -402,7 +402,16 @@ Module ptr.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| self |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                              |)
+                            |)
+                          ]
                       |)))
                 ]
               |)
@@ -431,7 +440,10 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| self |)))
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (| M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -486,7 +498,17 @@ Module ptr.
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ M.rust_cast (M.read (| self |)) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.rust_cast (M.read (| self |)) |)
+                                |)
+                              |)
+                            |)
+                          ]
                       |)))
                 ]
               |)
@@ -1706,13 +1728,22 @@ Module ptr.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "align_offset: align is not a power-of-two"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  Value.String
+                                                    "align_offset: align is not a power-of-two"
+                                                |)
+                                              ]
                                           |)
-                                        ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1844,14 +1875,22 @@ Module ptr.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "is_aligned_to: align is not a power-of-two"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  Value.String
+                                                    "is_aligned_to: align is not a power-of-two"
+                                                |)
+                                              ]
                                           |)
-                                        ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -2076,28 +2115,37 @@ Module ptr.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.call_closure (|
-                              M.get_function (|
-                                "core::slice::raw::from_raw_parts",
-                                [],
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ]
-                              |),
-                              [
-                                M.rust_cast (M.read (| self |));
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
                                 M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "*const")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                    "len",
+                                  M.get_function (|
+                                    "core::slice::raw::from_raw_parts",
                                     [],
-                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ]
                                   |),
-                                  [ M.read (| self |) ]
+                                  [
+                                    M.rust_cast (M.read (| self |));
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "*const")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |)
                             |)
                           ]
                       |)))
@@ -2182,7 +2230,10 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.eq (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2248,7 +2299,18 @@ Module ptr.
                                 [],
                                 []
                               |),
-                              [ self; M.alloc (| M.read (| other |) |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, self |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| other |) |)
+                                    |)
+                                  |)
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2281,7 +2343,10 @@ Module ptr.
                                         [],
                                         []
                                       |),
-                                      [ self; other ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, self |);
+                                        M.borrow (| Pointer.Kind.Ref, other |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -2338,7 +2403,10 @@ Module ptr.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2356,7 +2424,10 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.lt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2372,7 +2443,10 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.le (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2388,7 +2462,10 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.gt (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2404,7 +2481,10 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+            BinOp.ge (|
+              M.read (| M.deref (| M.read (| self |) |) |),
+              M.read (| M.deref (| M.read (| other |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

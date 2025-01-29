@@ -40,10 +40,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                        "result"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                              "result"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -59,10 +67,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                        "memory_offset"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                              "memory_offset"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -97,20 +113,45 @@ Module interpreter_action.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "CallOutcome" |);
-                M.read (| Value.String "result" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                  "result"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "CallOutcome" |) |)
                 |);
-                M.read (| Value.String "memory_offset" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                    "memory_offset"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "result" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                        "result"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "memory_offset" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                            "memory_offset"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -161,15 +202,21 @@ Module interpreter_action.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                    "result"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                      "result"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                    "result"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                      "result"
+                    |)
                   |)
                 ]
               |),
@@ -185,15 +232,21 @@ Module interpreter_action.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                      "memory_offset"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                        "memory_offset"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                      "memory_offset"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                        "memory_offset"
+                      |)
                     |)
                   ]
                 |)))
@@ -284,14 +337,22 @@ Module interpreter_action.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                "result"
-              |),
-              "revm_interpreter::interpreter::InterpreterResult",
-              "result"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                      "result"
+                    |),
+                    "revm_interpreter::interpreter::InterpreterResult",
+                    "result"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -312,7 +373,7 @@ Module interpreter_action.
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
                   "result"
                 |),
@@ -335,14 +396,22 @@ Module interpreter_action.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                "result"
-              |),
-              "revm_interpreter::interpreter::InterpreterResult",
-              "output"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                      "result"
+                    |),
+                    "revm_interpreter::interpreter::InterpreterResult",
+                    "output"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -362,7 +431,7 @@ Module interpreter_action.
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
                   "memory_offset"
                 |),
@@ -397,10 +466,13 @@ Module interpreter_action.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                  "memory_offset"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                    "memory_offset"
+                  |)
                 |)
               ]
             |)))

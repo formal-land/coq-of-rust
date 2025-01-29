@@ -41,14 +41,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.path "str" ]
               |),
-              [ M.read (| Value.String "." |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "." |) |) |) ]
             |)
           |) in
         let~ _display :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::path::Path", "display", [], [] |),
-              [ M.read (| path |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| path |) |) |) ]
             |)
           |) in
         let~ new_path :=
@@ -61,29 +61,40 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.path "std::path::PathBuf",
-                    [],
-                    [],
-                    "deref",
-                    [],
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "std::path::Path",
-                          "join",
-                          [],
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                        |),
-                        [ M.read (| path |); M.read (| Value.String "a" |) ]
-                      |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.path "std::path::PathBuf",
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "std::path::Path",
+                                "join",
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| path |) |) |);
+                                M.read (| Value.String "a" |)
+                              ]
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |);
                 M.read (| Value.String "b" |)
               ]
@@ -98,7 +109,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
-              [ new_path; M.read (| Value.String "c" |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, new_path |); M.read (| Value.String "c" |) ]
             |)
           |) in
         let~ _ :=
@@ -110,7 +121,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
-              [ new_path; M.read (| Value.String "myfile.tar.gz" |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, new_path |);
+                M.read (| Value.String "myfile.tar.gz" |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -122,7 +136,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
-              [ new_path; M.read (| Value.String "package.tgz" |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, new_path |);
+                M.read (| Value.String "package.tgz" |)
+              ]
             |)
           |) in
         M.match_operator (|
@@ -130,17 +147,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::path::Path", "to_str", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.path "std::path::PathBuf",
-                    [],
-                    [],
-                    "deref",
-                    [],
-                    []
-                  |),
-                  [ new_path ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.path "std::path::PathBuf",
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, new_path |) ]
+                    |)
+                  |)
                 |)
               ]
             |)
@@ -179,27 +201,48 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "new path is " |);
-                                  M.read (| Value.String "
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "new path is " |);
+                                        M.read (| Value.String "
 " |)
-                                ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [],
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                    |),
-                                    [ s ]
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)

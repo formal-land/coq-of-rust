@@ -123,10 +123,11 @@ Module Impl_Default_for_integer.
       { apply implements_of_integer_kind. }
       { reflexivity. }
     }
-    { destruct kind; run_symbolic;
+    { destruct kind;
+        run_symbolic;
         try apply Output.Success;
         try apply Integer.Build_t;
-        try reflexivity.
+        try with_strategy transparent [φ] reflexivity.
     }
   Defined.
 

@@ -74,7 +74,7 @@ Module Impl_incrementer_Incrementer.
           let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "incrementer::Incrementer",
                 "value"
               |) in
@@ -98,7 +98,7 @@ Module Impl_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "incrementer::Incrementer",
             "value"
           |)

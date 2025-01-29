@@ -38,7 +38,7 @@ Module instructions.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -74,7 +74,7 @@ Module instructions.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
                     self,
@@ -87,7 +87,12 @@ Module instructions.
                               γ,
                               "revm_interpreter::instructions::i256::Sign::Minus"
                             |) in
-                          M.alloc (| M.read (| Value.String "Minus" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Minus" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -96,7 +101,12 @@ Module instructions.
                               γ,
                               "revm_interpreter::instructions::i256::Sign::Zero"
                             |) in
-                          M.alloc (| M.read (| Value.String "Zero" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Zero" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -105,7 +115,12 @@ Module instructions.
                               γ,
                               "revm_interpreter::instructions::i256::Sign::Plus"
                             |) in
-                          M.alloc (| M.read (| Value.String "Plus" |) |)))
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Plus" |) |)
+                            |)
+                          |)))
                     ]
                   |)
                 |)
@@ -152,7 +167,7 @@ Module instructions.
                       [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -163,7 +178,7 @@ Module instructions.
                       [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -224,7 +239,7 @@ Module instructions.
                       [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -235,7 +250,7 @@ Module instructions.
                       [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -249,7 +264,16 @@ Module instructions.
                     [],
                     []
                   |),
-                  [ __self_discr; __arg1_discr ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                    |)
+                  ]
                 |)
               |)
             |)))
@@ -283,7 +307,7 @@ Module instructions.
                       [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -294,13 +318,22 @@ Module instructions.
                       [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], [], "cmp", [], [] |),
-                  [ __self_discr; __arg1_discr ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                    |)
+                  ]
                 |)
               |)
             |)))
@@ -334,7 +367,7 @@ Module instructions.
                       [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -348,7 +381,13 @@ Module instructions.
                     [],
                     [ __H ]
                   |),
-                  [ __self_discr; M.read (| state |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -459,7 +498,7 @@ Module instructions.
                               []
                             |),
                             [
-                              M.read (| val |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |);
                               BinOp.Wrap.sub (|
                                 M.read (| M.get_constant (| "ruint::BITS'1" |) |),
                                 Value.Integer IntegerKind.Usize 1
@@ -498,7 +537,7 @@ Module instructions.
                                 ],
                                 []
                               |),
-                              [ M.read (| val |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
                             |)
                           |)
                         ]
@@ -532,7 +571,7 @@ Module instructions.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [], [] |),
-                  [ M.read (| val |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -555,11 +594,14 @@ Module instructions.
                                 []
                               |),
                               [
-                                sign;
-                                M.alloc (|
-                                  Value.StructTuple
-                                    "revm_interpreter::instructions::i256::Sign::Minus"
-                                    []
+                                M.borrow (| Pointer.Kind.Ref, sign |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.StructTuple
+                                      "revm_interpreter::instructions::i256::Sign::Minus"
+                                      []
+                                  |)
                                 |)
                               ]
                             |)
@@ -573,7 +615,7 @@ Module instructions.
                               [],
                               []
                             |),
-                            [ M.read (| val |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |) ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -605,17 +647,19 @@ Module instructions.
             let~ _ :=
               let β :=
                 M.SubPointer.get_array_field (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "ruint::Uint")
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                        [],
-                      "as_limbs_mut",
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
-                      []
-                    |),
-                    [ M.read (| val |) ]
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
+                        "as_limbs_mut",
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |) ]
+                    |)
                   |),
                   M.alloc (| Value.Integer IntegerKind.Usize 3 |)
                 |) in
@@ -648,10 +692,10 @@ Module instructions.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| op |),
+                M.deref (| M.read (| op |) |),
                 M.call_closure (|
                   M.get_function (| "revm_interpreter::instructions::i256::two_compl", [], [] |),
-                  [ M.read (| M.read (| op |) |) ]
+                  [ M.read (| M.deref (| M.read (| op |) |) |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -713,14 +757,14 @@ Module instructions.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [], [] |),
-                  [ M.read (| first |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| first |) |) |) ]
                 |)
               |) in
             let~ second_sign :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [], [] |),
-                  [ M.read (| second |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| second |) |) |) ]
                 |)
               |) in
             M.match_operator (|
@@ -735,7 +779,13 @@ Module instructions.
                     [],
                     []
                   |),
-                  [ first_sign; second_sign ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, first_sign |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, second_sign |) |)
+                    |)
+                  ]
                 |)
               |),
               [
@@ -757,7 +807,10 @@ Module instructions.
                           [],
                           []
                         |),
-                        [ M.read (| first |); M.read (| second |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| first |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| second |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -819,7 +872,12 @@ Module instructions.
                         [],
                         []
                       |),
-                      [ second ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, second |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 let~ _ :=
@@ -842,11 +900,14 @@ Module instructions.
                                     []
                                   |),
                                   [
-                                    second_sign;
-                                    M.alloc (|
-                                      Value.StructTuple
-                                        "revm_interpreter::instructions::i256::Sign::Zero"
-                                        []
+                                    M.borrow (| Pointer.Kind.Ref, second_sign |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.StructTuple
+                                          "revm_interpreter::instructions::i256::Sign::Zero"
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -871,7 +932,12 @@ Module instructions.
                         [],
                         []
                       |),
-                      [ first ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, first |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 let~ _ :=
@@ -909,9 +975,12 @@ Module instructions.
                                       []
                                     |),
                                     [
-                                      first;
-                                      M.get_constant (|
-                                        "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE"
+                                      M.borrow (| Pointer.Kind.Ref, first |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.get_constant (|
+                                          "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE"
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -941,25 +1010,28 @@ Module instructions.
                                         []
                                       |),
                                       [
-                                        second;
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "ruint::Uint")
+                                        M.borrow (| Pointer.Kind.Ref, second |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  [],
+                                                "from",
                                                 [
                                                   Value.Integer IntegerKind.Usize 256;
                                                   Value.Integer IntegerKind.Usize 4
-                                                ]
-                                                [],
-                                              "from",
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ],
-                                              [ Ty.path "i32" ]
-                                            |),
-                                            [ Value.Integer IntegerKind.I32 1 ]
+                                                ],
+                                                [ Ty.path "i32" ]
+                                              |),
+                                              [ Value.Integer IntegerKind.I32 1 ]
+                                            |)
                                           |)
                                         |)
                                       ]
@@ -1025,7 +1097,12 @@ Module instructions.
                         [],
                         []
                       |),
-                      [ d ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, d |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 M.match_operator (|
@@ -1049,11 +1126,14 @@ Module instructions.
                                       []
                                     |),
                                     [
-                                      first_sign;
-                                      M.alloc (|
-                                        Value.StructTuple
-                                          "revm_interpreter::instructions::i256::Sign::Minus"
-                                          []
+                                      M.borrow (| Pointer.Kind.Ref, first_sign |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.StructTuple
+                                            "revm_interpreter::instructions::i256::Sign::Minus"
+                                            []
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -1069,11 +1149,14 @@ Module instructions.
                                         []
                                       |),
                                       [
-                                        second_sign;
-                                        M.alloc (|
-                                          Value.StructTuple
-                                            "revm_interpreter::instructions::i256::Sign::Minus"
-                                            []
+                                        M.borrow (| Pointer.Kind.Ref, second_sign |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.StructTuple
+                                              "revm_interpreter::instructions::i256::Sign::Minus"
+                                              []
+                                          |)
                                         |)
                                       ]
                                     |)))
@@ -1091,11 +1174,14 @@ Module instructions.
                                         []
                                       |),
                                       [
-                                        second_sign;
-                                        M.alloc (|
-                                          Value.StructTuple
-                                            "revm_interpreter::instructions::i256::Sign::Minus"
-                                            []
+                                        M.borrow (| Pointer.Kind.Ref, second_sign |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.StructTuple
+                                              "revm_interpreter::instructions::i256::Sign::Minus"
+                                              []
+                                          |)
                                         |)
                                       ]
                                     |),
@@ -1111,11 +1197,14 @@ Module instructions.
                                           []
                                         |),
                                         [
-                                          first_sign;
-                                          M.alloc (|
-                                            Value.StructTuple
-                                              "revm_interpreter::instructions::i256::Sign::Minus"
-                                              []
+                                          M.borrow (| Pointer.Kind.Ref, first_sign |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.StructTuple
+                                                "revm_interpreter::instructions::i256::Sign::Minus"
+                                                []
+                                            |)
                                           |)
                                         ]
                                       |)))
@@ -1186,7 +1275,12 @@ Module instructions.
                         [],
                         []
                       |),
-                      [ first ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, first |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 let~ _ :=
@@ -1209,11 +1303,14 @@ Module instructions.
                                     []
                                   |),
                                   [
-                                    first_sign;
-                                    M.alloc (|
-                                      Value.StructTuple
-                                        "revm_interpreter::instructions::i256::Sign::Zero"
-                                        []
+                                    M.borrow (| Pointer.Kind.Ref, first_sign |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.StructTuple
+                                          "revm_interpreter::instructions::i256::Sign::Zero"
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1238,7 +1335,12 @@ Module instructions.
                         [],
                         []
                       |),
-                      [ second ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, second |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 let~ _ :=
@@ -1261,11 +1363,14 @@ Module instructions.
                                     []
                                   |),
                                   [
-                                    second_sign;
-                                    M.alloc (|
-                                      Value.StructTuple
-                                        "revm_interpreter::instructions::i256::Sign::Zero"
-                                        []
+                                    M.borrow (| Pointer.Kind.Ref, second_sign |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.StructTuple
+                                          "revm_interpreter::instructions::i256::Sign::Zero"
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1314,7 +1419,12 @@ Module instructions.
                         [],
                         []
                       |),
-                      [ r ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, r |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 M.match_operator (|
@@ -1336,11 +1446,14 @@ Module instructions.
                                   []
                                 |),
                                 [
-                                  first_sign;
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm_interpreter::instructions::i256::Sign::Minus"
-                                      []
+                                  M.borrow (| Pointer.Kind.Ref, first_sign |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instructions::i256::Sign::Minus"
+                                        []
+                                    |)
                                   |)
                                 ]
                               |)

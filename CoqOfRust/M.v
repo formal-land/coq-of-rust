@@ -141,6 +141,9 @@ Module Pointer.
 
   Module Kind.
     Inductive t : Set :=
+    (** The address kind for the allocation primitive. This is later converted to proper pointer
+        kinds. *)
+    | Raw
     | Ref
     | MutRef
     | ConstPointer
@@ -148,6 +151,7 @@ Module Pointer.
 
     Definition to_ty_path (kind : t) : string :=
       match kind with
+      | Raw => "raw" (* it should appear as it is not possible to manipulate raw pointers in Rust *)
       | Ref => "&"
       | MutRef => "&mut"
       | ConstPointer => "*const"
@@ -158,6 +162,11 @@ Module Pointer.
   Inductive t (Value : Set) : Set :=
   | Make {A : Set} (kind : Kind.t) (ty : Ty.t) (to_value : A -> Value) (core : Core.t Value A).
   Arguments Make {_ _}.
+
+  Definition deref {Value : Set} (pointer : t Value) : t Value :=
+    match pointer with
+    | Make _ ty to_value core => Make Kind.Raw ty to_value core
+    end.
 End Pointer.
 
 Module Value.
@@ -262,7 +271,7 @@ End Value.
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
-  | StateRead (pointer : Pointer.t Value.t)
+  | StateRead (pointer : Value.t)
   | StateWrite (pointer : Pointer.t Value.t) (value : Value.t)
   | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
   | AreEqual (value1 value2 : Value.t)
@@ -579,11 +588,8 @@ Definition alloc (v : Value.t) : M :=
   call_primitive (Primitive.StateAlloc v).
 Arguments alloc /.
 
-Definition read (r : Value.t) : M :=
-  match r with
-  | Value.Pointer pointer => call_primitive (Primitive.StateRead pointer)
-  | _ => impossible "cannot read"
-  end.
+Definition read (pointer : Value.t) : M :=
+  call_primitive (Primitive.StateRead pointer).
 
 Definition write (r : Value.t) (update : Value.t) : M :=
   match r with
@@ -777,9 +783,22 @@ Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
   | _ => break_match
   end.
 
+Definition borrow (kind : Pointer.Kind.t) (value : Value.t) : M :=
+  match value with
+  | Value.Pointer (Pointer.Make Pointer.Kind.Raw ty to_value core) =>
+    pure (Value.Pointer (Pointer.Make kind ty to_value core))
+  | _ => impossible "expected a raw pointer"
+  end.
+
+Definition deref (value : Value.t) : M :=
+  match value with
+  | Value.Pointer pointer => pure (Value.Pointer (Pointer.deref pointer))
+  | _ => impossible "expected a pointer"
+  end.
+
 Parameter pointer_coercion : Value.t -> Value.t.
 
-(** This function is explicitely called in the Rust AST, and should take two
+(** This function is explicitly called in the Rust AST, and should take two
     types that are actually different but convertible, like different kinds of
     integers. *)
 Parameter rust_cast : Value.t -> Value.t.

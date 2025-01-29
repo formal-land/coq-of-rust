@@ -157,7 +157,12 @@ Module gas.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| vals |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| vals |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -182,7 +187,12 @@ Module gas.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| vals |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| vals |) |)
+                                                |)
+                                              ]
                                             |),
                                             ltac:(M.monadic
                                               (M.call_closure (|
@@ -193,7 +203,12 @@ Module gas.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| vals |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| vals |) |)
+                                                  |)
+                                                ]
                                               |)))
                                           |)
                                         |)) in
@@ -224,7 +239,12 @@ Module gas.
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.read (| vals |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| vals |) |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |)
                                                   |)) in
@@ -249,7 +269,12 @@ Module gas.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| vals |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| vals |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -285,7 +310,14 @@ Module gas.
                                                                         [],
                                                                         []
                                                                       |),
-                                                                      [ M.read (| vals |) ]
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| vals |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -332,7 +364,12 @@ Module gas.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| vals |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| vals |) |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |)) in
                                               let _ :=
@@ -442,7 +479,14 @@ Module gas.
                                                                         [],
                                                                         []
                                                                       |),
-                                                                      [ M.read (| vals |) ]
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| vals |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -517,7 +561,12 @@ Module gas.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| vals |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| vals |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     ltac:(M.monadic
@@ -528,7 +577,12 @@ Module gas.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| vals |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| vals |) |)
+                                          |)
+                                        ]
                                       |)))
                                   |)
                                 |)) in
@@ -659,23 +713,25 @@ Module gas.
                                       BinOp.eq (|
                                         M.read (|
                                           M.SubPointer.get_array_field (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "ruint::Uint")
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    [],
+                                                  "as_limbs",
                                                   [
                                                     Value.Integer IntegerKind.Usize 256;
                                                     Value.Integer IntegerKind.Usize 4
-                                                  ]
-                                                  [],
-                                                "as_limbs",
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ],
-                                                []
-                                              |),
-                                              [ value ]
+                                                  ],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                              |)
                                             |),
                                             i
                                           |)
@@ -717,23 +773,25 @@ Module gas.
                                           [
                                             M.read (|
                                               M.SubPointer.get_array_field (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "ruint::Uint")
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
+                                                        [],
+                                                      "as_limbs",
                                                       [
                                                         Value.Integer IntegerKind.Usize 256;
                                                         Value.Integer IntegerKind.Usize 4
-                                                      ]
-                                                      [],
-                                                    "as_limbs",
-                                                    [
-                                                      Value.Integer IntegerKind.Usize 256;
-                                                      Value.Integer IntegerKind.Usize 4
-                                                    ],
-                                                    []
-                                                  |),
-                                                  [ value ]
+                                                      ],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                                  |)
                                                 |),
                                                 i
                                               |)
@@ -873,7 +931,7 @@ Module gas.
                                   ],
                                   []
                                 |),
-                                [ power ]
+                                [ M.borrow (| Pointer.Kind.Ref, power |) ]
                               |)
                             |)) in
                         let _ :=
@@ -1902,7 +1960,7 @@ Module gas.
                             ],
                             []
                           |),
-                          [ M.read (| vals |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -1972,7 +2030,7 @@ Module gas.
                                   ],
                                   []
                                 |),
-                                [ M.read (| vals |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -1984,7 +2042,7 @@ Module gas.
                                   [],
                                   []
                                 |),
-                                [ M.read (| vals |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                               |)
                             |)))
                       ]
@@ -2034,7 +2092,7 @@ Module gas.
                               [],
                               []
                             |),
-                            [ M.read (| vals |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2059,7 +2117,12 @@ Module gas.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| vals |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| vals |) |)
+                                        |)
+                                      ]
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
@@ -2069,7 +2132,12 @@ Module gas.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| vals |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| vals |) |)
+                                          |)
+                                        ]
                                       |)))
                                   |)
                                 |)) in
@@ -2093,7 +2161,12 @@ Module gas.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| vals |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| vals |) |)
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2153,7 +2226,7 @@ Module gas.
                                 [],
                                 []
                               |),
-                              [ M.read (| vals |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                             |),
                             ltac:(M.monadic
                               (UnOp.not (|
@@ -2164,7 +2237,8 @@ Module gas.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| vals |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |)
+                                  ]
                                 |)
                               |)))
                           |)
@@ -2968,7 +3042,7 @@ Module gas.
                               [],
                               []
                             |),
-                            [ M.read (| input |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                           |);
                           M.closure
                             (fun γ =>
@@ -2983,7 +3057,11 @@ Module gas.
                                           ltac:(M.monadic
                                             (let v := M.copy (| γ |) in
                                             BinOp.eq (|
-                                              M.read (| M.read (| M.read (| v |) |) |),
+                                              M.read (|
+                                                M.deref (|
+                                                  M.read (| M.deref (| M.read (| v |) |) |)
+                                                |)
+                                              |),
                                               Value.Integer IntegerKind.U8 0
                                             |)))
                                       ]
@@ -3006,7 +3084,7 @@ Module gas.
                         [],
                         []
                       |),
-                      [ M.read (| input |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                     |)),
                   M.read (| zero_data_len |)
                 |)
@@ -3096,7 +3174,12 @@ Module gas.
                               [],
                               []
                             |),
-                            [ M.read (| access_list |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| access_list |) |)
+                              |)
+                            ]
                           |)
                         |),
                         [
@@ -3247,7 +3330,8 @@ Module gas.
                                   [],
                                   []
                                 |),
-                                [ M.read (| input |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |)
+                                ]
                               |)
                             ]
                           |)

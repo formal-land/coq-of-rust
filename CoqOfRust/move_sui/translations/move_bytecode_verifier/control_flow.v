@@ -49,10 +49,10 @@ Module control_flow.
                       []
                     |),
                     [
-                      M.read (| module |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| function_definition |),
+                          M.deref (| M.read (| function_definition |) |),
                           "move_binary_format::file_format::FunctionDefinition",
                           "function"
                         |)
@@ -76,7 +76,8 @@ Module control_flow.
                                   [],
                                   []
                                 |),
-                                [ M.read (| module |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |)
+                                ]
                               |),
                               Value.Integer IntegerKind.U32 5
                             |)
@@ -109,11 +110,14 @@ Module control_flow.
                                     []
                                   |),
                                   [
-                                    M.read (| verifier_config |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| verifier_config |) |)
+                                    |);
                                     Value.StructTuple
                                       "core::option::Option::Some"
                                       [ M.read (| index |) ];
-                                    M.read (| code |)
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |)
                                   ]
                                 |)
                               ]
@@ -189,10 +193,13 @@ Module control_flow.
                                 []
                               |),
                               [
-                                M.read (| module |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                                 M.read (| index |);
-                                M.read (| code |);
-                                M.read (| function_handle |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| function_handle |) |)
+                                |)
                               ]
                             |)
                           ]
@@ -229,7 +236,7 @@ Module control_flow.
                                     Value.StructTuple
                                       "core::option::Option::Some"
                                       [ M.read (| index |) ];
-                                    M.read (| code |)
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |)
                                   ]
                                 |)
                               ]
@@ -303,10 +310,13 @@ Module control_flow.
                               []
                             |),
                             [
-                              M.read (| module |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                               M.read (| index |);
-                              M.read (| code |);
-                              M.read (| function_handle |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| function_handle |) |)
+                              |)
                             ]
                           |)
                         |) in
@@ -336,7 +346,18 @@ Module control_flow.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| verifier_config |); function_context ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| verifier_config |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.Ref, function_context |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -470,29 +491,37 @@ Module control_flow.
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::Bytecode";
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
                         [
-                          Ty.path "move_binary_format::file_format::Bytecode";
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      [],
-                      [],
-                      "deref",
-                      [],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| code |),
-                        "move_binary_format::file_format::CodeUnit",
-                        "code"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| code |) |),
+                              "move_binary_format::file_format::CodeUnit",
+                              "code"
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)
@@ -535,7 +564,7 @@ Module control_flow.
                             [],
                             []
                           |),
-                          [ M.read (| last |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| last |) |) |) ]
                         |)
                       |)
                     |) in
@@ -582,10 +611,13 @@ Module control_flow.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| code |),
-                                      "move_binary_format::file_format::CodeUnit",
-                                      "code"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| code |) |),
+                                        "move_binary_format::file_format::CodeUnit",
+                                        "code"
+                                      |)
                                     |)
                                   ]
                                 |),
@@ -708,7 +740,12 @@ Module control_flow.
                           [],
                           []
                         |),
-                        [ M.read (| function_context |) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| function_context |) |)
+                          |)
+                        ]
                       |);
                       Value.StructTuple
                         "move_binary_format::file_format::FunctionDefinitionIndex"
@@ -780,14 +817,24 @@ Module control_flow.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                          "cfg",
-                          [],
-                          []
-                        |),
-                        [ M.read (| function_context |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                              "cfg",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| function_context |) |)
+                              |)
+                            ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -801,7 +848,12 @@ Module control_flow.
                       [],
                       []
                     |),
-                    [ summary ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, summary |) |)
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -837,7 +889,7 @@ Module control_flow.
                                   [],
                                   []
                                 |),
-                                [ summary ]
+                                [ M.borrow (| Pointer.Kind.Ref, summary |) ]
                               |)
                             ]
                           |)
@@ -866,7 +918,12 @@ Module control_flow.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -896,7 +953,10 @@ Module control_flow.
                                                 [],
                                                 []
                                               |),
-                                              [ summary; M.read (| head |) ]
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, summary |);
+                                                M.read (| head |)
+                                              ]
                                             |)
                                           |) in
                                         let~ _ :=
@@ -922,7 +982,12 @@ Module control_flow.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| back |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| back |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -1014,7 +1079,17 @@ Module control_flow.
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ iter ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        iter
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |),
                                                             [
@@ -1050,9 +1125,14 @@ Module control_flow.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          partition;
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            partition
+                                                                          |);
                                                                           M.read (|
-                                                                            M.read (| node |)
+                                                                            M.deref (|
+                                                                              M.read (| node |)
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -1079,7 +1159,16 @@ Module control_flow.
                                                                                     [],
                                                                                     []
                                                                                   |),
-                                                                                  [ node; head ]
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      node
+                                                                                    |);
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      head
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
                                                                               |)) in
                                                                           let _ :=
@@ -1106,7 +1195,10 @@ Module control_flow.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  body;
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    body
+                                                                                  |);
                                                                                   M.read (| node |)
                                                                                 ]
                                                                               |)
@@ -1197,7 +1289,7 @@ Module control_flow.
                                                         [],
                                                         []
                                                       |),
-                                                      [ body ]
+                                                      [ M.borrow (| Pointer.Kind.Ref, body |) ]
                                                     |)
                                                   ]
                                                 |)
@@ -1228,7 +1320,12 @@ Module control_flow.
                                                               [],
                                                               []
                                                             |),
-                                                            [ frontier ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                frontier
+                                                              |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       let γ0_0 :=
@@ -1273,7 +1370,13 @@ Module control_flow.
                                                                     [],
                                                                     []
                                                                   |),
-                                                                  [ summary; M.read (| node |) ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      summary
+                                                                    |);
+                                                                    M.read (| node |)
+                                                                  ]
                                                                 |)
                                                               ]
                                                             |)
@@ -1304,7 +1407,17 @@ Module control_flow.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ iter ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    iter
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         |),
                                                                         [
@@ -1343,10 +1456,15 @@ Module control_flow.
                                                                                       []
                                                                                     |),
                                                                                     [
-                                                                                      partition;
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.MutRef,
+                                                                                        partition
+                                                                                      |);
                                                                                       M.read (|
-                                                                                        M.read (|
-                                                                                          pred
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            pred
+                                                                                          |)
                                                                                         |)
                                                                                       |)
                                                                                     ]
@@ -1373,7 +1491,10 @@ Module control_flow.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    summary;
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      summary
+                                                                                                    |);
                                                                                                     M.read (|
                                                                                                       head
                                                                                                     |);
@@ -1434,7 +1555,10 @@ Module control_flow.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    err;
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      err
+                                                                                                    |);
                                                                                                     Value.Tuple
                                                                                                       [
                                                                                                         Value.StructTuple
@@ -1449,7 +1573,10 @@ Module control_flow.
                                                                                                             []
                                                                                                           |),
                                                                                                           [
-                                                                                                            summary;
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.Ref,
+                                                                                                              summary
+                                                                                                            |);
                                                                                                             M.read (|
                                                                                                               pred
                                                                                                             |)
@@ -1487,7 +1614,16 @@ Module control_flow.
                                                                                         [],
                                                                                         []
                                                                                       |),
-                                                                                      [ pred; head ]
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          pred
+                                                                                        |);
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          head
+                                                                                        |)
+                                                                                      ]
                                                                                     |),
                                                                                     ltac:(M.monadic
                                                                                       (M.call_closure (|
@@ -1507,7 +1643,10 @@ Module control_flow.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          body;
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.MutRef,
+                                                                                            body
+                                                                                          |);
                                                                                           M.read (|
                                                                                             pred
                                                                                           |)
@@ -1552,7 +1691,10 @@ Module control_flow.
                                                                                               []
                                                                                             |),
                                                                                             [
-                                                                                              frontier;
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.MutRef,
+                                                                                                frontier
+                                                                                              |);
                                                                                               M.read (|
                                                                                                 pred
                                                                                               |)
@@ -1605,7 +1747,16 @@ Module control_flow.
                                                 [],
                                                 []
                                               |),
-                                              [ partition; M.read (| head |); body ]
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, partition |);
+                                                M.read (| head |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, body |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |) in
                                         M.match_operator (|
@@ -1615,7 +1766,7 @@ Module control_flow.
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| verifier_config |),
+                                                    M.deref (| M.read (| verifier_config |) |),
                                                     "move_vm_config::verifier::VerifierConfig",
                                                     "max_loop_depth"
                                                   |) in
@@ -1683,7 +1834,10 @@ Module control_flow.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    err;
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      err
+                                                                    |);
                                                                     Value.Tuple
                                                                       [
                                                                         Value.StructTuple
@@ -1698,7 +1852,10 @@ Module control_flow.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            summary;
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              summary
+                                                                            |);
                                                                             M.read (| head |)
                                                                           ]
                                                                         |)

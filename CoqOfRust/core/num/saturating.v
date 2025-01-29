@@ -39,15 +39,21 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
                 |);
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| other |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -113,15 +119,31 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  |)
                 |);
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| other |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -152,15 +174,31 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  |)
                 |);
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| other |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -193,10 +231,18 @@ Module num.
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::saturating::Saturating",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -271,12 +317,20 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -310,12 +364,15 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -349,12 +406,15 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -388,12 +448,15 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Binary", T, [], [], "fmt", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -427,12 +490,15 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Octal", T, [], [], "fmt", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -466,12 +532,15 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::LowerHex", T, [], [], "fmt", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -505,12 +574,15 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::UpperHex", T, [], [], "fmt", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::saturating::Saturating",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -597,7 +669,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -613,7 +685,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -647,7 +719,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -664,7 +736,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -754,7 +826,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -770,7 +842,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -804,7 +876,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -821,7 +893,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -911,7 +983,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -927,7 +999,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -961,7 +1033,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -978,7 +1050,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -1068,7 +1140,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -1084,7 +1156,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1118,7 +1190,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -1135,7 +1207,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -1233,7 +1305,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -1249,7 +1321,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1283,7 +1355,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -1300,7 +1372,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -1429,7 +1501,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -1445,7 +1517,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1479,7 +1551,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -1496,7 +1568,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -1582,7 +1654,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -1598,7 +1670,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1632,7 +1704,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -1649,7 +1721,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -1735,7 +1807,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -1751,7 +1823,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1785,7 +1857,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -1802,7 +1874,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -1892,7 +1964,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -1904,7 +1976,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1938,7 +2010,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -1951,7 +2023,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -2041,7 +2113,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -2053,7 +2125,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2087,7 +2159,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -2100,7 +2172,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -2190,7 +2262,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -2202,7 +2274,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2236,7 +2308,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -2249,7 +2321,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -2339,7 +2411,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -2351,7 +2423,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2385,7 +2457,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -2398,7 +2470,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -2496,7 +2568,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -2508,7 +2580,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2542,7 +2614,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -2555,7 +2627,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -2684,7 +2756,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -2696,7 +2768,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2730,7 +2802,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -2743,7 +2815,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -2829,7 +2901,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -2841,7 +2913,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2875,7 +2947,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -2888,7 +2960,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -2974,7 +3046,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -2986,7 +3058,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3020,7 +3092,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -3033,7 +3105,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -3123,7 +3195,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -3135,7 +3207,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3169,7 +3241,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -3182,7 +3254,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -3272,7 +3344,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -3284,7 +3356,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3318,7 +3390,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -3331,7 +3403,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -3421,7 +3493,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -3433,7 +3505,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3467,7 +3539,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -3480,7 +3552,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -3570,7 +3642,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -3582,7 +3654,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3616,7 +3688,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -3629,7 +3701,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -3727,7 +3799,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -3739,7 +3811,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3773,7 +3845,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -3786,7 +3858,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -3915,7 +3987,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -3927,7 +3999,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3961,7 +4033,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -3974,7 +4046,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -4060,7 +4132,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -4072,7 +4144,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4106,7 +4178,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -4119,7 +4191,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -4205,7 +4277,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -4217,7 +4289,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4251,7 +4323,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -4264,7 +4336,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -4354,7 +4426,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -4366,7 +4438,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4400,7 +4472,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -4413,7 +4485,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -4503,7 +4575,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -4515,7 +4587,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4549,7 +4621,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -4562,7 +4634,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -4652,7 +4724,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -4664,7 +4736,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4698,7 +4770,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -4711,7 +4783,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -4801,7 +4873,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -4813,7 +4885,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4847,7 +4919,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -4860,7 +4932,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -4958,7 +5030,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -4970,7 +5042,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5004,7 +5076,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -5017,7 +5089,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -5146,7 +5218,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -5158,7 +5230,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5192,7 +5264,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -5205,7 +5277,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -5291,7 +5363,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -5303,7 +5375,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5337,7 +5409,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -5350,7 +5422,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -5436,7 +5508,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -5448,7 +5520,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5482,7 +5554,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -5495,7 +5567,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -5585,7 +5657,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -5597,7 +5669,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5631,7 +5703,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -5644,7 +5716,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -5734,7 +5806,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -5746,7 +5818,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5780,7 +5852,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -5793,7 +5865,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -5883,7 +5955,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -5895,7 +5967,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5929,7 +6001,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -5942,7 +6014,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -6032,7 +6104,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -6044,7 +6116,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6078,7 +6150,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -6091,7 +6163,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -6189,7 +6261,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -6201,7 +6273,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6235,7 +6307,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -6248,7 +6320,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -6377,7 +6449,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -6389,7 +6461,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6423,7 +6495,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -6436,7 +6508,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -6522,7 +6594,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -6534,7 +6606,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6568,7 +6640,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -6581,7 +6653,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -6667,7 +6739,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -6679,7 +6751,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6713,7 +6785,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -6726,7 +6798,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -6816,7 +6888,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -6828,7 +6900,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6862,7 +6934,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -6875,7 +6947,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -6965,7 +7037,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -6977,7 +7049,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7011,7 +7083,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -7024,7 +7096,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -7114,7 +7186,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -7126,7 +7198,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7160,7 +7232,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -7173,7 +7245,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -7263,7 +7335,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -7275,7 +7347,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7309,7 +7381,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -7322,7 +7394,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -7420,7 +7492,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -7432,7 +7504,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7466,7 +7538,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -7479,7 +7551,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -7608,7 +7680,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -7620,7 +7692,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7654,7 +7726,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -7667,7 +7739,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -7753,7 +7825,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -7765,7 +7837,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7799,7 +7871,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -7812,7 +7884,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -7898,7 +7970,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -7910,7 +7982,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7944,7 +8016,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -7957,7 +8029,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -8047,7 +8119,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -8063,7 +8135,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8097,7 +8169,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -8114,7 +8186,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -8204,7 +8276,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -8220,7 +8292,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8254,7 +8326,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -8271,7 +8343,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -8361,7 +8433,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -8377,7 +8449,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8411,7 +8483,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -8428,7 +8500,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -8518,7 +8590,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -8534,7 +8606,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8568,7 +8640,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -8585,7 +8657,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -8683,7 +8755,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -8699,7 +8771,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8733,7 +8805,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -8750,7 +8822,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -8879,7 +8951,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -8895,7 +8967,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8929,7 +9001,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -8946,7 +9018,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -9032,7 +9104,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -9048,7 +9120,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9082,7 +9154,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -9099,7 +9171,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -9185,7 +9257,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -9201,7 +9273,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9235,7 +9307,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -9252,7 +9324,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -9342,7 +9414,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -9354,7 +9426,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9388,7 +9460,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -9401,7 +9473,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -9491,7 +9563,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -9503,7 +9575,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9537,7 +9609,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -9550,7 +9622,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -9640,7 +9712,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -9652,7 +9724,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9686,7 +9758,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -9699,7 +9771,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -9789,7 +9861,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -9801,7 +9873,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9835,7 +9907,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -9848,7 +9920,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -9946,7 +10018,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -9958,7 +10030,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9992,7 +10064,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -10005,7 +10077,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -10134,7 +10206,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -10146,7 +10218,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10180,7 +10252,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -10193,7 +10265,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -10279,7 +10351,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -10291,7 +10363,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10325,7 +10397,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -10338,7 +10410,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -10424,7 +10496,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -10436,7 +10508,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10470,7 +10542,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -10483,7 +10555,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -10573,7 +10645,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -10585,7 +10657,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10619,7 +10691,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -10632,7 +10704,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -10722,7 +10794,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -10734,7 +10806,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10768,7 +10840,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -10781,7 +10853,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -10871,7 +10943,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -10883,7 +10955,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10917,7 +10989,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -10930,7 +11002,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -11020,7 +11092,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -11032,7 +11104,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11066,7 +11138,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -11079,7 +11151,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -11177,7 +11249,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -11189,7 +11261,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11223,7 +11295,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -11236,7 +11308,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -11365,7 +11437,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -11377,7 +11449,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11411,7 +11483,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -11424,7 +11496,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -11510,7 +11582,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -11522,7 +11594,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11556,7 +11628,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -11569,7 +11641,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -11655,7 +11727,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -11667,7 +11739,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11701,7 +11773,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -11714,7 +11786,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -11804,7 +11876,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -11816,7 +11888,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11850,7 +11922,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -11863,7 +11935,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -11953,7 +12025,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -11965,7 +12037,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11999,7 +12071,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -12012,7 +12084,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -12102,7 +12174,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -12114,7 +12186,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12148,7 +12220,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -12161,7 +12233,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -12251,7 +12323,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -12263,7 +12335,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12297,7 +12369,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -12310,7 +12382,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -12408,7 +12480,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -12420,7 +12492,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12454,7 +12526,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -12467,7 +12539,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -12596,7 +12668,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -12608,7 +12680,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12642,7 +12714,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -12655,7 +12727,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -12741,7 +12813,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -12753,7 +12825,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12787,7 +12859,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -12800,7 +12872,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -12886,7 +12958,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -12898,7 +12970,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12932,7 +13004,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -12945,7 +13017,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -13035,7 +13107,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -13047,7 +13119,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13081,7 +13153,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -13094,7 +13166,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -13184,7 +13256,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -13196,7 +13268,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13230,7 +13302,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -13243,7 +13315,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -13333,7 +13405,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -13345,7 +13417,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13379,7 +13451,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -13392,7 +13464,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -13482,7 +13554,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -13494,7 +13566,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13528,7 +13600,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -13541,7 +13613,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -13639,7 +13711,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -13651,7 +13723,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13685,7 +13757,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -13698,7 +13770,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -13827,7 +13899,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -13839,7 +13911,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13873,7 +13945,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -13886,7 +13958,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -13972,7 +14044,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -13984,7 +14056,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14018,7 +14090,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -14031,7 +14103,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -14117,7 +14189,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -14129,7 +14201,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14163,7 +14235,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -14176,7 +14248,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -14266,7 +14338,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -14278,7 +14350,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14312,7 +14384,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
@@ -14325,7 +14397,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -14415,7 +14487,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -14427,7 +14499,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14461,7 +14533,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
@@ -14474,7 +14546,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -14564,7 +14636,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -14576,7 +14648,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14610,7 +14682,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
@@ -14623,7 +14695,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -14713,7 +14785,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -14725,7 +14797,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14759,7 +14831,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -14772,7 +14844,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -14870,7 +14942,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -14882,7 +14954,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14916,7 +14988,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -14929,7 +15001,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -15058,7 +15130,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -15070,7 +15142,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15104,7 +15176,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
@@ -15117,7 +15189,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -15203,7 +15275,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -15215,7 +15287,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15249,7 +15321,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -15262,7 +15334,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)
@@ -15348,7 +15420,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -15360,7 +15432,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15394,7 +15466,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
@@ -15407,7 +15479,7 @@ Module num.
                       []
                     |),
                     [
-                      M.read (| M.read (| self |) |);
+                      M.read (| M.deref (| M.read (| self |) |) |);
                       Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
                     ]
                   |)

@@ -1623,7 +1623,7 @@ Module f128.
                 M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
-                    [ M.read (| M.read (| self |) |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |))
               |) in
             let~ right :=
@@ -1631,7 +1631,7 @@ Module f128.
                 M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
-                    [ M.read (| M.read (| other |) |) ]
+                    [ M.read (| M.deref (| M.read (| other |) |) |) ]
                   |))
               |) in
             let~ _ :=
@@ -1666,7 +1666,13 @@ Module f128.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "i128", [], [], "cmp", [], [] |),
-                [ left; right ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, left |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, right |) |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -1720,37 +1726,67 @@ Module f128.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "min > max, or either was NaN. min = "
-                                        |);
-                                        M.read (| Value.String ", max = " |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [],
-                                            [ Ty.path "f128" ]
-                                          |),
-                                          [ min ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [],
-                                            [ Ty.path "f128" ]
-                                          |),
-                                          [ max ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "min > max, or either was NaN. min = "
+                                              |);
+                                              M.read (| Value.String ", max = " |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
+                                                  [ Ty.path "f128" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, min |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
+                                                  [ Ty.path "f128" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, max |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)

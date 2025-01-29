@@ -41,48 +41,54 @@ Module rc.
             []
           |),
           [
-            M.SubPointer.get_tuple_field (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
-                        Ty.path "core::alloc::layout::LayoutError"
-                      ],
-                    "unwrap",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::alloc::layout::Layout",
-                        "extend",
-                        [],
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.SubPointer.get_tuple_field (|
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
                         []
-                      |),
-                      [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::alloc::layout::Layout",
-                              "new",
-                              [],
-                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ Ty.tuple [] ] ]
-                            |),
-                            []
-                          |)
-                        |);
-                        M.read (| layout |)
-                      ]
-                    |)
-                  ]
-                |)
-              |),
-              0
+                        [
+                          Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                          Ty.path "core::alloc::layout::LayoutError"
+                        ],
+                      "unwrap",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::alloc::layout::Layout",
+                          "extend",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::alloc::layout::Layout",
+                                  "new",
+                                  [],
+                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ Ty.tuple [] ] ]
+                                |),
+                                []
+                              |)
+                            |)
+                          |);
+                          M.read (| layout |)
+                        ]
+                      |)
+                    ]
+                  |)
+                |),
+                0
+              |)
             |)
           ]
         |)))
@@ -301,20 +307,9 @@ Module rc.
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [
-                          Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      "leak",
-                      [],
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -324,39 +319,61 @@ Module rc.
                               Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          "new",
+                          "leak",
                           [],
                           []
                         |),
                         [
-                          Value.StructRecord
-                            "alloc::rc::RcBox"
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
+                              [],
+                              []
+                            |),
                             [
-                              ("strong",
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
-                                    "new",
-                                    [],
-                                    []
-                                  |),
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                |));
-                              ("weak",
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
-                                    "new",
-                                    [],
-                                    []
-                                  |),
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                |));
-                              ("value", M.read (| value |))
+                              Value.StructRecord
+                                "alloc::rc::RcBox"
+                                [
+                                  ("strong",
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::cell::Cell")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                    |));
+                                  ("weak",
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::cell::Cell")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                    |));
+                                  ("value", M.read (| value |))
+                                ]
                             ]
+                          |)
                         ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)
@@ -497,7 +514,10 @@ Module rc.
                                         []
                                       |),
                                       [
-                                        M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                        |);
                                         M.read (| layout |)
                                       ]
                                     |)))
@@ -627,7 +647,10 @@ Module rc.
                                         []
                                       |),
                                       [
-                                        M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                        |);
                                         M.read (| layout |)
                                       ]
                                     |)))
@@ -709,157 +732,162 @@ Module rc.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "leak",
+                                  [],
+                                  []
+                                |),
                                 [
-                                  Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              "leak",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (|
-                                M.match_operator (|
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::try_trait::Try",
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::boxed::Box")
-                                              []
-                                              [
-                                                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
-                                                Ty.path "alloc::alloc::Global"
-                                              ];
-                                            Ty.path "core::alloc::AllocError"
-                                          ],
-                                        [],
-                                        [],
-                                        "branch",
-                                        [],
-                                        []
-                                      |),
-                                      [
+                                  M.read (|
+                                    M.match_operator (|
+                                      M.alloc (|
                                         M.call_closure (|
-                                          M.get_associated_function (|
+                                          M.get_trait_method (|
+                                            "core::ops::try_trait::Try",
                                             Ty.apply
-                                              (Ty.path "alloc::boxed::Box")
+                                              (Ty.path "core::result::Result")
                                               []
                                               [
-                                                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
-                                                Ty.path "alloc::alloc::Global"
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  []
+                                                  [
+                                                    Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
                                               ],
-                                            "try_new",
+                                            [],
+                                            [],
+                                            "branch",
                                             [],
                                             []
                                           |),
                                           [
-                                            Value.StructRecord
-                                              "alloc::rc::RcBox"
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  []
+                                                  [
+                                                    Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                "try_new",
+                                                [],
+                                                []
+                                              |),
                                               [
-                                                ("strong",
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::cell::Cell")
-                                                        []
-                                                        [ Ty.path "usize" ],
-                                                      "new",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                                  |));
-                                                ("weak",
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::cell::Cell")
-                                                        []
-                                                        [ Ty.path "usize" ],
-                                                      "new",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                                  |));
-                                                ("value", M.read (| value |))
+                                                Value.StructRecord
+                                                  "alloc::rc::RcBox"
+                                                  [
+                                                    ("strong",
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "core::cell::Cell")
+                                                            []
+                                                            [ Ty.path "usize" ],
+                                                          "new",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                                      |));
+                                                    ("weak",
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "core::cell::Cell")
+                                                            []
+                                                            [ Ty.path "usize" ],
+                                                          "new",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                                      |));
+                                                    ("value", M.read (| value |))
+                                                  ]
                                               ]
+                                            |)
                                           ]
                                         |)
-                                      ]
-                                    |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::ops::control_flow::ControlFlow::Break",
-                                            0
-                                          |) in
-                                        let residual := M.copy (| γ0_0 |) in
-                                        M.alloc (|
-                                          M.never_to_any (|
-                                            M.read (|
-                                              M.return_ (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::try_trait::FromResidual",
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::ops::control_flow::ControlFlow::Break",
+                                                0
+                                              |) in
+                                            let residual := M.copy (| γ0_0 |) in
+                                            M.alloc (|
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.return_ (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::try_trait::FromResidual",
                                                         Ty.apply
-                                                          (Ty.path "alloc::rc::Rc")
+                                                          (Ty.path "core::result::Result")
                                                           []
-                                                          [ T; Ty.path "alloc::alloc::Global" ];
-                                                        Ty.path "core::alloc::AllocError"
-                                                      ],
-                                                    [],
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
-                                                        []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "alloc::rc::Rc")
+                                                              []
+                                                              [ T; Ty.path "alloc::alloc::Global" ];
+                                                            Ty.path "core::alloc::AllocError"
+                                                          ],
+                                                        [],
                                                         [
-                                                          Ty.path "core::convert::Infallible";
-                                                          Ty.path "core::alloc::AllocError"
-                                                        ]
-                                                    ],
-                                                    "from_residual",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| residual |) ]
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path "core::alloc::AllocError"
+                                                            ]
+                                                        ],
+                                                        "from_residual",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.read (| residual |) ]
+                                                    |)
+                                                  |)
                                                 |)
                                               |)
-                                            |)
-                                          |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::ops::control_flow::ControlFlow::Continue",
-                                            0
-                                          |) in
-                                        let val := M.copy (| γ0_0 |) in
-                                        val))
-                                  ]
-                                |)
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                0
+                                              |) in
+                                            let val := M.copy (| γ0_0 |) in
+                                            val))
+                                      ]
+                                    |)
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
@@ -1025,10 +1053,13 @@ Module rc.
                                                           []
                                                         |),
                                                         [
-                                                          M.alloc (|
-                                                            Value.StructTuple
-                                                              "alloc::alloc::Global"
-                                                              []
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.StructTuple
+                                                                "alloc::alloc::Global"
+                                                                []
+                                                            |)
                                                           |);
                                                           M.read (| layout |)
                                                         ]
@@ -1287,10 +1318,13 @@ Module rc.
                                                           []
                                                         |),
                                                         [
-                                                          M.alloc (|
-                                                            Value.StructTuple
-                                                              "alloc::alloc::Global"
-                                                              []
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.StructTuple
+                                                                "alloc::alloc::Global"
+                                                                []
+                                                            |)
                                                           |);
                                                           M.read (| layout |)
                                                         ]
@@ -1847,21 +1881,24 @@ Module rc.
                                 M.alloc (|
                                   Value.Tuple
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::alloc::layout::Layout",
-                                            "for_value_raw",
-                                            [],
-                                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
-                                          |),
-                                          [
-                                            (* MutToConstPointer *)
-                                            M.pointer_coercion (M.read (| inner |))
-                                          ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::alloc::layout::Layout",
+                                              "for_value_raw",
+                                              [],
+                                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
+                                            |),
+                                            [
+                                              (* MutToConstPointer *)
+                                              M.pointer_coercion (M.read (| inner |))
+                                            ]
+                                          |)
                                         |)
                                       |);
-                                      layout
+                                      M.borrow (| Pointer.Kind.Ref, layout |)
                                     ]
                                 |),
                                 [
@@ -1891,8 +1928,14 @@ Module rc.
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| left_val |);
-                                                          M.read (| right_val |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| left_val |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| right_val |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |)
@@ -1923,8 +1966,24 @@ Module rc.
                                                         |),
                                                         [
                                                           M.read (| kind |);
-                                                          M.read (| left_val |);
-                                                          M.read (| right_val |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| left_val |) |)
+                                                              |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| right_val |) |)
+                                                              |)
+                                                            |)
+                                                          |);
                                                           Value.StructTuple
                                                             "core::option::Option::None"
                                                             []
@@ -1956,10 +2015,13 @@ Module rc.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| inner |),
-                            "alloc::rc::RcBox",
-                            "strong"
+                          M.borrow (|
+                            Pointer.Kind.MutPointer,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| inner |) |),
+                              "alloc::rc::RcBox",
+                              "strong"
+                            |)
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1986,10 +2048,13 @@ Module rc.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| inner |),
-                            "alloc::rc::RcBox",
-                            "weak"
+                          M.borrow (|
+                            Pointer.Kind.MutPointer,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| inner |) |),
+                              "alloc::rc::RcBox",
+                              "weak"
+                            |)
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
@@ -2031,17 +2096,31 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::ptr::non_null::NonNull")
-                []
-                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
-              "as_ref",
-              [],
-              []
-            |),
-            [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::rc::Rc", "ptr" |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::ptr::non_null::NonNull")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
+                  "as_ref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::rc::Rc",
+                      "ptr"
+                    |)
+                  |)
+                ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2088,29 +2167,7 @@ Module rc.
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [ this ]
-                      |),
-                      "alloc::rc::Rc",
-                      "ptr"
-                    |)
-                  |);
-                  M.call_closure (|
-                    M.get_function (| "core::ptr::read", [], [ A ] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
+                      M.deref (|
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
@@ -2124,10 +2181,44 @@ Module rc.
                             [],
                             []
                           |),
-                          [ this ]
-                        |),
-                        "alloc::rc::Rc",
-                        "alloc"
+                          [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                        |)
+                      |),
+                      "alloc::rc::Rc",
+                      "ptr"
+                    |)
+                  |);
+                  M.call_closure (|
+                    M.get_function (| "core::ptr::read", [], [ A ] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                |)
+                              |),
+                              "alloc::rc::Rc",
+                              "alloc"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -2387,7 +2478,8 @@ Module rc.
                                         [],
                                         []
                                       |),
-                                      [ alloc; M.read (| layout |) ]
+                                      [ M.borrow (| Pointer.Kind.Ref, alloc |); M.read (| layout |)
+                                      ]
                                     |)))
                               ]
                             |)))
@@ -2521,7 +2613,8 @@ Module rc.
                                         [],
                                         []
                                       |),
-                                      [ alloc; M.read (| layout |) ]
+                                      [ M.borrow (| Pointer.Kind.Ref, alloc |); M.read (| layout |)
+                                      ]
                                     |)))
                               ]
                             |)))
@@ -2738,7 +2831,17 @@ Module rc.
                             [],
                             []
                           |),
-                          [ M.read (| uninit_raw_ptr |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| uninit_raw_ptr |) |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ init_ptr :=
@@ -2792,7 +2895,16 @@ Module rc.
                             [],
                             []
                           |),
-                          [ M.read (| data_fn |); Value.Tuple [ weak ] ]
+                          [
+                            M.read (| data_fn |);
+                            Value.Tuple
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.borrow (| Pointer.Kind.Ref, weak |) |)
+                                |)
+                              ]
+                          ]
                         |)
                       |) in
                     let~ strong :=
@@ -2817,10 +2929,13 @@ Module rc.
                             M.call_closure (|
                               M.get_function (| "core::ptr::write", [], [ T ] |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| inner |),
-                                  "alloc::rc::RcBox",
-                                  "value"
+                                M.borrow (|
+                                  Pointer.Kind.MutPointer,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| inner |) |),
+                                    "alloc::rc::RcBox",
+                                    "value"
+                                  |)
                                 |);
                                 M.read (| data |)
                               ]
@@ -2836,10 +2951,13 @@ Module rc.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| inner |),
-                                  "alloc::rc::RcBox",
-                                  "strong"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| inner |) |),
+                                    "alloc::rc::RcBox",
+                                    "strong"
+                                  |)
                                 |)
                               ]
                             |)
@@ -2861,8 +2979,11 @@ Module rc.
                                       M.alloc (|
                                         Value.Tuple
                                           [
-                                            prev_value;
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            M.borrow (| Pointer.Kind.Ref, prev_value |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            |)
                                           ]
                                       |),
                                       [
@@ -2882,8 +3003,12 @@ Module rc.
                                                         (M.alloc (|
                                                           UnOp.not (|
                                                             BinOp.eq (|
-                                                              M.read (| M.read (| left_val |) |),
-                                                              M.read (| M.read (| right_val |) |)
+                                                              M.read (|
+                                                                M.deref (| M.read (| left_val |) |)
+                                                              |),
+                                                              M.read (|
+                                                                M.deref (| M.read (| right_val |) |)
+                                                              |)
                                                             |)
                                                           |)
                                                         |)) in
@@ -2910,8 +3035,28 @@ Module rc.
                                                               |),
                                                               [
                                                                 M.read (| kind |);
-                                                                M.read (| left_val |);
-                                                                M.read (| right_val |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| left_val |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| right_val |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |);
                                                                 Value.StructTuple
                                                                   "core::option::Option::Some"
                                                                   [
@@ -2924,14 +3069,22 @@ Module rc.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "No prior strong references should exist"
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        "No prior strong references should exist"
+                                                                                    |)
+                                                                                  ]
                                                                               |)
-                                                                            ]
+                                                                            |)
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -2962,10 +3115,13 @@ Module rc.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| inner |),
-                                  "alloc::rc::RcBox",
-                                  "strong"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| inner |) |),
+                                    "alloc::rc::RcBox",
+                                    "strong"
+                                  |)
                                 |);
                                 Value.Integer IntegerKind.Usize 1
                               ]
@@ -3384,7 +3540,10 @@ Module rc.
                                                           [],
                                                           []
                                                         |),
-                                                        [ alloc; M.read (| layout |) ]
+                                                        [
+                                                          M.borrow (| Pointer.Kind.Ref, alloc |);
+                                                          M.read (| layout |)
+                                                        ]
                                                       |)))
                                                 ]
                                               |)))
@@ -3641,7 +3800,10 @@ Module rc.
                                                           [],
                                                           []
                                                         |),
-                                                        [ alloc; M.read (| layout |) ]
+                                                        [
+                                                          M.borrow (| Pointer.Kind.Ref, alloc |);
+                                                          M.read (| layout |)
+                                                        ]
                                                       |)))
                                                 ]
                                               |)))
@@ -3834,7 +3996,12 @@ Module rc.
                                 [],
                                 []
                               |),
-                              [ this ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.borrow (| Pointer.Kind.Ref, this |) |)
+                                |)
+                              ]
                             |),
                             Value.Integer IntegerKind.Usize 1
                           |)
@@ -3860,33 +4027,49 @@ Module rc.
                         M.call_closure (|
                           M.get_function (| "core::ptr::read", [], [ T ] |),
                           [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                      []
-                                      [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
-                                    [],
-                                    [],
-                                    "deref",
-                                    [],
-                                    []
-                                  |),
-                                  [ this ]
+                            M.borrow (|
+                              Pointer.Kind.ConstPointer,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.apply
+                                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                  []
+                                                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ]
+                                                  ],
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
                                 |)
-                              ]
+                              |)
                             |)
                           ]
                         |)
@@ -3896,24 +4079,34 @@ Module rc.
                         M.call_closure (|
                           M.get_function (| "core::ptr::read", [], [ A ] |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                    []
-                                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [ this ]
-                              |),
-                              "alloc::rc::Rc",
-                              "alloc"
+                            M.borrow (|
+                              Pointer.Kind.ConstPointer,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                            []
+                                            [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                      |)
+                                    |),
+                                    "alloc::rc::Rc",
+                                    "alloc"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3931,30 +4124,40 @@ Module rc.
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                "inner",
-                                [],
-                                []
-                              |),
-                              [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
                                 M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                      []
-                                      [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
-                                    [],
-                                    [],
-                                    "deref",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                    "inner",
                                     [],
                                     []
                                   |),
-                                  [ this ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.apply
+                                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                              []
+                                              [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |)
                             |)
                           ]
                         |)
@@ -3967,20 +4170,22 @@ Module rc.
                             ("ptr",
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
                                         []
-                                        [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [ this ]
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                    |)
                                   |),
                                   "alloc::rc::Rc",
                                   "ptr"
@@ -4057,7 +4262,19 @@ Module rc.
       | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
-          M.SubPointer.get_struct_record_field (| M.read (| this |), "alloc::rc::Rc", "alloc" |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| this |) |),
+                  "alloc::rc::Rc",
+                  "alloc"
+                |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -4102,20 +4319,30 @@ Module rc.
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply
-                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                        []
-                        [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
-                      [],
-                      [],
-                      "deref",
-                      [],
-                      []
-                    |),
-                    [ this ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                []
+                                [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -4174,20 +4401,30 @@ Module rc.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          []
-                          [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [ this ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, this |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -4197,24 +4434,34 @@ Module rc.
                 M.call_closure (|
                   M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [ this ]
-                      |),
-                      "alloc::rc::Rc",
-                      "alloc"
+                    M.borrow (|
+                      Pointer.Kind.ConstPointer,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                              |)
+                            |),
+                            "alloc::rc::Rc",
+                            "alloc"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -4260,7 +4507,7 @@ Module rc.
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| this |),
+                        M.deref (| M.read (| this |) |),
                         "alloc::rc::Rc",
                         "ptr"
                       |)
@@ -4271,10 +4518,13 @@ Module rc.
             M.alloc (|
               (* MutToConstPointer *)
               M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| ptr |),
-                  "alloc::rc::RcBox",
-                  "value"
+                (M.borrow (|
+                  Pointer.Kind.MutPointer,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| ptr |) |),
+                    "alloc::rc::RcBox",
+                    "value"
+                  |)
                 |))
             |)
           |)))
@@ -4373,14 +4623,19 @@ Module rc.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                        "inner",
-                        [],
-                        []
-                      |),
-                      [ M.read (| this |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                            "inner",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| this |) |) |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -4431,7 +4686,7 @@ Module rc.
                                                   [
                                                     M.read (|
                                                       M.SubPointer.get_struct_record_field (|
-                                                        M.read (| this |),
+                                                        M.deref (| M.read (| this |) |),
                                                         "alloc::rc::Rc",
                                                         "ptr"
                                                       |)
@@ -4475,7 +4730,7 @@ Module rc.
                   ("ptr",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| this |),
+                        M.deref (| M.read (| this |) |),
                         "alloc::rc::Rc",
                         "ptr"
                       |)
@@ -4484,10 +4739,13 @@ Module rc.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| this |),
-                          "alloc::rc::Rc",
-                          "alloc"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| this |) |),
+                            "alloc::rc::Rc",
+                            "alloc"
+                          |)
                         |)
                       ]
                     |))
@@ -4524,14 +4782,19 @@ Module rc.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                    "inner",
-                    [],
-                    []
-                  |),
-                  [ M.read (| this |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                        "inner",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| this |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |),
@@ -4571,14 +4834,19 @@ Module rc.
               []
             |),
             [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  "inner",
-                  [],
-                  []
-                |),
-                [ M.read (| this |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      "inner",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| this |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -4653,7 +4921,7 @@ Module rc.
                     [],
                     []
                   |),
-                  [ rc ]
+                  [ M.borrow (| Pointer.Kind.Ref, rc |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -4733,7 +5001,7 @@ Module rc.
                   [],
                   []
                 |),
-                [ M.read (| this |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| this |) |) |) ]
               |),
               Value.Integer IntegerKind.Usize 0
             |),
@@ -4746,7 +5014,7 @@ Module rc.
                     [],
                     []
                   |),
-                  [ M.read (| this |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| this |) |) |) ]
                 |),
                 Value.Integer IntegerKind.Usize 1
               |)))
@@ -4785,7 +5053,7 @@ Module rc.
                               [],
                               []
                             |),
-                            [ M.read (| this |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| this |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4793,14 +5061,24 @@ Module rc.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                              "get_mut_unchecked",
-                              [],
-                              []
-                            |),
-                            [ M.read (| this |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                  "get_mut_unchecked",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| this |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
                           |)
                         ]
                     |)));
@@ -4834,29 +5112,49 @@ Module rc.
       | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
-          M.SubPointer.get_struct_record_field (|
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::ptr::non_null::NonNull")
-                  []
-                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
-                "as_ptr",
-                [],
-                []
-              |),
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| this |),
-                    "alloc::rc::Rc",
-                    "ptr"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
+                                "as_ptr",
+                                [],
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| this |) |),
+                                    "alloc::rc::Rc",
+                                    "ptr"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          |),
+                          "alloc::rc::RcBox",
+                          "value"
+                        |)
+                      |)
+                    |)
                   |)
                 |)
-              ]
-            |),
-            "alloc::rc::RcBox",
-            "value"
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4902,7 +5200,7 @@ Module rc.
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| this |),
+                        M.deref (| M.read (| this |) |),
                         "alloc::rc::Rc",
                         "ptr"
                       |)
@@ -4924,7 +5222,7 @@ Module rc.
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "alloc::rc::Rc",
                         "ptr"
                       |)
@@ -5000,177 +5298,78 @@ Module rc.
       | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
-          M.read (|
-            let~ size_of_val :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "core::mem::size_of_val", [], [ T ] |),
-                  [
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ size_of_val :=
+                  M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [ M.read (| this |) ]
+                      M.get_function (| "core::mem::size_of_val", [], [ T ] |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| this |) |) |)
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
-                |)
-              |) in
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.ne (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                  "strong_count",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| this |) ]
-                              |),
-                              Value.Integer IntegerKind.Usize 1
-                            |)
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ this_data_ref :=
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                              [],
-                              [],
-                              "deref",
-                              [],
-                              []
-                            |),
-                            [ M.read (| this |) ]
-                          |)
-                        |) in
-                      let~ in_progress :=
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
-                              "new",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| this_data_ref |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  A,
-                                  [],
-                                  [],
-                                  "clone",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| this |),
-                                    "alloc::rc::Rc",
-                                    "alloc"
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |) in
-                      let~ initialized_clone :=
-                        M.copy (|
-                          let~ _ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::clone::CloneToUninit",
-                                  T,
-                                  [],
-                                  [],
-                                  "clone_to_uninit",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (| this_data_ref |);
+                  |) in
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                BinOp.ne (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
-                                      "data_ptr",
-                                      [],
-                                      []
-                                    |),
-                                    [ in_progress ]
-                                  |)
-                                ]
-                              |)
-                            |) in
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
-                                "into_rc",
-                                [],
-                                []
-                              |),
-                              [ M.read (| in_progress |) ]
-                            |)
-                          |)
-                        |) in
-                      let~ _ := M.write (| M.read (| this |), M.read (| initialized_clone |) |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.ne (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                          "weak_count",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| this |) ]
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |)
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              let~ in_progress :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
-                                      "new",
+                                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                      "strong_count",
                                       [],
                                       []
                                     |),
                                     [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| this |) |)
+                                      |)
+                                    ]
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ this_data_ref :=
+                            M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
@@ -5181,194 +5380,438 @@ Module rc.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| this |) ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::clone::Clone",
-                                          A,
-                                          [],
-                                          [],
-                                          "clone",
-                                          [],
-                                          []
-                                        |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| this |),
-                                            "alloc::rc::Rc",
-                                            "alloc"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| this |) |)
                                           |)
                                         ]
                                       |)
-                                    ]
+                                    |)
                                   |)
-                                |) in
-                              let~ _ :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "core::intrinsics::copy_nonoverlapping",
-                                      [],
-                                      [ Ty.path "u8" ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [] [ T ],
-                                          "cast",
-                                          [],
-                                          [ Ty.path "u8" ]
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_function (| "core::ptr::from_ref", [], [ T ] |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::deref::Deref",
-                                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                                  [],
-                                                  [],
-                                                  "deref",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| this |) ]
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*mut") [] [ T ],
-                                          "cast",
-                                          [],
-                                          [ Ty.path "u8" ]
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::rc::UniqueRcUninit")
-                                                []
-                                                [ T; A ],
-                                              "data_ptr",
-                                              [],
-                                              []
-                                            |),
-                                            [ in_progress ]
-                                          |)
-                                        ]
-                                      |);
-                                      M.read (| size_of_val |)
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ :=
-                                M.alloc (|
+                                |)
+                              |)
+                            |) in
+                          let~ in_progress :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
+                                  "new",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| this_data_ref |) |)
+                                  |);
                                   M.call_closure (|
                                     M.get_trait_method (|
-                                      "alloc::rc::RcInnerPtr",
-                                      Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
+                                      "core::clone::Clone",
+                                      A,
                                       [],
                                       [],
-                                      "dec_strong",
+                                      "clone",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                          "inner",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| this |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| this |) |),
+                                          "alloc::rc::Rc",
+                                          "alloc"
+                                        |)
                                       |)
                                     ]
                                   |)
-                                |) in
+                                ]
+                              |)
+                            |) in
+                          let~ initialized_clone :=
+                            M.copy (|
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_trait_method (|
-                                      "alloc::rc::RcInnerPtr",
-                                      Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
+                                      "core::clone::CloneToUninit",
+                                      T,
                                       [],
                                       [],
-                                      "dec_weak",
+                                      "clone_to_uninit",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                          "inner",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| this |) ]
-                                      |)
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "core::ptr::write",
-                                      [],
-                                      [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
-                                    |),
-                                    [
-                                      M.read (| this |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| this_data_ref |) |)
+                                      |);
                                       M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::rc::UniqueRcUninit")
                                             []
                                             [ T; A ],
-                                          "into_rc",
+                                          "data_ptr",
                                           [],
                                           []
                                         |),
-                                        [ M.read (| in_progress |) ]
+                                        [ M.borrow (| Pointer.Kind.MutRef, in_progress |) ]
                                       |)
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)))
-                ]
-              |) in
-            M.alloc (|
-              M.SubPointer.get_struct_record_field (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::ptr::non_null::NonNull")
-                      []
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
-                    "as_mut",
-                    [],
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| this |),
-                      "alloc::rc::Rc",
-                      "ptr"
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
+                                    "into_rc",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| in_progress |) ]
+                                |)
+                              |)
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| this |) |),
+                              M.read (| initialized_clone |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        BinOp.ne (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                              "weak_count",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| this |) |)
+                                              |)
+                                            ]
+                                          |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    M.is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  let~ in_progress :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::rc::UniqueRcUninit")
+                                            []
+                                            [ T; A ],
+                                          "new",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.apply
+                                                        (Ty.path "alloc::rc::Rc")
+                                                        []
+                                                        [ T; A ],
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| this |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::clone::Clone",
+                                              A,
+                                              [],
+                                              [],
+                                              "clone",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| this |) |),
+                                                  "alloc::rc::Rc",
+                                                  "alloc"
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::intrinsics::copy_nonoverlapping",
+                                          [],
+                                          [ Ty.path "u8" ]
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "*const") [] [ T ],
+                                              "cast",
+                                              [],
+                                              [ Ty.path "u8" ]
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_function (|
+                                                  "core::ptr::from_ref",
+                                                  [],
+                                                  [ T ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.apply
+                                                                (Ty.path "alloc::rc::Rc")
+                                                                []
+                                                                [ T; A ],
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| this |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |);
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "*mut") [] [ T ],
+                                              "cast",
+                                              [],
+                                              [ Ty.path "u8" ]
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::rc::UniqueRcUninit")
+                                                    []
+                                                    [ T; A ],
+                                                  "data_ptr",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.MutRef, in_progress |) ]
+                                              |)
+                                            ]
+                                          |);
+                                          M.read (| size_of_val |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "alloc::rc::RcInnerPtr",
+                                          Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
+                                          [],
+                                          [],
+                                          "dec_strong",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                                  "inner",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| this |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "alloc::rc::RcInnerPtr",
+                                          Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
+                                          [],
+                                          [],
+                                          "dec_weak",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                                  "inner",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| this |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::ptr::write",
+                                          [],
+                                          [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutPointer,
+                                            M.deref (| M.read (| this |) |)
+                                          |);
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "alloc::rc::UniqueRcUninit")
+                                                []
+                                                [ T; A ],
+                                              "into_rc",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| in_progress |) ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
+                                    "as_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| this |) |),
+                                        "alloc::rc::Rc",
+                                        "ptr"
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              "alloc::rc::RcBox",
+                              "value"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
-                  ]
-                |),
-                "alloc::rc::RcBox",
-                "value"
+                  |)
+                |)
               |)
             |)
           |)))
@@ -5437,17 +5880,22 @@ Module rc.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [ rc ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, rc |) ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)))
@@ -5542,7 +5990,13 @@ Module rc.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| alloc |); M.read (| layout |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| alloc |) |)
+                                    |);
+                                    M.read (| layout |)
+                                  ]
                                 |)))
                           ]
                         |)))
@@ -5615,7 +6069,12 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::mem::size_of_val", [], [ T ] |),
-                  [ M.read (| src |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) |)
+                    |)
+                  ]
                 |)
               |) in
             let~ ptr :=
@@ -5628,15 +6087,28 @@ Module rc.
                     []
                   |),
                   [
-                    M.read (| src |);
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                        "allocator",
-                        [],
-                        []
-                      |),
-                      [ src ]
+                    M.borrow (|
+                      Pointer.Kind.ConstPointer,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                            "allocator",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, src |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -5650,12 +6122,16 @@ Module rc.
                     [ Ty.path "u8" ]
                   |),
                   [
-                    M.rust_cast (M.read (| src |));
                     M.rust_cast
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| ptr |),
-                        "alloc::rc::RcBox",
-                        "value"
+                      (M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| src |) |) |));
+                    M.rust_cast
+                      (M.borrow (|
+                        Pointer.Kind.MutPointer,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| ptr |) |),
+                          "alloc::rc::RcBox",
+                          "value"
+                        |)
                       |));
                     M.read (| value_size |)
                   ]
@@ -5710,7 +6186,7 @@ Module rc.
                                 [],
                                 []
                               |),
-                              [ alloc ]
+                              [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
                             |)
                           ]
                         |)
@@ -5965,7 +6441,10 @@ Module rc.
                                         []
                                       |),
                                       [
-                                        M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                        |);
                                         M.read (| layout |)
                                       ]
                                     |)))
@@ -6124,7 +6603,10 @@ Module rc.
                                     []
                                   |),
                                   [
-                                    M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                    |);
                                     M.read (| layout |)
                                   ]
                                 |)))
@@ -6218,7 +6700,7 @@ Module rc.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   ]
                 |)
@@ -6235,13 +6717,16 @@ Module rc.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |);
                     M.rust_cast
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| ptr |),
-                        "alloc::rc::RcBox",
-                        "value"
+                      (M.borrow (|
+                        Pointer.Kind.MutPointer,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| ptr |) |),
+                          "alloc::rc::RcBox",
+                          "value"
+                        |)
                       |));
                     M.call_closure (|
                       M.get_associated_function (|
@@ -6250,7 +6735,7 @@ Module rc.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   ]
                 |)
@@ -6372,10 +6857,13 @@ Module rc.
             let~ elems :=
               M.alloc (|
                 M.rust_cast
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| ptr |),
-                    "alloc::rc::RcBox",
-                    "value"
+                  (M.borrow (|
+                    Pointer.Kind.MutPointer,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| ptr |) |),
+                      "alloc::rc::RcBox",
+                      "value"
+                    |)
                   |))
               |) in
             let~ guard :=
@@ -6453,7 +6941,12 @@ Module rc.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -6603,7 +7096,13 @@ Module rc.
                   [],
                   []
                 |),
-                [ M.read (| len |); alloc ]
+                [
+                  M.read (| len |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, alloc |) |)
+                  |)
+                ]
               |);
               M.read (| alloc |)
             ]
@@ -6755,7 +7254,8 @@ Module rc.
                                         [],
                                         []
                                       |),
-                                      [ alloc; M.read (| layout |) ]
+                                      [ M.borrow (| Pointer.Kind.Ref, alloc |); M.read (| layout |)
+                                      ]
                                     |)))
                               ]
                             |)))
@@ -6913,7 +7413,13 @@ Module rc.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| alloc |); M.read (| layout |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| alloc |) |)
+                                    |);
+                                    M.read (| layout |)
+                                  ]
                                 |)))
                           ]
                         |)))
@@ -7205,20 +7711,25 @@ Module rc.
                               [ T ]
                             |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "alloc::rc::Rc")
-                                    []
-                                    [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [ self ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "alloc::rc::Rc")
+                                        []
+                                        [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7439,13 +7950,13 @@ Module rc.
                       [],
                       []
                     |),
-                    [ M.read (| v |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                   |)
                 ]
               |);
               M.call_closure (|
                 M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [], [] |),
-                [ M.read (| v |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
               |)
             ]
           |)))
@@ -7489,7 +8000,7 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| v |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7520,18 +8031,28 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                "inner",
-                [],
-                []
-              |),
-              [ M.read (| self |) ]
-            |),
-            "alloc::rc::RcBox",
-            "value"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                        "inner",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |),
+                  "alloc::rc::RcBox",
+                  "value"
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7638,14 +8159,19 @@ Module rc.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                        "inner",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                            "inner",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -7670,14 +8196,24 @@ Module rc.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                    "inner",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                        "inner",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |),
@@ -7690,14 +8226,24 @@ Module rc.
                         M.call_closure (|
                           M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                "get_mut_unchecked",
-                                [],
-                                []
-                              |),
-                              [ M.read (| self |) ]
+                            M.borrow (|
+                              Pointer.Kind.MutPointer,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                    "get_mut_unchecked",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7715,14 +8261,20 @@ Module rc.
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                "inner",
-                                [],
-                                []
-                              |),
-                              [ M.read (| self |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                    "inner",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7747,14 +8299,24 @@ Module rc.
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                                            "inner",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| self |) ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                                                "inner",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |),
@@ -7776,10 +8338,13 @@ Module rc.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::rc::Rc",
-                                      "alloc"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::rc::Rc",
+                                        "alloc"
+                                      |)
                                     |);
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -7794,7 +8359,7 @@ Module rc.
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "alloc::rc::Rc",
                                             "ptr"
                                           |)
@@ -7824,7 +8389,7 @@ Module rc.
                                             [
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "alloc::rc::Rc",
                                                   "ptr"
                                                 |)
@@ -7887,14 +8452,19 @@ Module rc.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                        "inner",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                            "inner",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -7910,7 +8480,7 @@ Module rc.
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::rc::Rc",
                       "ptr"
                     |)
@@ -7918,10 +8488,13 @@ Module rc.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::rc::Rc",
-                        "alloc"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::rc::Rc",
+                          "alloc"
+                        |)
                       |)
                     ]
                   |)
@@ -8091,29 +8664,39 @@ Module rc.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8135,29 +8718,39 @@ Module rc.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8212,35 +8805,48 @@ Module rc.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| other |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+              ]
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                      [],
-                      [],
-                      "deref",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
                   |);
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                      [],
-                      [],
-                      "deref",
-                      [],
-                      []
-                    |),
-                    [ M.read (| other |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
                   |)
                 ]
               |)))
@@ -8269,36 +8875,49 @@ Module rc.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| other |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                ]
               |)
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                      [],
-                      [],
-                      "deref",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
                   |);
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                      [],
-                      [],
-                      "deref",
-                      [],
-                      []
-                    |),
-                    [ M.read (| other |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
                   |)
                 ]
               |)))
@@ -8341,7 +8960,10 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| other |) ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8368,7 +8990,10 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| other |) ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8413,29 +9038,44 @@ Module rc.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8457,29 +9097,39 @@ Module rc.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8501,29 +9151,39 @@ Module rc.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8545,29 +9205,39 @@ Module rc.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8589,29 +9259,39 @@ Module rc.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8652,29 +9332,44 @@ Module rc.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8711,19 +9406,24 @@ Module rc.
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -8759,19 +9459,29 @@ Module rc.
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8804,19 +9514,29 @@ Module rc.
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8857,21 +9577,34 @@ Module rc.
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                    [],
-                    [],
-                    "deref",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -9004,7 +9737,7 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| v |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9057,7 +9790,7 @@ Module rc.
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   ]
                 |)
@@ -9133,17 +9866,25 @@ Module rc.
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [],
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  [],
-                  []
-                |),
-                [ v; Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, v |);
+                      Value.StructTuple "core::ops::range::RangeFull" []
+                    ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9255,7 +9996,13 @@ Module rc.
                             [],
                             []
                           |),
-                          [ M.read (| len |); alloc ]
+                          [
+                            M.read (| len |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, alloc |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -9265,10 +10012,13 @@ Module rc.
                           [
                             (* MutToConstPointer *) M.pointer_coercion (M.read (| vec_ptr |));
                             M.rust_cast
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| rc_ptr |),
-                                "alloc::rc::RcBox",
-                                "value"
+                              (M.borrow (|
+                                Pointer.Kind.MutPointer,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| rc_ptr |) |),
+                                  "alloc::rc::RcBox",
+                                  "value"
+                                |)
                               |));
                             M.read (| len |)
                           ]
@@ -9290,7 +10040,7 @@ Module rc.
                             M.read (| vec_ptr |);
                             Value.Integer IntegerKind.Usize 0;
                             M.read (| cap |);
-                            alloc
+                            M.borrow (| Pointer.Kind.Ref, alloc |)
                           ]
                         |)
                       |),
@@ -9520,20 +10270,25 @@ Module rc.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "alloc::rc::Rc")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-                                    [],
-                                    [],
-                                    "deref",
-                                    [],
-                                    []
-                                  |),
-                                  [ boxed_slice ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "alloc::rc::Rc")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, boxed_slice |) ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |),
@@ -9793,7 +10548,7 @@ Module rc.
                     [],
                     []
                   |),
-                  [ self ]
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |)
               |),
               [
@@ -9830,7 +10585,13 @@ Module rc.
                                         |) in
                                       let~ _ :=
                                         M.match_operator (|
-                                          M.alloc (| Value.Tuple [ low; high ] |),
+                                          M.alloc (|
+                                            Value.Tuple
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, low |);
+                                                M.borrow (| Pointer.Kind.Ref, high |)
+                                              ]
+                                          |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -9851,10 +10612,14 @@ Module rc.
                                                               UnOp.not (|
                                                                 BinOp.eq (|
                                                                   M.read (|
-                                                                    M.read (| left_val |)
+                                                                    M.deref (|
+                                                                      M.read (| left_val |)
+                                                                    |)
                                                                   |),
                                                                   M.read (|
-                                                                    M.read (| right_val |)
+                                                                    M.deref (|
+                                                                      M.read (| right_val |)
+                                                                    |)
                                                                   |)
                                                                 |)
                                                               |)
@@ -9885,8 +10650,28 @@ Module rc.
                                                                   |),
                                                                   [
                                                                     M.read (| kind |);
-                                                                    M.read (| left_val |);
-                                                                    M.read (| right_val |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| left_val |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| right_val |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |);
                                                                     Value.StructTuple
                                                                       "core::option::Option::Some"
                                                                       [
@@ -9899,49 +10684,73 @@ Module rc.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "TrustedLen iterator's size hint is not exact: "
-                                                                                  |)
-                                                                                ]
-                                                                            |);
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "core::fmt::rt::Argument",
-                                                                                      "new_debug",
-                                                                                      [],
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    Value.Array
                                                                                       [
-                                                                                        Ty.tuple
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "usize";
-                                                                                            Ty.path
-                                                                                              "usize"
-                                                                                          ]
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "TrustedLen iterator's size hint is not exact: "
+                                                                                        |)
                                                                                       ]
-                                                                                    |),
-                                                                                    [
-                                                                                      M.alloc (|
-                                                                                        Value.Tuple
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |);
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Argument",
+                                                                                            "new_debug",
+                                                                                            [],
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "usize";
+                                                                                                  Ty.path
+                                                                                                    "usize"
+                                                                                                ]
+                                                                                            ]
+                                                                                          |),
                                                                                           [
-                                                                                            M.read (|
-                                                                                              low
-                                                                                            |);
-                                                                                            M.read (|
-                                                                                              high
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.deref (|
+                                                                                                M.borrow (|
+                                                                                                  Pointer.Kind.Ref,
+                                                                                                  M.alloc (|
+                                                                                                    Value.Tuple
+                                                                                                      [
+                                                                                                        M.read (|
+                                                                                                          low
+                                                                                                        |);
+                                                                                                        M.read (|
+                                                                                                          high
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                  |)
+                                                                                                |)
+                                                                                              |)
                                                                                             |)
                                                                                           ]
-                                                                                      |)
-                                                                                    ]
+                                                                                        |)
+                                                                                      ]
                                                                                   |)
-                                                                                ]
+                                                                                |)
+                                                                              |)
                                                                             |)
                                                                           ]
                                                                         |)
@@ -9995,9 +10804,17 @@ Module rc.
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "capacity overflow" |) ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.Array
+                                                  [ M.read (| Value.String "capacity overflow" |) ]
+                                              |)
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -10229,7 +11046,19 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::rc::Weak", "alloc" |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::rc::Weak",
+                  "alloc"
+                |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -10275,7 +11104,7 @@ Module rc.
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::rc::Weak",
                         "ptr"
                       |)
@@ -10307,10 +11136,13 @@ Module rc.
                     (M.alloc (|
                       (* MutToConstPointer *)
                       M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| ptr |),
-                          "alloc::rc::RcBox",
-                          "value"
+                        (M.borrow (|
+                          Pointer.Kind.MutPointer,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| ptr |) |),
+                            "alloc::rc::RcBox",
+                            "value"
+                          |)
                         |))
                     |)))
               ]
@@ -10342,35 +11174,43 @@ Module rc.
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply
-                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                    []
-                    [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          []
-                          [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
-                        "new",
-                        [],
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply
+                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
                         []
-                      |),
-                      [ M.read (| self |) ]
-                    |)
+                        [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                []
+                                [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
+                              "new",
+                              [],
+                              []
+                            |),
+                            [ M.read (| self |) ]
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |)
             ]
           |)))
@@ -10427,20 +11267,25 @@ Module rc.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          []
-                          [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [ this ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -10450,24 +11295,34 @@ Module rc.
                 M.call_closure (|
                   M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [ this ]
-                      |),
-                      "alloc::rc::Weak",
-                      "alloc"
+                    M.borrow (|
+                      Pointer.Kind.ConstPointer,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                              |)
+                            |),
+                            "alloc::rc::Weak",
+                            "alloc"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -10630,7 +11485,7 @@ Module rc.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           ]
                         |)
@@ -10705,7 +11560,7 @@ Module rc.
                                     [],
                                     []
                                   |),
-                                  [ inner ]
+                                  [ M.borrow (| Pointer.Kind.Ref, inner |) ]
                                 |),
                                 Value.Integer IntegerKind.Usize 0
                               |)
@@ -10727,7 +11582,7 @@ Module rc.
                                 [],
                                 []
                               |),
-                              [ inner ]
+                              [ M.borrow (| Pointer.Kind.Ref, inner |) ]
                             |)
                           |) in
                         M.alloc (|
@@ -10744,7 +11599,7 @@ Module rc.
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::rc::Weak",
                                       "ptr"
                                     |)
@@ -10760,10 +11615,13 @@ Module rc.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::rc::Weak",
-                                        "alloc"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::rc::Weak",
+                                          "alloc"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -10813,7 +11671,7 @@ Module rc.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |) in
                     let γ0_0 :=
@@ -10834,7 +11692,7 @@ Module rc.
                           [],
                           []
                         |),
-                        [ inner ]
+                        [ M.borrow (| Pointer.Kind.Ref, inner |) ]
                       |)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
@@ -10882,7 +11740,7 @@ Module rc.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |) in
                     let γ0_0 :=
@@ -10911,7 +11769,7 @@ Module rc.
                                         [],
                                         []
                                       |),
-                                      [ inner ]
+                                      [ M.borrow (| Pointer.Kind.Ref, inner |) ]
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -10930,7 +11788,7 @@ Module rc.
                                     [],
                                     []
                                   |),
-                                  [ inner ]
+                                  [ M.borrow (| Pointer.Kind.Ref, inner |) ]
                                 |),
                                 Value.Integer IntegerKind.Usize 1
                               |)
@@ -11001,7 +11859,7 @@ Module rc.
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "alloc::rc::Weak",
                                         "ptr"
                                       |)
@@ -11035,7 +11893,7 @@ Module rc.
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "alloc::rc::Weak",
                                         "ptr"
                                       |)
@@ -11048,16 +11906,32 @@ Module rc.
                                 "alloc::rc::WeakInner"
                                 [
                                   ("strong",
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| ptr |),
-                                      "alloc::rc::RcBox",
-                                      "strong"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| ptr |) |),
+                                            "alloc::rc::RcBox",
+                                            "strong"
+                                          |)
+                                        |)
+                                      |)
                                     |));
                                   ("weak",
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| ptr |),
-                                      "alloc::rc::RcBox",
-                                      "weak"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| ptr |) |),
+                                            "alloc::rc::RcBox",
+                                            "weak"
+                                          |)
+                                        |)
+                                      |)
                                     |))
                                 ]
                             |)
@@ -11111,7 +11985,7 @@ Module rc.
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::rc::Weak",
                         "ptr"
                       |)
@@ -11133,7 +12007,7 @@ Module rc.
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "alloc::rc::Weak",
                         "ptr"
                       |)
@@ -11251,7 +12125,8 @@ Module rc.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -11282,7 +12157,7 @@ Module rc.
                         [],
                         []
                       |),
-                      [ inner ]
+                      [ M.borrow (| Pointer.Kind.Ref, inner |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -11304,7 +12179,7 @@ Module rc.
                                     [],
                                     []
                                   |),
-                                  [ inner ]
+                                  [ M.borrow (| Pointer.Kind.Ref, inner |) ]
                                 |),
                                 Value.Integer IntegerKind.Usize 0
                               |)
@@ -11324,10 +12199,13 @@ Module rc.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::rc::Weak",
-                                  "alloc"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::rc::Weak",
+                                    "alloc"
+                                  |)
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -11342,7 +12220,7 @@ Module rc.
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "alloc::rc::Weak",
                                         "ptr"
                                       |)
@@ -11372,7 +12250,7 @@ Module rc.
                                         [
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "alloc::rc::Weak",
                                               "ptr"
                                             |)
@@ -11435,7 +12313,7 @@ Module rc.
                               [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |) in
                       let γ0_0 :=
@@ -11456,7 +12334,7 @@ Module rc.
                             [],
                             []
                           |),
-                          [ inner ]
+                          [ M.borrow (| Pointer.Kind.Ref, inner |) ]
                         |)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -11469,7 +12347,7 @@ Module rc.
                   ("ptr",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::rc::Weak",
                         "ptr"
                       |)
@@ -11478,10 +12356,13 @@ Module rc.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::rc::Weak",
-                          "alloc"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::rc::Weak",
+                            "alloc"
+                          |)
                         |)
                       ]
                     |))
@@ -11518,10 +12399,20 @@ Module rc.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
-                [ M.alloc (| Value.Array [ M.read (| Value.String "(Weak)" |) ] |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Value.Array [ M.read (| Value.String "(Weak)" |) ] |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
             ]
           |)))
@@ -11587,17 +12478,22 @@ Module rc.
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "alloc::rc::RcInnerPtr",
-                  Self,
-                  [],
-                  [],
-                  "strong_ref",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "alloc::rc::RcInnerPtr",
+                      Self,
+                      [],
+                      [],
+                      "strong_ref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -11615,7 +12511,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], [], "strong", [], [] |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -11644,17 +12540,22 @@ Module rc.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "alloc::rc::RcInnerPtr",
-                        Self,
-                        [],
-                        [],
-                        "strong_ref",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "alloc::rc::RcInnerPtr",
+                            Self,
+                            [],
+                            [],
+                            "strong_ref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |);
                     M.read (| strong |)
                   ]
@@ -11708,17 +12609,22 @@ Module rc.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "alloc::rc::RcInnerPtr",
-                        Self,
-                        [],
-                        [],
-                        "strong_ref",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "alloc::rc::RcInnerPtr",
+                            Self,
+                            [],
+                            [],
+                            "strong_ref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |);
                     BinOp.Wrap.sub (|
                       M.call_closure (|
@@ -11731,7 +12637,7 @@ Module rc.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |),
                       Value.Integer IntegerKind.Usize 1
                     |)
@@ -11758,9 +12664,22 @@ Module rc.
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], [], "weak_ref", [], [] |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "alloc::rc::RcInnerPtr",
+                      Self,
+                      [],
+                      [],
+                      "weak_ref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -11778,7 +12697,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], [], "weak", [], [] |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -11807,17 +12726,22 @@ Module rc.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "alloc::rc::RcInnerPtr",
-                        Self,
-                        [],
-                        [],
-                        "weak_ref",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "alloc::rc::RcInnerPtr",
+                            Self,
+                            [],
+                            [],
+                            "weak_ref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |);
                     M.read (| weak |)
                   ]
@@ -11869,17 +12793,22 @@ Module rc.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "alloc::rc::RcInnerPtr",
-                        Self,
-                        [],
-                        [],
-                        "weak_ref",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "alloc::rc::RcInnerPtr",
+                            Self,
+                            [],
+                            [],
+                            "weak_ref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |);
                     BinOp.Wrap.sub (|
                       M.call_closure (|
@@ -11892,7 +12821,7 @@ Module rc.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |),
                       Value.Integer IntegerKind.Usize 1
                     |)
@@ -11921,7 +12850,19 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::rc::RcBox", "weak" |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::rc::RcBox",
+                  "weak"
+                |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -11936,10 +12877,18 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "alloc::rc::RcBox",
-            "strong"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::rc::RcBox",
+                  "strong"
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11970,11 +12919,16 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "alloc::rc::WeakInner",
-              "weak"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::rc::WeakInner",
+                  "weak"
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -11990,11 +12944,16 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "alloc::rc::WeakInner",
-              "strong"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::rc::WeakInner",
+                  "strong"
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -12026,17 +12985,27 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12064,17 +13033,27 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-              [],
-              [],
-              "deref",
-              [],
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12163,7 +13142,7 @@ Module rc.
                   [],
                   []
                 |),
-                [ layout ]
+                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
               |),
               M.call_closure (|
                 M.get_associated_function (|
@@ -12172,7 +13151,7 @@ Module rc.
                   [],
                   []
                 |),
-                [ layout; M.read (| align |) ]
+                [ M.borrow (| Pointer.Kind.Ref, layout |); M.read (| align |) ]
               |)
             |)
           |)
@@ -12222,26 +13201,53 @@ Module rc.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "UniqueRc" |);
-              M.read (| Value.String "ptr" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::rc::UniqueRc",
-                "ptr"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "UniqueRc" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ptr" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::rc::UniqueRc",
+                      "ptr"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "phantom" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::rc::UniqueRc",
-                "phantom"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "phantom" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::rc::UniqueRc",
+                      "phantom"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "alloc" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::rc::UniqueRc",
-                  "alloc"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "alloc" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::rc::UniqueRc",
+                          "alloc"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -12471,24 +13477,34 @@ Module rc.
                 M.call_closure (|
                   M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ],
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [ this ]
-                      |),
-                      "alloc::rc::UniqueRc",
-                      "alloc"
+                    M.borrow (|
+                      Pointer.Kind.ConstPointer,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                              |)
+                            |),
+                            "alloc::rc::UniqueRc",
+                            "alloc"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -12503,41 +13519,51 @@ Module rc.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::ptr::non_null::NonNull")
-                            []
-                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
-                          "as_mut",
-                          [],
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::DerefMut",
-                                Ty.apply
-                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                  []
-                                  [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ],
-                                [],
-                                [],
-                                "deref_mut",
-                                [],
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
                                 []
-                              |),
-                              [ this ]
+                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
+                              "as_mut",
+                              [],
+                              []
                             |),
-                            "alloc::rc::UniqueRc",
-                            "ptr"
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::DerefMut",
+                                        Ty.apply
+                                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ],
+                                        [],
+                                        [],
+                                        "deref_mut",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.MutRef, this |) ]
+                                    |)
+                                  |),
+                                  "alloc::rc::UniqueRc",
+                                  "ptr"
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
-                      |),
-                      "alloc::rc::RcBox",
-                      "strong"
+                        |),
+                        "alloc::rc::RcBox",
+                        "strong"
+                      |)
                     |);
                     Value.Integer IntegerKind.Usize 1
                   ]
@@ -12554,20 +13580,22 @@ Module rc.
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ],
+                            [],
+                            [],
+                            "deref",
+                            [],
                             []
-                            [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ],
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [ this ]
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                        |)
                       |),
                       "alloc::rc::UniqueRc",
                       "ptr"
@@ -12615,23 +13643,31 @@ Module rc.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::ptr::non_null::NonNull")
-                            []
-                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
-                          "as_ref",
-                          [],
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| this |),
-                            "alloc::rc::UniqueRc",
-                            "ptr"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
+                              "as_ref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| this |) |),
+                                  "alloc::rc::UniqueRc",
+                                  "ptr"
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
                     ]
                   |)
@@ -12644,7 +13680,7 @@ Module rc.
                   ("ptr",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| this |),
+                        M.deref (| M.read (| this |) |),
                         "alloc::rc::UniqueRc",
                         "ptr"
                       |)
@@ -12653,10 +13689,13 @@ Module rc.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| this |),
-                          "alloc::rc::UniqueRc",
-                          "alloc"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| this |) |),
+                            "alloc::rc::UniqueRc",
+                            "alloc"
+                          |)
                         |)
                       ]
                     |))
@@ -12691,27 +13730,40 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::ptr::non_null::NonNull")
-                  []
-                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
-                "as_ref",
-                [],
-                []
-              |),
-              [
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::rc::UniqueRc",
-                  "ptr"
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
+                        "as_ref",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::rc::UniqueRc",
+                            "ptr"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |),
+                  "alloc::rc::RcBox",
+                  "value"
                 |)
-              ]
-            |),
-            "alloc::rc::RcBox",
-            "value"
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12756,29 +13808,49 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::ptr::non_null::NonNull")
-                  []
-                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
-                "as_ptr",
-                [],
-                []
-              |),
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::rc::UniqueRc",
-                    "ptr"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
+                                "as_ptr",
+                                [],
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::rc::UniqueRc",
+                                    "ptr"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          |),
+                          "alloc::rc::RcBox",
+                          "value"
+                        |)
+                      |)
+                    |)
                   |)
                 |)
-              ]
-            |),
-            "alloc::rc::RcBox",
-            "value"
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12822,17 +13894,22 @@ Module rc.
                 M.call_closure (|
                   M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::DerefMut",
-                        Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ],
-                        [],
-                        [],
-                        "deref_mut",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.MutPointer,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::DerefMut",
+                            Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ],
+                            [],
+                            [],
+                            "deref_mut",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -12850,23 +13927,31 @@ Module rc.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::ptr::non_null::NonNull")
-                          []
-                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
-                        "as_ref",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::rc::UniqueRc",
-                          "ptr"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::ptr::non_null::NonNull")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
+                            "as_ref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::rc::UniqueRc",
+                                "ptr"
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |)
@@ -12891,23 +13976,31 @@ Module rc.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
-                                    "as_ref",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::rc::UniqueRc",
-                                      "ptr"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
+                                        "as_ref",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::rc::UniqueRc",
+                                            "ptr"
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |),
@@ -12928,10 +14021,13 @@ Module rc.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::rc::UniqueRc",
-                              "alloc"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::rc::UniqueRc",
+                                "alloc"
+                              |)
                             |);
                             M.call_closure (|
                               M.get_associated_function (|
@@ -12946,7 +14042,7 @@ Module rc.
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "alloc::rc::UniqueRc",
                                     "ptr"
                                   |)
@@ -12976,7 +14072,7 @@ Module rc.
                                     [
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "alloc::rc::UniqueRc",
                                           "ptr"
                                         |)
@@ -13056,7 +14152,7 @@ Module rc.
                     [],
                     [ T ]
                   |),
-                  [ M.read (| for_value |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| for_value |) |) |) ]
                 |)
               |) in
             let~ ptr :=
@@ -13111,7 +14207,10 @@ Module rc.
                                           [],
                                           []
                                         |),
-                                        [ alloc; M.read (| layout_for_rcbox |) ]
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, alloc |);
+                                          M.read (| layout_for_rcbox |)
+                                        ]
                                       |)))
                                 ]
                               |)))
@@ -13141,7 +14240,12 @@ Module rc.
                                           M.rust_cast
                                             (M.call_closure (|
                                               M.get_function (| "core::ptr::from_ref", [], [ T ] |),
-                                              [ M.read (| for_value |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| for_value |) |)
+                                                |)
+                                              ]
                                             |))
                                         ]
                                       |)))
@@ -13225,10 +14329,13 @@ Module rc.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::rc::UniqueRcUninit",
-                          "layout_for_value"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::rc::UniqueRcUninit",
+                            "layout_for_value"
+                          |)
                         |)
                       ]
                     |)
@@ -13258,7 +14365,7 @@ Module rc.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::rc::UniqueRcUninit",
                             "ptr"
                           |)
@@ -13313,20 +14420,22 @@ Module rc.
             let~ ptr :=
               M.copy (|
                 M.SubPointer.get_struct_record_field (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply
-                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply
+                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ] ],
+                        [],
+                        [],
+                        "deref",
+                        [],
                         []
-                        [ Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ] ],
-                      [],
-                      [],
-                      "deref",
-                      [],
-                      []
-                    |),
-                    [ this ]
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                    |)
                   |),
                   "alloc::rc::UniqueRcUninit",
                   "ptr"
@@ -13350,24 +14459,29 @@ Module rc.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::DerefMut",
-                              Ty.apply
-                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                []
-                                [ Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ] ],
-                              [],
-                              [],
-                              "deref_mut",
-                              [],
-                              []
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::DerefMut",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ] ],
+                                  [],
+                                  [],
+                                  "deref_mut",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, this |) ]
+                              |)
                             |),
-                            [ this ]
-                          |),
-                          "alloc::rc::UniqueRcUninit",
-                          "alloc"
+                            "alloc::rc::UniqueRcUninit",
+                            "alloc"
+                          |)
                         |)
                       ]
                     |)
@@ -13445,31 +14559,37 @@ Module rc.
                     []
                   |),
                   [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::option::Option") [] [ A ],
-                          "unwrap",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ A ],
-                              "take",
-                              [],
-                              []
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::rc::UniqueRcUninit",
-                                "alloc"
-                              |)
-                            ]
-                          |)
-                        ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ A ],
+                            "unwrap",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ A ],
+                                "take",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::rc::UniqueRcUninit",
+                                    "alloc"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
                       |)
                     |);
                     M.call_closure (|
@@ -13485,7 +14605,7 @@ Module rc.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::rc::UniqueRcUninit",
                             "ptr"
                           |)
@@ -13497,7 +14617,7 @@ Module rc.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::rc::UniqueRcUninit",
                             "layout_for_value"
                           |)

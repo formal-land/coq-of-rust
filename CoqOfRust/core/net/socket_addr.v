@@ -52,7 +52,7 @@ Module net.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                        [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
                 ]
               |)
@@ -98,7 +98,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -109,7 +109,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -159,7 +159,10 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -201,7 +204,10 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -288,7 +294,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -303,7 +309,13 @@ Module net.
                       [],
                       [ __H ]
                     |),
-                    [ __self_discr; M.read (| state |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -330,7 +342,10 @@ Module net.
                             [],
                             [ __H ]
                           |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -354,7 +369,10 @@ Module net.
                             [],
                             [ __H ]
                           |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)))
                 ]
@@ -390,7 +408,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -401,7 +419,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -438,7 +456,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -472,7 +493,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -488,7 +512,16 @@ Module net.
                             [],
                             []
                           |),
-                          [ __self_discr; __arg1_discr ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -524,7 +557,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -535,7 +568,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -550,7 +583,16 @@ Module net.
                       [],
                       []
                     |),
-                    [ __self_discr; __arg1_discr ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                      |)
+                    ]
                   |)
                 |),
                 [
@@ -591,7 +633,16 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -625,7 +676,16 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -694,7 +754,7 @@ Module net.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                        [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
                 ]
               |)
@@ -781,15 +841,21 @@ Module net.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::net::socket_addr::SocketAddrV4",
-                    "ip"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::net::socket_addr::SocketAddrV4",
+                      "ip"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "core::net::socket_addr::SocketAddrV4",
-                    "ip"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::net::socket_addr::SocketAddrV4",
+                      "ip"
+                    |)
                   |)
                 ]
               |),
@@ -797,14 +863,14 @@ Module net.
                 (BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::net::socket_addr::SocketAddrV4",
                       "port"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "core::net::socket_addr::SocketAddrV4",
                       "port"
                     |)
@@ -846,15 +912,31 @@ Module net.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::socket_addr::SocketAddrV4",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::net::socket_addr::SocketAddrV4",
+                              "ip"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "core::net::socket_addr::SocketAddrV4",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "core::net::socket_addr::SocketAddrV4",
+                              "ip"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -875,15 +957,31 @@ Module net.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::net::socket_addr::SocketAddrV4",
-                              "port"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::net::socket_addr::SocketAddrV4",
+                                    "port"
+                                  |)
+                                |)
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "core::net::socket_addr::SocketAddrV4",
-                              "port"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "core::net::socket_addr::SocketAddrV4",
+                                    "port"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -930,15 +1028,31 @@ Module net.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::socket_addr::SocketAddrV4",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::net::socket_addr::SocketAddrV4",
+                              "ip"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "core::net::socket_addr::SocketAddrV4",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "core::net::socket_addr::SocketAddrV4",
+                              "ip"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -965,15 +1079,31 @@ Module net.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::net::socket_addr::SocketAddrV4",
-                              "port"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::net::socket_addr::SocketAddrV4",
+                                    "port"
+                                  |)
+                                |)
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "core::net::socket_addr::SocketAddrV4",
-                              "port"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "core::net::socket_addr::SocketAddrV4",
+                                    "port"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1020,12 +1150,20 @@ Module net.
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::socket_addr::SocketAddrV4",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::net::socket_addr::SocketAddrV4",
+                              "ip"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -1041,12 +1179,20 @@ Module net.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::net::socket_addr::SocketAddrV4",
-                      "port"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::socket_addr::SocketAddrV4",
+                            "port"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |)
@@ -1109,7 +1255,7 @@ Module net.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Value.DeclaredButUndefined,
-                                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                               |)))
                         ]
                       |)))
@@ -1207,15 +1353,21 @@ Module net.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::socket_addr::SocketAddrV6",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::net::socket_addr::SocketAddrV6",
+                          "ip"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "core::net::socket_addr::SocketAddrV6",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "core::net::socket_addr::SocketAddrV6",
+                          "ip"
+                        |)
                       |)
                     ]
                   |),
@@ -1223,14 +1375,14 @@ Module net.
                     (BinOp.eq (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::net::socket_addr::SocketAddrV6",
                           "port"
                         |)
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
+                          M.deref (| M.read (| other |) |),
                           "core::net::socket_addr::SocketAddrV6",
                           "port"
                         |)
@@ -1241,14 +1393,14 @@ Module net.
                   (BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::net::socket_addr::SocketAddrV6",
                         "flowinfo"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::net::socket_addr::SocketAddrV6",
                         "flowinfo"
                       |)
@@ -1259,14 +1411,14 @@ Module net.
                 (BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::net::socket_addr::SocketAddrV6",
                       "scope_id"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "core::net::socket_addr::SocketAddrV6",
                       "scope_id"
                     |)
@@ -1308,15 +1460,31 @@ Module net.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::socket_addr::SocketAddrV6",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::net::socket_addr::SocketAddrV6",
+                              "ip"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "core::net::socket_addr::SocketAddrV6",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "core::net::socket_addr::SocketAddrV6",
+                              "ip"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -1338,15 +1506,31 @@ Module net.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::net::socket_addr::SocketAddrV6",
-                                "port"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::net::socket_addr::SocketAddrV6",
+                                      "port"
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| other |),
-                                "core::net::socket_addr::SocketAddrV6",
-                                "port"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| other |) |),
+                                      "core::net::socket_addr::SocketAddrV6",
+                                      "port"
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1368,15 +1552,31 @@ Module net.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::net::socket_addr::SocketAddrV6",
-                                        "flowinfo"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::net::socket_addr::SocketAddrV6",
+                                              "flowinfo"
+                                            |)
+                                          |)
+                                        |)
                                       |);
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| other |),
-                                        "core::net::socket_addr::SocketAddrV6",
-                                        "flowinfo"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| other |) |),
+                                              "core::net::socket_addr::SocketAddrV6",
+                                              "flowinfo"
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1398,15 +1598,31 @@ Module net.
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::net::socket_addr::SocketAddrV6",
-                                              "scope_id"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::net::socket_addr::SocketAddrV6",
+                                                    "scope_id"
+                                                  |)
+                                                |)
+                                              |)
                                             |);
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| other |),
-                                              "core::net::socket_addr::SocketAddrV6",
-                                              "scope_id"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| other |) |),
+                                                    "core::net::socket_addr::SocketAddrV6",
+                                                    "scope_id"
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -1465,15 +1681,31 @@ Module net.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::socket_addr::SocketAddrV6",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::net::socket_addr::SocketAddrV6",
+                              "ip"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "core::net::socket_addr::SocketAddrV6",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "core::net::socket_addr::SocketAddrV6",
+                              "ip"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -1501,15 +1733,31 @@ Module net.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::net::socket_addr::SocketAddrV6",
-                                "port"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::net::socket_addr::SocketAddrV6",
+                                      "port"
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| other |),
-                                "core::net::socket_addr::SocketAddrV6",
-                                "port"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| other |) |),
+                                      "core::net::socket_addr::SocketAddrV6",
+                                      "port"
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1537,15 +1785,31 @@ Module net.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::net::socket_addr::SocketAddrV6",
-                                        "flowinfo"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::net::socket_addr::SocketAddrV6",
+                                              "flowinfo"
+                                            |)
+                                          |)
+                                        |)
                                       |);
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| other |),
-                                        "core::net::socket_addr::SocketAddrV6",
-                                        "flowinfo"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| other |) |),
+                                              "core::net::socket_addr::SocketAddrV6",
+                                              "flowinfo"
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1576,15 +1840,31 @@ Module net.
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::net::socket_addr::SocketAddrV6",
-                                              "scope_id"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::net::socket_addr::SocketAddrV6",
+                                                    "scope_id"
+                                                  |)
+                                                |)
+                                              |)
                                             |);
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| other |),
-                                              "core::net::socket_addr::SocketAddrV6",
-                                              "scope_id"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| other |) |),
+                                                    "core::net::socket_addr::SocketAddrV6",
+                                                    "scope_id"
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -1643,12 +1923,20 @@ Module net.
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::socket_addr::SocketAddrV6",
-                        "ip"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::net::socket_addr::SocketAddrV6",
+                              "ip"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -1665,12 +1953,20 @@ Module net.
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::socket_addr::SocketAddrV6",
-                        "port"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::net::socket_addr::SocketAddrV6",
+                              "port"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -1687,12 +1983,20 @@ Module net.
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::socket_addr::SocketAddrV6",
-                        "flowinfo"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::net::socket_addr::SocketAddrV6",
+                              "flowinfo"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -1708,12 +2012,20 @@ Module net.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::net::socket_addr::SocketAddrV6",
-                      "scope_id"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::socket_addr::SocketAddrV6",
+                            "scope_id"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |)
@@ -1826,7 +2138,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1842,14 +2154,16 @@ Module net.
                           "core::net::ip_addr::IpAddr::V4"
                           [
                             M.read (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::net::socket_addr::SocketAddrV4",
-                                  "ip",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| a |) ]
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::net::socket_addr::SocketAddrV4",
+                                    "ip",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |) ]
+                                |)
                               |)
                             |)
                           ]
@@ -1868,14 +2182,16 @@ Module net.
                           "core::net::ip_addr::IpAddr::V6"
                           [
                             M.read (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::net::socket_addr::SocketAddrV6",
-                                  "ip",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| a |) ]
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::net::socket_addr::SocketAddrV6",
+                                    "ip",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |) ]
+                                |)
                               |)
                             |)
                           ]
@@ -1935,7 +2251,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| a |); M.read (| new_ip |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                            M.read (| new_ip |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1965,7 +2284,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| a |); M.read (| new_ip |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                            M.read (| new_ip |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1975,7 +2297,7 @@ Module net.
                       let self_ := M.copy (| γ0_0 |) in
                       let new_ip := M.copy (| γ0_1 |) in
                       M.write (|
-                        M.read (| self_ |),
+                        M.deref (| M.read (| self_ |) |),
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddr",
@@ -1992,7 +2314,7 @@ Module net.
                                 [],
                                 []
                               |),
-                              [ M.read (| self_ |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self_ |) |) |) ]
                             |)
                           ]
                         |)
@@ -2020,7 +2342,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2039,7 +2361,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| a |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |) ]
                         |)
                       |)));
                   fun γ =>
@@ -2059,7 +2381,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| a |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |) ]
                         |)
                       |)))
                 ]
@@ -2086,7 +2408,7 @@ Module net.
             let new_port := M.alloc (| new_port |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2105,7 +2427,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| a |); M.read (| new_port |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                            M.read (| new_port |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -2125,7 +2450,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| a |); M.read (| new_port |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                            M.read (| new_port |)
+                          ]
                         |)
                       |)))
                 ]
@@ -2148,7 +2476,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2180,7 +2508,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2233,10 +2561,18 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "core::net::socket_addr::SocketAddrV4",
-              "ip"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::socket_addr::SocketAddrV4",
+                    "ip"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2258,7 +2594,7 @@ Module net.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::net::socket_addr::SocketAddrV4",
                     "ip"
                   |),
@@ -2283,7 +2619,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::net::socket_addr::SocketAddrV4",
                 "port"
               |)
@@ -2308,7 +2644,7 @@ Module net.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::net::socket_addr::SocketAddrV4",
                     "port"
                   |),
@@ -2361,10 +2697,18 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "core::net::socket_addr::SocketAddrV6",
-              "ip"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::socket_addr::SocketAddrV6",
+                    "ip"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2386,7 +2730,7 @@ Module net.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::net::socket_addr::SocketAddrV6",
                     "ip"
                   |),
@@ -2411,7 +2755,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::net::socket_addr::SocketAddrV6",
                 "port"
               |)
@@ -2436,7 +2780,7 @@ Module net.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::net::socket_addr::SocketAddrV6",
                     "port"
                   |),
@@ -2461,7 +2805,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::net::socket_addr::SocketAddrV6",
                 "flowinfo"
               |)
@@ -2486,7 +2830,7 @@ Module net.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::net::socket_addr::SocketAddrV6",
                     "flowinfo"
                   |),
@@ -2512,7 +2856,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::net::socket_addr::SocketAddrV6",
                 "scope_id"
               |)
@@ -2537,7 +2881,7 @@ Module net.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::net::socket_addr::SocketAddrV6",
                     "scope_id"
                   |),
@@ -2670,7 +3014,7 @@ Module net.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2692,7 +3036,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| a |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -2715,7 +3062,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| a |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)))
                 ]
@@ -2756,7 +3106,10 @@ Module net.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| fmt |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2813,15 +3166,23 @@ Module net.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Formatter",
-                                        "precision",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| f |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Formatter",
+                                          "precision",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| f |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -2838,15 +3199,23 @@ Module net.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Formatter",
-                                          "width",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| f |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Formatter",
+                                            "width",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| f |) |)
+                                            |)
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -2863,7 +3232,7 @@ Module net.
                             []
                           |),
                           [
-                            M.read (| f |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
@@ -2872,61 +3241,108 @@ Module net.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String ":" |) ]
-                                |);
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [],
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
                                           [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                                            M.read (| Value.String "" |);
+                                            M.read (| Value.String ":" |)
                                           ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::net::socket_addr::SocketAddrV4",
-                                                "ip",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| self |) ]
-                                            |)
-                                          |)
-                                        ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [],
-                                          [ Ty.path "u16" ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::net::socket_addr::SocketAddrV4",
-                                                "port",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| self |) ]
-                                            |)
-                                          |)
-                                        ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                                                ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "core::net::socket_addr::SocketAddrV4",
+                                                            "ip",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| self |) |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "u16" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "core::net::socket_addr::SocketAddrV4",
+                                                            "port",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| self |) |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -2977,7 +3393,7 @@ Module net.
                                   []
                                 |),
                                 [
-                                  buf;
+                                  M.borrow (| Pointer.Kind.MutRef, buf |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
@@ -2986,66 +3402,108 @@ Module net.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "" |);
-                                            M.read (| Value.String ":" |)
-                                          ]
-                                      |);
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [],
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                                                  M.read (| Value.String "" |);
+                                                  M.read (| Value.String ":" |)
                                                 ]
-                                              |),
-                                              [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "core::net::socket_addr::SocketAddrV4",
-                                                      "ip",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| self |) ]
-                                                  |)
-                                                |)
-                                              ]
-                                            |);
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [],
-                                                [ Ty.path "u16" ]
-                                              |),
-                                              [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "core::net::socket_addr::SocketAddrV4",
-                                                      "port",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| self |) ]
-                                                  |)
-                                                |)
-                                              ]
                                             |)
-                                          ]
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::net::socket_addr::SocketAddrV4",
+                                                                  "ip",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| self |) |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [ Ty.path "u16" ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::net::socket_addr::SocketAddrV4",
+                                                                  "port",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| self |) |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -3063,18 +3521,23 @@ Module net.
                             []
                           |),
                           [
-                            M.read (| f |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                  [ Value.Integer IntegerKind.Usize 21 ]
-                                  [],
-                                "as_str",
-                                [ Value.Integer IntegerKind.Usize 21 ],
-                                []
-                              |),
-                              [ buf ]
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                      [ Value.Integer IntegerKind.Usize 21 ]
+                                      [],
+                                    "as_str",
+                                    [ Value.Integer IntegerKind.Usize 21 ],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3117,7 +3580,10 @@ Module net.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| fmt |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3182,15 +3648,23 @@ Module net.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Formatter",
-                                        "precision",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| f |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Formatter",
+                                          "precision",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| f |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -3207,15 +3681,23 @@ Module net.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Formatter",
-                                          "width",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| f |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Formatter",
+                                            "width",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| f |) |)
+                                            |)
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -3232,7 +3714,7 @@ Module net.
                               [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |),
                         [
@@ -3252,7 +3734,10 @@ Module net.
                                     []
                                   |),
                                   [
-                                    M.read (| f |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| f |) |)
+                                    |);
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
@@ -3261,66 +3746,113 @@ Module net.
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "[" |);
-                                              M.read (| Value.String "]:" |)
-                                            ]
-                                        |);
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [],
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.Array
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
+                                                    M.read (| Value.String "[" |);
+                                                    M.read (| Value.String "]:" |)
                                                   ]
-                                                |),
-                                                [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::net::socket_addr::SocketAddrV6",
-                                                        "ip",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
-                                                    |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [],
-                                                  [ Ty.path "u16" ]
-                                                |),
-                                                [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::net::socket_addr::SocketAddrV6",
-                                                        "port",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
-                                                    |)
-                                                  |)
-                                                ]
                                               |)
-                                            ]
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "core::net::ip_addr::Ipv6Addr"
+                                                            ]
+                                                        ]
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::net::socket_addr::SocketAddrV6",
+                                                                    "ip",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [],
+                                                        [ Ty.path "u16" ]
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::net::socket_addr::SocketAddrV6",
+                                                                    "port",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                              |)
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -3339,7 +3871,10 @@ Module net.
                                     []
                                   |),
                                   [
-                                    M.read (| f |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| f |) |)
+                                    |);
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
@@ -3348,76 +3883,133 @@ Module net.
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "[" |);
-                                              M.read (| Value.String "%" |);
-                                              M.read (| Value.String "]:" |)
-                                            ]
-                                        |);
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [],
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.Array
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
+                                                    M.read (| Value.String "[" |);
+                                                    M.read (| Value.String "%" |);
+                                                    M.read (| Value.String "]:" |)
                                                   ]
-                                                |),
-                                                [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::net::socket_addr::SocketAddrV6",
-                                                        "ip",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
-                                                    |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [],
-                                                  [ Ty.path "u32" ]
-                                                |),
-                                                [ scope_id ]
-                                              |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [],
-                                                  [ Ty.path "u16" ]
-                                                |),
-                                                [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::net::socket_addr::SocketAddrV6",
-                                                        "port",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
-                                                    |)
-                                                  |)
-                                                ]
                                               |)
-                                            ]
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "core::net::ip_addr::Ipv6Addr"
+                                                            ]
+                                                        ]
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::net::socket_addr::SocketAddrV6",
+                                                                    "ip",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [],
+                                                        [ Ty.path "u32" ]
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              scope_id
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [],
+                                                        [ Ty.path "u16" ]
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::net::socket_addr::SocketAddrV6",
+                                                                    "port",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                              |)
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -3466,7 +4058,12 @@ Module net.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -3492,7 +4089,7 @@ Module net.
                                               []
                                             |),
                                             [
-                                              buf;
+                                              M.borrow (| Pointer.Kind.MutRef, buf |);
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
@@ -3501,69 +4098,115 @@ Module net.
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "[" |);
-                                                        M.read (| Value.String "]:" |)
-                                                      ]
-                                                  |);
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [],
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::net::ip_addr::Ipv6Addr"
-                                                                ]
+                                                              M.read (| Value.String "[" |);
+                                                              M.read (| Value.String "]:" |)
                                                             ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "core::net::socket_addr::SocketAddrV6",
-                                                                  "ip",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ M.read (| self |) ]
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [],
-                                                            [ Ty.path "u16" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "core::net::socket_addr::SocketAddrV6",
-                                                                  "port",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ M.read (| self |) ]
-                                                              |)
-                                                            |)
-                                                          ]
                                                         |)
-                                                      ]
+                                                      |)
+                                                    |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
+                                                                  [],
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::net::ip_addr::Ipv6Addr"
+                                                                      ]
+                                                                  ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::net::socket_addr::SocketAddrV6",
+                                                                              "ip",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
+                                                                  [],
+                                                                  [ Ty.path "u16" ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::net::socket_addr::SocketAddrV6",
+                                                                              "port",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -3588,7 +4231,7 @@ Module net.
                                               []
                                             |),
                                             [
-                                              buf;
+                                              M.borrow (| Pointer.Kind.MutRef, buf |);
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
@@ -3597,79 +4240,135 @@ Module net.
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "[" |);
-                                                        M.read (| Value.String "%" |);
-                                                        M.read (| Value.String "]:" |)
-                                                      ]
-                                                  |);
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [],
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::net::ip_addr::Ipv6Addr"
-                                                                ]
+                                                              M.read (| Value.String "[" |);
+                                                              M.read (| Value.String "%" |);
+                                                              M.read (| Value.String "]:" |)
                                                             ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "core::net::socket_addr::SocketAddrV6",
-                                                                  "ip",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ M.read (| self |) ]
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [],
-                                                            [ Ty.path "u32" ]
-                                                          |),
-                                                          [ scope_id ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [],
-                                                            [ Ty.path "u16" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "core::net::socket_addr::SocketAddrV6",
-                                                                  "port",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ M.read (| self |) ]
-                                                              |)
-                                                            |)
-                                                          ]
                                                         |)
-                                                      ]
+                                                      |)
+                                                    |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
+                                                                  [],
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::net::ip_addr::Ipv6Addr"
+                                                                      ]
+                                                                  ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::net::socket_addr::SocketAddrV6",
+                                                                              "ip",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
+                                                                  [],
+                                                                  [ Ty.path "u32" ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        scope_id
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
+                                                                  [],
+                                                                  [ Ty.path "u16" ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::net::socket_addr::SocketAddrV6",
+                                                                              "port",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -3691,18 +4390,23 @@ Module net.
                             []
                           |),
                           [
-                            M.read (| f |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                  [ Value.Integer IntegerKind.Usize 58 ]
-                                  [],
-                                "as_str",
-                                [ Value.Integer IntegerKind.Usize 58 ],
-                                []
-                              |),
-                              [ buf ]
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                      [ Value.Integer IntegerKind.Usize 58 ]
+                                      [],
+                                    "as_str",
+                                    [ Value.Integer IntegerKind.Usize 58 ],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3745,7 +4449,10 @@ Module net.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| fmt |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

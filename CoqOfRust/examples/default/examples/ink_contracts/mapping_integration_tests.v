@@ -202,7 +202,7 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -248,7 +248,7 @@ Module Impl_mapping_integration_tests_Env.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "mapping_integration_tests::Env",
             "caller"
           |)
@@ -396,15 +396,18 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "mapping_integration_tests::Mappings",
-                        "env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Mappings",
+                          "env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -422,12 +425,18 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "mapping_integration_tests::Mappings",
-                  "balances"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "mapping_integration_tests::Mappings",
+                    "balances"
+                  |)
                 |);
-                caller
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, caller |) |)
+                |)
               ]
             |)
           |)
@@ -460,15 +469,18 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "mapping_integration_tests::Mappings",
-                        "env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Mappings",
+                          "env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -486,10 +498,13 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "mapping_integration_tests::Mappings",
-                  "balances"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "mapping_integration_tests::Mappings",
+                    "balances"
+                  |)
                 |);
                 M.read (| caller |);
                 M.read (| value |)
@@ -525,15 +540,18 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "mapping_integration_tests::Mappings",
-                        "env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Mappings",
+                          "env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -551,10 +569,13 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "mapping_integration_tests::Mappings",
-                  "balances"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "mapping_integration_tests::Mappings",
+                    "balances"
+                  |)
                 |);
                 M.read (| caller |)
               ]
@@ -588,15 +609,18 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "mapping_integration_tests::Mappings",
-                        "env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Mappings",
+                          "env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -614,12 +638,18 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "mapping_integration_tests::Mappings",
-                  "balances"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "mapping_integration_tests::Mappings",
+                    "balances"
+                  |)
                 |);
-                caller
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, caller |) |)
+                |)
               ]
             |)
           |)
@@ -652,15 +682,18 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "mapping_integration_tests::Mappings",
-                        "env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Mappings",
+                          "env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -679,10 +712,13 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "mapping_integration_tests::Mappings",
-                    "balances"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "mapping_integration_tests::Mappings",
+                      "balances"
+                    |)
                   |);
                   M.read (| caller |)
                 ]
@@ -718,15 +754,18 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "mapping_integration_tests::Mappings",
-                        "env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Mappings",
+                          "env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -744,10 +783,13 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "mapping_integration_tests::Mappings",
-                  "balances"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "mapping_integration_tests::Mappings",
+                    "balances"
+                  |)
                 |);
                 M.read (| caller |)
               ]

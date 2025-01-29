@@ -40,7 +40,7 @@ Module slice.
                               [],
                               []
                             |),
-                            [ range ]
+                            [ M.borrow (| Pointer.Kind.Ref, range |) ]
                           |);
                           M.call_closure (|
                             M.get_trait_method (|
@@ -52,7 +52,7 @@ Module slice.
                               [],
                               []
                             |),
-                            [ range ]
+                            [ M.borrow (| Pointer.Kind.Ref, range |) ]
                           |)
                         ]
                     |),
@@ -74,7 +74,7 @@ Module slice.
                             Value.Tuple
                               [
                                 Value.StructTuple "core::slice::Direction::Front" [];
-                                M.read (| M.read (| i |) |)
+                                M.read (| M.deref (| M.read (| i |) |) |)
                               ]
                           |)));
                       fun γ =>
@@ -119,7 +119,7 @@ Module slice.
                                               []
                                             |),
                                             [
-                                              M.read (| M.read (| i |) |);
+                                              M.read (| M.deref (| M.read (| i |) |) |);
                                               Value.Integer IntegerKind.Usize 1
                                             ]
                                           |)
@@ -227,7 +227,7 @@ Module slice.
                                               []
                                             |),
                                             [
-                                              M.read (| M.read (| i |) |);
+                                              M.read (| M.deref (| M.read (| i |) |) |);
                                               Value.Integer IntegerKind.Usize 1
                                             ]
                                           |)
@@ -310,7 +310,7 @@ Module slice.
                             Value.Tuple
                               [
                                 Value.StructTuple "core::slice::Direction::Back" [];
-                                M.read (| M.read (| i |) |)
+                                M.read (| M.deref (| M.read (| i |) |) |)
                               ]
                           |)));
                       fun γ =>
@@ -378,7 +378,7 @@ Module slice.
               [],
               [ Ty.apply (Ty.path "slice") [] [ T ] ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -399,7 +399,7 @@ Module slice.
           BinOp.eq (|
             M.call_closure (|
               M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [], [] |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |),
             Value.Integer IntegerKind.Usize 0
           |)))
@@ -433,7 +433,9 @@ Module slice.
                     let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                     let first := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| first |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| first |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -470,7 +472,9 @@ Module slice.
                     let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                     let first := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| first |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| first |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -510,7 +514,13 @@ Module slice.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.Tuple [ M.read (| first |); M.read (| tail |) ] ]
+                        [
+                          Value.Tuple
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| first |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| tail |) |) |)
+                            ]
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -555,7 +565,13 @@ Module slice.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.Tuple [ M.read (| first |); M.read (| tail |) ] ]
+                        [
+                          Value.Tuple
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| first |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| tail |) |) |)
+                            ]
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -595,7 +611,13 @@ Module slice.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.Tuple [ M.read (| last |); M.read (| init |) ] ]
+                        [
+                          Value.Tuple
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| last |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| init |) |) |)
+                            ]
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -640,7 +662,13 @@ Module slice.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.Tuple [ M.read (| last |); M.read (| init |) ] ]
+                        [
+                          Value.Tuple
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| last |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| init |) |) |)
+                            ]
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -677,7 +705,9 @@ Module slice.
                     let γ1_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                     let last := M.alloc (| γ1_rev0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| last |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| last |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -714,7 +744,9 @@ Module slice.
                     let γ1_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                     let last := M.alloc (| γ1_rev0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| last |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| last |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -762,7 +794,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
                             M.read (| M.get_constant (| "core::slice::first_chunk::N" |) |)
                           |)
@@ -775,24 +807,39 @@ Module slice.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [] [ T ],
-                              "cast",
-                              [],
-                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "as_ptr",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| self |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "*const") [] [ T ],
+                                      "cast",
+                                      [],
+                                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          "as_ptr",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                     |)))
@@ -846,7 +893,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
                             M.read (| M.get_constant (| "core::slice::first_chunk_mut::N" |) |)
                           |)
@@ -859,24 +906,44 @@ Module slice.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [] [ T ],
-                              "cast",
-                              [],
-                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "as_mut_ptr",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| self |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
+                                          "cast",
+                                          [],
+                                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ T ],
+                                              "as_mut_ptr",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                     |)))
@@ -932,7 +999,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
                             M.read (| M.get_constant (| "core::slice::split_first_chunk::N" |) |)
                           |)
@@ -951,7 +1018,7 @@ Module slice.
                             []
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                             M.read (| M.get_constant (| "core::slice::split_first_chunk::N" |) |)
                           ]
                         |)
@@ -969,26 +1036,44 @@ Module slice.
                                 [
                                   Value.Tuple
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [] [ T ],
-                                          "cast",
-                                          [],
-                                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [] [ T ],
-                                              "as_ptr",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| first |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                                  "cast",
+                                                  [],
+                                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                                      "as_ptr",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| first |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
-                                        ]
+                                        |)
                                       |);
-                                      M.read (| tail |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| tail |) |)
+                                      |)
                                     ]
                                 ]
                             |)))
@@ -1049,7 +1134,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
                             M.read (|
                               M.get_constant (| "core::slice::split_first_chunk_mut::N" |)
@@ -1070,7 +1155,7 @@ Module slice.
                             []
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                             M.read (|
                               M.get_constant (| "core::slice::split_first_chunk_mut::N" |)
                             |)
@@ -1090,26 +1175,49 @@ Module slice.
                                 [
                                   Value.Tuple
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*mut") [] [ T ],
-                                          "cast",
-                                          [],
-                                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [] [ T ],
-                                              "as_mut_ptr",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| first |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "*mut") [] [ T ],
+                                                      "cast",
+                                                      [],
+                                                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                                          "as_mut_ptr",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| first |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
                                           |)
-                                        ]
+                                        |)
                                       |);
-                                      M.read (| tail |)
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| tail |) |)
+                                      |)
                                     ]
                                 ]
                             |)))
@@ -1167,7 +1275,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
                             M.read (| M.get_constant (| "core::slice::split_last_chunk::N" |) |)
                           |)
@@ -1186,7 +1294,7 @@ Module slice.
                             []
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                             BinOp.Wrap.sub (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1195,7 +1303,7 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |),
                               M.read (| M.get_constant (| "core::slice::split_last_chunk::N" |) |)
                             |)
@@ -1215,25 +1323,43 @@ Module slice.
                                 [
                                   Value.Tuple
                                     [
-                                      M.read (| init |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [] [ T ],
-                                          "cast",
-                                          [],
-                                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [] [ T ],
-                                              "as_ptr",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| last |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| init |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                                  "cast",
+                                                  [],
+                                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                                      "as_ptr",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| last |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
-                                        ]
+                                        |)
                                       |)
                                     ]
                                 ]
@@ -1295,7 +1421,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
                             M.read (| M.get_constant (| "core::slice::split_last_chunk_mut::N" |) |)
                           |)
@@ -1314,7 +1440,7 @@ Module slice.
                             []
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                             BinOp.Wrap.sub (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1323,7 +1449,7 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |),
                               M.read (|
                                 M.get_constant (| "core::slice::split_last_chunk_mut::N" |)
@@ -1345,25 +1471,48 @@ Module slice.
                                 [
                                   Value.Tuple
                                     [
-                                      M.read (| init |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*mut") [] [ T ],
-                                          "cast",
-                                          [],
-                                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [] [ T ],
-                                              "as_mut_ptr",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| last |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| init |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "*mut") [] [ T ],
+                                                      "cast",
+                                                      [],
+                                                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                                          "as_mut_ptr",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| last |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
                                           |)
-                                        ]
+                                        |)
                                       |)
                                     ]
                                 ]
@@ -1418,7 +1567,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
                             M.read (| M.get_constant (| "core::slice::last_chunk::N" |) |)
                           |)
@@ -1439,7 +1588,7 @@ Module slice.
                                 []
                               |),
                               [
-                                M.read (| self |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                                 BinOp.Wrap.sub (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1448,7 +1597,12 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |),
                                   M.read (| M.get_constant (| "core::slice::last_chunk::N" |) |)
                                 |)
@@ -1462,24 +1616,39 @@ Module slice.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [] [ T ],
-                              "cast",
-                              [],
-                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "as_ptr",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| last |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "*const") [] [ T ],
+                                      "cast",
+                                      [],
+                                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          "as_ptr",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| last |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                     |)))
@@ -1537,7 +1706,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
                             M.read (| M.get_constant (| "core::slice::last_chunk_mut::N" |) |)
                           |)
@@ -1548,36 +1717,49 @@ Module slice.
                   ltac:(M.monadic
                     (let~ last :=
                       M.alloc (|
-                        M.read (|
-                          M.SubPointer.get_tuple_field (|
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "split_at_mut_unchecked",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (| self |);
-                                  BinOp.Wrap.sub (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_tuple_field (|
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "split_at_mut_unchecked",
+                                      [],
+                                      []
                                     |),
-                                    M.read (|
-                                      M.get_constant (| "core::slice::last_chunk_mut::N" |)
-                                    |)
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      BinOp.Wrap.sub (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ T ],
+                                            "len",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
+                                        |),
+                                        M.read (|
+                                          M.get_constant (| "core::slice::last_chunk_mut::N" |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |),
+                                1
                               |)
-                            |),
-                            1
+                            |)
                           |)
                         |)
                       |) in
@@ -1585,24 +1767,44 @@ Module slice.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [] [ T ],
-                              "cast",
-                              [],
-                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "as_mut_ptr",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| last |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
+                                          "cast",
+                                          [],
+                                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ T ],
+                                              "as_mut_ptr",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| last |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                     |)))
@@ -1641,7 +1843,7 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| index |); M.read (| self |) ]
+            [ M.read (| index |); M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1673,7 +1875,10 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| index |); M.read (| self |) ]
+            [
+              M.read (| index |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1700,17 +1905,30 @@ Module slice.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::slice::index::SliceIndex",
-              I,
-              [],
-              [ Ty.apply (Ty.path "slice") [] [ T ] ],
-              "get_unchecked",
-              [],
-              []
-            |),
-            [ M.read (| index |); M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::slice::index::SliceIndex",
+                      I,
+                      [],
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                      "get_unchecked",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| index |);
+                      M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1742,17 +1960,43 @@ Module slice.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::slice::index::SliceIndex",
-              I,
-              [],
-              [ Ty.apply (Ty.path "slice") [] [ T ] ],
-              "get_unchecked_mut",
-              [],
-              []
-            |),
-            [ M.read (| index |); M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::slice::index::SliceIndex",
+                              I,
+                              [],
+                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                              "get_unchecked_mut",
+                              [],
+                              []
+                            |),
+                            [
+                              M.read (| index |);
+                              M.borrow (|
+                                Pointer.Kind.MutPointer,
+                                M.deref (| M.read (| self |) |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1772,7 +2016,13 @@ Module slice.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
+          M.rust_cast
+            (M.read (|
+              M.use
+                (M.alloc (|
+                  M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
+                |))
+            |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1791,7 +2041,13 @@ Module slice.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
+          M.rust_cast
+            (M.read (|
+              M.use
+                (M.alloc (|
+                  M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| self |) |) |)
+                |))
+            |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1839,7 +2095,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ end_ :=
@@ -1860,7 +2116,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   ]
                 |)
@@ -1907,7 +2163,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ end_ :=
@@ -1923,7 +2179,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   ]
                 |)
@@ -1965,8 +2221,20 @@ Module slice.
           let a := M.alloc (| a |) in
           let b := M.alloc (| b |) in
           M.read (|
-            let~ pa := M.alloc (| M.SubPointer.get_array_field (| M.read (| self |), a |) |) in
-            let~ pb := M.alloc (| M.SubPointer.get_array_field (| M.read (| self |), b |) |) in
+            let~ pa :=
+              M.alloc (|
+                M.borrow (|
+                  Pointer.Kind.MutPointer,
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| self |) |), a |)
+                |)
+              |) in
+            let~ pb :=
+              M.alloc (|
+                M.borrow (|
+                  Pointer.Kind.MutPointer,
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| self |) |), b |)
+                |)
+              |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
@@ -2048,7 +2316,7 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |);
                               M.read (| a |);
                               M.read (| b |)
@@ -2068,7 +2336,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -2165,7 +2433,7 @@ Module slice.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
                   Value.Integer IntegerKind.Usize 2
                 |)
@@ -2179,7 +2447,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |),
               [
@@ -2244,8 +2512,14 @@ Module slice.
                                 M.call_closure (|
                                   M.get_associated_function (| Self, "revswap.reverse", [], [] |),
                                   [
-                                    M.read (| front_half |);
-                                    M.read (| back_half |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| front_half |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| back_half |) |)
+                                    |);
                                     M.read (| half_len |)
                                   ]
                                 |)
@@ -2281,7 +2555,7 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2308,7 +2582,7 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2353,7 +2627,10 @@ Module slice.
                       |),
                       [ M.read (| size |) ]
                     |);
-                    M.read (| Value.String "window size must be non-zero" |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "window size must be non-zero" |) |)
+                    |)
                   ]
                 |)
               |) in
@@ -2365,7 +2642,10 @@ Module slice.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| size |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| size |)
+                ]
               |)
             |)
           |)))
@@ -2420,9 +2700,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2441,7 +2733,10 @@ Module slice.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| chunk_size |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| chunk_size |)
+                ]
               |)
             |)
           |)))
@@ -2496,9 +2791,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2517,7 +2824,10 @@ Module slice.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| chunk_size |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| chunk_size |)
+                ]
               |)
             |)
           |)))
@@ -2572,9 +2882,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2593,7 +2915,10 @@ Module slice.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| chunk_size |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| chunk_size |)
+                ]
               |)
             |)
           |)))
@@ -2653,9 +2978,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2674,7 +3011,10 @@ Module slice.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| chunk_size |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| chunk_size |)
+                ]
               |)
             |)
           |)))
@@ -2746,7 +3086,7 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             ]
                           |)
@@ -2767,41 +3107,46 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |);
                     M.read (| M.get_constant (| "core::slice::as_chunks_unchecked::N" |) |)
                   ]
                 |)
               |) in
             M.alloc (|
-              M.call_closure (|
-                M.get_function (|
-                  "core::slice::raw::from_raw_parts",
-                  [],
-                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                |),
-                [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [] [ T ],
-                      "cast",
+                    M.get_function (|
+                      "core::slice::raw::from_raw_parts",
                       [],
                       [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ T ],
-                          "as_ptr",
+                          Ty.apply (Ty.path "*const") [] [ T ],
+                          "cast",
                           [],
-                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                         |),
-                        [ M.read (| self |) ]
-                      |)
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [] [ T ],
+                              "as_ptr",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        ]
+                      |);
+                      M.read (| new_len |)
                     ]
-                  |);
-                  M.read (| new_len |)
-                ]
+                  |)
+                |)
               |)
             |)
           |)))
@@ -2862,9 +3207,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2886,7 +3243,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |),
                     M.read (| M.get_constant (| "core::slice::as_chunks::N" |) |)
                   |),
@@ -2902,7 +3259,10 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| len_rounded_down |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.read (| len_rounded_down |)
+                  ]
                 |)
               |),
               [
@@ -2921,10 +3281,21 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| multiple_of_n |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| multiple_of_n |) |)
+                            |)
+                          ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [ M.read (| array_slice |); M.read (| remainder |) ] |)))
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| array_slice |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| remainder |) |) |)
+                        ]
+                    |)))
               ]
             |)
           |)))
@@ -2983,9 +3354,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3006,7 +3389,7 @@ Module slice.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
                   M.read (| M.get_constant (| "core::slice::as_rchunks::N" |) |)
                 |)
@@ -3021,7 +3404,7 @@ Module slice.
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                     BinOp.Wrap.sub (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3030,7 +3413,7 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |),
                       BinOp.Wrap.mul (|
                         M.read (| len |),
@@ -3056,10 +3439,21 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| multiple_of_n |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| multiple_of_n |) |)
+                            |)
+                          ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [ M.read (| remainder |); M.read (| array_slice |) ] |)))
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| remainder |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| array_slice |) |) |)
+                        ]
+                    |)))
               ]
             |)
           |)))
@@ -3113,9 +3507,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3134,7 +3540,7 @@ Module slice.
                   [ N ],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |)
           |)))
@@ -3170,98 +3576,124 @@ Module slice.
       | [ N ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
-                              []
-                            |)
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Self,
-                              "precondition_check.as_chunks_unchecked_mut",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (|
-                                M.get_constant (| "core::slice::as_chunks_unchecked_mut::N" |)
-                              |);
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                M.call_closure (|
+                                  M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
+                                  []
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ :=
+                            M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
+                                  Self,
+                                  "precondition_check.as_chunks_unchecked_mut",
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [
+                                  M.read (|
+                                    M.get_constant (| "core::slice::as_chunks_unchecked_mut::N" |)
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                let~ new_len :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "core::intrinsics::exact_div", [], [ Ty.path "usize" ] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "slice") [] [ T ],
+                            "len",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |);
+                        M.read (| M.get_constant (| "core::slice::as_chunks_unchecked_mut::N" |) |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::slice::raw::from_raw_parts_mut",
+                              [],
+                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                  "cast",
+                                  [],
+                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                |),
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "as_mut_ptr",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |);
+                              M.read (| new_len |)
                             ]
                           |)
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-            let~ new_len :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "core::intrinsics::exact_div", [], [ Ty.path "usize" ] |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
-                    |);
-                    M.read (| M.get_constant (| "core::slice::as_chunks_unchecked_mut::N" |) |)
-                  ]
-                |)
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (|
-                  "core::slice::raw::from_raw_parts_mut",
-                  [],
-                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*mut") [] [ T ],
-                      "cast",
-                      [],
-                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ T ],
-                          "as_mut_ptr",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
+                        |)
                       |)
-                    ]
-                  |);
-                  M.read (| new_len |)
-                ]
+                    |)
+                  |)
+                |)
               |)
             |)
           |)))
@@ -3322,9 +3754,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3346,7 +3790,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |),
                     M.read (| M.get_constant (| "core::slice::as_chunks_mut::N" |) |)
                   |),
@@ -3362,7 +3806,10 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| len_rounded_down |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| len_rounded_down |)
+                  ]
                 |)
               |),
               [
@@ -3374,17 +3821,36 @@ Module slice.
                     let remainder := M.copy (| γ0_1 |) in
                     let~ array_slice :=
                       M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ T ],
-                            "as_chunks_unchecked_mut",
-                            [],
-                            []
-                          |),
-                          [ M.read (| multiple_of_n |) ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ T ],
+                                "as_chunks_unchecked_mut",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| multiple_of_n |) |)
+                                |)
+                              ]
+                            |)
+                          |)
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [ M.read (| array_slice |); M.read (| remainder |) ] |)))
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.read (| array_slice |) |)
+                          |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| remainder |) |) |)
+                        ]
+                    |)))
               ]
             |)
           |)))
@@ -3448,9 +3914,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3471,7 +3949,7 @@ Module slice.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
                   M.read (| M.get_constant (| "core::slice::as_rchunks_mut::N" |) |)
                 |)
@@ -3486,7 +3964,7 @@ Module slice.
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     BinOp.Wrap.sub (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3495,7 +3973,7 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |),
                       BinOp.Wrap.mul (|
                         M.read (| len |),
@@ -3514,17 +3992,33 @@ Module slice.
                     let multiple_of_n := M.copy (| γ0_1 |) in
                     let~ array_slice :=
                       M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ T ],
-                            "as_chunks_unchecked_mut",
-                            [],
-                            []
-                          |),
-                          [ M.read (| multiple_of_n |) ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ T ],
+                                "as_chunks_unchecked_mut",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| multiple_of_n |) |)
+                                |)
+                              ]
+                            |)
+                          |)
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [ M.read (| remainder |); M.read (| array_slice |) ] |)))
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| remainder |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| array_slice |) |) |)
+                        ]
+                    |)))
               ]
             |)
           |)))
@@ -3585,9 +4079,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3606,7 +4112,7 @@ Module slice.
                   [ N ],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)
             |)
           |)))
@@ -3660,9 +4166,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "window size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "window size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3681,7 +4199,7 @@ Module slice.
                   [ N ],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |)
           |)))
@@ -3736,9 +4254,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3757,7 +4287,10 @@ Module slice.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| chunk_size |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| chunk_size |)
+                ]
               |)
             |)
           |)))
@@ -3812,9 +4345,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3833,7 +4378,10 @@ Module slice.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| chunk_size |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| chunk_size |)
+                ]
               |)
             |)
           |)))
@@ -3888,9 +4436,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3909,7 +4469,10 @@ Module slice.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| chunk_size |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| chunk_size |)
+                ]
               |)
             |)
           |)))
@@ -3969,9 +4532,21 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "chunk size must be non-zero" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "chunk size must be non-zero"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3990,7 +4565,10 @@ Module slice.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| chunk_size |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| chunk_size |)
+                ]
               |)
             |)
           |)))
@@ -4023,7 +4601,7 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| pred |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| pred |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4054,7 +4632,8 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| pred |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); M.read (| pred |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4088,7 +4667,10 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| mid |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.read (| mid |)
+                  ]
                 |)
               |),
               [
@@ -4117,7 +4699,18 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.alloc (| Value.Array [ M.read (| Value.String "mid > len" |) ] |)
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array [ M.read (| Value.String "mid > len" |) ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -4159,7 +4752,10 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| mid |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| mid |)
+                  ]
                 |)
               |),
               [
@@ -4188,7 +4784,18 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.alloc (| Value.Array [ M.read (| Value.String "mid > len" |) ] |)
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array [ M.read (| Value.String "mid > len" |) ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -4246,7 +4853,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ ptr :=
@@ -4258,7 +4865,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -4295,31 +4902,41 @@ Module slice.
             M.alloc (|
               Value.Tuple
                 [
-                  M.call_closure (|
-                    M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
-                    [ M.read (| ptr |); M.read (| mid |) ]
-                  |);
-                  M.call_closure (|
-                    M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
                       M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "*const") [] [ T ],
-                          "add",
-                          [],
-                          []
-                        |),
+                        M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                         [ M.read (| ptr |); M.read (| mid |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_function (|
-                          "core::intrinsics::unchecked_sub",
-                          [],
-                          [ Ty.path "usize" ]
-                        |),
-                        [ M.read (| len |); M.read (| mid |) ]
                       |)
-                    ]
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*const") [] [ T ],
+                              "add",
+                              [],
+                              []
+                            |),
+                            [ M.read (| ptr |); M.read (| mid |) ]
+                          |);
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::intrinsics::unchecked_sub",
+                              [],
+                              [ Ty.path "usize" ]
+                            |),
+                            [ M.read (| len |); M.read (| mid |) ]
+                          |)
+                        ]
+                      |)
+                    |)
                   |)
                 ]
             |)
@@ -4376,7 +4993,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ ptr :=
@@ -4388,7 +5005,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -4425,31 +5042,41 @@ Module slice.
             M.alloc (|
               Value.Tuple
                 [
-                  M.call_closure (|
-                    M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-                    [ M.read (| ptr |); M.read (| mid |) ]
-                  |);
-                  M.call_closure (|
-                    M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "*mut") [] [ T ],
-                          "add",
-                          [],
-                          []
-                        |),
+                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                         [ M.read (| ptr |); M.read (| mid |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_function (|
-                          "core::intrinsics::unchecked_sub",
-                          [],
-                          [ Ty.path "usize" ]
-                        |),
-                        [ M.read (| len |); M.read (| mid |) ]
                       |)
-                    ]
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              "add",
+                              [],
+                              []
+                            |),
+                            [ M.read (| ptr |); M.read (| mid |) ]
+                          |);
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::intrinsics::unchecked_sub",
+                              [],
+                              [ Ty.path "usize" ]
+                            |),
+                            [ M.read (| len |); M.read (| mid |) ]
+                          |)
+                        ]
+                      |)
+                    |)
                   |)
                 ]
             |)
@@ -4502,7 +5129,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)
                         |)) in
@@ -4518,7 +5145,10 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.read (| self |); M.read (| mid |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.read (| mid |)
+                            ]
                           |)
                         ]
                     |)));
@@ -4575,7 +5205,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)
                         |)) in
@@ -4591,7 +5221,10 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.read (| self |); M.read (| mid |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.read (| mid |)
+                            ]
                           |)
                         ]
                     |)));
@@ -4629,7 +5262,7 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| pred |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| pred |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4660,7 +5293,8 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| pred |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); M.read (| pred |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4696,7 +5330,7 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| pred |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| pred |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4732,7 +5366,8 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| pred |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); M.read (| pred |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4763,7 +5398,7 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| pred |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| pred |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4794,7 +5429,8 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| pred |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); M.read (| pred |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4834,7 +5470,10 @@ Module slice.
                   [],
                   [ F ]
                 |),
-                [ M.read (| self |); M.read (| pred |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| pred |)
+                ]
               |);
               M.read (| n |)
             ]
@@ -4877,7 +5516,10 @@ Module slice.
                   [],
                   [ F ]
                 |),
-                [ M.read (| self |); M.read (| pred |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| pred |)
+                ]
               |);
               M.read (| n |)
             ]
@@ -4920,7 +5562,10 @@ Module slice.
                   [],
                   [ F ]
                 |),
-                [ M.read (| self |); M.read (| pred |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| pred |)
+                ]
               |);
               M.read (| n |)
             ]
@@ -4963,7 +5608,10 @@ Module slice.
                   [],
                   [ F ]
                 |),
-                [ M.read (| self |); M.read (| pred |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| pred |)
+                ]
               |);
               M.read (| n |)
             ]
@@ -5020,15 +5668,23 @@ Module slice.
                                 [ F ]
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ T ],
-                                      "iter",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| self |) ]
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ T ],
+                                        "iter",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |);
                                 M.read (| pred |)
@@ -5106,55 +5762,81 @@ Module slice.
                     [
                       Value.Tuple
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::Index",
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeTo")
-                                  []
-                                  [ Ty.path "usize" ]
-                              ],
-                              "index",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| self |);
-                              Value.StructRecord
-                                "core::ops::range::RangeTo"
-                                [ ("end_", M.read (| index |)) ]
-                            ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::index::Index",
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::RangeTo")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
+                                      "index",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      Value.StructRecord
+                                        "core::ops::range::RangeTo"
+                                        [ ("end_", M.read (| index |)) ]
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
                           |);
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::Index",
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeFrom")
-                                  []
-                                  [ Ty.path "usize" ]
-                              ],
-                              "index",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| self |);
-                              Value.StructRecord
-                                "core::ops::range::RangeFrom"
-                                [
-                                  ("start",
-                                    BinOp.Wrap.add (|
-                                      M.read (| index |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |))
-                                ]
-                            ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::index::Index",
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::RangeFrom")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
+                                      "index",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      Value.StructRecord
+                                        "core::ops::range::RangeFrom"
+                                        [
+                                          ("start",
+                                            BinOp.Wrap.add (|
+                                              M.read (| index |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |))
+                                        ]
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                     ]
@@ -5213,15 +5895,23 @@ Module slice.
                                 [ F ]
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ T ],
-                                      "iter",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| self |) ]
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ T ],
+                                        "iter",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |);
                                 M.read (| pred |)
@@ -5299,55 +5989,81 @@ Module slice.
                     [
                       Value.Tuple
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::Index",
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeTo")
-                                  []
-                                  [ Ty.path "usize" ]
-                              ],
-                              "index",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| self |);
-                              Value.StructRecord
-                                "core::ops::range::RangeTo"
-                                [ ("end_", M.read (| index |)) ]
-                            ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::index::Index",
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::RangeTo")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
+                                      "index",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      Value.StructRecord
+                                        "core::ops::range::RangeTo"
+                                        [ ("end_", M.read (| index |)) ]
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
                           |);
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::Index",
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeFrom")
-                                  []
-                                  [ Ty.path "usize" ]
-                              ],
-                              "index",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| self |);
-                              Value.StructRecord
-                                "core::ops::range::RangeFrom"
-                                [
-                                  ("start",
-                                    BinOp.Wrap.add (|
-                                      M.read (| index |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |))
-                                ]
-                            ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::index::Index",
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::RangeFrom")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
+                                      "index",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      Value.StructRecord
+                                        "core::ops::range::RangeFrom"
+                                        [
+                                          ("start",
+                                            BinOp.Wrap.add (|
+                                              M.read (| index |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |))
+                                        ]
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                     ]
@@ -5386,7 +6102,10 @@ Module slice.
               [],
               []
             |),
-            [ M.read (| x |); M.read (| self |) ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5421,7 +6140,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| needle |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -5434,7 +6153,7 @@ Module slice.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
                   M.read (| n |)
                 |),
@@ -5450,25 +6169,37 @@ Module slice.
                       []
                     |),
                     [
-                      needle;
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::index::Index",
-                            Ty.apply (Ty.path "slice") [] [ T ],
-                            [],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
-                            ],
-                            "index",
-                            [],
-                            []
-                          |),
-                          [
-                            M.read (| self |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", M.read (| n |)) ]
-                          ]
+                      M.borrow (| Pointer.Kind.Ref, needle |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::index::Index",
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::RangeTo")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeTo"
+                                    [ ("end_", M.read (| n |)) ]
+                                ]
+                              |)
+                            |)
+                          |)
                         |)
                       |)
                     ]
@@ -5511,7 +6242,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
@@ -5520,7 +6251,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| needle |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |) ]
                     |)
                   ]
               |),
@@ -5546,32 +6277,43 @@ Module slice.
                               []
                             |),
                             [
-                              needle;
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::index::Index",
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeFrom")
-                                        []
-                                        [ Ty.path "usize" ]
-                                    ],
-                                    "index",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (| self |);
-                                    Value.StructRecord
-                                      "core::ops::range::RangeFrom"
-                                      [
-                                        ("start",
-                                          BinOp.Wrap.sub (| M.read (| m |), M.read (| n |) |))
-                                      ]
-                                  ]
+                              M.borrow (| Pointer.Kind.Ref, needle |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeFrom")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeFrom"
+                                            [
+                                              ("start",
+                                                BinOp.Wrap.sub (| M.read (| m |), M.read (| n |) |))
+                                            ]
+                                        ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               |)
                             ]
@@ -5627,7 +6369,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| prefix |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| prefix |) |) |) ]
                     |)
                   |) in
                 let~ n :=
@@ -5639,7 +6381,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| prefix |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| prefix |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -5660,7 +6402,12 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -5675,7 +6422,10 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |); M.read (| n |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                  M.read (| n |)
+                                ]
                               |)
                             |),
                             [
@@ -5711,7 +6461,10 @@ Module slice.
                                                     [],
                                                     []
                                                   |),
-                                                  [ head; prefix ]
+                                                  [
+                                                    M.borrow (| Pointer.Kind.Ref, head |);
+                                                    M.borrow (| Pointer.Kind.Ref, prefix |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -5725,7 +6478,12 @@ Module slice.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
-                                                    [ M.read (| tail |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| tail |) |)
+                                                      |)
+                                                    ]
                                                 |)
                                               |)
                                             |)
@@ -5787,7 +6545,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| suffix |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| suffix |) |) |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -5801,7 +6559,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
@@ -5810,7 +6568,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| suffix |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| suffix |) |) |) ]
                         |)
                       ]
                   |),
@@ -5847,7 +6605,10 @@ Module slice.
                                           []
                                         |),
                                         [
-                                          M.read (| self |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
                                           BinOp.Wrap.sub (| M.read (| len |), M.read (| n |) |)
                                         ]
                                       |)
@@ -5891,7 +6652,10 @@ Module slice.
                                                             [],
                                                             []
                                                           |),
-                                                          [ tail; suffix ]
+                                                          [
+                                                            M.borrow (| Pointer.Kind.Ref, tail |);
+                                                            M.borrow (| Pointer.Kind.Ref, suffix |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -5905,7 +6669,12 @@ Module slice.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
-                                                            [ M.read (| head |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| head |) |)
+                                                              |)
+                                                            ]
                                                         |)
                                                       |)
                                                     |)
@@ -5958,7 +6727,7 @@ Module slice.
               ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -5981,7 +6750,10 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| p |); M.read (| x |) ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| p |) |) |);
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |)
+                                  ]
                                 |)))
                           ]
                         |)))
@@ -6075,7 +6847,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -6151,17 +6923,28 @@ Module slice.
                                       []
                                     |),
                                     [
-                                      f;
+                                      M.borrow (| Pointer.Kind.MutRef, f |);
                                       Value.Tuple
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [] [ T ],
-                                              "get_unchecked",
-                                              [],
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [ M.read (| self |); M.read (| mid |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                                  "get_unchecked",
+                                                  [],
+                                                  [ Ty.path "usize" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |);
+                                                  M.read (| mid |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
                                         ]
                                     ]
@@ -6188,9 +6971,12 @@ Module slice.
                                           []
                                         |),
                                         [
-                                          cmp;
-                                          M.alloc (|
-                                            Value.StructTuple "core::cmp::Ordering::Greater" []
+                                          M.borrow (| Pointer.Kind.Ref, cmp |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.StructTuple "core::cmp::Ordering::Greater" []
+                                            |)
                                           |)
                                         ]
                                       |);
@@ -6235,17 +7021,28 @@ Module slice.
                         []
                       |),
                       [
-                        f;
+                        M.borrow (| Pointer.Kind.MutRef, f |);
                         Value.Tuple
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "get_unchecked",
-                                [],
-                                [ Ty.path "usize" ]
-                              |),
-                              [ M.read (| self |); M.read (| base |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "get_unchecked",
+                                    [],
+                                    [ Ty.path "usize" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.read (| base |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                       ]
@@ -6270,8 +7067,11 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  cmp;
-                                  M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                                  M.borrow (| Pointer.Kind.Ref, cmp |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                                  |)
                                 ]
                               |)
                             |)) in
@@ -6291,7 +7091,12 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               ]
@@ -6318,8 +7123,11 @@ Module slice.
                                     []
                                   |),
                                   [
-                                    cmp;
-                                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                                    M.borrow (| Pointer.Kind.Ref, cmp |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                                    |)
                                   ]
                                 |))
                             |)
@@ -6338,7 +7146,12 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               ]
@@ -6392,7 +7205,7 @@ Module slice.
               ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -6416,21 +7229,33 @@ Module slice.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                          "call_mut",
-                                          [],
-                                          []
-                                        |),
-                                        [ f; Value.Tuple [ M.read (| k |) ] ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::FnMut",
+                                            F,
+                                            [],
+                                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                            "call_mut",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (| Pointer.Kind.MutRef, f |);
+                                            Value.Tuple
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| k |) |)
+                                                |)
+                                              ]
+                                          ]
+                                        |)
                                       |)
                                     |);
-                                    M.read (| b |)
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
                                   ]
                                 |)))
                           ]
@@ -6475,9 +7300,25 @@ Module slice.
                     ]
                   |),
                   [
-                    M.read (| self |);
-                    M.alloc (|
-                      M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.get_trait_method (|
+                              "core::cmp::PartialOrd",
+                              T,
+                              [],
+                              [ T ],
+                              "lt",
+                              [],
+                              []
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -6529,74 +7370,106 @@ Module slice.
                     ]
                   |),
                   [
-                    M.read (| self |);
-                    M.alloc (|
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let a := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let b := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::cmp::PartialEq",
-                                                    Ty.path "core::cmp::Ordering",
-                                                    [],
-                                                    [ Ty.path "core::cmp::Ordering" ],
-                                                    "eq",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.alloc (|
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0; α1 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let a := M.copy (| γ |) in
+                                              M.match_operator (|
+                                                M.alloc (| α1 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let b := M.copy (| γ |) in
                                                       M.call_closure (|
                                                         M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
+                                                          "core::cmp::PartialEq",
+                                                          Ty.path "core::cmp::Ordering",
                                                           [],
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply (Ty.path "&") [] [ T ];
-                                                                Ty.apply (Ty.path "&") [] [ T ]
-                                                              ]
-                                                          ],
-                                                          "call_mut",
+                                                          [ Ty.path "core::cmp::Ordering" ],
+                                                          "eq",
                                                           [],
                                                           []
                                                         |),
                                                         [
-                                                          compare;
-                                                          Value.Tuple
-                                                            [ M.read (| a |); M.read (| b |) ]
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::function::FnMut",
+                                                                  F,
+                                                                  [],
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ T ];
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ T ]
+                                                                      ]
+                                                                  ],
+                                                                  "call_mut",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    compare
+                                                                  |);
+                                                                  Value.Tuple
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (| M.read (| a |) |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (| M.read (| b |) |)
+                                                                      |)
+                                                                    ]
+                                                                ]
+                                                              |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.StructTuple
+                                                                "core::cmp::Ordering::Less"
+                                                                []
+                                                            |)
+                                                          |)
                                                         ]
-                                                      |)
-                                                    |);
-                                                    M.alloc (|
-                                                      Value.StructTuple
-                                                        "core::cmp::Ordering::Less"
-                                                        []
-                                                    |)
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -6649,79 +7522,134 @@ Module slice.
                     ]
                   |),
                   [
-                    M.read (| self |);
-                    M.alloc (|
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let a := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let b := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::cmp::PartialOrd",
-                                                    K,
-                                                    [],
-                                                    [ K ],
-                                                    "lt",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.alloc (|
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0; α1 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let a := M.copy (| γ |) in
+                                              M.match_operator (|
+                                                M.alloc (| α1 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let b := M.copy (| γ |) in
                                                       M.call_closure (|
                                                         M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
+                                                          "core::cmp::PartialOrd",
+                                                          K,
                                                           [],
-                                                          [
-                                                            Ty.tuple
-                                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                          ],
-                                                          "call_mut",
+                                                          [ K ],
+                                                          "lt",
                                                           [],
                                                           []
                                                         |),
-                                                        [ f; Value.Tuple [ M.read (| a |) ] ]
-                                                      |)
-                                                    |);
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
-                                                          [],
-                                                          [
-                                                            Ty.tuple
-                                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                          ],
-                                                          "call_mut",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ f; Value.Tuple [ M.read (| b |) ] ]
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::function::FnMut",
+                                                                  F,
+                                                                  [],
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ T ]
+                                                                      ]
+                                                                  ],
+                                                                  "call_mut",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    f
+                                                                  |);
+                                                                  Value.Tuple
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (| M.read (| a |) |)
+                                                                      |)
+                                                                    ]
+                                                                ]
+                                                              |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::function::FnMut",
+                                                                      F,
+                                                                      [],
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ T ]
+                                                                          ]
+                                                                      ],
+                                                                      "call_mut",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        f
+                                                                      |);
+                                                                      Value.Tuple
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (| b |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                    ]
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -6767,7 +7695,7 @@ Module slice.
               ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.read (| index |);
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |)
             ]
@@ -6816,7 +7744,7 @@ Module slice.
               ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.read (| index |);
               M.closure
                 (fun γ =>
@@ -6847,31 +7775,47 @@ Module slice.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [],
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [],
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.apply (Ty.path "&") [] [ T ];
+                                                          Ty.apply (Ty.path "&") [] [ T ]
+                                                        ]
+                                                    ],
+                                                    "call_mut",
+                                                    [],
+                                                    []
+                                                  |),
                                                   [
-                                                    Ty.tuple
+                                                    M.borrow (| Pointer.Kind.MutRef, compare |);
+                                                    Value.Tuple
                                                       [
-                                                        Ty.apply (Ty.path "&") [] [ T ];
-                                                        Ty.apply (Ty.path "&") [] [ T ]
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| a |) |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| b |) |)
+                                                        |)
                                                       ]
-                                                  ],
-                                                  "call_mut",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  compare;
-                                                  Value.Tuple [ M.read (| a |); M.read (| b |) ]
-                                                ]
+                                                  ]
+                                                |)
                                               |)
                                             |);
-                                            M.alloc (|
-                                              Value.StructTuple "core::cmp::Ordering::Less" []
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.StructTuple "core::cmp::Ordering::Less" []
+                                              |)
                                             |)
                                           ]
                                         |)))
@@ -6928,7 +7872,7 @@ Module slice.
               ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.read (| index |);
               M.closure
                 (fun γ =>
@@ -6959,32 +7903,65 @@ Module slice.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [],
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                  "call_mut",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ f; Value.Tuple [ M.read (| a |) ] ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [],
+                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                    ],
+                                                    "call_mut",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, f |);
+                                                    Value.Tuple
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| a |) |)
+                                                        |)
+                                                      ]
+                                                  ]
+                                                |)
                                               |)
                                             |);
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [],
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                  "call_mut",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ f; Value.Tuple [ M.read (| b |) ] ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        F,
+                                                        [],
+                                                        [
+                                                          Ty.tuple
+                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                                        Value.Tuple
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| b |) |)
+                                                            |)
+                                                          ]
+                                                      ]
+                                                    |)
+                                                  |)
+                                                |)
                                               |)
                                             |)
                                           ]
@@ -7038,7 +8015,7 @@ Module slice.
               ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -7067,7 +8044,10 @@ Module slice.
                                             [],
                                             []
                                           |),
-                                          [ a; b ]
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, a |);
+                                            M.borrow (| Pointer.Kind.Ref, b |)
+                                          ]
                                         |)))
                                   ]
                                 |)))
@@ -7213,7 +8193,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -7233,7 +8213,22 @@ Module slice.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.Tuple [ M.read (| self |); M.alloc (| Value.Array [] |) ]
+                                  Value.Tuple
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.alloc (| Value.Array [] |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                 |)
                               |)
                             |)
@@ -7250,7 +8245,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ next_read := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
@@ -7330,11 +8325,29 @@ Module slice.
                                                     []
                                                   |),
                                                   [
-                                                    same_bucket;
+                                                    M.borrow (| Pointer.Kind.MutRef, same_bucket |);
                                                     Value.Tuple
                                                       [
-                                                        M.read (| ptr_read |);
-                                                        M.read (| prev_ptr_write |)
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| ptr_read |) |)
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (|
+                                                                M.read (| prev_ptr_write |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
                                                       ]
                                                   ]
                                                 |)
@@ -7388,8 +8401,24 @@ Module slice.
                                                           [ T ]
                                                         |),
                                                         [
-                                                          M.read (| ptr_read |);
-                                                          M.read (| ptr_write |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (| M.read (| ptr_read |) |)
+                                                              |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (| M.read (| ptr_write |) |)
+                                                              |)
+                                                            |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -7445,7 +8474,10 @@ Module slice.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| next_write |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| next_write |)
+                    ]
                   |)
                 |)
               |)))
@@ -7493,7 +8525,7 @@ Module slice.
               ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -7523,34 +8555,62 @@ Module slice.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [],
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                                                  ],
-                                                  "call_mut",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ key; Value.Tuple [ M.read (| a |) ] ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [],
+                                                    [
+                                                      Ty.tuple
+                                                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                                                    ],
+                                                    "call_mut",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, key |);
+                                                    Value.Tuple
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| a |) |)
+                                                        |)
+                                                      ]
+                                                  ]
+                                                |)
                                               |)
                                             |);
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [],
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                                                  ],
-                                                  "call_mut",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ key; Value.Tuple [ M.read (| b |) ] ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [],
+                                                    [
+                                                      Ty.tuple
+                                                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                                                    ],
+                                                    "call_mut",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, key |);
+                                                    Value.Tuple
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| b |) |)
+                                                        |)
+                                                      ]
+                                                  ]
+                                                |)
                                               |)
                                             |)
                                           ]
@@ -7610,7 +8670,8 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |)
                               |)
                             |)
@@ -7637,7 +8698,7 @@ Module slice.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
                   M.read (| mid |)
                 |)
@@ -7651,7 +8712,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -7722,7 +8783,8 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |)
                               |)
                             |)
@@ -7749,7 +8811,7 @@ Module slice.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
                   M.read (| k |)
                 |)
@@ -7763,7 +8825,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -7822,7 +8884,10 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| value |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| value |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -7887,7 +8952,12 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -7907,7 +8977,7 @@ Module slice.
                                     let el := M.copy (| γ0_0 |) in
                                     let~ _ :=
                                       M.write (|
-                                        M.read (| el |),
+                                        M.deref (| M.read (| el |) |),
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::ops::function::FnMut",
@@ -7918,7 +8988,7 @@ Module slice.
                                             [],
                                             []
                                           |),
-                                          [ f; Value.Tuple [] ]
+                                          [ M.borrow (| Pointer.Kind.MutRef, f |); Value.Tuple [] ]
                                         |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
@@ -7969,7 +9039,10 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| src |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -8040,7 +9113,7 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |),
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -8049,7 +9122,7 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| src |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                               |)
                             |)
                           |)) in
@@ -8071,7 +9144,7 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -8080,7 +9153,7 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| src |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                               |)
                             ]
                           |)
@@ -8101,7 +9174,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| src |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
@@ -8110,7 +9183,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
@@ -8119,7 +9192,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   ]
                 |)
@@ -8178,7 +9251,7 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |))
                       ]
                   ]
@@ -8225,7 +9298,12 @@ Module slice.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
                                           |),
                                           M.read (| count |)
                                         |)
@@ -8250,9 +9328,21 @@ Module slice.
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "dest is out of bounds" |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (|
+                                                        Value.String "dest is out of bounds"
+                                                      |)
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -8272,7 +9362,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |) in
                     let~ src_ptr :=
@@ -8363,7 +9453,8 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -8372,7 +9463,12 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| other |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| other |) |)
+                                    |)
+                                  ]
                                 |)
                               |)
                             |)
@@ -8391,14 +9487,22 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "destination and source slices have different lengths"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "destination and source slices have different lengths"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -8421,7 +9525,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
@@ -8430,7 +9534,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| other |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| other |) |) |) ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
@@ -8439,7 +9543,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   ]
                 |)
@@ -8529,7 +9633,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |),
                     M.read (| ts |)
                   |),
@@ -8546,7 +9650,7 @@ Module slice.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
                   M.read (| ts |)
                 |)
@@ -8633,8 +9737,24 @@ Module slice.
                                   Value.Tuple
                                     [
                                       M.read (| self |);
-                                      M.alloc (| Value.Array [] |);
-                                      M.alloc (| Value.Array [] |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (| Value.Array [] |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (| Value.Array [] |)
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                 |)
                               |)
@@ -8652,7 +9772,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ offset :=
@@ -8685,7 +9805,8 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |)
                               |)
                             |)) in
@@ -8695,8 +9816,18 @@ Module slice.
                           Value.Tuple
                             [
                               M.read (| self |);
-                              M.alloc (| Value.Array [] |);
-                              M.alloc (| Value.Array [] |)
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |)
+                                |)
+                              |)
                             ]
                         |)));
                     fun γ =>
@@ -8710,7 +9841,10 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| offset |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| offset |)
+                              ]
                             |)
                           |),
                           [
@@ -8729,7 +9863,12 @@ Module slice.
                                         [],
                                         [ U ]
                                       |),
-                                      [ M.read (| rest |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| rest |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -8742,67 +9881,95 @@ Module slice.
                                         M.alloc (|
                                           Value.Tuple
                                             [
-                                              M.read (| left |);
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "core::slice::raw::from_raw_parts",
-                                                  [],
-                                                  [ U ]
-                                                |),
-                                                [
-                                                  M.rust_cast
-                                                    (M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                                        "as_ptr",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| rest |) ]
-                                                    |));
-                                                  M.read (| us_len |)
-                                                ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| left |) |)
                                               |);
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "core::slice::raw::from_raw_parts",
-                                                  [],
-                                                  [ T ]
-                                                |),
-                                                [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
                                                   M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*const") [] [ T ],
-                                                      "add",
+                                                    M.get_function (|
+                                                      "core::slice::raw::from_raw_parts",
                                                       [],
-                                                      []
+                                                      [ U ]
+                                                    |),
+                                                    [
+                                                      M.rust_cast
+                                                        (M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply (Ty.path "slice") [] [ T ],
+                                                            "as_ptr",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| rest |) |)
+                                                            |)
+                                                          ]
+                                                        |));
+                                                      M.read (| us_len |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::slice::raw::from_raw_parts",
+                                                      [],
+                                                      [ T ]
                                                     |),
                                                     [
                                                       M.call_closure (|
                                                         M.get_associated_function (|
-                                                          Ty.apply (Ty.path "slice") [] [ T ],
-                                                          "as_ptr",
+                                                          Ty.apply (Ty.path "*const") [] [ T ],
+                                                          "add",
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.read (| rest |) ]
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply (Ty.path "slice") [] [ T ],
+                                                              "as_ptr",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| rest |) |)
+                                                              |)
+                                                            ]
+                                                          |);
+                                                          BinOp.Wrap.sub (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply (Ty.path "slice") [] [ T ],
+                                                                "len",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| rest |) |)
+                                                                |)
+                                                              ]
+                                                            |),
+                                                            M.read (| ts_len |)
+                                                          |)
+                                                        ]
                                                       |);
-                                                      BinOp.Wrap.sub (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply (Ty.path "slice") [] [ T ],
-                                                            "len",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| rest |) ]
-                                                        |),
-                                                        M.read (| ts_len |)
-                                                      |)
+                                                      M.read (| ts_len |)
                                                     ]
-                                                  |);
-                                                  M.read (| ts_len |)
-                                                ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                         |)))
@@ -8901,9 +10068,28 @@ Module slice.
                                 M.return_ (|
                                   Value.Tuple
                                     [
-                                      M.read (| self |);
-                                      M.alloc (| Value.Array [] |);
-                                      M.alloc (| Value.Array [] |)
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.alloc (| Value.Array [] |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.alloc (| Value.Array [] |)
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                 |)
                               |)
@@ -8921,7 +10107,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ offset :=
@@ -8954,7 +10140,8 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |)
                               |)
                             |)) in
@@ -8963,9 +10150,19 @@ Module slice.
                         M.alloc (|
                           Value.Tuple
                             [
-                              M.read (| self |);
-                              M.alloc (| Value.Array [] |);
-                              M.alloc (| Value.Array [] |)
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |)
+                                |)
+                              |)
                             ]
                         |)));
                     fun γ =>
@@ -8979,7 +10176,10 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| offset |) ]
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                                M.read (| offset |)
+                              ]
                             |)
                           |),
                           [
@@ -8998,7 +10198,12 @@ Module slice.
                                         [],
                                         [ U ]
                                       |),
-                                      [ M.read (| rest |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| rest |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -9017,7 +10222,12 @@ Module slice.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| rest |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| rest |) |)
+                                                |)
+                                              ]
                                             |)
                                           |) in
                                         let~ mut_ptr :=
@@ -9029,48 +10239,66 @@ Module slice.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| rest |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| rest |) |)
+                                                |)
+                                              ]
                                             |)
                                           |) in
                                         M.alloc (|
                                           Value.Tuple
                                             [
-                                              M.read (| left |);
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "core::slice::raw::from_raw_parts_mut",
-                                                  [],
-                                                  [ U ]
-                                                |),
-                                                [
-                                                  M.rust_cast (M.read (| mut_ptr |));
-                                                  M.read (| us_len |)
-                                                ]
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| left |) |)
                                               |);
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "core::slice::raw::from_raw_parts_mut",
-                                                  [],
-                                                  [ T ]
-                                                |),
-                                                [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
                                                   M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*mut") [] [ T ],
-                                                      "add",
+                                                    M.get_function (|
+                                                      "core::slice::raw::from_raw_parts_mut",
                                                       [],
-                                                      []
+                                                      [ U ]
                                                     |),
                                                     [
-                                                      M.read (| mut_ptr |);
-                                                      BinOp.Wrap.sub (|
-                                                        M.read (| rest_len |),
-                                                        M.read (| ts_len |)
-                                                      |)
+                                                      M.rust_cast (M.read (| mut_ptr |));
+                                                      M.read (| us_len |)
                                                     ]
-                                                  |);
-                                                  M.read (| ts_len |)
-                                                ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::slice::raw::from_raw_parts_mut",
+                                                      [],
+                                                      [ T ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply (Ty.path "*mut") [] [ T ],
+                                                          "add",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| mut_ptr |);
+                                                          BinOp.Wrap.sub (|
+                                                            M.read (| rest_len |),
+                                                            M.read (| ts_len |)
+                                                          |)
+                                                        ]
+                                                      |);
+                                                      M.read (| ts_len |)
+                                                    ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                         |)))
@@ -9118,24 +10346,30 @@ Module slice.
                 M.alloc (|
                   Value.Tuple
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_function (|
-                            "core::mem::size_of",
-                            [],
-                            [ Ty.apply (Ty.path "core::core_simd::vector::Simd") [ LANES ] [ T ] ]
-                          |),
-                          []
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::mem::size_of",
+                              [],
+                              [ Ty.apply (Ty.path "core::core_simd::vector::Simd") [ LANES ] [ T ] ]
+                            |),
+                            []
+                          |)
                         |)
                       |);
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_function (|
-                            "core::mem::size_of",
-                            [],
-                            [ Ty.apply (Ty.path "array") [ LANES ] [ T ] ]
-                          |),
-                          []
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::mem::size_of",
+                              [],
+                              [ Ty.apply (Ty.path "array") [ LANES ] [ T ] ]
+                            |),
+                            []
+                          |)
                         |)
                       |)
                     ]
@@ -9157,8 +10391,8 @@ Module slice.
                                   (M.alloc (|
                                     UnOp.not (|
                                       BinOp.eq (|
-                                        M.read (| M.read (| left_val |) |),
-                                        M.read (| M.read (| right_val |) |)
+                                        M.read (| M.deref (| M.read (| left_val |) |) |),
+                                        M.read (| M.deref (| M.read (| right_val |) |) |)
                                       |)
                                     |)
                                   |)) in
@@ -9183,8 +10417,24 @@ Module slice.
                                         |),
                                         [
                                           M.read (| kind |);
-                                          M.read (| left_val |);
-                                          M.read (| right_val |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| left_val |) |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| right_val |) |)
+                                              |)
+                                            |)
+                                          |);
                                           Value.StructTuple "core::option::Option::None" []
                                         ]
                                       |)
@@ -9205,7 +10455,7 @@ Module slice.
                   [],
                   [ Ty.apply (Ty.path "core::core_simd::vector::Simd") [ LANES ] [ T ] ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |)
           |)))
@@ -9245,24 +10495,30 @@ Module slice.
                 M.alloc (|
                   Value.Tuple
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_function (|
-                            "core::mem::size_of",
-                            [],
-                            [ Ty.apply (Ty.path "core::core_simd::vector::Simd") [ LANES ] [ T ] ]
-                          |),
-                          []
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::mem::size_of",
+                              [],
+                              [ Ty.apply (Ty.path "core::core_simd::vector::Simd") [ LANES ] [ T ] ]
+                            |),
+                            []
+                          |)
                         |)
                       |);
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_function (|
-                            "core::mem::size_of",
-                            [],
-                            [ Ty.apply (Ty.path "array") [ LANES ] [ T ] ]
-                          |),
-                          []
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::mem::size_of",
+                              [],
+                              [ Ty.apply (Ty.path "array") [ LANES ] [ T ] ]
+                            |),
+                            []
+                          |)
                         |)
                       |)
                     ]
@@ -9284,8 +10540,8 @@ Module slice.
                                   (M.alloc (|
                                     UnOp.not (|
                                       BinOp.eq (|
-                                        M.read (| M.read (| left_val |) |),
-                                        M.read (| M.read (| right_val |) |)
+                                        M.read (| M.deref (| M.read (| left_val |) |) |),
+                                        M.read (| M.deref (| M.read (| right_val |) |) |)
                                       |)
                                     |)
                                   |)) in
@@ -9310,8 +10566,24 @@ Module slice.
                                         |),
                                         [
                                           M.read (| kind |);
-                                          M.read (| left_val |);
-                                          M.read (| right_val |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| left_val |) |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| right_val |) |)
+                                              |)
+                                            |)
+                                          |);
                                           Value.StructTuple "core::option::Option::None" []
                                         ]
                                       |)
@@ -9332,7 +10604,7 @@ Module slice.
                   [],
                   [ Ty.apply (Ty.path "core::core_simd::vector::Simd") [ LANES ] [ T ] ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)
             |)
           |)))
@@ -9369,7 +10641,7 @@ Module slice.
               ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -9398,7 +10670,18 @@ Module slice.
                                             [],
                                             []
                                           |),
-                                          [ a; M.alloc (| M.read (| b |) |) ]
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, a |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| b |) |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
                                         |)))
                                   ]
                                 |)))
@@ -9456,15 +10739,18 @@ Module slice.
               ]
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ T ],
-                    "array_windows",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "array_windows",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
                 |)
               |);
               M.closure
@@ -9499,7 +10785,20 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ compare; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
+                                  [
+                                    M.borrow (| Pointer.Kind.MutRef, compare |);
+                                    Value.Tuple
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| a |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| b |) |)
+                                        |)
+                                      ]
+                                  ]
                                 |)))
                           ]
                         |)))
@@ -9548,7 +10847,7 @@ Module slice.
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [], [] |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |);
               M.read (| f |)
             ]
@@ -9600,7 +10899,7 @@ Module slice.
                   ]
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -9635,7 +10934,16 @@ Module slice.
                                                         [],
                                                         []
                                                       |),
-                                                      [ pred; Value.Tuple [ M.read (| x |) ] ]
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, pred |);
+                                                        Value.Tuple
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| x |) |)
+                                                            |)
+                                                          ]
+                                                      ]
                                                     |)
                                                   |)) in
                                               let _ :=
@@ -9819,7 +11127,14 @@ Module slice.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| M.read (| self |) |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (| M.deref (| M.read (| self |) |) |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       |)) in
@@ -9849,7 +11164,13 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| M.read (| self |) |); M.read (| split_index |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                                |);
+                                M.read (| split_index |)
+                              ]
                             |)
                           |),
                           [
@@ -9870,11 +11191,22 @@ Module slice.
                                             "core::slice::Direction::Front"
                                           |) in
                                         let~ _ :=
-                                          M.write (| M.read (| self |), M.read (| back |) |) in
+                                          M.write (|
+                                            M.deref (| M.read (| self |) |),
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| back |) |)
+                                            |)
+                                          |) in
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ M.read (| front |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| front |) |)
+                                              |)
+                                            ]
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -9884,11 +11216,22 @@ Module slice.
                                             "core::slice::Direction::Back"
                                           |) in
                                         let~ _ :=
-                                          M.write (| M.read (| self |), M.read (| front |) |) in
+                                          M.write (|
+                                            M.deref (| M.read (| self |) |),
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| front |) |)
+                                            |)
+                                          |) in
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ M.read (| back |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| back |) |)
+                                              |)
+                                            ]
                                         |)))
                                   ]
                                 |)))
@@ -10041,7 +11384,14 @@ Module slice.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| M.read (| self |) |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (| M.deref (| M.read (| self |) |) |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       |)) in
@@ -10072,18 +11422,28 @@ Module slice.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_function (|
-                                    "core::mem::take",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&mut")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                    ]
-                                  |),
-                                  [ M.read (| self |) ]
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "core::mem::take",
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                        ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
                                 |);
                                 M.read (| split_index |)
                               ]
@@ -10107,11 +11467,22 @@ Module slice.
                                             "core::slice::Direction::Front"
                                           |) in
                                         let~ _ :=
-                                          M.write (| M.read (| self |), M.read (| back |) |) in
+                                          M.write (|
+                                            M.deref (| M.read (| self |) |),
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| back |) |)
+                                            |)
+                                          |) in
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ M.read (| front |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| front |) |)
+                                              |)
+                                            ]
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -10121,11 +11492,22 @@ Module slice.
                                             "core::slice::Direction::Back"
                                           |) in
                                         let~ _ :=
-                                          M.write (| M.read (| self |), M.read (| front |) |) in
+                                          M.write (|
+                                            M.deref (| M.read (| self |) |),
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| front |) |)
+                                            |)
+                                          |) in
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ M.read (| back |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| back |) |)
+                                              |)
+                                            ]
                                         |)))
                                   ]
                                 |)))
@@ -10188,7 +11570,12 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.read (| M.read (| self |) |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -10250,9 +11637,15 @@ Module slice.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let first := M.copy (| γ0_0 |) in
                         let rem := M.copy (| γ0_1 |) in
-                        let~ _ := M.write (| M.read (| self |), M.read (| rem |) |) in
+                        let~ _ :=
+                          M.write (|
+                            M.deref (| M.read (| self |) |),
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rem |) |) |)
+                          |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| first |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| first |) |) |) ]
                         |)))
                   ]
                 |)
@@ -10320,18 +11713,28 @@ Module slice.
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::mem::take",
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                  ]
-                                |),
-                                [ M.read (| self |) ]
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::take",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                      ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -10395,9 +11798,15 @@ Module slice.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let first := M.copy (| γ0_0 |) in
                         let rem := M.copy (| γ0_1 |) in
-                        let~ _ := M.write (| M.read (| self |), M.read (| rem |) |) in
+                        let~ _ :=
+                          M.write (|
+                            M.deref (| M.read (| self |) |),
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| rem |) |) |)
+                          |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| first |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| first |) |) |) ]
                         |)))
                   ]
                 |)
@@ -10456,7 +11865,12 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.read (| M.read (| self |) |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -10518,9 +11932,15 @@ Module slice.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let last := M.copy (| γ0_0 |) in
                         let rem := M.copy (| γ0_1 |) in
-                        let~ _ := M.write (| M.read (| self |), M.read (| rem |) |) in
+                        let~ _ :=
+                          M.write (|
+                            M.deref (| M.read (| self |) |),
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rem |) |) |)
+                          |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| last |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| last |) |) |) ]
                         |)))
                   ]
                 |)
@@ -10583,18 +12003,28 @@ Module slice.
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::mem::take",
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                  ]
-                                |),
-                                [ M.read (| self |) ]
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::take",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                      ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -10658,9 +12088,15 @@ Module slice.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let last := M.copy (| γ0_0 |) in
                         let rem := M.copy (| γ0_1 |) in
-                        let~ _ := M.write (| M.read (| self |), M.read (| rem |) |) in
+                        let~ _ :=
+                          M.write (|
+                            M.deref (| M.read (| self |) |),
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| rem |) |) |)
+                          |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| last |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| last |) |) |) ]
                         |)))
                   ]
                 |)
@@ -10710,7 +12146,10 @@ Module slice.
           (let self := M.alloc (| self |) in
           let indices := M.alloc (| indices |) in
           M.read (|
-            let~ slice := M.alloc (| M.read (| self |) |) in
+            let~ slice :=
+              M.alloc (|
+                M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| self |) |) |)
+              |) in
             let~ arr :=
               M.alloc (|
                 M.call_closure (|
@@ -10738,7 +12177,7 @@ Module slice.
                     [],
                     []
                   |),
-                  [ arr ]
+                  [ M.borrow (| Pointer.Kind.MutRef, arr |) ]
                 |)
               |) in
             let~ _ :=
@@ -10790,7 +12229,12 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -10812,41 +12256,64 @@ Module slice.
                                       let i := M.copy (| γ0_0 |) in
                                       let~ idx :=
                                         M.copy (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
-                                              "get_unchecked",
-                                              [],
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [ indices; M.read (| i |) ]
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
+                                                "get_unchecked",
+                                                [],
+                                                [ Ty.path "usize" ]
+                                              |),
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, indices |);
+                                                M.read (| i |)
+                                              ]
+                                            |)
                                           |)
                                         |) in
                                       let~ _ :=
                                         M.write (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "slice")
-                                                []
-                                                [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                                              "get_unchecked_mut",
-                                              [],
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [ M.read (| arr_ptr |); M.read (| i |) ]
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                                                "get_unchecked_mut",
+                                                [],
+                                                [ Ty.path "usize" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| arr_ptr |) |)
+                                                |);
+                                                M.read (| i |)
+                                              ]
+                                            |)
                                           |),
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "*mut")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                              "get_unchecked_mut",
-                                              [],
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [ M.read (| slice |); M.read (| idx |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "*mut")
+                                                        []
+                                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                                      "get_unchecked_mut",
+                                                      [],
+                                                      [ Ty.path "usize" ]
+                                                    |),
+                                                    [ M.read (| slice |); M.read (| idx |) ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -10918,7 +12385,10 @@ Module slice.
                                       []
                                     |),
                                     [
-                                      indices;
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, indices |) |)
+                                      |);
                                       M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ T ],
@@ -10926,7 +12396,12 @@ Module slice.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -10963,7 +12438,10 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| indices |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                          M.read (| indices |)
+                        ]
                       |)
                     ]
                 |)
@@ -11029,9 +12507,21 @@ Module slice.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "elements are zero-sized" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String "elements are zero-sized"
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -11052,12 +12542,21 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |))
                   |) in
                 let~ elem_start :=
                   M.alloc (|
-                    M.rust_cast (M.read (| M.use (M.alloc (| M.read (| element |) |)) |))
+                    M.rust_cast
+                      (M.read (|
+                        M.use
+                          (M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.ConstPointer,
+                              M.deref (| M.read (| element |) |)
+                            |)
+                          |))
+                      |))
                   |) in
                 let~ byte_offset :=
                   M.alloc (|
@@ -11122,7 +12621,8 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |)
                               |)
                             |)) in
@@ -11204,9 +12704,21 @@ Module slice.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "elements are zero-sized" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String "elements are zero-sized"
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -11227,7 +12739,7 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |))
                   |) in
                 let~ subslice_start :=
@@ -11240,7 +12752,7 @@ Module slice.
                           [],
                           []
                         |),
-                        [ M.read (| subslice |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| subslice |) |) |) ]
                       |))
                   |) in
                 let~ byte_start :=
@@ -11302,7 +12814,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [ M.read (| subslice |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| subslice |) |) |) ]
                         |)
                       ]
                     |)
@@ -11325,7 +12837,12 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 ltac:(M.monadic
@@ -11338,7 +12855,12 @@ Module slice.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)))
                               |)
@@ -11437,12 +12959,20 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |);
                                   M.read (| M.get_constant (| "core::slice::N" |) |)
                                 ]
                               |);
-                              M.read (| Value.String "slice len overflow" |)
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "slice len overflow" |) |)
+                              |)
                             ]
                           |)
                         |)));
@@ -11467,7 +12997,7 @@ Module slice.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |);
                               M.read (| M.get_constant (| "core::slice::N" |) |)
                             ]
@@ -11477,30 +13007,38 @@ Module slice.
                 |)
               |) in
             M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
-                [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                      "cast",
-                      [],
-                      [ T ]
-                    |),
+                    M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                          "as_ptr",
+                          Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                          "cast",
                           [],
-                          []
+                          [ T ]
                         |),
-                        [ M.read (| self |) ]
-                      |)
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                              "as_ptr",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        ]
+                      |);
+                      M.read (| len |)
                     ]
-                  |);
-                  M.read (| len |)
-                ]
+                  |)
+                |)
               |)
             |)
           |)))
@@ -11536,31 +13074,73 @@ Module slice.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ len :=
-              M.copy (|
-                M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                              "expect",
-                              [],
-                              []
-                            |),
-                            [
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ len :=
+                  M.copy (|
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                                  "expect",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "usize",
+                                      "checked_mul",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.read (| M.get_constant (| "core::slice::N" |) |)
+                                    ]
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "slice len overflow" |) |)
+                                  |)
+                                ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "usize",
-                                  "checked_mul",
+                                  "unchecked_mul",
                                   [],
                                   []
                                 |),
@@ -11575,70 +13155,68 @@ Module slice.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |);
                                   M.read (| M.get_constant (| "core::slice::N" |) |)
                                 ]
-                              |);
-                              M.read (| Value.String "slice len overflow" |)
-                            ]
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
+                              |)
+                            |)))
+                      ]
+                    |)
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
                           M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "usize",
-                              "unchecked_mul",
-                              [],
-                              []
-                            |),
+                            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
-                                    (Ty.path "slice")
+                                    (Ty.path "*mut")
                                     []
                                     [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                                  "len",
+                                  "cast",
                                   [],
-                                  []
+                                  [ T ]
                                 |),
-                                [ M.read (| self |) ]
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                                      "as_mut_ptr",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
-                              M.read (| M.get_constant (| "core::slice::N" |) |)
+                              M.read (| len |)
                             ]
                           |)
-                        |)))
-                  ]
-                |)
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                      "cast",
-                      [],
-                      [ T ]
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                          "as_mut_ptr",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
+                        |)
                       |)
-                    ]
-                  |);
-                  M.read (| len |)
-                ]
+                    |)
+                  |)
+                |)
               |)
             |)
           |)))
@@ -11681,7 +13259,7 @@ Module slice.
                     ]
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.get_associated_function (| Ty.path "f32", "total_cmp", [], [] |)
                   ]
                 |)
@@ -11725,7 +13303,7 @@ Module slice.
                     ]
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.get_associated_function (| Ty.path "f64", "total_cmp", [], [] |)
                   ]
                 |)
@@ -11788,7 +13366,8 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -11797,7 +13376,8 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| src |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                                  ]
                                 |)
                               |)
                             |)
@@ -11816,14 +13396,22 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "destination and source slices have different lengths"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "destination and source slices have different lengths"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -11843,25 +13431,32 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ src :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::Index",
-                    Ty.apply (Ty.path "slice") [] [ T ],
-                    [],
-                    [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
-                    "index",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (| src |);
-                    Value.StructRecord "core::ops::range::RangeTo" [ ("end_", M.read (| len |)) ]
-                  ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::index::Index",
+                        Ty.apply (Ty.path "slice") [] [ T ],
+                        [],
+                        [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
+                        "index",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
+                        Value.StructRecord
+                          "core::ops::range::RangeTo"
+                          [ ("end_", M.read (| len |)) ]
+                      ]
+                    |)
+                  |)
                 |)
               |) in
             M.use
@@ -11906,7 +13501,12 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -11937,8 +13537,25 @@ Module slice.
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_array_field (| M.read (| self |), i |);
-                                            M.SubPointer.get_array_field (| M.read (| src |), i |)
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_array_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                i
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_array_field (|
+                                                    M.deref (| M.read (| src |) |),
+                                                    i
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
                                           ]
                                         |)
                                       |) in
@@ -11992,7 +13609,10 @@ Module slice.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| src |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -12021,7 +13641,12 @@ Module slice.
     Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.alloc (| Value.Array [] |)))
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -12046,7 +13671,17 @@ Module slice.
     Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.alloc (| Value.Array [] |)))
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |) |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -12116,7 +13751,7 @@ Module slice.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| self |)))
+          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -12189,7 +13824,7 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.read (| indices |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| indices |) |) |) ]
                           |)
                         ]
                       |)
@@ -12223,7 +13858,12 @@ Module slice.
                                     [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -12271,30 +13911,38 @@ Module slice.
                                               []
                                             |),
                                             [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::index::Index",
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ N ]
-                                                    [ Ty.path "usize" ],
-                                                  [],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ops::range::RangeTo")
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::index::Index",
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ N ]
+                                                        [ Ty.path "usize" ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::RangeTo")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ],
+                                                      "index",
+                                                      [],
                                                       []
-                                                      [ Ty.path "usize" ]
-                                                  ],
-                                                  "index",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| indices |);
-                                                  Value.StructRecord
-                                                    "core::ops::range::RangeTo"
-                                                    [ ("end_", M.read (| i |)) ]
-                                                ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| indices |) |)
+                                                      |);
+                                                      Value.StructRecord
+                                                        "core::ops::range::RangeTo"
+                                                        [ ("end_", M.read (| i |)) ]
+                                                    ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -12321,7 +13969,17 @@ Module slice.
                                                             [],
                                                             []
                                                           |),
-                                                          [ iter ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  iter
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       |),
                                                       [
@@ -12411,15 +14069,24 @@ Module slice.
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    [],
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "GetManyMutError" |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "GetManyMutError" |) |)
+                      |)
+                    ]
+                  |)
                 |)
               |)
             ]
@@ -12455,10 +14122,15 @@ Module slice.
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
-              M.read (|
-                Value.String "an index is out of bounds or appeared multiple times in the array"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (|
+                    Value.String "an index is out of bounds or appeared multiple times in the array"
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

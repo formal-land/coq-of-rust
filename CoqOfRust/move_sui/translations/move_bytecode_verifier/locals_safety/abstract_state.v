@@ -39,7 +39,7 @@ Module locals_safety.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -77,7 +77,7 @@ Module locals_safety.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
                     self,
@@ -90,7 +90,12 @@ Module locals_safety.
                               γ,
                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
                             |) in
-                          M.alloc (| M.read (| Value.String "Unavailable" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Unavailable" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -99,7 +104,12 @@ Module locals_safety.
                               γ,
                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
                             |) in
-                          M.alloc (| M.read (| Value.String "MaybeAvailable" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "MaybeAvailable" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -108,7 +118,12 @@ Module locals_safety.
                               γ,
                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                             |) in
-                          M.alloc (| M.read (| Value.String "Available" |) |)))
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Available" |) |)
+                            |)
+                          |)))
                     ]
                   |)
                 |)
@@ -185,7 +200,7 @@ Module locals_safety.
                       [ Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                       ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -197,7 +212,7 @@ Module locals_safety.
                       [ Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                       ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -284,10 +299,18 @@ Module locals_safety.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                        "current_function"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                              "current_function"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -309,10 +332,18 @@ Module locals_safety.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                        "all_local_abilities"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                              "all_local_abilities"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -335,10 +366,18 @@ Module locals_safety.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                        "local_states"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                              "local_states"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -373,26 +412,65 @@ Module locals_safety.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "AbstractState" |);
-                M.read (| Value.String "current_function" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                  "current_function"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "AbstractState" |) |)
                 |);
-                M.read (| Value.String "all_local_abilities" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                  "all_local_abilities"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "current_function" |) |)
                 |);
-                M.read (| Value.String "local_states" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                    "local_states"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                        "current_function"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "all_local_abilities" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                        "all_local_abilities"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "local_states" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                            "local_states"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -498,15 +576,21 @@ Module locals_safety.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                      "current_function"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                        "current_function"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                      "current_function"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                        "current_function"
+                      |)
                     |)
                   ]
                 |),
@@ -536,15 +620,21 @@ Module locals_safety.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                        "all_local_abilities"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                          "all_local_abilities"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                        "all_local_abilities"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                          "all_local_abilities"
+                        |)
                       |)
                     ]
                   |)))
@@ -576,15 +666,21 @@ Module locals_safety.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                      "local_states"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                        "local_states"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                      "local_states"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                        "local_states"
+                      |)
                     |)
                   ]
                 |)))
@@ -649,14 +745,24 @@ Module locals_safety.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                              "parameters",
-                              [],
-                              []
-                            |),
-                            [ M.read (| function_context |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                                  "parameters",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| function_context |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -673,14 +779,24 @@ Module locals_safety.
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                                "locals",
-                                [],
-                                []
-                              |),
-                              [ M.read (| function_context |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                                    "locals",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| function_context |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -987,39 +1103,56 @@ Module locals_safety.
                                               []
                                             |),
                                             [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::deref::Deref",
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ],
-                                                  [],
-                                                  [],
-                                                  "deref",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_bytecode_verifier::absint::FunctionContext",
-                                                        "parameters",
-                                                        [],
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
                                                         []
-                                                      |),
-                                                      [ M.read (| function_context |) ]
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
                                                     |),
-                                                    "move_binary_format::file_format::Signature",
-                                                    0
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::absint::FunctionContext",
+                                                                "parameters",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| function_context |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |),
+                                                          "move_binary_format::file_format::Signature",
+                                                          0
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                ]
+                                                |)
                                               |)
                                             ]
                                           |);
@@ -1037,39 +1170,56 @@ Module locals_safety.
                                               []
                                             |),
                                             [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::deref::Deref",
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ],
-                                                  [],
-                                                  [],
-                                                  "deref",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_bytecode_verifier::absint::FunctionContext",
-                                                        "locals",
-                                                        [],
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
                                                         []
-                                                      |),
-                                                      [ M.read (| function_context |) ]
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
                                                     |),
-                                                    "move_binary_format::file_format::Signature",
-                                                    0
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::absint::FunctionContext",
+                                                                "locals",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| function_context |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |),
+                                                          "move_binary_format::file_format::Signature",
+                                                          0
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                ]
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1096,17 +1246,37 @@ Module locals_safety.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (| module |);
-                                                            M.read (| st |);
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path
-                                                                  "move_bytecode_verifier::absint::FunctionContext",
-                                                                "type_parameters",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [ M.read (| function_context |) ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| module |) |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| st |) |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::absint::FunctionContext",
+                                                                    "type_parameters",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          function_context
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)))
@@ -1194,7 +1364,12 @@ Module locals_safety.
                                   [],
                                   []
                                 |),
-                                [ M.read (| function_context |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| function_context |) |)
+                                  |)
+                                ]
                               |));
                             ("local_states", M.read (| local_states |));
                             ("all_local_abilities", M.read (| all_local_abilities |))
@@ -1220,30 +1395,35 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.read (|
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::index::Index",
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::AbilitySet";
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    [],
+                    [ Ty.path "usize" ],
+                    "index",
+                    [],
                     []
-                    [
-                      Ty.path "move_binary_format::file_format::AbilitySet";
-                      Ty.path "alloc::alloc::Global"
-                    ],
-                  [],
-                  [ Ty.path "usize" ],
-                  "index",
-                  [],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                    "all_local_abilities"
-                  |);
-                  M.rust_cast (M.read (| idx |))
-                ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                        "all_local_abilities"
+                      |)
+                    |);
+                    M.rust_cast (M.read (| idx |))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1262,10 +1442,18 @@ Module locals_safety.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-              "all_local_abilities"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                    "all_local_abilities"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1285,30 +1473,35 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.read (|
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::index::Index",
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    [],
+                    [ Ty.path "usize" ],
+                    "index",
+                    [],
                     []
-                    [
-                      Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                      Ty.path "alloc::alloc::Global"
-                    ],
-                  [],
-                  [ Ty.path "usize" ],
-                  "index",
-                  [],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                    "local_states"
-                  |);
-                  M.rust_cast (M.read (| idx |))
-                ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                        "local_states"
+                      |)
+                    |);
+                    M.rust_cast (M.read (| idx |))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1326,10 +1519,18 @@ Module locals_safety.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-              "local_states"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                    "local_states"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1350,30 +1551,36 @@ Module locals_safety.
             let idx := M.alloc (| idx |) in
             M.read (|
               M.write (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::IndexMut",
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::IndexMut",
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      [],
+                      [ Ty.path "usize" ],
+                      "index_mut",
+                      [],
                       []
-                      [
-                        Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    [],
-                    [ Ty.path "usize" ],
-                    "index_mut",
-                    [],
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                      "local_states"
-                    |);
-                    M.rust_cast (M.read (| idx |))
-                  ]
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                          "local_states"
+                        |)
+                      |);
+                      M.rust_cast (M.read (| idx |))
+                    ]
+                  |)
                 |),
                 Value.StructTuple
                   "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
@@ -1424,36 +1631,47 @@ Module locals_safety.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::index::Index",
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::index::Index",
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            [],
+                                            [ Ty.path "usize" ],
+                                            "index",
+                                            [],
+                                            []
+                                          |),
                                           [
-                                            Ty.path
-                                              "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        [],
-                                        [ Ty.path "usize" ],
-                                        "index",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                          "local_states"
-                                        |);
-                                        M.rust_cast (M.read (| idx |))
-                                      ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                "local_states"
+                                              |)
+                                            |);
+                                            M.rust_cast (M.read (| idx |))
+                                          ]
+                                        |)
+                                      |)
                                     |);
-                                    M.alloc (|
-                                      Value.StructTuple
-                                        "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
-                                        []
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.StructTuple
+                                          "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1478,30 +1696,36 @@ Module locals_safety.
                   ]
                 |) in
               M.write (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::IndexMut",
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::IndexMut",
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      [],
+                      [ Ty.path "usize" ],
+                      "index_mut",
+                      [],
                       []
-                      [
-                        Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    [],
-                    [ Ty.path "usize" ],
-                    "index_mut",
-                    [],
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                      "local_states"
-                    |);
-                    M.rust_cast (M.read (| idx |))
-                  ]
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                          "local_states"
+                        |)
+                      |);
+                      M.rust_cast (M.read (| idx |))
+                    ]
+                  |)
                 |),
                 Value.StructTuple
                   "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
@@ -1559,7 +1783,7 @@ Module locals_safety.
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                         "current_function"
                       |)
@@ -1656,15 +1880,21 @@ Module locals_safety.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                      "current_function"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                        "current_function"
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| other |),
-                                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                      "current_function"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| other |) |),
+                                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                        "current_function"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1713,10 +1943,13 @@ Module locals_safety.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                        "all_local_abilities"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                          "all_local_abilities"
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -1734,10 +1967,13 @@ Module locals_safety.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| other |),
-                                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                        "all_local_abilities"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| other |) |),
+                                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                          "all_local_abilities"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1788,10 +2024,13 @@ Module locals_safety.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                        "local_states"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                          "local_states"
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -1810,10 +2049,13 @@ Module locals_safety.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| other |),
-                                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                        "local_states"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| other |) |),
+                                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                          "local_states"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1841,7 +2083,7 @@ Module locals_safety.
               let~ current_function :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                     "current_function"
                   |)
@@ -1865,10 +2107,13 @@ Module locals_safety.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                        "all_local_abilities"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                          "all_local_abilities"
+                        |)
                       |)
                     ]
                   |)
@@ -2045,37 +2290,48 @@ Module locals_safety.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
                                         [
-                                          Ty.path
-                                            "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                        "local_states"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                              "local_states"
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| other |),
-                                "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                "local_states"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                  "local_states"
+                                |)
                               |)
                             ]
                           |);
@@ -2443,7 +2699,10 @@ Module locals_safety.
                                 []
                               |),
                               [
-                                M.read (| meter |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| meter |) |)
+                                |);
                                 Value.StructTuple
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
@@ -2541,7 +2800,10 @@ Module locals_safety.
                                 []
                               |),
                               [
-                                M.read (| meter |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| meter |) |)
+                                |);
                                 Value.StructTuple
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
@@ -2565,10 +2827,13 @@ Module locals_safety.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| state |),
-                                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                      "local_states"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| state |) |),
+                                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                        "local_states"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -2643,7 +2908,10 @@ Module locals_safety.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| state |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -2672,10 +2940,13 @@ Module locals_safety.
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                            "local_states"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                              "local_states"
+                                            |)
                                           |)
                                         ]
                                       |),
@@ -2694,10 +2965,13 @@ Module locals_safety.
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            joined,
-                                            "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                            "local_states"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              joined,
+                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                              "local_states"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -2778,55 +3052,28 @@ Module locals_safety.
                           ]
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::iter::traits::iterator::Iterator",
-                                Ty.apply
-                                  (Ty.path "core::slice::iter::Iter")
-                                  []
-                                  [
-                                    Ty.path
-                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
-                                  ],
-                                [],
-                                [],
-                                "zip",
-                                [],
-                                [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
                                   Ty.apply
-                                    (Ty.path "&")
+                                    (Ty.path "core::slice::iter::Iter")
                                     []
                                     [
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                                          Ty.path "alloc::alloc::Global"
-                                        ]
-                                    ]
-                                ]
-                              |),
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
+                                      Ty.path
+                                        "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                    ],
+                                  [],
+                                  [],
+                                  "zip",
+                                  [],
+                                  [
                                     Ty.apply
-                                      (Ty.path "slice")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path
-                                          "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
-                                      ],
-                                    "iter",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
                                           []
@@ -2834,29 +3081,70 @@ Module locals_safety.
                                             Ty.path
                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
                                             Ty.path "alloc::alloc::Global"
-                                          ],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                          "local_states"
-                                        |)
+                                          ]
                                       ]
-                                    |)
                                   ]
-                                |);
-                                M.SubPointer.get_struct_record_field (|
-                                  joined,
-                                  "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                  "local_states"
-                                |)
-                              ]
+                                |),
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                        ],
+                                      "iter",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                  "local_states"
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      joined,
+                                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                      "local_states"
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |);
                           M.closure
@@ -2898,7 +3186,10 @@ Module locals_safety.
                                                 [],
                                                 []
                                               |),
-                                              [ self_state; other_state ]
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, self_state |);
+                                                M.borrow (| Pointer.Kind.Ref, other_state |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -2926,7 +3217,8 @@ Module locals_safety.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let~ _ := M.write (| M.read (| self |), M.read (| joined |) |) in
+                          (let~ _ :=
+                            M.write (| M.deref (| M.read (| self |) |), M.read (| joined |) |) in
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"

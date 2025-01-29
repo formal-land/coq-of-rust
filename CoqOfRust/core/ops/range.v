@@ -31,7 +31,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -159,7 +159,7 @@ Module ops.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
-                M.read (| fmt |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
@@ -167,7 +167,17 @@ Module ops.
                     [],
                     []
                   |),
-                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |)
               ]
             |)))
@@ -208,10 +218,18 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::Range",
-                        "start"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "start"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -219,10 +237,18 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::Range",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "end"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -320,15 +346,21 @@ Module ops.
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::Range",
-                    "start"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::ops::range::Range",
+                      "start"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "core::ops::range::Range",
-                    "start"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::ops::range::Range",
+                      "start"
+                    |)
                   |)
                 ]
               |),
@@ -336,15 +368,21 @@ Module ops.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::ops::range::Range",
-                      "end"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::Range",
+                        "end"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "core::ops::range::Range",
-                      "end"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::ops::range::Range",
+                        "end"
+                      |)
                     |)
                   ]
                 |)))
@@ -415,12 +453,20 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::Range",
-                        "start"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "start"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -428,12 +474,20 @@ Module ops.
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::ops::range::Range",
-                      "end"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ops::range::Range",
+                            "end"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |)
@@ -500,12 +554,15 @@ Module ops.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |);
-                                M.read (| fmt |)
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
                               ]
                             |)
                           ]
@@ -589,7 +646,7 @@ Module ops.
                                 []
                               |),
                               [
-                                M.read (| fmt |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
@@ -597,7 +654,19 @@ Module ops.
                                     [],
                                     []
                                   |),
-                                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array [ M.read (| Value.String ".." |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -685,12 +754,15 @@ Module ops.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::Range",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |);
-                                M.read (| fmt |)
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
                               ]
                             |)
                           ]
@@ -794,7 +866,10 @@ Module ops.
                 [],
                 [ U ]
               |),
-              [ M.read (| self |); M.read (| item |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| item |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -818,15 +893,21 @@ Module ops.
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialOrd", Idx, [], [ Idx ], "lt", [], [] |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::Range",
-                    "start"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::ops::range::Range",
+                      "start"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::Range",
-                    "end"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::ops::range::Range",
+                      "end"
+                    |)
                   |)
                 ]
               |)
@@ -865,10 +946,18 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeFrom",
-                        "start"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeFrom",
+                              "start"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -913,15 +1002,21 @@ Module ops.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeFrom",
-                  "start"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ops::range::RangeFrom",
+                    "start"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::ops::range::RangeFrom",
-                  "start"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::ops::range::RangeFrom",
+                    "start"
+                  |)
                 |)
               ]
             |)))
@@ -988,12 +1083,20 @@ Module ops.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeFrom",
-                  "start"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeFrom",
+                        "start"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1057,12 +1160,15 @@ Module ops.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::RangeFrom",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::RangeFrom",
+                                    "start"
+                                  |)
                                 |);
-                                M.read (| fmt |)
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
                               ]
                             |)
                           ]
@@ -1146,7 +1252,7 @@ Module ops.
                                 []
                               |),
                               [
-                                M.read (| fmt |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
@@ -1154,7 +1260,19 @@ Module ops.
                                     [],
                                     []
                                   |),
-                                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array [ M.read (| Value.String ".." |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -1259,7 +1377,10 @@ Module ops.
                 [],
                 [ U ]
               |),
-              [ M.read (| self |); M.read (| item |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| item |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1308,10 +1429,18 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeTo",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeTo",
+                              "end"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -1356,15 +1485,21 @@ Module ops.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeTo",
-                  "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ops::range::RangeTo",
+                    "end"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::ops::range::RangeTo",
-                  "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::ops::range::RangeTo",
+                    "end"
+                  |)
                 |)
               ]
             |)))
@@ -1431,12 +1566,20 @@ Module ops.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeTo",
-                  "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeTo",
+                        "end"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1497,7 +1640,7 @@ Module ops.
                                 []
                               |),
                               [
-                                M.read (| fmt |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
@@ -1505,7 +1648,19 @@ Module ops.
                                     [],
                                     []
                                   |),
-                                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array [ M.read (| Value.String ".." |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -1593,12 +1748,15 @@ Module ops.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::RangeTo",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::RangeTo",
+                                    "end"
+                                  |)
                                 |);
-                                M.read (| fmt |)
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
                               ]
                             |)
                           ]
@@ -1702,7 +1860,10 @@ Module ops.
                 [],
                 [ U ]
               |),
-              [ M.read (| self |); M.read (| item |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| item |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1738,10 +1899,18 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "start"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "start"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -1749,10 +1918,18 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "end"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -1768,10 +1945,18 @@ Module ops.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "exhausted"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "exhausted"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -1818,15 +2003,21 @@ Module ops.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::ops::range::RangeInclusive",
-                      "start"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeInclusive",
+                        "start"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "core::ops::range::RangeInclusive",
-                      "start"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::ops::range::RangeInclusive",
+                        "start"
+                      |)
                     |)
                   ]
                 |),
@@ -1834,15 +2025,21 @@ Module ops.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::ops::range::RangeInclusive",
+                          "end"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "core::ops::range::RangeInclusive",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "core::ops::range::RangeInclusive",
+                          "end"
+                        |)
                       |)
                     ]
                   |)))
@@ -1851,14 +2048,14 @@ Module ops.
                 (BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::ops::range::RangeInclusive",
                       "exhausted"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "core::ops::range::RangeInclusive",
                       "exhausted"
                     |)
@@ -1938,12 +2135,20 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "start"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "start"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -1952,12 +2157,20 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeInclusive",
+                              "end"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -1973,12 +2186,20 @@ Module ops.
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::ops::range::RangeInclusive",
-                      "exhausted"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ops::range::RangeInclusive",
+                            "exhausted"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |)
@@ -2036,10 +2257,18 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "core::ops::range::RangeInclusive",
-              "start"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ops::range::RangeInclusive",
+                    "start"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2059,10 +2288,18 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "core::ops::range::RangeInclusive",
-              "end"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ops::range::RangeInclusive",
+                    "end"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2136,7 +2373,10 @@ Module ops.
                 [],
                 [ U ]
               |),
-              [ M.read (| self |); M.read (| item |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| item |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2159,7 +2399,7 @@ Module ops.
             LogicalOp.or (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::ops::range::RangeInclusive",
                   "exhausted"
                 |)
@@ -2177,15 +2417,21 @@ Module ops.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "start"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::ops::range::RangeInclusive",
+                          "start"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::ops::range::RangeInclusive",
+                          "end"
+                        |)
                       |)
                     ]
                   |)
@@ -2325,12 +2571,15 @@ Module ops.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::RangeInclusive",
-                                  "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::RangeInclusive",
+                                    "start"
+                                  |)
                                 |);
-                                M.read (| fmt |)
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
                               ]
                             |)
                           ]
@@ -2414,7 +2663,7 @@ Module ops.
                                 []
                               |),
                               [
-                                M.read (| fmt |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
@@ -2422,7 +2671,19 @@ Module ops.
                                     [],
                                     []
                                   |),
-                                  [ M.alloc (| Value.Array [ M.read (| Value.String "..=" |) ] |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array [ M.read (| Value.String "..=" |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -2510,12 +2771,15 @@ Module ops.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::RangeInclusive",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::RangeInclusive",
+                                    "end"
+                                  |)
                                 |);
-                                M.read (| fmt |)
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
                               ]
                             |)
                           ]
@@ -2583,7 +2847,7 @@ Module ops.
                             (let γ :=
                               M.use
                                 (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::ops::range::RangeInclusive",
                                   "exhausted"
                                 |)) in
@@ -2614,7 +2878,10 @@ Module ops.
                                           []
                                         |),
                                         [
-                                          M.read (| fmt |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| fmt |) |)
+                                          |);
                                           M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
@@ -2623,9 +2890,17 @@ Module ops.
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String " (exhausted)" |) ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [ M.read (| Value.String " (exhausted)" |) ]
+                                                    |)
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -2746,10 +3021,18 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeToInclusive",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::RangeToInclusive",
+                              "end"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -2794,15 +3077,21 @@ Module ops.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeToInclusive",
-                  "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ops::range::RangeToInclusive",
+                    "end"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::ops::range::RangeToInclusive",
-                  "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::ops::range::RangeToInclusive",
+                    "end"
+                  |)
                 |)
               ]
             |)))
@@ -2869,12 +3158,20 @@ Module ops.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeToInclusive",
-                  "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeToInclusive",
+                        "end"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2935,7 +3232,7 @@ Module ops.
                                 []
                               |),
                               [
-                                M.read (| fmt |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
@@ -2943,7 +3240,19 @@ Module ops.
                                     [],
                                     []
                                   |),
-                                  [ M.alloc (| Value.Array [ M.read (| Value.String "..=" |) ] |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array [ M.read (| Value.String "..=" |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -3031,12 +3340,15 @@ Module ops.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::ops::range::RangeToInclusive",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::RangeToInclusive",
+                                    "end"
+                                  |)
                                 |);
-                                M.read (| fmt |)
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
                               ]
                             |)
                           ]
@@ -3140,7 +3452,10 @@ Module ops.
                 [],
                 [ U ]
               |),
-              [ M.read (| self |); M.read (| item |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| item |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3214,7 +3529,8 @@ Module ops.
                                 [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)));
@@ -3242,7 +3558,8 @@ Module ops.
                                 [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)));
@@ -3311,7 +3628,17 @@ Module ops.
                             [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Included" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Included" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -3332,7 +3659,17 @@ Module ops.
                             [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Excluded" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Excluded" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -3347,7 +3684,13 @@ Module ops.
                             [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Unbounded" |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Unbounded" |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -3385,7 +3728,7 @@ Module ops.
                       [],
                       [ Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -3400,7 +3743,13 @@ Module ops.
                       [],
                       [ __H ]
                     |),
-                    [ __self_discr; M.read (| state |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -3427,7 +3776,10 @@ Module ops.
                             [],
                             [ __H ]
                           |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -3451,7 +3803,10 @@ Module ops.
                             [],
                             [ __H ]
                           |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -3502,7 +3857,7 @@ Module ops.
                       [],
                       [ Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -3513,7 +3868,7 @@ Module ops.
                       [],
                       [ Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ] ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -3555,7 +3910,10 @@ Module ops.
                                     [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -3589,7 +3947,10 @@ Module ops.
                                     [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -3665,7 +4026,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3677,7 +4038,9 @@ Module ops.
                         |) in
                       let x := M.alloc (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Included" [ M.read (| x |) ]
+                        Value.StructTuple
+                          "core::ops::range::Bound::Included"
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3689,7 +4052,9 @@ Module ops.
                         |) in
                       let x := M.alloc (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Excluded" [ M.read (| x |) ]
+                        Value.StructTuple
+                          "core::ops::range::Bound::Excluded"
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3722,7 +4087,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3734,7 +4099,9 @@ Module ops.
                         |) in
                       let x := M.alloc (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Included" [ M.read (| x |) ]
+                        Value.StructTuple
+                          "core::ops::range::Bound::Included"
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3746,7 +4113,9 @@ Module ops.
                         |) in
                       let x := M.alloc (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Excluded" [ M.read (| x |) ]
+                        Value.StructTuple
+                          "core::ops::range::Bound::Excluded"
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3901,7 +4270,7 @@ Module ops.
                                 [],
                                 []
                               |),
-                              [ M.read (| x |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                             |)
                           ]
                       |)));
@@ -3928,7 +4297,7 @@ Module ops.
                                 [],
                                 []
                               |),
-                              [ M.read (| x |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                             |)
                           ]
                       |)))
@@ -3970,7 +4339,7 @@ Module ops.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |),
                   [
@@ -3994,7 +4363,15 @@ Module ops.
                               [],
                               []
                             |),
-                            [ start; M.alloc (| M.read (| item |) |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, start |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| item |) |) |)
+                                |)
+                              |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -4017,7 +4394,15 @@ Module ops.
                               [],
                               []
                             |),
-                            [ start; M.alloc (| M.read (| item |) |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, start |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| item |) |) |)
+                                |)
+                              |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -4041,7 +4426,7 @@ Module ops.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     [
@@ -4065,7 +4450,15 @@ Module ops.
                                 [],
                                 []
                               |),
-                              [ item; M.alloc (| M.read (| end_ |) |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, item |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| end_ |) |) |)
+                                  |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -4088,7 +4481,15 @@ Module ops.
                                 [],
                                 []
                               |),
-                              [ item; M.alloc (| M.read (| end_ |) |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, item |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| end_ |) |) |)
+                                  |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -4172,10 +4573,18 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Included"
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeFrom",
-                  "start"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeFrom",
+                        "start"
+                      |)
+                    |)
+                  |)
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4241,10 +4650,18 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Excluded"
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeTo",
-                  "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeTo",
+                        "end"
+                      |)
+                    |)
+                  |)
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4280,10 +4697,18 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Included"
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::Range",
-                  "start"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::Range",
+                        "start"
+                      |)
+                    |)
+                  |)
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4303,10 +4728,18 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Excluded"
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::Range",
-                  "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::Range",
+                        "end"
+                      |)
+                    |)
+                  |)
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4343,10 +4776,18 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Included"
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeInclusive",
-                  "start"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeInclusive",
+                        "start"
+                      |)
+                    |)
+                  |)
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4378,7 +4819,7 @@ Module ops.
                       (let γ :=
                         M.use
                           (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::ops::range::RangeInclusive",
                             "exhausted"
                           |)) in
@@ -4387,10 +4828,18 @@ Module ops.
                         Value.StructTuple
                           "core::ops::range::Bound::Excluded"
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::ops::range::RangeInclusive",
-                              "end"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::RangeInclusive",
+                                    "end"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                       |)));
@@ -4400,10 +4849,18 @@ Module ops.
                         Value.StructTuple
                           "core::ops::range::Bound::Included"
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::ops::range::RangeInclusive",
-                              "end"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::RangeInclusive",
+                                    "end"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                       |)))
@@ -4459,10 +4916,18 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Included"
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeToInclusive",
-                  "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeToInclusive",
+                        "end"
+                      |)
+                    |)
+                  |)
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4506,7 +4971,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -4520,7 +4985,9 @@ Module ops.
                         |) in
                       let start := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Included" [ M.read (| start |) ]
+                        Value.StructTuple
+                          "core::ops::range::Bound::Included"
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| start |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4534,7 +5001,9 @@ Module ops.
                         |) in
                       let start := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Excluded" [ M.read (| start |) ]
+                        Value.StructTuple
+                          "core::ops::range::Bound::Excluded"
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| start |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4565,7 +5034,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -4579,7 +5048,9 @@ Module ops.
                         |) in
                       let end_ := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Included" [ M.read (| end_ |) ]
+                        Value.StructTuple
+                          "core::ops::range::Bound::Included"
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| end_ |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4593,7 +5064,9 @@ Module ops.
                         |) in
                       let end_ := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Excluded" [ M.read (| end_ |) ]
+                        Value.StructTuple
+                          "core::ops::range::Bound::Excluded"
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| end_ |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4639,7 +5112,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.SubPointer.get_tuple_field (| M.read (| self |), 0 |) |)))
+            M.read (| M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4654,7 +5127,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.SubPointer.get_tuple_field (| M.read (| self |), 1 |) |)))
+            M.read (| M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4689,11 +5162,16 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Included"
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::RangeFrom",
-                    "start"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeFrom",
+                        "start"
+                      |)
+                    |)
                   |)
                 |)
               ]))
@@ -4761,11 +5239,16 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Excluded"
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::RangeTo",
-                    "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeTo",
+                        "end"
+                      |)
+                    |)
                   |)
                 |)
               ]))
@@ -4803,11 +5286,16 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Included"
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::Range",
-                    "start"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::Range",
+                        "start"
+                      |)
+                    |)
                   |)
                 |)
               ]))
@@ -4828,11 +5316,16 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Excluded"
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::Range",
-                    "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::Range",
+                        "end"
+                      |)
+                    |)
                   |)
                 |)
               ]))
@@ -4873,11 +5366,16 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Included"
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::RangeInclusive",
-                    "start"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeInclusive",
+                        "start"
+                      |)
+                    |)
                   |)
                 |)
               ]))
@@ -4898,11 +5396,16 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Included"
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::RangeInclusive",
-                    "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeInclusive",
+                        "end"
+                      |)
+                    |)
                   |)
                 |)
               ]))
@@ -4958,11 +5461,16 @@ Module ops.
             Value.StructTuple
               "core::ops::range::Bound::Included"
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::RangeToInclusive",
-                    "end"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeToInclusive",
+                        "end"
+                      |)
+                    |)
                   |)
                 |)
               ]))

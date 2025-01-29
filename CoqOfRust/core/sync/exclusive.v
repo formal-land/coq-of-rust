@@ -79,15 +79,24 @@ Module sync.
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Formatter",
-                      "debug_struct",
-                      [],
-                      []
-                    |),
-                    [ M.read (| f |); M.read (| Value.String "Exclusive" |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_struct",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Exclusive" |) |)
+                        |)
+                      ]
+                    |)
                   |)
                 |)
               ]
@@ -162,10 +171,23 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "core::sync::exclusive::Exclusive",
-              "inner"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::sync::exclusive::Exclusive",
+                        "inner"
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -195,26 +217,37 @@ Module sync.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::pin::Pin")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ]
-                        ],
-                      "get_unchecked_mut",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |),
-                  "core::sync::exclusive::Exclusive",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::pin::Pin")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ]
+                                    ]
+                                ],
+                              "get_unchecked_mut",
+                              [],
+                              []
+                            |),
+                            [ M.read (| self |) ]
+                          |)
+                        |),
+                        "core::sync::exclusive::Exclusive",
+                        "inner"
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -237,7 +270,36 @@ Module sync.
         | [], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| r |) |)) |))))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.rust_cast
+                              (M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| r |) |)
+                                    |)
+                                  |))
+                              |))
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -279,27 +341,37 @@ Module sync.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ],
-                    "from_mut",
-                    [],
-                    []
-                  |),
-                  [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::pin::Pin")
-                          []
-                          [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                        "get_unchecked_mut",
+                        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ],
+                        "from_mut",
                         [],
                         []
                       |),
-                      [ M.read (| r |) ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::pin::Pin")
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                                "get_unchecked_mut",
+                                [],
+                                []
+                              |),
+                              [ M.read (| r |) ]
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -443,14 +515,19 @@ Module sync.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ],
-                    "get_mut",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
                 M.read (| args |)
               ]
@@ -498,7 +575,7 @@ Module sync.
                   |),
                   [ M.read (| self |) ]
                 |);
-                M.read (| cx |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

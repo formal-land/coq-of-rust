@@ -33,28 +33,22 @@ Proof.
   }
   run_symbolic.
   eapply Run.CallClosure. {
-    apply (run_call_once compare (Ref.Immediate _ v1, Ref.Immediate _ v2)).
+    apply (run_call_once compare (Ref.immediate v1, Ref.immediate v2)).
   }
-  intros ordering.
-  destruct ordering as [ordering |]; [|run_symbolic; try apply Output.Panic; try reflexivity].
+  intros [ordering |]; cbn; [|run_panic].
   destruct ordering; cbn.
-  { eapply Run.CallPrimitiveStateAllocImmediate with (value := Ordering.Less); try reflexivity.
-    run_symbolic;
+  { run_symbolic;
       try apply Output.Success;
       try reflexivity.
   }
-  { eapply Run.CallPrimitiveStateAllocImmediate with (value := Ordering.Equal); try reflexivity.
-    run_symbolic;
+  { run_symbolic;
       try apply Output.Success;
       try reflexivity.
   }
-  { eapply Run.CallPrimitiveStateAllocImmediate with (value := Ordering.Greater); try reflexivity.
-    run_symbolic;
+  { run_symbolic;
       try apply Output.Success;
       try reflexivity.
   }
-  Unshelve.
-  all: apply Pointer.Kind.Ref.
 Defined.
 
 (*

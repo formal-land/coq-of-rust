@@ -76,7 +76,11 @@ Module code_unit_verifier.
                   [],
                   [ impl_Meter__plus___Sized ]
                 |),
-                [ M.read (| verifier_config |); M.read (| module |); M.read (| meter |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| verifier_config |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
+                ]
               |);
               M.closure
                 (fun γ =>
@@ -110,7 +114,12 @@ Module code_unit_verifier.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| module |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| module |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                   ]
@@ -240,14 +249,25 @@ Module code_unit_verifier.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "function_defs",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| module |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "function_defs",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| module |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -286,7 +306,12 @@ Module code_unit_verifier.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -323,10 +348,13 @@ Module code_unit_verifier.
                                                   []
                                                 |),
                                                 [
-                                                  M.read (| module |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| module |) |)
+                                                  |);
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| func_def |),
+                                                      M.deref (| M.read (| func_def |) |),
                                                       "move_binary_format::file_format::FunctionDefinition",
                                                       "function"
                                                     |)
@@ -353,10 +381,10 @@ Module code_unit_verifier.
                                                   []
                                                 |),
                                                 [
-                                                  name_def_map;
+                                                  M.borrow (| Pointer.Kind.MutRef, name_def_map |);
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| fh |),
+                                                      M.deref (| M.read (| fh |) |),
                                                       "move_binary_format::file_format::FunctionHandle",
                                                       "name"
                                                     |)
@@ -426,14 +454,25 @@ Module code_unit_verifier.
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "function_defs",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| module |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "function_defs",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| module |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -472,7 +511,12 @@ Module code_unit_verifier.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -563,12 +607,36 @@ Module code_unit_verifier.
                                                               [ impl_Meter__plus___Sized ]
                                                             |),
                                                             [
-                                                              M.read (| verifier_config |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.read (| verifier_config |)
+                                                                |)
+                                                              |);
                                                               M.read (| index |);
-                                                              M.read (| function_definition |);
-                                                              M.read (| module |);
-                                                              name_def_map;
-                                                              M.read (| meter |)
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.read (| function_definition |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| module |) |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    name_def_map
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (| M.read (| meter |) |)
+                                                              |)
                                                             ]
                                                           |);
                                                           M.closure
@@ -702,7 +770,7 @@ Module code_unit_verifier.
                         ltac:(M.monadic
                           (let γ :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| verifier_config |),
+                              M.deref (| M.read (| verifier_config |) |),
                               "move_vm_config::verifier::VerifierConfig",
                               "max_back_edges_per_module"
                             |) in
@@ -862,51 +930,72 @@ Module code_unit_verifier.
                         []
                       |),
                       [
-                        M.read (| meter |);
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "move_core_types::identifier::IdentStr",
-                            "as_str",
-                            [],
-                            []
-                          |),
-                          [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "move_binary_format::file_format::CompiledModule",
-                                "identifier_at",
+                                Ty.path "move_core_types::identifier::IdentStr",
+                                "as_str",
                                 [],
                                 []
                               |),
                               [
-                                M.read (| module |);
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "function_handle_at",
+                                        "identifier_at",
                                         [],
                                         []
                                       |),
                                       [
-                                        M.read (| module |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| module |) |)
+                                        |);
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| function_definition |),
-                                            "move_binary_format::file_format::FunctionDefinition",
-                                            "function"
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CompiledModule",
+                                                  "function_handle_at",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| module |) |)
+                                                  |);
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (|
+                                                        M.read (| function_definition |)
+                                                      |),
+                                                      "move_binary_format::file_format::FunctionDefinition",
+                                                      "function"
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |),
+                                            "move_binary_format::file_format::FunctionHandle",
+                                            "name"
                                           |)
                                         |)
                                       ]
-                                    |),
-                                    "move_binary_format::file_format::FunctionHandle",
-                                    "name"
+                                    |)
                                   |)
                                 |)
                               ]
                             |)
-                          ]
+                          |)
                         |);
                         Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" []
                       ]
@@ -916,10 +1005,13 @@ Module code_unit_verifier.
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| function_definition |),
-                          "move_binary_format::file_format::FunctionDefinition",
-                          "code"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| function_definition |) |),
+                            "move_binary_format::file_format::FunctionDefinition",
+                            "code"
+                          |)
                         |)
                       |),
                       [
@@ -980,12 +1072,18 @@ Module code_unit_verifier.
                                 [ impl_Meter__plus___Sized ]
                               |),
                               [
-                                M.read (| verifier_config |);
-                                M.read (| module |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| verifier_config |) |)
+                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                                 M.read (| index |);
-                                M.read (| function_definition |);
-                                M.read (| code |);
-                                M.read (| meter |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| function_definition |) |)
+                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
                               ]
                             |)
                           ]
@@ -1056,7 +1154,7 @@ Module code_unit_verifier.
                         ltac:(M.monadic
                           (let γ :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| verifier_config |),
+                              M.deref (| M.read (| verifier_config |) |),
                               "move_vm_config::verifier::VerifierConfig",
                               "max_basic_blocks"
                             |) in
@@ -1087,30 +1185,43 @@ Module code_unit_verifier.
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "move_binary_format::control_flow_graph::ControlFlowGraph",
-                                                    Ty.path
-                                                      "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                                                    [],
-                                                    [],
-                                                    "blocks",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_bytecode_verifier::absint::FunctionContext",
-                                                        "cfg",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ function_context ]
-                                                    |)
-                                                  ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "move_binary_format::control_flow_graph::ControlFlowGraph",
+                                                      Ty.path
+                                                        "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                                                      [],
+                                                      [],
+                                                      "blocks",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_bytecode_verifier::absint::FunctionContext",
+                                                              "cfg",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                function_context
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
                                                 |)
                                               |)
                                             ]
@@ -1181,14 +1292,19 @@ Module code_unit_verifier.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                            "cfg",
-                            [],
-                            []
-                          |),
-                          [ function_context ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                                "cfg",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, function_context |) ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -1201,7 +1317,7 @@ Module code_unit_verifier.
                         ltac:(M.monadic
                           (let γ :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| verifier_config |),
+                              M.deref (| M.read (| verifier_config |) |),
                               "move_vm_config::verifier::VerifierConfig",
                               "max_back_edges_per_function"
                             |) in
@@ -1280,9 +1396,11 @@ Module code_unit_verifier.
                     Value.StructRecord
                       "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier"
                       [
-                        ("module", M.read (| module |));
+                        ("module",
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |));
                         ("function_context", M.read (| function_context |));
-                        ("name_def_map", M.read (| name_def_map |))
+                        ("name_def_map",
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name_def_map |) |) |))
                       ]
                   |) in
                 let~ _ :=
@@ -1310,7 +1428,14 @@ Module code_unit_verifier.
                               [],
                               [ impl_Meter__plus___Sized ]
                             |),
-                            [ code_unit_verifier; M.read (| verifier_config |); M.read (| meter |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, code_unit_verifier |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| verifier_config |) |)
+                              |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -1397,10 +1522,13 @@ Module code_unit_verifier.
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
-                              M.read (| module |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                               M.read (| index |);
-                              M.read (| function_definition |);
-                              M.read (| meter |)
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| function_definition |) |)
+                              |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
                             ]
                           |)
                         ]
@@ -1490,7 +1618,7 @@ Module code_unit_verifier.
                               []
                             |),
                             [
-                              M.read (| meter |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                               Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                               Value.StructTuple "move_bytecode_verifier_meter::Scope::Module" [];
                               M.read (| UnsupportedLiteral |)
@@ -1619,20 +1747,36 @@ Module code_unit_verifier.
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
-                              M.read (| verifier_config |);
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
-                                  "module"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| verifier_config |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
+                                      "module"
+                                    |)
+                                  |)
                                 |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
-                                "function_context"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
+                                      "function_context"
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.read (| meter |)
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
                             ]
                           |)
                         ]
@@ -1718,19 +1862,32 @@ Module code_unit_verifier.
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
-                                  "module"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
+                                      "module"
+                                    |)
+                                  |)
                                 |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
-                                "function_context"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
+                                      "function_context"
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.read (| meter |)
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
                             ]
                           |)
                         ]
@@ -1816,19 +1973,32 @@ Module code_unit_verifier.
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
-                                  "module"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
+                                      "module"
+                                    |)
+                                  |)
                                 |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
-                                "function_context"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
+                                      "function_context"
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.read (| meter |)
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
                             ]
                           |)
                         ]
@@ -1898,26 +2068,44 @@ Module code_unit_verifier.
                       [ impl_Meter__plus___Sized ]
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
-                          "module"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
+                              "module"
+                            |)
+                          |)
                         |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
-                        "function_context"
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
-                          "name_def_map"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
+                              "function_context"
+                            |)
+                          |)
                         |)
                       |);
-                      M.read (| meter |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
+                              "name_def_map"
+                            |)
+                          |)
+                        |)
+                      |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
                     ]
                   |)
                 |)

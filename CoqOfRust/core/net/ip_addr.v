@@ -52,7 +52,7 @@ Module net.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                        [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
                 ]
               |)
@@ -136,7 +136,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -147,7 +147,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -197,7 +197,10 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -239,7 +242,10 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -288,7 +294,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -303,7 +309,13 @@ Module net.
                       [],
                       [ __H ]
                     |),
-                    [ __self_discr; M.read (| state |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -330,7 +342,10 @@ Module net.
                             [],
                             [ __H ]
                           |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -354,7 +369,10 @@ Module net.
                             [],
                             [ __H ]
                           |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)))
                 ]
@@ -390,7 +408,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -401,7 +419,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -438,7 +456,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -472,7 +493,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -488,7 +512,16 @@ Module net.
                             [],
                             []
                           |),
-                          [ __self_discr; __arg1_discr ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -524,7 +557,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -535,7 +568,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -550,7 +583,16 @@ Module net.
                       [],
                       []
                     |),
-                    [ __self_discr; __arg1_discr ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                      |)
+                    ]
                   |)
                 |),
                 [
@@ -591,7 +633,16 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -625,7 +676,16 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -693,7 +753,7 @@ Module net.
             M.read (|
               M.match_operator (|
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -740,15 +800,21 @@ Module net.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::net::ip_addr::Ipv4Addr",
-                  "octets"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::ip_addr::Ipv4Addr",
+                    "octets"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::net::ip_addr::Ipv4Addr",
-                  "octets"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::net::ip_addr::Ipv4Addr",
+                    "octets"
+                  |)
                 |)
               ]
             |)))
@@ -825,21 +891,24 @@ Module net.
                       [ H ]
                     |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [], [] |),
-                          [
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::net::ip_addr::Ipv4Addr",
-                                "octets"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [], [] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::net::ip_addr::Ipv4Addr",
+                                  "octets"
+                                |)
                               |)
-                            |)
-                          ]
+                            ]
+                          |)
                         |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -891,7 +960,7 @@ Module net.
             M.read (|
               M.match_operator (|
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -938,15 +1007,21 @@ Module net.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::net::ip_addr::Ipv6Addr",
-                  "octets"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::ip_addr::Ipv6Addr",
+                    "octets"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::net::ip_addr::Ipv6Addr",
-                  "octets"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::net::ip_addr::Ipv6Addr",
+                    "octets"
+                  |)
                 |)
               ]
             |)))
@@ -1023,21 +1098,24 @@ Module net.
                       [ H ]
                     |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [], [] |),
-                          [
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::net::ip_addr::Ipv6Addr",
-                                "octets"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [], [] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::net::ip_addr::Ipv6Addr",
+                                  "octets"
+                                |)
                               |)
-                            |)
-                          ]
+                            ]
+                          |)
                         |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -1141,7 +1219,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -1152,7 +1230,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -1203,7 +1281,7 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1234,7 +1312,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -1248,7 +1326,13 @@ Module net.
                     [],
                     [ __H ]
                   |),
-                  [ __self_discr; M.read (| state |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -1276,7 +1360,7 @@ Module net.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
                     self,
@@ -1289,7 +1373,12 @@ Module net.
                               γ,
                               "core::net::ip_addr::Ipv6MulticastScope::InterfaceLocal"
                             |) in
-                          M.alloc (| M.read (| Value.String "InterfaceLocal" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "InterfaceLocal" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1298,7 +1387,12 @@ Module net.
                               γ,
                               "core::net::ip_addr::Ipv6MulticastScope::LinkLocal"
                             |) in
-                          M.alloc (| M.read (| Value.String "LinkLocal" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "LinkLocal" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1307,7 +1401,12 @@ Module net.
                               γ,
                               "core::net::ip_addr::Ipv6MulticastScope::RealmLocal"
                             |) in
-                          M.alloc (| M.read (| Value.String "RealmLocal" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "RealmLocal" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1316,7 +1415,12 @@ Module net.
                               γ,
                               "core::net::ip_addr::Ipv6MulticastScope::AdminLocal"
                             |) in
-                          M.alloc (| M.read (| Value.String "AdminLocal" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "AdminLocal" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1325,7 +1429,12 @@ Module net.
                               γ,
                               "core::net::ip_addr::Ipv6MulticastScope::SiteLocal"
                             |) in
-                          M.alloc (| M.read (| Value.String "SiteLocal" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "SiteLocal" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1334,7 +1443,12 @@ Module net.
                               γ,
                               "core::net::ip_addr::Ipv6MulticastScope::OrganizationLocal"
                             |) in
-                          M.alloc (| M.read (| Value.String "OrganizationLocal" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "OrganizationLocal" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1343,7 +1457,12 @@ Module net.
                               γ,
                               "core::net::ip_addr::Ipv6MulticastScope::Global"
                             |) in
-                          M.alloc (| M.read (| Value.String "Global" |) |)))
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Global" |) |)
+                            |)
+                          |)))
                     ]
                   |)
                 |)
@@ -1398,7 +1517,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)));
                   fun γ =>
@@ -1419,7 +1538,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)))
                 ]
@@ -1466,7 +1585,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)));
                   fun γ =>
@@ -1487,7 +1606,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)))
                 ]
@@ -1533,7 +1652,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)));
                   fun γ =>
@@ -1554,7 +1673,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)))
                 ]
@@ -1600,7 +1719,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)));
                   fun γ =>
@@ -1621,7 +1740,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)))
                 ]
@@ -1668,7 +1787,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)));
                   fun γ =>
@@ -1689,7 +1808,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)))
                 ]
@@ -1736,7 +1855,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)));
                   fun γ =>
@@ -1757,7 +1876,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |) ]
                         |)
                       |)))
                 ]
@@ -1861,7 +1980,7 @@ Module net.
                           "core::net::ip_addr::IpAddr::V4",
                           0
                         |) in
-                      M.read (| self |)));
+                      M.deref (| M.read (| self |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -1880,7 +1999,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| v6 |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v6 |) |) |) ]
                         |)
                       |)))
                 ]
@@ -2065,7 +2184,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::net::ip_addr::Ipv4Addr",
                 "octets"
               |)
@@ -2091,7 +2210,7 @@ Module net.
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::net::ip_addr::Ipv4Addr",
                       "octets"
                     |)
@@ -2127,7 +2246,7 @@ Module net.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |),
                   M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -2165,7 +2284,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -2246,7 +2365,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -2321,7 +2440,12 @@ Module net.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -2337,7 +2461,12 @@ Module net.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)))
                               |),
                               ltac:(M.monadic
@@ -2348,7 +2477,8 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |)))
                             |),
                             ltac:(M.monadic
@@ -2359,7 +2489,7 @@ Module net.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)))
                           |),
                           ltac:(M.monadic
@@ -2370,7 +2500,7 @@ Module net.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)))
                         |),
                         ltac:(M.monadic
@@ -2389,7 +2519,12 @@ Module net.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -2409,7 +2544,12 @@ Module net.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| self |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           M.alloc (| Value.Integer IntegerKind.Usize 1 |)
@@ -2430,7 +2570,12 @@ Module net.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         M.alloc (| Value.Integer IntegerKind.Usize 2 |)
@@ -2451,7 +2596,12 @@ Module net.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       M.alloc (| Value.Integer IntegerKind.Usize 3 |)
@@ -2472,7 +2622,12 @@ Module net.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     M.alloc (| Value.Integer IntegerKind.Usize 3 |)
@@ -2490,7 +2645,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)))
                     |),
                     ltac:(M.monadic
@@ -2501,7 +2656,7 @@ Module net.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)))
                   |),
                   ltac:(M.monadic
@@ -2512,7 +2667,7 @@ Module net.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)))
                 |),
                 ltac:(M.monadic
@@ -2523,7 +2678,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)))
               |)
             |)))
@@ -2554,7 +2709,7 @@ Module net.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -2575,7 +2730,7 @@ Module net.
                               [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |),
                         M.alloc (| Value.Integer IntegerKind.Usize 1 |)
@@ -2612,7 +2767,7 @@ Module net.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -2633,7 +2788,7 @@ Module net.
                               [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |),
                         M.alloc (| Value.Integer IntegerKind.Usize 1 |)
@@ -2672,7 +2827,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
                       M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -2690,7 +2845,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |)))
             |)))
@@ -2721,7 +2876,7 @@ Module net.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -2741,7 +2896,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
                       M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -2777,7 +2932,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 ]
               |),
@@ -2791,7 +2946,12 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.get_constant (| "core::net::ip_addr::BROADCAST" |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.get_constant (| "core::net::ip_addr::BROADCAST" |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -2822,7 +2982,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -2936,7 +3096,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -3006,7 +3166,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -3098,7 +3258,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |); M.read (| fmt |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -3122,7 +3285,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| ip |); M.read (| fmt |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ip |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+                          ]
                         |)
                       |)))
                 ]
@@ -3163,7 +3329,10 @@ Module net.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| fmt |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3264,7 +3433,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -3284,15 +3453,23 @@ Module net.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Formatter",
-                                        "precision",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| fmt |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Formatter",
+                                          "precision",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| fmt |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -3309,15 +3486,23 @@ Module net.
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Formatter",
-                                          "width",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| fmt |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Formatter",
+                                            "width",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| fmt |) |)
+                                            |)
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -3334,7 +3519,7 @@ Module net.
                             []
                           |),
                           [
-                            M.read (| fmt |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
@@ -3343,75 +3528,131 @@ Module net.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "" |);
-                                      M.read (| Value.String "." |);
-                                      M.read (| Value.String "." |);
-                                      M.read (| Value.String "." |)
-                                    ]
-                                |);
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [],
-                                          [ Ty.path "u8" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_array_field (|
-                                            octets,
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-                                          |)
-                                        ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [],
-                                          [ Ty.path "u8" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_array_field (|
-                                            octets,
-                                            M.alloc (| Value.Integer IntegerKind.Usize 1 |)
-                                          |)
-                                        ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [],
-                                          [ Ty.path "u8" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_array_field (|
-                                            octets,
-                                            M.alloc (| Value.Integer IntegerKind.Usize 2 |)
-                                          |)
-                                        ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [],
-                                          [ Ty.path "u8" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_array_field (|
-                                            octets,
-                                            M.alloc (| Value.Integer IntegerKind.Usize 3 |)
-                                          |)
-                                        ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| Value.String "" |);
+                                            M.read (| Value.String "." |);
+                                            M.read (| Value.String "." |);
+                                            M.read (| Value.String "." |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_array_field (|
+                                                        octets,
+                                                        M.alloc (|
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_array_field (|
+                                                        octets,
+                                                        M.alloc (|
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_array_field (|
+                                                        octets,
+                                                        M.alloc (|
+                                                          Value.Integer IntegerKind.Usize 2
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_array_field (|
+                                                        octets,
+                                                        M.alloc (|
+                                                          Value.Integer IntegerKind.Usize 3
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -3462,7 +3703,7 @@ Module net.
                                   []
                                 |),
                                 [
-                                  buf;
+                                  M.borrow (| Pointer.Kind.MutRef, buf |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
@@ -3471,75 +3712,131 @@ Module net.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "" |);
-                                            M.read (| Value.String "." |);
-                                            M.read (| Value.String "." |);
-                                            M.read (| Value.String "." |)
-                                          ]
-                                      |);
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [],
-                                                [ Ty.path "u8" ]
-                                              |),
-                                              [
-                                                M.SubPointer.get_array_field (|
-                                                  octets,
-                                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-                                                |)
-                                              ]
-                                            |);
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [],
-                                                [ Ty.path "u8" ]
-                                              |),
-                                              [
-                                                M.SubPointer.get_array_field (|
-                                                  octets,
-                                                  M.alloc (| Value.Integer IntegerKind.Usize 1 |)
-                                                |)
-                                              ]
-                                            |);
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [],
-                                                [ Ty.path "u8" ]
-                                              |),
-                                              [
-                                                M.SubPointer.get_array_field (|
-                                                  octets,
-                                                  M.alloc (| Value.Integer IntegerKind.Usize 2 |)
-                                                |)
-                                              ]
-                                            |);
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [],
-                                                [ Ty.path "u8" ]
-                                              |),
-                                              [
-                                                M.SubPointer.get_array_field (|
-                                                  octets,
-                                                  M.alloc (| Value.Integer IntegerKind.Usize 3 |)
-                                                |)
-                                              ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| Value.String "" |);
+                                                  M.read (| Value.String "." |);
+                                                  M.read (| Value.String "." |);
+                                                  M.read (| Value.String "." |)
+                                                ]
                                             |)
-                                          ]
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [ Ty.path "u8" ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_array_field (|
+                                                              octets,
+                                                              M.alloc (|
+                                                                Value.Integer IntegerKind.Usize 0
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [ Ty.path "u8" ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_array_field (|
+                                                              octets,
+                                                              M.alloc (|
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [ Ty.path "u8" ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_array_field (|
+                                                              octets,
+                                                              M.alloc (|
+                                                                Value.Integer IntegerKind.Usize 2
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [ Ty.path "u8" ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_array_field (|
+                                                              octets,
+                                                              M.alloc (|
+                                                                Value.Integer IntegerKind.Usize 3
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -3557,18 +3854,23 @@ Module net.
                             []
                           |),
                           [
-                            M.read (| fmt |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                  [ Value.Integer IntegerKind.Usize 15 ]
-                                  [],
-                                "as_str",
-                                [ Value.Integer IntegerKind.Usize 15 ],
-                                []
-                              |),
-                              [ buf ]
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                      [ Value.Integer IntegerKind.Usize 15 ]
+                                      [],
+                                    "as_str",
+                                    [ Value.Integer IntegerKind.Usize 15 ],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3611,7 +3913,10 @@ Module net.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| fmt |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3667,7 +3972,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ v4; other ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, v4 |);
+                            M.borrow (| Pointer.Kind.Ref, other |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -3737,7 +4045,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ self; v4 ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, self |);
+                            M.borrow (| Pointer.Kind.Ref, v4 |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -3791,7 +4102,10 @@ Module net.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3847,7 +4161,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| v4 |); M.read (| other |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v4 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -3920,7 +4237,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| v4 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v4 |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -3976,15 +4296,26 @@ Module net.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::net::ip_addr::Ipv4Addr",
-                  "octets"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::ip_addr::Ipv4Addr",
+                    "octets"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::net::ip_addr::Ipv4Addr",
-                  "octets"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::net::ip_addr::Ipv4Addr",
+                        "octets"
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -4406,7 +4737,7 @@ Module net.
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::net::ip_addr::Ipv6Addr",
                           "octets"
                         |)
@@ -4499,7 +4830,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 ]
               |),
@@ -4513,7 +4844,12 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.get_constant (| "core::net::ip_addr::UNSPECIFIED" |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.get_constant (| "core::net::ip_addr::UNSPECIFIED" |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -4545,7 +4881,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 ]
               |),
@@ -4559,7 +4895,12 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.get_constant (| "core::net::ip_addr::LOCALHOST" |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.get_constant (| "core::net::ip_addr::LOCALHOST" |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -4624,7 +4965,8 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
@@ -4634,7 +4976,12 @@ Module net.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)))
                               |),
                               ltac:(M.monadic
@@ -4648,7 +4995,12 @@ Module net.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -4709,7 +5061,12 @@ Module net.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -4755,7 +5112,12 @@ Module net.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -4807,7 +5169,12 @@ Module net.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -4866,7 +5233,12 @@ Module net.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| self |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                           |),
@@ -4891,7 +5263,12 @@ Module net.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| self |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |),
@@ -4911,7 +5288,12 @@ Module net.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| self |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -4961,7 +5343,12 @@ Module net.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| self |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -5016,7 +5403,12 @@ Module net.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -5081,7 +5473,7 @@ Module net.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |),
                             [
@@ -5114,7 +5506,7 @@ Module net.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)))
                   |),
                   ltac:(M.monadic
@@ -5125,7 +5517,7 @@ Module net.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)))
                 |),
                 ltac:(M.monadic
@@ -5136,7 +5528,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)))
               |)
             |)))
@@ -5167,7 +5559,7 @@ Module net.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -5200,7 +5592,7 @@ Module net.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5230,7 +5622,7 @@ Module net.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -5267,7 +5659,7 @@ Module net.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -5287,7 +5679,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
                       M.alloc (| Value.Integer IntegerKind.Usize 1 |)
@@ -5325,7 +5717,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
                       M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -5345,7 +5737,7 @@ Module net.
                               [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |),
                         M.alloc (| Value.Integer IntegerKind.Usize 1 |)
@@ -5366,7 +5758,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
                       M.alloc (| Value.Integer IntegerKind.Usize 2 |)
@@ -5410,7 +5802,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |),
                         ltac:(M.monadic
                           (UnOp.not (|
@@ -5421,7 +5813,7 @@ Module net.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)))
                       |),
@@ -5434,7 +5826,7 @@ Module net.
                               [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)))
                     |),
@@ -5447,7 +5839,7 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |)))
                   |),
@@ -5460,7 +5852,7 @@ Module net.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |)))
                 |),
@@ -5473,7 +5865,7 @@ Module net.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |)))
               |),
@@ -5486,7 +5878,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |)))
             |)))
@@ -5535,7 +5927,7 @@ Module net.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5552,7 +5944,12 @@ Module net.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -5712,7 +6109,7 @@ Module net.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     M.alloc (| Value.Integer IntegerKind.Usize 0 |)
@@ -5747,7 +6144,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -5827,7 +6224,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -5971,7 +6368,7 @@ Module net.
                               [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |) in
                       let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
@@ -6143,7 +6540,8 @@ Module net.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -6170,7 +6568,7 @@ Module net.
                   M.alloc (|
                     Value.StructTuple
                       "core::net::ip_addr::IpAddr::V6"
-                      [ M.read (| M.read (| self |) |) ]
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |)))
             |)))
@@ -6192,7 +6590,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::net::ip_addr::Ipv6Addr",
                 "octets"
               |)
@@ -6307,15 +6705,23 @@ Module net.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Formatter",
-                                            "precision",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| f |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Formatter",
+                                              "precision",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| f |) |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -6332,15 +6738,23 @@ Module net.
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::Formatter",
-                                              "width",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| f |) ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Formatter",
+                                                "width",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| f |) |)
+                                                |)
+                                              ]
+                                            |)
                                           |)
                                         |)
                                       ]
@@ -6358,7 +6772,7 @@ Module net.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |) in
                           M.match_operator (|
@@ -6375,7 +6789,12 @@ Module net.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     |) in
                                   let γ0_0 :=
@@ -6394,7 +6813,10 @@ Module net.
                                         []
                                       |),
                                       [
-                                        M.read (| f |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| f |) |)
+                                        |);
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
@@ -6403,22 +6825,50 @@ Module net.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array [ M.read (| Value.String "::ffff:" |) ]
-                                            |);
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [],
-                                                      [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
-                                                    |),
-                                                    [ ipv4 ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [ M.read (| Value.String "::ffff:" |) ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [ Ty.path "core::net::ip_addr::Ipv4Addr"
+                                                            ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  ipv4
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -6507,7 +6957,8 @@ Module net.
                                                           [],
                                                           []
                                                         |),
-                                                        [ segments ]
+                                                        [ M.borrow (| Pointer.Kind.Ref, segments |)
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
@@ -6543,7 +6994,17 @@ Module net.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ iter ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      iter
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |),
                                                           [
@@ -6799,41 +7260,61 @@ Module net.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| f |);
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::index::Index",
-                                                            Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Value.Integer IntegerKind.Usize 8 ]
-                                                              [ Ty.path "u16" ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "core::ops::range::RangeTo")
-                                                                []
-                                                                [ Ty.path "usize" ]
-                                                            ],
-                                                            "index",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            segments;
-                                                            Value.StructRecord
-                                                              "core::ops::range::RangeTo"
-                                                              [
-                                                                ("end_",
-                                                                  M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      zeroes,
-                                                                      "core::net::ip_addr::fmt::Span",
-                                                                      "start"
-                                                                    |)
-                                                                  |))
-                                                              ]
-                                                          ]
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| f |) |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::index::Index",
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          8
+                                                                      ]
+                                                                      [ Ty.path "u16" ],
+                                                                    [],
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::ops::range::RangeTo")
+                                                                        []
+                                                                        [ Ty.path "usize" ]
+                                                                    ],
+                                                                    "index",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      segments
+                                                                    |);
+                                                                    Value.StructRecord
+                                                                      "core::ops::range::RangeTo"
+                                                                      [
+                                                                        ("end_",
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              zeroes,
+                                                                              "core::net::ip_addr::fmt::Span",
+                                                                              "start"
+                                                                            |)
+                                                                          |))
+                                                                      ]
+                                                                  ]
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -6922,8 +7403,16 @@ Module net.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| f |);
-                                                        M.read (| Value.String "::" |)
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| f |) |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (| Value.String "::" |)
+                                                          |)
+                                                        |)
                                                       ]
                                                     |)
                                                   ]
@@ -6995,49 +7484,66 @@ Module net.
                                                 []
                                               |),
                                               [
-                                                M.read (| f |);
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::index::Index",
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 8 ]
-                                                      [ Ty.path "u16" ],
-                                                    [],
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::ops::range::RangeFrom")
-                                                        []
-                                                        [ Ty.path "usize" ]
-                                                    ],
-                                                    "index",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    segments;
-                                                    Value.StructRecord
-                                                      "core::ops::range::RangeFrom"
-                                                      [
-                                                        ("start",
-                                                          BinOp.Wrap.add (|
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                zeroes,
-                                                                "core::net::ip_addr::fmt::Span",
-                                                                "start"
-                                                              |)
-                                                            |),
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                zeroes,
-                                                                "core::net::ip_addr::fmt::Span",
-                                                                "len"
-                                                              |)
-                                                            |)
-                                                          |))
-                                                      ]
-                                                  ]
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| f |) |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::index::Index",
+                                                            Ty.apply
+                                                              (Ty.path "array")
+                                                              [ Value.Integer IntegerKind.Usize 8 ]
+                                                              [ Ty.path "u16" ],
+                                                            [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::range::RangeFrom")
+                                                                []
+                                                                [ Ty.path "usize" ]
+                                                            ],
+                                                            "index",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              segments
+                                                            |);
+                                                            Value.StructRecord
+                                                              "core::ops::range::RangeFrom"
+                                                              [
+                                                                ("start",
+                                                                  BinOp.Wrap.add (|
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        zeroes,
+                                                                        "core::net::ip_addr::fmt::Span",
+                                                                        "start"
+                                                                      |)
+                                                                    |),
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        zeroes,
+                                                                        "core::net::ip_addr::fmt::Span",
+                                                                        "len"
+                                                                      |)
+                                                                    |)
+                                                                  |))
+                                                              ]
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -7052,7 +7558,18 @@ Module net.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| f |); segments ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| f |) |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, segments |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |)))
                                     ]
@@ -7103,7 +7620,7 @@ Module net.
                                       []
                                     |),
                                     [
-                                      buf;
+                                      M.borrow (| Pointer.Kind.MutRef, buf |);
                                       M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
@@ -7112,27 +7629,53 @@ Module net.
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array [ M.read (| Value.String "" |) ]
-                                          |);
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [],
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
-                                                    ]
-                                                  |),
-                                                  [ self ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array [ M.read (| Value.String "" |) ]
                                                 |)
-                                              ]
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [],
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "core::net::ip_addr::Ipv6Addr"
+                                                              ]
+                                                          ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (| Pointer.Kind.Ref, self |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -7150,18 +7693,23 @@ Module net.
                                 []
                               |),
                               [
-                                M.read (| f |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                      [ Value.Integer IntegerKind.Usize 39 ]
-                                      [],
-                                    "as_str",
-                                    [ Value.Integer IntegerKind.Usize 39 ],
-                                    []
-                                  |),
-                                  [ buf ]
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                          [ Value.Integer IntegerKind.Usize 39 ]
+                                          [],
+                                        "as_str",
+                                        [ Value.Integer IntegerKind.Usize 39 ],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -7205,7 +7753,10 @@ Module net.
                 [],
                 []
               |),
-              [ M.read (| self |); M.read (| fmt |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7271,7 +7822,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ self; v6 ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, self |);
+                            M.borrow (| Pointer.Kind.Ref, v6 |)
+                          ]
                         |)
                       |)))
                 ]
@@ -7341,7 +7895,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ v6; other ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, v6 |);
+                            M.borrow (| Pointer.Kind.Ref, other |)
+                          ]
                         |)
                       |)))
                 ]
@@ -7385,7 +7942,10 @@ Module net.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7455,7 +8015,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| v6 |); M.read (| other |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v6 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                          ]
                         |)
                       |)))
                 ]
@@ -7528,7 +8091,10 @@ Module net.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| v6 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v6 |) |) |)
+                          ]
                         |)
                       |)))
                 ]
@@ -7570,26 +8136,37 @@ Module net.
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::net::ip_addr::Ipv6Addr",
-                      "segments",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::net::ip_addr::Ipv6Addr",
+                        "segments",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::net::ip_addr::Ipv6Addr",
-                      "segments",
-                      [],
-                      []
-                    |),
-                    [ M.read (| other |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::net::ip_addr::Ipv6Addr",
+                            "segments",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -7915,10 +8492,13 @@ Module net.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "core::net::ip_addr::Ipv4Addr",
-                            "octets"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::net::ip_addr::Ipv4Addr",
+                              "octets"
+                            |)
                           |)
                         ]
                       |)
@@ -7945,7 +8525,12 @@ Module net.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -7967,8 +8552,10 @@ Module net.
                                         let octet := M.copy (| γ0_0 |) in
                                         let~ _ :=
                                           M.write (|
-                                            M.read (| octet |),
-                                            UnOp.not (| M.read (| M.read (| octet |) |) |)
+                                            M.deref (| M.read (| octet |) |),
+                                            UnOp.not (|
+                                              M.read (| M.deref (| M.read (| octet |) |) |)
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
                                   ]
@@ -8018,7 +8605,7 @@ Module net.
                 [],
                 []
               |),
-              [ M.read (| M.read (| self |) |) ]
+              [ M.read (| M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8075,10 +8662,13 @@ Module net.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "core::net::ip_addr::Ipv6Addr",
-                            "octets"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::net::ip_addr::Ipv6Addr",
+                              "octets"
+                            |)
                           |)
                         ]
                       |)
@@ -8105,7 +8695,12 @@ Module net.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -8127,8 +8722,10 @@ Module net.
                                         let octet := M.copy (| γ0_0 |) in
                                         let~ _ :=
                                           M.write (|
-                                            M.read (| octet |),
-                                            UnOp.not (| M.read (| M.read (| octet |) |) |)
+                                            M.deref (| M.read (| octet |) |),
+                                            UnOp.not (|
+                                              M.read (| M.deref (| M.read (| octet |) |) |)
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
                                   ]
@@ -8178,7 +8775,7 @@ Module net.
                 [],
                 []
               |),
-              [ M.read (| M.read (| self |) |) ]
+              [ M.read (| M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8253,10 +8850,13 @@ Module net.
                             ]
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::net::ip_addr::Ipv4Addr",
-                              "octets"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::net::ip_addr::Ipv4Addr",
+                                "octets"
+                              |)
                             |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
@@ -8301,7 +8901,12 @@ Module net.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -8336,7 +8941,13 @@ Module net.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| lhs |); M.read (| rhs |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| lhs |) |)
+                                              |);
+                                              M.read (| rhs |)
+                                            ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -8385,7 +8996,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8433,7 +9047,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ self; M.read (| rhs |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, self |); M.read (| rhs |) ]
                   |)
                 |) in
               self
@@ -8481,7 +9095,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ self; M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, self |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               self
@@ -8520,7 +9137,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ lhs := M.copy (| M.read (| self |) |) in
+              let~ lhs := M.copy (| M.deref (| M.read (| self |) |) |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -8533,7 +9150,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ lhs; M.read (| rhs |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, lhs |); M.read (| rhs |) ]
                   |)
                 |) in
               lhs
@@ -8571,7 +9188,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ lhs := M.copy (| M.read (| self |) |) in
+              let~ lhs := M.copy (| M.deref (| M.read (| self |) |) |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -8584,7 +9201,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ lhs; M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, lhs |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               lhs
@@ -8663,10 +9283,13 @@ Module net.
                             ]
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::net::ip_addr::Ipv4Addr",
-                              "octets"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::net::ip_addr::Ipv4Addr",
+                                "octets"
+                              |)
                             |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
@@ -8711,7 +9334,12 @@ Module net.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -8746,7 +9374,13 @@ Module net.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| lhs |); M.read (| rhs |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| lhs |) |)
+                                              |);
+                                              M.read (| rhs |)
+                                            ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -8795,7 +9429,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8843,7 +9480,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ self; M.read (| rhs |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, self |); M.read (| rhs |) ]
                   |)
                 |) in
               self
@@ -8891,7 +9528,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ self; M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, self |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               self
@@ -8930,7 +9570,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ lhs := M.copy (| M.read (| self |) |) in
+              let~ lhs := M.copy (| M.deref (| M.read (| self |) |) |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -8943,7 +9583,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ lhs; M.read (| rhs |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, lhs |); M.read (| rhs |) ]
                   |)
                 |) in
               lhs
@@ -8981,7 +9621,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ lhs := M.copy (| M.read (| self |) |) in
+              let~ lhs := M.copy (| M.deref (| M.read (| self |) |) |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -8994,7 +9634,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ lhs; M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, lhs |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               lhs
@@ -9073,10 +9716,13 @@ Module net.
                             ]
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::net::ip_addr::Ipv6Addr",
-                              "octets"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::net::ip_addr::Ipv6Addr",
+                                "octets"
+                              |)
                             |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
@@ -9121,7 +9767,12 @@ Module net.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -9156,7 +9807,13 @@ Module net.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| lhs |); M.read (| rhs |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| lhs |) |)
+                                              |);
+                                              M.read (| rhs |)
+                                            ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -9205,7 +9862,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9253,7 +9913,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ self; M.read (| rhs |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, self |); M.read (| rhs |) ]
                   |)
                 |) in
               self
@@ -9301,7 +9961,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ self; M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, self |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               self
@@ -9340,7 +10003,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ lhs := M.copy (| M.read (| self |) |) in
+              let~ lhs := M.copy (| M.deref (| M.read (| self |) |) |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -9353,7 +10016,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ lhs; M.read (| rhs |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, lhs |); M.read (| rhs |) ]
                   |)
                 |) in
               lhs
@@ -9391,7 +10054,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ lhs := M.copy (| M.read (| self |) |) in
+              let~ lhs := M.copy (| M.deref (| M.read (| self |) |) |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -9404,7 +10067,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ lhs; M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, lhs |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               lhs
@@ -9483,10 +10149,13 @@ Module net.
                             ]
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::net::ip_addr::Ipv6Addr",
-                              "octets"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::net::ip_addr::Ipv6Addr",
+                                "octets"
+                              |)
                             |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
@@ -9531,7 +10200,12 @@ Module net.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -9566,7 +10240,13 @@ Module net.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| lhs |); M.read (| rhs |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| lhs |) |)
+                                              |);
+                                              M.read (| rhs |)
+                                            ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -9615,7 +10295,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9663,7 +10346,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ self; M.read (| rhs |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, self |); M.read (| rhs |) ]
                   |)
                 |) in
               self
@@ -9711,7 +10394,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ self; M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, self |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               self
@@ -9750,7 +10436,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ lhs := M.copy (| M.read (| self |) |) in
+              let~ lhs := M.copy (| M.deref (| M.read (| self |) |) |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -9763,7 +10449,7 @@ Module net.
                       [],
                       []
                     |),
-                    [ lhs; M.read (| rhs |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, lhs |); M.read (| rhs |) ]
                   |)
                 |) in
               lhs
@@ -9801,7 +10487,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ lhs := M.copy (| M.read (| self |) |) in
+              let~ lhs := M.copy (| M.deref (| M.read (| self |) |) |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -9814,7 +10500,10 @@ Module net.
                       [],
                       []
                     |),
-                    [ lhs; M.read (| M.read (| rhs |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, lhs |);
+                      M.read (| M.deref (| M.read (| rhs |) |) |)
+                    ]
                   |)
                 |) in
               lhs

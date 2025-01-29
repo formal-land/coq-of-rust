@@ -18,7 +18,7 @@ Module ops.
           (let x := M.alloc (| x |) in
           M.call_closure (|
             M.get_trait_method (| "core::ops::drop::Drop", T, [], [], "drop", [], [] |),
-            [ M.read (| x |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

@@ -1148,14 +1148,17 @@ Module char.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::char::convert::char_try_from_u32",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| i |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::char::convert::char_try_from_u32",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| i |) ]
+                                      |)
                                     |)
                                   |)
                                 ]

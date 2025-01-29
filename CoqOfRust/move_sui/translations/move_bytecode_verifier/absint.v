@@ -73,7 +73,7 @@ Module absint.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -86,7 +86,12 @@ Module absint.
                             γ,
                             "move_bytecode_verifier::absint::JoinResult::Changed"
                           |) in
-                        M.alloc (| M.read (| Value.String "Changed" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Changed" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -95,7 +100,12 @@ Module absint.
                             γ,
                             "move_bytecode_verifier::absint::JoinResult::Unchanged"
                           |) in
-                        M.alloc (| M.read (| Value.String "Unchanged" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Unchanged" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -138,10 +148,18 @@ Module absint.
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", State, [], [], "clone", [], [] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_bytecode_verifier::absint::BlockInvariant",
-                      "pre"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_bytecode_verifier::absint::BlockInvariant",
+                            "pre"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -231,7 +249,7 @@ Module absint.
                               []
                             |),
                             [
-                              M.read (| meter |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                               Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                               M.read (|
                                 M.get_constant (|
@@ -334,14 +352,24 @@ Module absint.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                            "cfg",
-                            [],
-                            []
-                          |),
-                          [ M.read (| function_context |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                                "cfg",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| function_context |) |)
+                                |)
+                              ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -370,7 +398,7 @@ Module absint.
                         []
                       |),
                       [
-                        inv_map;
+                        M.borrow (| Pointer.Kind.MutRef, inv_map |);
                         M.read (| entry_block_id |);
                         Value.StructRecord
                           "move_bytecode_verifier::absint::BlockInvariant"
@@ -416,7 +444,13 @@ Module absint.
                                           [],
                                           [ Ty.path "u16" ]
                                         |),
-                                        [ inv_map; block_id ]
+                                        [
+                                          M.borrow (| Pointer.Kind.MutRef, inv_map |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, block_id |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -455,15 +489,27 @@ Module absint.
                                                         []
                                                       |),
                                                       [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_bytecode_verifier::absint::FunctionContext",
-                                                            "cfg",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| function_context |) ]
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::absint::FunctionContext",
+                                                                "cfg",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| function_context |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
                                                         |);
                                                         M.read (| block_id |)
                                                       ]
@@ -478,10 +524,13 @@ Module absint.
                                 |) in
                               let~ pre_state :=
                                 M.alloc (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| block_invariant |),
-                                    "move_bytecode_verifier::absint::BlockInvariant",
-                                    "pre"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| block_invariant |) |),
+                                      "move_bytecode_verifier::absint::BlockInvariant",
+                                      "pre"
+                                    |)
                                   |)
                                 |) in
                               let~ post_state :=
@@ -516,11 +565,23 @@ Module absint.
                                               [ impl_Meter__plus___Sized ]
                                             |),
                                             [
-                                              M.read (| self |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
                                               M.read (| block_id |);
-                                              M.read (| pre_state |);
-                                              M.read (| function_context |);
-                                              M.read (| meter |)
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| pre_state |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| function_context |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| meter |) |)
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -599,14 +660,25 @@ Module absint.
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                                          "cfg",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| function_context |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_bytecode_verifier::absint::FunctionContext",
+                                              "cfg",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| function_context |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
                                       |);
                                       M.read (| block_id |)
                                     ]
@@ -647,15 +719,25 @@ Module absint.
                                               []
                                             |),
                                             [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_bytecode_verifier::absint::FunctionContext",
-                                                  "cfg",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| function_context |) ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_bytecode_verifier::absint::FunctionContext",
+                                                      "cfg",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| function_context |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
                                               |);
                                               M.read (| block_id |)
                                             ]
@@ -685,7 +767,14 @@ Module absint.
                                                         [],
                                                         []
                                                       |),
-                                                      [ iter ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |),
                                                   [
@@ -743,7 +832,12 @@ Module absint.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| meter |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.read (| meter |)
+                                                                        |)
+                                                                      |);
                                                                       Value.StructTuple
                                                                         "move_bytecode_verifier_meter::Scope::Function"
                                                                         [];
@@ -842,8 +936,16 @@ Module absint.
                                                                 [ Ty.path "u16" ]
                                                               |),
                                                               [
-                                                                inv_map;
-                                                                M.read (| successor_block_id |)
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  inv_map
+                                                                |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| successor_block_id |)
+                                                                  |)
+                                                                |)
                                                               ]
                                                             |)
                                                           |),
@@ -885,12 +987,17 @@ Module absint.
                                                                             M.read (|
                                                                               let~ old_pre :=
                                                                                 M.alloc (|
-                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                    M.read (|
-                                                                                      next_block_invariant
-                                                                                    |),
-                                                                                    "move_bytecode_verifier::absint::BlockInvariant",
-                                                                                    "pre"
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          next_block_invariant
+                                                                                        |)
+                                                                                      |),
+                                                                                      "move_bytecode_verifier::absint::BlockInvariant",
+                                                                                      "pre"
+                                                                                    |)
                                                                                   |)
                                                                                 |) in
                                                                               M.alloc (|
@@ -907,12 +1014,30 @@ Module absint.
                                                                                     ]
                                                                                   |),
                                                                                   [
-                                                                                    M.read (|
-                                                                                      old_pre
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.MutRef,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          old_pre
+                                                                                        |)
+                                                                                      |)
                                                                                     |);
-                                                                                    post_state;
-                                                                                    M.read (|
-                                                                                      meter
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          post_state
+                                                                                        |)
+                                                                                      |)
+                                                                                    |);
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.MutRef,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          meter
+                                                                                        |)
+                                                                                      |)
                                                                                     |)
                                                                                   ]
                                                                                 |)
@@ -1032,26 +1157,38 @@ Module absint.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.call_closure (|
-                                                                                            M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "move_bytecode_verifier::absint::FunctionContext",
-                                                                                              "cfg",
-                                                                                              [],
-                                                                                              []
-                                                                                            |),
-                                                                                            [
-                                                                                              M.read (|
-                                                                                                function_context
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.call_closure (|
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.path
+                                                                                                    "move_bytecode_verifier::absint::FunctionContext",
+                                                                                                  "cfg",
+                                                                                                  [],
+                                                                                                  []
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        function_context
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                ]
                                                                                               |)
-                                                                                            ]
+                                                                                            |)
                                                                                           |);
                                                                                           M.read (|
                                                                                             block_id
                                                                                           |);
                                                                                           M.read (|
-                                                                                            M.read (|
-                                                                                              successor_block_id
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                successor_block_id
+                                                                                              |)
                                                                                             |)
                                                                                           |)
                                                                                         ]
@@ -1099,8 +1236,13 @@ Module absint.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.read (|
-                                                                                                      meter
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.MutRef,
+                                                                                                      M.deref (|
+                                                                                                        M.read (|
+                                                                                                          meter
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |);
                                                                                                     Value.StructTuple
                                                                                                       "move_bytecode_verifier_meter::Scope::Function"
@@ -1198,8 +1340,10 @@ Module absint.
                                                                                             "core::option::Option::Some"
                                                                                             [
                                                                                               M.read (|
-                                                                                                M.read (|
-                                                                                                  successor_block_id
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    successor_block_id
+                                                                                                  |)
                                                                                                 |)
                                                                                               |)
                                                                                             ]
@@ -1247,10 +1391,15 @@ Module absint.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        inv_map;
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          inv_map
+                                                                        |);
                                                                         M.read (|
-                                                                          M.read (|
-                                                                            successor_block_id
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              successor_block_id
+                                                                            |)
                                                                           |)
                                                                         |);
                                                                         Value.StructRecord
@@ -1267,7 +1416,12 @@ Module absint.
                                                                                   [],
                                                                                   []
                                                                                 |),
-                                                                                [ post_state ]
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    post_state
+                                                                                  |)
+                                                                                ]
                                                                               |))
                                                                           ]
                                                                       ]
@@ -1357,7 +1511,7 @@ Module absint.
                               []
                             |),
                             [
-                              M.read (| meter |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                               Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                               M.read (|
                                 M.get_constant (|
@@ -1437,7 +1591,7 @@ Module absint.
                         [],
                         []
                       |),
-                      [ M.read (| pre_state |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pre_state |) |) |) ]
                     |)
                   |) in
                 let~ block_end :=
@@ -1453,14 +1607,24 @@ Module absint.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                            "cfg",
-                            [],
-                            []
-                          |),
-                          [ M.read (| function_context |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                                "cfg",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| function_context |) |)
+                                |)
+                              ]
+                            |)
+                          |)
                         |);
                         M.read (| block_id |)
                       ]
@@ -1499,14 +1663,24 @@ Module absint.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                                    "cfg",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| function_context |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                                        "cfg",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| function_context |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
                                 |);
                                 M.read (| block_id |)
                               ]
@@ -1543,7 +1717,12 @@ Module absint.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1568,40 +1747,57 @@ Module absint.
                                           let offset := M.copy (| γ0_0 |) in
                                           let~ instr :=
                                             M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::index::Index",
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::Bytecode";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ],
-                                                  [],
-                                                  [ Ty.path "usize" ],
-                                                  "index",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_bytecode_verifier::absint::FunctionContext",
-                                                        "code",
-                                                        [],
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::index::Index",
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
                                                         []
-                                                      |),
-                                                      [ M.read (| function_context |) ]
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Bytecode";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      [],
+                                                      [ Ty.path "usize" ],
+                                                      "index",
+                                                      [],
+                                                      []
                                                     |),
-                                                    "move_binary_format::file_format::CodeUnit",
-                                                    "code"
-                                                  |);
-                                                  M.rust_cast (M.read (| offset |))
-                                                ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::absint::FunctionContext",
+                                                                "code",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| function_context |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |),
+                                                          "move_binary_format::file_format::CodeUnit",
+                                                          "code"
+                                                        |)
+                                                      |);
+                                                      M.rust_cast (M.read (| offset |))
+                                                    ]
+                                                  |)
+                                                |)
                                               |)
                                             |) in
                                           M.match_operator (|
@@ -1635,12 +1831,29 @@ Module absint.
                                                       [ impl_Meter__plus___Sized ]
                                                     |),
                                                     [
-                                                      M.read (| self |);
-                                                      state_acc;
-                                                      M.read (| instr |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            state_acc
+                                                          |)
+                                                        |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| instr |) |)
+                                                      |);
                                                       M.read (| offset |);
                                                       M.read (| block_end |);
-                                                      M.read (| meter |)
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| meter |) |)
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -1761,86 +1974,114 @@ Module absint.
               ("index", Value.StructTuple "core::option::Option::Some" [ M.read (| index |) ]);
               ("code", M.read (| code |));
               ("parameters",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "move_binary_format::file_format::CompiledModule",
-                    "signature_at",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (| module |);
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| function_handle |),
-                        "move_binary_format::file_format::FunctionHandle",
-                        "parameters"
-                      |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "move_binary_format::file_format::CompiledModule",
+                        "signature_at",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| function_handle |) |),
+                            "move_binary_format::file_format::FunctionHandle",
+                            "parameters"
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |));
               ("return_",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "move_binary_format::file_format::CompiledModule",
-                    "signature_at",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (| module |);
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| function_handle |),
-                        "move_binary_format::file_format::FunctionHandle",
-                        "return_"
-                      |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "move_binary_format::file_format::CompiledModule",
+                        "signature_at",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| function_handle |) |),
+                            "move_binary_format::file_format::FunctionHandle",
+                            "return_"
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |));
               ("locals",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "move_binary_format::file_format::CompiledModule",
-                    "signature_at",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (| module |);
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| code |),
-                        "move_binary_format::file_format::CodeUnit",
-                        "locals"
-                      |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "move_binary_format::file_format::CompiledModule",
+                        "signature_at",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| code |) |),
+                            "move_binary_format::file_format::CodeUnit",
+                            "locals"
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |));
               ("type_parameters",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::AbilitySet";
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
                       [
-                        Ty.path "move_binary_format::file_format::AbilitySet";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    [],
-                    [],
-                    "deref",
-                    [],
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| function_handle |),
-                      "move_binary_format::file_format::FunctionHandle",
-                      "type_parameters"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| function_handle |) |),
+                                "move_binary_format::file_format::FunctionHandle",
+                                "type_parameters"
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |));
               ("cfg",
                 M.call_closure (|
@@ -1851,29 +2092,42 @@ Module absint.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::Bytecode";
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
                           [
-                            Ty.path "move_binary_format::file_format::Bytecode";
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| code |),
-                          "move_binary_format::file_format::CodeUnit",
-                          "code"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| code |) |),
+                                    "move_binary_format::file_format::CodeUnit",
+                                    "code"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |))
@@ -1895,7 +2149,7 @@ Module absint.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "move_bytecode_verifier::absint::FunctionContext",
               "index"
             |)
@@ -1915,11 +2169,16 @@ Module absint.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "move_bytecode_verifier::absint::FunctionContext",
-              "code"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_bytecode_verifier::absint::FunctionContext",
+                  "code"
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1937,11 +2196,16 @@ Module absint.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "move_bytecode_verifier::absint::FunctionContext",
-              "parameters"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_bytecode_verifier::absint::FunctionContext",
+                  "parameters"
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1959,11 +2223,16 @@ Module absint.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "move_bytecode_verifier::absint::FunctionContext",
-              "return_"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_bytecode_verifier::absint::FunctionContext",
+                  "return_"
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1981,11 +2250,16 @@ Module absint.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "move_bytecode_verifier::absint::FunctionContext",
-              "locals"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_bytecode_verifier::absint::FunctionContext",
+                  "locals"
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2003,11 +2277,16 @@ Module absint.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "move_bytecode_verifier::absint::FunctionContext",
-              "type_parameters"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_bytecode_verifier::absint::FunctionContext",
+                  "type_parameters"
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2026,10 +2305,18 @@ Module absint.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_bytecode_verifier::absint::FunctionContext",
-            "cfg"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_bytecode_verifier::absint::FunctionContext",
+                  "cfg"
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

@@ -125,7 +125,13 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [],
                     []
                   |),
-                  [ f; s ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, f |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, s |) |)
+                    |)
+                  ]
                 |)
               |),
               [
@@ -261,10 +267,15 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                 |),
                 [
-                  f;
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                    [ M.read (| s |) ]
+                  M.borrow (| Pointer.Kind.MutRef, f |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -300,33 +311,51 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] ]
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "std::fs::OpenOptions", "write", [], [] |),
-                  [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "std::fs::OpenOptions",
-                        "create",
+                        "write",
                         [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "std::fs::OpenOptions",
-                              "new",
-                              [],
-                              []
-                            |),
-                            []
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "std::fs::OpenOptions",
+                                "create",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "std::fs::OpenOptions",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      []
+                                    |)
+                                  |)
+                                |);
+                                Value.Bool true
+                              ]
+                            |)
                           |)
                         |);
                         Value.Bool true
                       ]
-                    |);
-                    Value.Bool true
-                  ]
+                    |)
+                  |)
                 |);
                 M.read (| path |)
               ]
@@ -434,8 +463,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "`mkdir a`
-" |) ] |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (| Value.Array [ M.read (| Value.String "`mkdir a`
+" |) ] |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -472,36 +511,63 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "! " |); M.read (| Value.String "
-" |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "! " |);
+                                          M.read (| Value.String "
+" |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [],
-                                        [ Ty.path "std::io::error::ErrorKind" ]
-                                      |),
-                                      [
-                                        M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "std::io::error::Error",
-                                              "kind",
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
                                               [],
-                                              []
+                                              [ Ty.path "std::io::error::ErrorKind" ]
                                             |),
-                                            [ why ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "std::io::error::Error",
+                                                          "kind",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.borrow (| Pointer.Kind.Ref, why |) ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -530,9 +596,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "`echo hello > a/b.txt`
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "`echo hello > a/b.txt`
 " |) ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -556,15 +630,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_function (| "filesystem_operations::echo", [], [] |),
                   [
-                    M.read (| Value.String "hello" |);
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "std::path::Path",
-                        "new",
-                        [],
-                        [ Ty.path "str" ]
-                      |),
-                      [ M.read (| Value.String "a/b.txt" |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "hello" |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "std::path::Path",
+                                    "new",
+                                    [],
+                                    [ Ty.path "str" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| Value.String "a/b.txt" |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |);
@@ -595,39 +691,72 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "! " |);
-                                                        M.read (| Value.String "
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (| Value.String "! " |);
+                                                              M.read (| Value.String "
 " |)
-                                                      ]
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [],
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_debug",
                                                                   [],
-                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "std::io::error::ErrorKind"
+                                                                  ]
                                                                 |),
-                                                                [ why ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "std::io::error::Error",
+                                                                              "kind",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                why
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            |)
-                                                          ]
+                                                            ]
                                                         |)
-                                                      ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -657,8 +786,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "`mkdir -p a/c/d`
-" |) ] |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "`mkdir -p a/c/d`
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -712,162 +853,72 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "! " |);
-                                                        M.read (| Value.String "
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (| Value.String "! " |);
+                                                              M.read (| Value.String "
 " |)
-                                                      ]
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [],
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_debug",
                                                                   [],
-                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "std::io::error::ErrorKind"
+                                                                  ]
                                                                 |),
-                                                                [ why ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "std::io::error::Error",
+                                                                              "kind",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                why
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            |)
-                                                          ]
+                                                            ]
                                                         |)
-                                                      ]
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |) in
-                                    M.alloc (| Value.Tuple [] |)
-                                  |)))
-                            ]
-                          |)))
-                      | _ => M.impossible "wrong number of arguments"
-                      end))
-              ]
-            |)
-          |) in
-        let~ _ :=
-          let~ _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [], [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Arguments",
-                      "new_const",
-                      [],
-                      []
-                    |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "`touch a/c/e.txt`
-" |) ] |) ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          M.alloc (|
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                "unwrap_or_else",
-                [],
-                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
-              |),
-              [
-                M.call_closure (|
-                  M.get_function (| "filesystem_operations::touch", [], [] |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "std::path::Path",
-                        "new",
-                        [],
-                        [ Ty.path "str" ]
-                      |),
-                      [ M.read (| Value.String "a/c/e.txt" |) ]
-                    |)
-                  ]
-                |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let why := M.copy (| γ |) in
-                                  M.read (|
-                                    let~ _ :=
-                                      let~ _ :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_function (| "std::io::stdio::_print", [], [] |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::Arguments",
-                                                  "new_v1",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "! " |);
-                                                        M.read (| Value.String "
-" |)
-                                                      ]
-                                                  |);
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [],
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ why ]
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -898,9 +949,205 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "`ln -s ../b.txt a/c/b.txt`
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "`touch a/c/e.txt`
 " |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let~ _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                "unwrap_or_else",
+                [],
+                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_function (| "filesystem_operations::touch", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "std::path::Path",
+                                    "new",
+                                    [],
+                                    [ Ty.path "str" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| Value.String "a/c/e.txt" |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let why := M.copy (| γ |) in
+                                  M.read (|
+                                    let~ _ :=
+                                      let~ _ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_function (| "std::io::stdio::_print", [], [] |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::Arguments",
+                                                  "new_v1",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (| Value.String "! " |);
+                                                              M.read (| Value.String "
+" |)
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_debug",
+                                                                  [],
+                                                                  [
+                                                                    Ty.path
+                                                                      "std::io::error::ErrorKind"
+                                                                  ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "std::io::error::Error",
+                                                                              "kind",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                why
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        |) in
+                                      M.alloc (| Value.Tuple [] |) in
+                                    M.alloc (| Value.Tuple [] |)
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |)
+          |) in
+        let~ _ :=
+          let~ _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [], [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "`ln -s ../b.txt a/c/b.txt`
+" |) ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -978,44 +1225,77 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (| Value.String "! " |);
-                                                                  M.read (| Value.String "
-" |)
-                                                                ]
-                                                            |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_debug",
-                                                                      [],
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        Ty.path
-                                                                          "std::io::error::ErrorKind"
+                                                                        M.read (|
+                                                                          Value.String "! "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String "
+"
+                                                                        |)
                                                                       ]
-                                                                    |),
-                                                                    [
-                                                                      M.alloc (|
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
                                                                         M.call_closure (|
                                                                           M.get_associated_function (|
                                                                             Ty.path
-                                                                              "std::io::error::Error",
-                                                                            "kind",
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_debug",
                                                                             [],
-                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "std::io::error::ErrorKind"
+                                                                            ]
                                                                           |),
-                                                                          [ why ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "std::io::error::Error",
+                                                                                        "kind",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          why
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |)
-                                                                      |)
-                                                                    ]
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -1049,8 +1329,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "`cat a/c/b.txt`
-" |) ] |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "`cat a/c/b.txt`
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -1062,14 +1354,33 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_function (| "filesystem_operations::cat", [], [] |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "std::path::Path",
-                      "new",
-                      [],
-                      [ Ty.path "str" ]
-                    |),
-                    [ M.read (| Value.String "a/c/b.txt" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "std::path::Path",
+                                  "new",
+                                  [],
+                                  [ Ty.path "str" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "a/c/b.txt" |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1093,36 +1404,63 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "! " |); M.read (| Value.String "
-" |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "! " |);
+                                          M.read (| Value.String "
+" |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [],
-                                        [ Ty.path "std::io::error::ErrorKind" ]
-                                      |),
-                                      [
-                                        M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "std::io::error::Error",
-                                              "kind",
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
                                               [],
-                                              []
+                                              [ Ty.path "std::io::error::ErrorKind" ]
                                             |),
-                                            [ why ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "std::io::error::Error",
+                                                          "kind",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.borrow (| Pointer.Kind.Ref, why |) ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1148,24 +1486,48 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "> " |); M.read (| Value.String "
-" |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.path "alloc::string::String" ]
-                                      |),
-                                      [ s ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "> " |);
+                                          M.read (| Value.String "
+" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "alloc::string::String" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1188,8 +1550,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "`ls a`
-" |) ] |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (| Value.Array [ M.read (| Value.String "`ls a`
+" |) ] |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -1226,36 +1598,63 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "! " |); M.read (| Value.String "
-" |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "! " |);
+                                          M.read (| Value.String "
+" |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [],
-                                        [ Ty.path "std::io::error::ErrorKind" ]
-                                      |),
-                                      [
-                                        M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "std::io::error::Error",
-                                              "kind",
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
                                               [],
-                                              []
+                                              [ Ty.path "std::io::error::ErrorKind" ]
                                             |),
-                                            [ why ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "std::io::error::Error",
+                                                          "kind",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.borrow (| Pointer.Kind.Ref, why |) ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1303,7 +1702,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1344,60 +1748,96 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         []
                                                       |),
                                                       [
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (| Value.String "> " |);
-                                                              M.read (| Value.String "
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (| Value.String "> " |);
+                                                                    M.read (| Value.String "
 " |)
-                                                            ]
+                                                                  ]
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |);
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_debug",
-                                                                  [],
-                                                                  [ Ty.path "std::path::PathBuf" ]
-                                                                |),
-                                                                [
-                                                                  M.alloc (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
-                                                                        Ty.path "std::fs::DirEntry",
-                                                                        "path",
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_debug",
                                                                         [],
-                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "std::path::PathBuf"
+                                                                        ]
                                                                       |),
                                                                       [
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "core::result::Result")
-                                                                                []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "std::fs::DirEntry";
-                                                                                  Ty.path
-                                                                                    "std::io::error::Error"
-                                                                                ],
-                                                                              "unwrap",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [ M.read (| path |) ]
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.alloc (|
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "std::fs::DirEntry",
+                                                                                    "path",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.alloc (|
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "core::result::Result")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "std::fs::DirEntry";
+                                                                                                Ty.path
+                                                                                                  "std::io::error::Error"
+                                                                                              ],
+                                                                                            "unwrap",
+                                                                                            [],
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              path
+                                                                                            |)
+                                                                                          ]
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              |)
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       ]
                                                                     |)
-                                                                  |)
-                                                                ]
+                                                                  ]
                                                               |)
-                                                            ]
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -1427,8 +1867,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "`rm a/c/e.txt`
-" |) ] |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "`rm a/c/e.txt`
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -1482,39 +1934,72 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "! " |);
-                                                        M.read (| Value.String "
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (| Value.String "! " |);
+                                                              M.read (| Value.String "
 " |)
-                                                      ]
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [],
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_debug",
                                                                   [],
-                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "std::io::error::ErrorKind"
+                                                                  ]
                                                                 |),
-                                                                [ why ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "std::io::error::Error",
+                                                                              "kind",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                why
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            |)
-                                                          ]
+                                                            ]
                                                         |)
-                                                      ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -1544,8 +2029,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "`rmdir a/c/d`
-" |) ] |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (| Value.Array [ M.read (| Value.String "`rmdir a/c/d`
+" |) ] |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -1599,39 +2094,72 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "! " |);
-                                                        M.read (| Value.String "
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (| Value.String "! " |);
+                                                              M.read (| Value.String "
 " |)
-                                                      ]
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [],
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_debug",
                                                                   [],
-                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "std::io::error::ErrorKind"
+                                                                  ]
                                                                 |),
-                                                                [ why ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "std::io::error::Error",
+                                                                              "kind",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                why
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            |)
-                                                          ]
+                                                            ]
                                                         |)
-                                                      ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)

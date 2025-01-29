@@ -51,10 +51,18 @@ Module num.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::num::dec2flt::decimal::Decimal",
-                          "num_digits"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::num::dec2flt::decimal::Decimal",
+                                "num_digits"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -70,10 +78,18 @@ Module num.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::num::dec2flt::decimal::Decimal",
-                          "decimal_point"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::num::dec2flt::decimal::Decimal",
+                                "decimal_point"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -89,10 +105,18 @@ Module num.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::num::dec2flt::decimal::Decimal",
-                          "truncated"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::num::dec2flt::decimal::Decimal",
+                                "truncated"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -111,10 +135,18 @@ Module num.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::num::dec2flt::decimal::Decimal",
-                          "digits"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::num::dec2flt::decimal::Decimal",
+                                "digits"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -222,7 +254,7 @@ Module num.
                                 BinOp.lt (|
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::num::dec2flt::decimal::Decimal",
                                       "num_digits"
                                     |)
@@ -238,12 +270,12 @@ Module num.
                             M.write (|
                               M.SubPointer.get_array_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::num::dec2flt::decimal::Decimal",
                                   "digits"
                                 |),
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::num::dec2flt::decimal::Decimal",
                                   "num_digits"
                                 |)
@@ -257,7 +289,7 @@ Module num.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::num::dec2flt::decimal::Decimal",
                       "num_digits"
                     |) in
@@ -316,7 +348,7 @@ Module num.
                                             BinOp.le (|
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::num::dec2flt::decimal::Decimal",
                                                   "num_digits"
                                                 |)
@@ -368,7 +400,7 @@ Module num.
                                     BinOp.ne (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::num::dec2flt::decimal::Decimal",
                                           "num_digits"
                                         |)
@@ -380,7 +412,7 @@ Module num.
                                         M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::num::dec2flt::decimal::Decimal",
                                               "digits"
                                             |),
@@ -388,7 +420,7 @@ Module num.
                                               BinOp.Wrap.sub (|
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::num::dec2flt::decimal::Decimal",
                                                     "num_digits"
                                                   |)
@@ -407,7 +439,7 @@ Module num.
                             let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::num::dec2flt::decimal::Decimal",
                                   "num_digits"
                                 |) in
@@ -488,7 +520,7 @@ Module num.
                                       BinOp.eq (|
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::num::dec2flt::decimal::Decimal",
                                             "num_digits"
                                           |)
@@ -499,7 +531,7 @@ Module num.
                                         (BinOp.lt (|
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::num::dec2flt::decimal::Decimal",
                                               "decimal_point"
                                             |)
@@ -531,7 +563,7 @@ Module num.
                                             BinOp.gt (|
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::num::dec2flt::decimal::Decimal",
                                                   "decimal_point"
                                                 |)
@@ -563,7 +595,7 @@ Module num.
                         M.rust_cast
                           (M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::num::dec2flt::decimal::Decimal",
                               "decimal_point"
                             |)
@@ -616,7 +648,14 @@ Module num.
                                               [],
                                               []
                                             |),
-                                            [ iter ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -660,7 +699,7 @@ Module num.
                                                               M.read (| i |),
                                                               M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
+                                                                  M.deref (| M.read (| self |) |),
                                                                   "core::num::dec2flt::decimal::Decimal",
                                                                   "num_digits"
                                                                 |)
@@ -682,7 +721,7 @@ Module num.
                                                               (M.read (|
                                                                 M.SubPointer.get_array_field (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
+                                                                    M.deref (| M.read (| self |) |),
                                                                     "core::num::dec2flt::decimal::Decimal",
                                                                     "digits"
                                                                   |),
@@ -716,7 +755,7 @@ Module num.
                                       M.read (| dp |),
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::num::dec2flt::decimal::Decimal",
                                           "num_digits"
                                         |)
@@ -735,7 +774,7 @@ Module num.
                                     M.read (|
                                       M.SubPointer.get_array_field (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::num::dec2flt::decimal::Decimal",
                                           "digits"
                                         |),
@@ -758,7 +797,7 @@ Module num.
                                                 M.read (|
                                                   M.SubPointer.get_array_field (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::num::dec2flt::decimal::Decimal",
                                                       "digits"
                                                     |),
@@ -775,7 +814,7 @@ Module num.
                                                   |),
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::num::dec2flt::decimal::Decimal",
                                                       "num_digits"
                                                     |)
@@ -793,7 +832,7 @@ Module num.
                                         LogicalOp.or (|
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::num::dec2flt::decimal::Decimal",
                                               "truncated"
                                             |)
@@ -811,7 +850,7 @@ Module num.
                                                     (M.read (|
                                                       M.SubPointer.get_array_field (|
                                                         M.SubPointer.get_struct_record_field (|
-                                                          M.read (| self |),
+                                                          M.deref (| M.read (| self |) |),
                                                           "core::num::dec2flt::decimal::Decimal",
                                                           "digits"
                                                         |),
@@ -929,7 +968,7 @@ Module num.
                                     BinOp.eq (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::num::dec2flt::decimal::Decimal",
                                           "num_digits"
                                         |)
@@ -956,13 +995,16 @@ Module num.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| shift |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| shift |)
+                          ]
                         |)
                       |) in
                     let~ read_index :=
                       M.copy (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::dec2flt::decimal::Decimal",
                           "num_digits"
                         |)
@@ -972,7 +1014,7 @@ Module num.
                         BinOp.Wrap.add (|
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::num::dec2flt::decimal::Decimal",
                               "num_digits"
                             |)
@@ -1031,7 +1073,7 @@ Module num.
                                             (M.read (|
                                               M.SubPointer.get_array_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::num::dec2flt::decimal::Decimal",
                                                   "digits"
                                                 |),
@@ -1086,7 +1128,7 @@ Module num.
                                               M.write (|
                                                 M.SubPointer.get_array_field (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::num::dec2flt::decimal::Decimal",
                                                     "digits"
                                                   |),
@@ -1118,7 +1160,7 @@ Module num.
                                                     let~ _ :=
                                                       M.write (|
                                                         M.SubPointer.get_struct_record_field (|
-                                                          M.read (| self |),
+                                                          M.deref (| M.read (| self |) |),
                                                           "core::num::dec2flt::decimal::Decimal",
                                                           "truncated"
                                                         |),
@@ -1223,7 +1265,7 @@ Module num.
                                               M.write (|
                                                 M.SubPointer.get_array_field (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::num::dec2flt::decimal::Decimal",
                                                     "digits"
                                                   |),
@@ -1255,7 +1297,7 @@ Module num.
                                                     let~ _ :=
                                                       M.write (|
                                                         M.SubPointer.get_struct_record_field (|
-                                                          M.read (| self |),
+                                                          M.deref (| M.read (| self |) |),
                                                           "core::num::dec2flt::decimal::Decimal",
                                                           "truncated"
                                                         |),
@@ -1289,7 +1331,7 @@ Module num.
                     let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::dec2flt::decimal::Decimal",
                           "num_digits"
                         |) in
@@ -1309,7 +1351,7 @@ Module num.
                                     BinOp.gt (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::num::dec2flt::decimal::Decimal",
                                           "num_digits"
                                         |)
@@ -1329,7 +1371,7 @@ Module num.
                               let~ _ :=
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::num::dec2flt::decimal::Decimal",
                                     "num_digits"
                                   |),
@@ -1344,7 +1386,7 @@ Module num.
                     let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::dec2flt::decimal::Decimal",
                           "decimal_point"
                         |) in
@@ -1364,7 +1406,7 @@ Module num.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)
@@ -1469,7 +1511,7 @@ Module num.
                                                   M.read (| read_index |),
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::num::dec2flt::decimal::Decimal",
                                                       "num_digits"
                                                     |)
@@ -1493,7 +1535,7 @@ Module num.
                                                   (M.read (|
                                                     M.SubPointer.get_array_field (|
                                                       M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
+                                                        M.deref (| M.read (| self |) |),
                                                         "core::num::dec2flt::decimal::Decimal",
                                                         "digits"
                                                       |),
@@ -1642,7 +1684,7 @@ Module num.
                     let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::dec2flt::decimal::Decimal",
                           "decimal_point"
                         |) in
@@ -1668,7 +1710,7 @@ Module num.
                                     BinOp.lt (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::num::dec2flt::decimal::Decimal",
                                           "decimal_point"
                                         |)
@@ -1693,7 +1735,7 @@ Module num.
                                     let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::num::dec2flt::decimal::Decimal",
                                           "num_digits"
                                         |),
@@ -1702,7 +1744,7 @@ Module num.
                                     let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::num::dec2flt::decimal::Decimal",
                                           "decimal_point"
                                         |),
@@ -1711,7 +1753,7 @@ Module num.
                                     let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::num::dec2flt::decimal::Decimal",
                                           "truncated"
                                         |),
@@ -1746,7 +1788,7 @@ Module num.
                                           M.read (| read_index |),
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::num::dec2flt::decimal::Decimal",
                                               "num_digits"
                                             |)
@@ -1775,7 +1817,7 @@ Module num.
                                           (M.read (|
                                             M.SubPointer.get_array_field (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::num::dec2flt::decimal::Decimal",
                                                 "digits"
                                               |),
@@ -1797,7 +1839,7 @@ Module num.
                                     M.write (|
                                       M.SubPointer.get_array_field (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::num::dec2flt::decimal::Decimal",
                                           "digits"
                                         |),
@@ -1891,7 +1933,7 @@ Module num.
                                             M.write (|
                                               M.SubPointer.get_array_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::num::dec2flt::decimal::Decimal",
                                                   "digits"
                                                 |),
@@ -1932,7 +1974,7 @@ Module num.
                                                   let~ _ :=
                                                     M.write (|
                                                       M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
+                                                        M.deref (| M.read (| self |) |),
                                                         "core::num::dec2flt::decimal::Decimal",
                                                         "truncated"
                                                       |),
@@ -1964,7 +2006,7 @@ Module num.
                     let~ _ :=
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::dec2flt::decimal::Decimal",
                           "num_digits"
                         |),
@@ -1979,7 +2021,7 @@ Module num.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)
@@ -2108,7 +2150,7 @@ Module num.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| s |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -2126,7 +2168,11 @@ Module num.
                                 Value.Integer IntegerKind.U8 48
                               |) in
                             let s_next := M.copy (| γ1_1 |) in
-                            let~ _ := M.write (| s, M.read (| s_next |) |) in
+                            let~ _ :=
+                              M.write (|
+                                s,
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s_next |) |) |)
+                              |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -2145,44 +2191,52 @@ Module num.
               let~ _ :=
                 M.write (|
                   s,
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::num::dec2flt::common::ByteSlice",
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                      [],
-                      [],
-                      "parse_digits",
-                      [],
-                      [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
-                    |),
-                    [
-                      M.read (| s |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::num::dec2flt::common::ByteSlice",
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          [],
+                          [],
+                          "parse_digits",
+                          [],
+                          [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
+                          M.closure
+                            (fun γ =>
                               ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let digit := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::num::dec2flt::decimal::Decimal",
-                                            "try_add_digit",
-                                            [],
-                                            []
-                                          |),
-                                          [ d; M.read (| digit |) ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    ]
+                                match γ with
+                                | [ α0 ] =>
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let digit := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::num::dec2flt::decimal::Decimal",
+                                                "try_add_digit",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, d |);
+                                                M.read (| digit |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end))
+                        ]
+                      |)
+                    |)
                   |)
                 |) in
               let~ _ :=
@@ -2200,7 +2254,7 @@ Module num.
                                 [],
                                 []
                               |),
-                              [ M.read (| s |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                             |)
                           |) in
                         let γ0_0 :=
@@ -2218,7 +2272,11 @@ Module num.
                             Value.Integer IntegerKind.U8 46
                           |) in
                         let s_next := M.copy (| γ1_1 |) in
-                        let~ _ := M.write (| s, M.read (| s_next |) |) in
+                        let~ _ :=
+                          M.write (|
+                            s,
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s_next |) |) |)
+                          |) in
                         let~ first := M.copy (| s |) in
                         let~ _ :=
                           M.match_operator (|
@@ -2264,7 +2322,12 @@ Module num.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| s |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| s |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |) in
                                               let γ0_0 :=
@@ -2284,7 +2347,14 @@ Module num.
                                                   Value.Integer IntegerKind.U8 48
                                                 |) in
                                               let s_next := M.copy (| γ1_1 |) in
-                                              let~ _ := M.write (| s, M.read (| s_next |) |) in
+                                              let~ _ :=
+                                                M.write (|
+                                                  s,
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| s_next |) |)
+                                                  |)
+                                                |) in
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
@@ -2327,7 +2397,12 @@ Module num.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| s |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| s |) |)
+                                                    |)
+                                                  ]
                                                 |),
                                                 Value.Integer IntegerKind.Usize 8
                                               |),
@@ -2368,7 +2443,12 @@ Module num.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| s |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| s |) |)
+                                              |)
+                                            ]
                                           |)
                                         |) in
                                       let~ _ :=
@@ -2415,43 +2495,51 @@ Module num.
                                               []
                                             |),
                                             [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::index::IndexMut",
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 768 ]
-                                                    [ Ty.path "u8" ],
-                                                  [],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ops::range::RangeFrom")
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::index::IndexMut",
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 768 ]
+                                                        [ Ty.path "u8" ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::RangeFrom")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ],
+                                                      "index_mut",
+                                                      [],
                                                       []
-                                                      [ Ty.path "usize" ]
-                                                  ],
-                                                  "index_mut",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    d,
-                                                    "core::num::dec2flt::decimal::Decimal",
-                                                    "digits"
-                                                  |);
-                                                  Value.StructRecord
-                                                    "core::ops::range::RangeFrom"
+                                                    |),
                                                     [
-                                                      ("start",
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            d,
-                                                            "core::num::dec2flt::decimal::Decimal",
-                                                            "num_digits"
-                                                          |)
-                                                        |))
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          d,
+                                                          "core::num::dec2flt::decimal::Decimal",
+                                                          "digits"
+                                                        |)
+                                                      |);
+                                                      Value.StructRecord
+                                                        "core::ops::range::RangeFrom"
+                                                        [
+                                                          ("start",
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                d,
+                                                                "core::num::dec2flt::decimal::Decimal",
+                                                                "num_digits"
+                                                              |)
+                                                            |))
+                                                        ]
                                                     ]
-                                                ]
+                                                  |)
+                                                |)
                                               |);
                                               BinOp.Wrap.sub (|
                                                 M.read (| v |),
@@ -2477,27 +2565,46 @@ Module num.
                                       let~ _ :=
                                         M.write (|
                                           s,
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::index::Index",
-                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                              [],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::ops::range::RangeFrom")
-                                                  []
-                                                  [ Ty.path "usize" ]
-                                              ],
-                                              "index",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.read (| s |);
-                                              Value.StructRecord
-                                                "core::ops::range::RangeFrom"
-                                                [ ("start", Value.Integer IntegerKind.Usize 8) ]
-                                            ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::index::Index",
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::RangeFrom")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ],
+                                                      "index",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| s |) |)
+                                                      |);
+                                                      Value.StructRecord
+                                                        "core::ops::range::RangeFrom"
+                                                        [
+                                                          ("start",
+                                                            Value.Integer IntegerKind.Usize 8)
+                                                        ]
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
@@ -2520,45 +2627,53 @@ Module num.
                         let~ _ :=
                           M.write (|
                             s,
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::num::dec2flt::common::ByteSlice",
-                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                [],
-                                [],
-                                "parse_digits",
-                                [],
-                                [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
-                              |),
-                              [
-                                M.read (| s |);
-                                M.closure
-                                  (fun γ =>
-                                    ltac:(M.monadic
-                                      match γ with
-                                      | [ α0 ] =>
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::num::dec2flt::common::ByteSlice",
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                    [],
+                                    [],
+                                    "parse_digits",
+                                    [],
+                                    [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
+                                    M.closure
+                                      (fun γ =>
                                         ltac:(M.monadic
-                                          (M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let digit := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "core::num::dec2flt::decimal::Decimal",
-                                                      "try_add_digit",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ d; M.read (| digit |) ]
-                                                  |)))
-                                            ]
-                                          |)))
-                                      | _ => M.impossible "wrong number of arguments"
-                                      end))
-                              ]
+                                          match γ with
+                                          | [ α0 ] =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let digit := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "core::num::dec2flt::decimal::Decimal",
+                                                          "try_add_digit",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (| Pointer.Kind.MutRef, d |);
+                                                          M.read (| digit |)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
+                                          end))
+                                  ]
+                                |)
+                              |)
                             |)
                           |) in
                         let~ _ :=
@@ -2577,7 +2692,7 @@ Module num.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| s |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                                 |)),
                               M.rust_cast
                                 (M.call_closure (|
@@ -2587,7 +2702,12 @@ Module num.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| first |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| first |) |)
+                                    |)
+                                  ]
                                 |))
                             |)
                           |) in
@@ -2663,55 +2783,73 @@ Module num.
                                             []
                                           |),
                                           [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::index::Index",
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                [],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::ops::range::RangeTo")
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::index::Index",
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                    [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::ops::range::RangeTo")
+                                                        []
+                                                        [ Ty.path "usize" ]
+                                                    ],
+                                                    "index",
+                                                    [],
                                                     []
-                                                    [ Ty.path "usize" ]
-                                                ],
-                                                "index",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.read (| start |);
-                                                Value.StructRecord
-                                                  "core::ops::range::RangeTo"
+                                                  |),
                                                   [
-                                                    ("end_",
-                                                      BinOp.Wrap.sub (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [ Ty.path "u8" ],
-                                                            "len",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| start |) ]
-                                                        |),
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [ Ty.path "u8" ],
-                                                            "len",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| s |) ]
-                                                        |)
-                                                      |))
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| start |) |)
+                                                    |);
+                                                    Value.StructRecord
+                                                      "core::ops::range::RangeTo"
+                                                      [
+                                                        ("end_",
+                                                          BinOp.Wrap.sub (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ],
+                                                                "len",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| start |) |)
+                                                                |)
+                                                              ]
+                                                            |),
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ],
+                                                                "len",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| s |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |))
+                                                      ]
                                                   ]
-                                              ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -2747,7 +2885,14 @@ Module num.
                                                   [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -2955,7 +3100,7 @@ Module num.
                                 [],
                                 []
                               |),
-                              [ M.read (| s |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                             |)
                           |) in
                         let γ0_0 :=
@@ -2994,7 +3139,14 @@ Module num.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ := M.write (| s, M.read (| s_next |) |) in
+                                let~ _ :=
+                                  M.write (|
+                                    s,
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| s_next |) |)
+                                    |)
+                                  |) in
                                 let~ neg_exp := M.alloc (| Value.Bool false |) in
                                 let~ _ :=
                                   M.match_operator (|
@@ -3011,7 +3163,12 @@ Module num.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| s |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| s |) |)
+                                                  |)
+                                                ]
                                               |)
                                             |) in
                                           let γ0_0 :=
@@ -3058,7 +3215,14 @@ Module num.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let~ _ := M.write (| s, M.read (| s_next |) |) in
+                                                  let~ _ :=
+                                                    M.write (|
+                                                      s,
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| s_next |) |)
+                                                      |)
+                                                    |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
                                                 ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -3081,7 +3245,10 @@ Module num.
                                         [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
                                       |),
                                       [
-                                        M.read (| s |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| s |) |)
+                                        |);
                                         M.closure
                                           (fun γ =>
                                             ltac:(M.monadic
@@ -3238,7 +3405,12 @@ Module num.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -3421,28 +3593,40 @@ Module num.
                     |) in
                   let~ pow5 :=
                     M.alloc (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::index::Index",
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 1308 ]
-                            [ Ty.path "u8" ],
-                          [],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ]
-                          ],
-                          "index",
-                          [],
-                          []
-                        |),
-                        [
-                          M.get_constant (|
-                            "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE_POW5"
-                          |);
-                          Value.StructRecord
-                            "core::ops::range::RangeFrom"
-                            [ ("start", M.read (| pow5_a |)) ]
-                        ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::index::Index",
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1308 ]
+                                [ Ty.path "u8" ],
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeFrom")
+                                  []
+                                  [ Ty.path "usize" ]
+                              ],
+                              "index",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.get_constant (|
+                                  "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE_POW5"
+                                |)
+                              |);
+                              Value.StructRecord
+                                "core::ops::range::RangeFrom"
+                                [ ("start", M.read (| pow5_a |)) ]
+                            ]
+                          |)
+                        |)
                       |)
                     |) in
                   let~ _ :=
@@ -3513,7 +3697,12 @@ Module num.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| pow5 |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| pow5 |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |);
@@ -3556,7 +3745,12 @@ Module num.
                                             [],
                                             []
                                           |),
-                                          [ iter ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       [
@@ -3597,7 +3791,7 @@ Module num.
                                                             M.read (| i |),
                                                             M.read (|
                                                               M.SubPointer.get_struct_record_field (|
-                                                                M.read (| d |),
+                                                                M.deref (| M.read (| d |) |),
                                                                 "core::num::dec2flt::decimal::Decimal",
                                                                 "num_digits"
                                                               |)
@@ -3635,7 +3829,9 @@ Module num.
                                                                     M.read (|
                                                                       M.SubPointer.get_array_field (|
                                                                         M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| d |),
+                                                                          M.deref (|
+                                                                            M.read (| d |)
+                                                                          |),
                                                                           "core::num::dec2flt::decimal::Decimal",
                                                                           "digits"
                                                                         |),
@@ -3669,7 +3865,9 @@ Module num.
                                                                             M.read (|
                                                                               M.SubPointer.get_array_field (|
                                                                                 M.SubPointer.get_struct_record_field (|
-                                                                                  M.read (| d |),
+                                                                                  M.deref (|
+                                                                                    M.read (| d |)
+                                                                                  |),
                                                                                   "core::num::dec2flt::decimal::Decimal",
                                                                                   "digits"
                                                                                 |),

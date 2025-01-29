@@ -66,14 +66,14 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "trait_flipper::Flipper",
                 "value"
               |),
               UnOp.not (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "trait_flipper::Flipper",
                     "value"
                   |)
@@ -97,7 +97,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "trait_flipper::Flipper",
             "value"
           |)

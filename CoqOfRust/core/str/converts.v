@@ -25,7 +25,7 @@ Module str.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::str::validations::run_utf8_validation", [], [] |),
-                  [ M.read (| v |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                 |)
               |),
               [
@@ -37,9 +37,18 @@ Module str.
                       Value.StructTuple
                         "core::result::Result::Ok"
                         [
-                          M.call_closure (|
-                            M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
-                            [ M.read (| v |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_function (|
+                                  "core::str::converts::from_utf8_unchecked",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+                              |)
+                            |)
                           |)
                         ]
                     |)));
@@ -81,7 +90,7 @@ Module str.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::str::validations::run_utf8_validation", [], [] |),
-                  [ M.read (| v |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                 |)
               |),
               [
@@ -93,13 +102,28 @@ Module str.
                       Value.StructTuple
                         "core::result::Result::Ok"
                         [
-                          M.call_closure (|
-                            M.get_function (|
-                              "core::str::converts::from_utf8_unchecked_mut",
-                              [],
-                              []
-                            |),
-                            [ M.read (| v |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::str::converts::from_utf8_unchecked_mut",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| v |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                     |)));
@@ -162,7 +186,36 @@ Module str.
       | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.rust_cast
+                            (M.read (|
+                              M.use
+                                (M.alloc (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutPointer,
+                                    M.deref (| M.read (| v |) |)
+                                  |)
+                                |))
+                            |))
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -181,13 +234,23 @@ Module str.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let len := M.alloc (| len |) in
-          M.call_closure (|
-            M.get_function (|
-              "core::ptr::metadata::from_raw_parts",
-              [],
-              [ Ty.path "str"; Ty.path "u8" ]
-            |),
-            [ M.read (| ptr |); M.read (| len |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_function (|
+                      "core::ptr::metadata::from_raw_parts",
+                      [],
+                      [ Ty.path "str"; Ty.path "u8" ]
+                    |),
+                    [ M.read (| ptr |); M.read (| len |) ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -207,13 +270,33 @@ Module str.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let len := M.alloc (| len |) in
-          M.call_closure (|
-            M.get_function (|
-              "core::ptr::metadata::from_raw_parts_mut",
-              [],
-              [ Ty.path "str"; Ty.path "u8" ]
-            |),
-            [ M.read (| ptr |); M.read (| len |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::ptr::metadata::from_raw_parts_mut",
+                              [],
+                              [ Ty.path "str"; Ty.path "u8" ]
+                            |),
+                            [ M.read (| ptr |); M.read (| len |) ]
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

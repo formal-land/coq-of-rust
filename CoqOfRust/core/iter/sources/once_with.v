@@ -56,10 +56,18 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::once_with::OnceWith",
-                          "gen"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::sources::once_with::OnceWith",
+                                "gen"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -113,10 +121,13 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::once_with::OnceWith",
-                                    "gen"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::sources::once_with::OnceWith",
+                                      "gen"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -131,7 +142,13 @@ Module iter.
                               [],
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "OnceWith(Some(_))" |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "OnceWith(Some(_))" |) |)
+                              |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -144,7 +161,13 @@ Module iter.
                               [],
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "OnceWith(None)" |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "OnceWith(None)" |) |)
+                              |)
+                            ]
                           |)
                         |)))
                   ]
@@ -207,10 +230,13 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::sources::once_with::OnceWith",
-                                      "gen"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::sources::once_with::OnceWith",
+                                        "gen"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -315,21 +341,27 @@ Module iter.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ F ],
-                        "iter",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::once_with::OnceWith",
-                          "gen"
-                        |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ F ],
+                          "iter",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::sources::once_with::OnceWith",
+                              "gen"
+                            |)
+                          |)
+                        ]
+                      |)
                     |)
                   |)
                 ]
@@ -381,7 +413,7 @@ Module iter.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -421,21 +453,27 @@ Module iter.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ F ],
-                        "iter",
-                        [],
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::once_with::OnceWith",
-                          "gen"
-                        |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ F ],
+                          "iter",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::sources::once_with::OnceWith",
+                              "gen"
+                            |)
+                          |)
+                        ]
+                      |)
                     |)
                   |)
                 ]

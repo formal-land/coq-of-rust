@@ -38,7 +38,7 @@ Module fmt.
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [], [] |),
-              [ args ]
+              [ M.borrow (| Pointer.Kind.Ref, args |) ]
             |);
             M.closure
               (fun γ =>
@@ -101,7 +101,7 @@ Module fmt.
                     [],
                     []
                   |),
-                  [ args ]
+                  [ M.borrow (| Pointer.Kind.Ref, args |) ]
                 |)
               |) in
             let~ output :=
@@ -139,11 +139,16 @@ Module fmt.
                         [],
                         []
                       |),
-                      [ output; M.read (| args |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, output |); M.read (| args |) ]
                     |);
-                    M.read (|
-                      Value.String
-                        "a formatting trait implementation returned an error when the underlying stream did not"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          Value.String
+                            "a formatting trait implementation returned an error when the underlying stream did not"
+                        |)
+                      |)
                     |)
                   ]
                 |)

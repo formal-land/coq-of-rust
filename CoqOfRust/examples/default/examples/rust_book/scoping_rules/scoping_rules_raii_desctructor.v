@@ -37,9 +37,17 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array [ M.read (| Value.String "ToDrop is being dropped
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "ToDrop is being dropped
 " |) ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -85,8 +93,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "Made a ToDrop!
-" |) ] |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Made a ToDrop!
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)

@@ -64,10 +64,19 @@ Module interpreter_action.
                             []
                           |),
                           [
-                            M.read (| f |);
-                            M.read (| Value.String "Tx" |);
-                            M.read (| Value.String "initdata" |);
-                            __self_0
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Tx" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "initdata" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
                           ]
                         |)
                       |)));
@@ -104,14 +113,29 @@ Module interpreter_action.
                             []
                           |),
                           [
-                            M.read (| f |);
-                            M.read (| Value.String "Opcode" |);
-                            M.read (| Value.String "initcode" |);
-                            M.read (| __self_0 |);
-                            M.read (| Value.String "input" |);
-                            M.read (| __self_1 |);
-                            M.read (| Value.String "created_address" |);
-                            __self_2
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Opcode" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "initcode" |) |)
+                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "input" |) |)
+                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "created_address" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_2 |) |)
+                            |)
                           ]
                         |)
                       |)))
@@ -168,7 +192,12 @@ Module interpreter_action.
                                   [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |)
+                                ]
                               |))
                           ]
                       |)));
@@ -211,7 +240,12 @@ Module interpreter_action.
                                   [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |)
+                                ]
                               |));
                             ("input",
                               M.call_closure (|
@@ -224,7 +258,12 @@ Module interpreter_action.
                                   [],
                                   []
                                 |),
-                                [ M.read (| __self_1 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_1 |) |)
+                                  |)
+                                ]
                               |));
                             ("created_address",
                               M.call_closure (|
@@ -237,7 +276,12 @@ Module interpreter_action.
                                   [],
                                   []
                                 |),
-                                [ M.read (| __self_2 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_2 |) |)
+                                  |)
+                                ]
                               |))
                           ]
                       |)))
@@ -290,7 +334,7 @@ Module interpreter_action.
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
                       ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -304,7 +348,7 @@ Module interpreter_action.
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
                       ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -354,7 +398,10 @@ Module interpreter_action.
                                     [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -426,7 +473,10 @@ Module interpreter_action.
                                         [],
                                         []
                                       |),
-                                      [ __self_0; __arg1_0 ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                        M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                      ]
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
@@ -447,7 +497,10 @@ Module interpreter_action.
                                           [],
                                           []
                                         |),
-                                        [ __self_1; __arg1_1 ]
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                          M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                        ]
                                       |)))
                                   |),
                                   ltac:(M.monadic
@@ -469,7 +522,10 @@ Module interpreter_action.
                                         [],
                                         []
                                       |),
-                                      [ __self_2; __arg1_2 ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, __self_2 |);
+                                        M.borrow (| Pointer.Kind.Ref, __arg1_2 |)
+                                      ]
                                     |)))
                                 |)
                               |)));
@@ -582,7 +638,12 @@ Module interpreter_action.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ M.read (| created_address |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| created_address |) |)
+                            |)
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -712,32 +773,73 @@ Module interpreter_action.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "EOFCreateInputs" |);
-                M.read (| Value.String "caller" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                  "caller"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "EOFCreateInputs" |) |)
                 |);
-                M.read (| Value.String "value" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                  "value"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "caller" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                        "caller"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "gas_limit" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                  "gas_limit"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "value" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                        "value"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "kind" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                    "kind"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "gas_limit" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                        "gas_limit"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                            "kind"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -858,10 +960,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                        "caller"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                              "caller"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -880,10 +990,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                        "value"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                              "value"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -899,10 +1017,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                        "gas_limit"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                              "gas_limit"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -919,10 +1045,18 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                        "kind"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                              "kind"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -975,15 +1109,21 @@ Module interpreter_action.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                        "caller"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                          "caller"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                        "caller"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                          "caller"
+                        |)
                       |)
                     ]
                   |),
@@ -1008,15 +1148,21 @@ Module interpreter_action.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                          "value"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                            "value"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                          "value"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                            "value"
+                          |)
                         |)
                       ]
                     |)))
@@ -1025,14 +1171,14 @@ Module interpreter_action.
                   (BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
                         "gas_limit"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
                         "gas_limit"
                       |)
@@ -1055,15 +1201,21 @@ Module interpreter_action.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                      "kind"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                        "kind"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                      "kind"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                        "kind"
+                      |)
                     |)
                   ]
                 |)))

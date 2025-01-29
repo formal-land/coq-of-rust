@@ -198,7 +198,7 @@ Module vm_status.
                     [],
                     [ Ty.path "move_core_types::vm_status::StatusType" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -209,7 +209,7 @@ Module vm_status.
                     [],
                     [ Ty.path "move_core_types::vm_status::StatusType" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -264,7 +264,7 @@ Module vm_status.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -277,7 +277,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusType::Validation"
                           |) in
-                        M.alloc (| M.read (| Value.String "Validation" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Validation" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -286,7 +291,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusType::Verification"
                           |) in
-                        M.alloc (| M.read (| Value.String "Verification" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Verification" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -295,7 +305,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusType::InvariantViolation"
                           |) in
-                        M.alloc (| M.read (| Value.String "InvariantViolation" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "InvariantViolation" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -304,7 +319,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusType::Deserialization"
                           |) in
-                        M.alloc (| M.read (| Value.String "Deserialization" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Deserialization" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -313,7 +333,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusType::Execution"
                           |) in
-                        M.alloc (| M.read (| Value.String "Execution" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Execution" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -322,7 +347,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusType::Unknown"
                           |) in
-                        M.alloc (| M.read (| Value.String "Unknown" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Unknown" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -358,7 +388,7 @@ Module vm_status.
                     [],
                     [ Ty.path "move_core_types::vm_status::StatusType" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -372,7 +402,13 @@ Module vm_status.
                   [],
                   [ __H ]
                 |),
-                [ __self_discr; M.read (| state |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |)
             |)
           |)))
@@ -1442,7 +1478,7 @@ Module vm_status.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1478,7 +1514,7 @@ Module vm_status.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -1491,7 +1527,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_VALIDATION_STATUS"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_VALIDATION_STATUS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_VALIDATION_STATUS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1500,7 +1541,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_SIGNATURE"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_SIGNATURE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_SIGNATURE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1509,7 +1555,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_AUTH_KEY"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_AUTH_KEY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_AUTH_KEY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1518,7 +1569,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_OLD"
                           |) in
-                        M.alloc (| M.read (| Value.String "SEQUENCE_NUMBER_TOO_OLD" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SEQUENCE_NUMBER_TOO_OLD" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1527,7 +1583,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_NEW"
                           |) in
-                        M.alloc (| M.read (| Value.String "SEQUENCE_NUMBER_TOO_NEW" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SEQUENCE_NUMBER_TOO_NEW" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1537,7 +1598,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1547,7 +1613,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TRANSACTION_EXPIRED"
                           |) in
-                        M.alloc (| M.read (| Value.String "TRANSACTION_EXPIRED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TRANSACTION_EXPIRED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1556,7 +1627,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::SENDING_ACCOUNT_DOES_NOT_EXIST"
                           |) in
-                        M.alloc (| M.read (| Value.String "SENDING_ACCOUNT_DOES_NOT_EXIST" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SENDING_ACCOUNT_DOES_NOT_EXIST" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1565,7 +1641,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::REJECTED_WRITE_SET"
                           |) in
-                        M.alloc (| M.read (| Value.String "REJECTED_WRITE_SET" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "REJECTED_WRITE_SET" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1574,7 +1655,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_WRITE_SET"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_WRITE_SET" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_WRITE_SET" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1583,7 +1669,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::EXCEEDED_MAX_TRANSACTION_SIZE"
                           |) in
-                        M.alloc (| M.read (| Value.String "EXCEEDED_MAX_TRANSACTION_SIZE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EXCEEDED_MAX_TRANSACTION_SIZE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1592,7 +1683,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_SCRIPT"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_SCRIPT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_SCRIPT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1601,7 +1697,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_MODULE"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_MODULE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_MODULE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1611,7 +1712,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1622,7 +1728,14 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                Value.String "MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS"
+                              |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1632,7 +1745,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::GAS_UNIT_PRICE_BELOW_MIN_BOUND"
                           |) in
-                        M.alloc (| M.read (| Value.String "GAS_UNIT_PRICE_BELOW_MIN_BOUND" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "GAS_UNIT_PRICE_BELOW_MIN_BOUND" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1641,7 +1759,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::GAS_UNIT_PRICE_ABOVE_MAX_BOUND"
                           |) in
-                        M.alloc (| M.read (| Value.String "GAS_UNIT_PRICE_ABOVE_MAX_BOUND" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "GAS_UNIT_PRICE_ABOVE_MAX_BOUND" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1650,7 +1773,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_GAS_SPECIFIER"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_GAS_SPECIFIER" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_GAS_SPECIFIER" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1659,7 +1787,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::SENDING_ACCOUNT_FROZEN"
                           |) in
-                        M.alloc (| M.read (| Value.String "SENDING_ACCOUNT_FROZEN" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SENDING_ACCOUNT_FROZEN" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1668,7 +1801,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNABLE_TO_DESERIALIZE_ACCOUNT"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNABLE_TO_DESERIALIZE_ACCOUNT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNABLE_TO_DESERIALIZE_ACCOUNT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1677,7 +1815,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::CURRENCY_INFO_DOES_NOT_EXIST"
                           |) in
-                        M.alloc (| M.read (| Value.String "CURRENCY_INFO_DOES_NOT_EXIST" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CURRENCY_INFO_DOES_NOT_EXIST" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1686,7 +1829,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_MODULE_PUBLISHER"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_MODULE_PUBLISHER" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_MODULE_PUBLISHER" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1695,7 +1843,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::NO_ACCOUNT_ROLE"
                           |) in
-                        M.alloc (| M.read (| Value.String "NO_ACCOUNT_ROLE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NO_ACCOUNT_ROLE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1704,7 +1857,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BAD_CHAIN_ID"
                           |) in
-                        M.alloc (| M.read (| Value.String "BAD_CHAIN_ID" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BAD_CHAIN_ID" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1713,7 +1871,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_BIG"
                           |) in
-                        M.alloc (| M.read (| Value.String "SEQUENCE_NUMBER_TOO_BIG" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SEQUENCE_NUMBER_TOO_BIG" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1722,7 +1885,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BAD_TRANSACTION_FEE_CURRENCY"
                           |) in
-                        M.alloc (| M.read (| Value.String "BAD_TRANSACTION_FEE_CURRENCY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BAD_TRANSACTION_FEE_CURRENCY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1731,7 +1899,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::FEATURE_UNDER_GATING"
                           |) in
-                        M.alloc (| M.read (| Value.String "FEATURE_UNDER_GATING" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FEATURE_UNDER_GATING" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1741,7 +1914,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1751,7 +1929,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::SIGNERS_CONTAIN_DUPLICATES"
                           |) in
-                        M.alloc (| M.read (| Value.String "SIGNERS_CONTAIN_DUPLICATES" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SIGNERS_CONTAIN_DUPLICATES" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1760,7 +1943,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NONCE_INVALID"
                           |) in
-                        M.alloc (| M.read (| Value.String "SEQUENCE_NONCE_INVALID" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SEQUENCE_NONCE_INVALID" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1770,7 +1958,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1780,7 +1973,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_VERIFICATION_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_VERIFICATION_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_VERIFICATION_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1789,7 +1987,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
                           |) in
-                        M.alloc (| M.read (| Value.String "INDEX_OUT_OF_BOUNDS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INDEX_OUT_OF_BOUNDS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1798,7 +2001,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_SIGNATURE_TOKEN"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_SIGNATURE_TOKEN" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_SIGNATURE_TOKEN" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1807,7 +2015,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::RECURSIVE_STRUCT_DEFINITION"
                           |) in
-                        M.alloc (| M.read (| Value.String "RECURSIVE_STRUCT_DEFINITION" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RECURSIVE_STRUCT_DEFINITION" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1816,7 +2029,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::FIELD_MISSING_TYPE_ABILITY"
                           |) in
-                        M.alloc (| M.read (| Value.String "FIELD_MISSING_TYPE_ABILITY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FIELD_MISSING_TYPE_ABILITY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1825,7 +2043,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_FALL_THROUGH"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_FALL_THROUGH" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_FALL_THROUGH" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1835,7 +2058,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::NEGATIVE_STACK_SIZE_WITHIN_BLOCK"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "NEGATIVE_STACK_SIZE_WITHIN_BLOCK" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "NEGATIVE_STACK_SIZE_WITHIN_BLOCK" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1845,7 +2073,14 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_MAIN_FUNCTION_SIGNATURE"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_MAIN_FUNCTION_SIGNATURE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "INVALID_MAIN_FUNCTION_SIGNATURE" |)
+                            |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1854,7 +2089,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
                           |) in
-                        M.alloc (| M.read (| Value.String "DUPLICATE_ELEMENT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "DUPLICATE_ELEMENT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1863,7 +2103,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_MODULE_HANDLE"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_MODULE_HANDLE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_MODULE_HANDLE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1872,7 +2117,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNIMPLEMENTED_HANDLE"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNIMPLEMENTED_HANDLE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNIMPLEMENTED_HANDLE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1881,7 +2131,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::LOOKUP_FAILED"
                           |) in
-                        M.alloc (| M.read (| Value.String "LOOKUP_FAILED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LOOKUP_FAILED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1890,7 +2145,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
                           |) in
-                        M.alloc (| M.read (| Value.String "TYPE_MISMATCH" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TYPE_MISMATCH" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1899,7 +2159,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MISSING_DEPENDENCY"
                           |) in
-                        M.alloc (| M.read (| Value.String "MISSING_DEPENDENCY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MISSING_DEPENDENCY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1908,7 +2173,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::POP_WITHOUT_DROP_ABILITY"
                           |) in
-                        M.alloc (| M.read (| Value.String "POP_WITHOUT_DROP_ABILITY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "POP_WITHOUT_DROP_ABILITY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1917,7 +2187,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BR_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "BR_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BR_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1926,7 +2201,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::ABORT_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "ABORT_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ABORT_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1935,7 +2215,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::STLOC_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "STLOC_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "STLOC_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1944,7 +2229,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "STLOC_UNSAFE_TO_DESTROY_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "STLOC_UNSAFE_TO_DESTROY_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1954,7 +2244,14 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                Value.String "UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED"
+                              |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1964,7 +2261,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::RET_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "RET_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RET_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1974,7 +2276,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RET_BORROWED_MUTABLE_REFERENCE_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "RET_BORROWED_MUTABLE_REFERENCE_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "RET_BORROWED_MUTABLE_REFERENCE_ERROR" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1984,7 +2291,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::FREEZEREF_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "FREEZEREF_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FREEZEREF_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -1994,7 +2306,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2004,7 +2321,14 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "BORROWFIELD_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "BORROWFIELD_TYPE_MISMATCH_ERROR" |)
+                            |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2013,7 +2337,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BORROWFIELD_BAD_FIELD_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "BORROWFIELD_BAD_FIELD_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BORROWFIELD_BAD_FIELD_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2023,7 +2352,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2033,7 +2367,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::COPYLOC_UNAVAILABLE_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "COPYLOC_UNAVAILABLE_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "COPYLOC_UNAVAILABLE_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2042,7 +2381,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::COPYLOC_WITHOUT_COPY_ABILITY"
                           |) in
-                        M.alloc (| M.read (| Value.String "COPYLOC_WITHOUT_COPY_ABILITY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "COPYLOC_WITHOUT_COPY_ABILITY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2051,7 +2395,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::COPYLOC_EXISTS_BORROW_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "COPYLOC_EXISTS_BORROW_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "COPYLOC_EXISTS_BORROW_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2060,7 +2409,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MOVELOC_UNAVAILABLE_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVELOC_UNAVAILABLE_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVELOC_UNAVAILABLE_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2069,7 +2423,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MOVELOC_EXISTS_BORROW_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVELOC_EXISTS_BORROW_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVELOC_EXISTS_BORROW_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2078,7 +2437,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BORROWLOC_REFERENCE_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "BORROWLOC_REFERENCE_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BORROWLOC_REFERENCE_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2087,7 +2451,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BORROWLOC_UNAVAILABLE_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "BORROWLOC_UNAVAILABLE_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BORROWLOC_UNAVAILABLE_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2096,7 +2465,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BORROWLOC_EXISTS_BORROW_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "BORROWLOC_EXISTS_BORROW_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BORROWLOC_EXISTS_BORROW_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2105,7 +2479,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::CALL_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "CALL_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CALL_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2115,7 +2494,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CALL_BORROWED_MUTABLE_REFERENCE_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "CALL_BORROWED_MUTABLE_REFERENCE_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "CALL_BORROWED_MUTABLE_REFERENCE_ERROR" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2125,7 +2509,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::PACK_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "PACK_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "PACK_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2134,7 +2523,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNPACK_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNPACK_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNPACK_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2143,7 +2537,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::READREF_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "READREF_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "READREF_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2152,7 +2551,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::READREF_WITHOUT_COPY_ABILITY"
                           |) in
-                        M.alloc (| M.read (| Value.String "READREF_WITHOUT_COPY_ABILITY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "READREF_WITHOUT_COPY_ABILITY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2162,7 +2566,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::READREF_EXISTS_MUTABLE_BORROW_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "READREF_EXISTS_MUTABLE_BORROW_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "READREF_EXISTS_MUTABLE_BORROW_ERROR" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2172,7 +2581,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::WRITEREF_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "WRITEREF_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "WRITEREF_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2181,7 +2595,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::WRITEREF_WITHOUT_DROP_ABILITY"
                           |) in
-                        M.alloc (| M.read (| Value.String "WRITEREF_WITHOUT_DROP_ABILITY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "WRITEREF_WITHOUT_DROP_ABILITY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2190,7 +2609,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::WRITEREF_EXISTS_BORROW_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "WRITEREF_EXISTS_BORROW_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "WRITEREF_EXISTS_BORROW_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2200,7 +2624,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::WRITEREF_NO_MUTABLE_REFERENCE_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "WRITEREF_NO_MUTABLE_REFERENCE_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "WRITEREF_NO_MUTABLE_REFERENCE_ERROR" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2210,7 +2639,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "INTEGER_OP_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INTEGER_OP_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2219,7 +2653,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "BOOLEAN_OP_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BOOLEAN_OP_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2228,7 +2667,14 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::EQUALITY_OP_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "EQUALITY_OP_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "EQUALITY_OP_TYPE_MISMATCH_ERROR" |)
+                            |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2238,7 +2684,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2249,7 +2700,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWGLOBAL_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "BORROWGLOBAL_TYPE_MISMATCH_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "BORROWGLOBAL_TYPE_MISMATCH_ERROR" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2260,7 +2716,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWGLOBAL_WITHOUT_KEY_ABILITY"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "BORROWGLOBAL_WITHOUT_KEY_ABILITY" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "BORROWGLOBAL_WITHOUT_KEY_ABILITY" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2270,7 +2731,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MOVEFROM_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVEFROM_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVEFROM_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2279,7 +2745,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MOVEFROM_WITHOUT_KEY_ABILITY"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVEFROM_WITHOUT_KEY_ABILITY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVEFROM_WITHOUT_KEY_ABILITY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2288,7 +2759,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MOVETO_TYPE_MISMATCH_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVETO_TYPE_MISMATCH_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVETO_TYPE_MISMATCH_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2297,7 +2773,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MOVETO_WITHOUT_KEY_ABILITY"
                           |) in
-                        M.alloc (| M.read (| Value.String "MOVETO_WITHOUT_KEY_ABILITY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MOVETO_WITHOUT_KEY_ABILITY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2307,7 +2788,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MODULE_ADDRESS_DOES_NOT_MATCH_SENDER"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "MODULE_ADDRESS_DOES_NOT_MATCH_SENDER" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "MODULE_ADDRESS_DOES_NOT_MATCH_SENDER" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2317,7 +2803,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::NO_MODULE_HANDLES"
                           |) in
-                        M.alloc (| M.read (| Value.String "NO_MODULE_HANDLES" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NO_MODULE_HANDLES" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2327,7 +2818,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::POSITIVE_STACK_SIZE_AT_BLOCK_END"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "POSITIVE_STACK_SIZE_AT_BLOCK_END" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "POSITIVE_STACK_SIZE_AT_BLOCK_END" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2337,7 +2833,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MISSING_ACQUIRES_ANNOTATION"
                           |) in
-                        M.alloc (| M.read (| Value.String "MISSING_ACQUIRES_ANNOTATION" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MISSING_ACQUIRES_ANNOTATION" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2346,7 +2847,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::EXTRANEOUS_ACQUIRES_ANNOTATION"
                           |) in
-                        M.alloc (| M.read (| Value.String "EXTRANEOUS_ACQUIRES_ANNOTATION" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EXTRANEOUS_ACQUIRES_ANNOTATION" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2355,7 +2861,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::DUPLICATE_ACQUIRES_ANNOTATION"
                           |) in
-                        M.alloc (| M.read (| Value.String "DUPLICATE_ACQUIRES_ANNOTATION" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "DUPLICATE_ACQUIRES_ANNOTATION" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2364,7 +2875,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_ACQUIRES_ANNOTATION"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_ACQUIRES_ANNOTATION" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_ACQUIRES_ANNOTATION" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2373,7 +2889,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::GLOBAL_REFERENCE_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "GLOBAL_REFERENCE_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "GLOBAL_REFERENCE_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2382,7 +2903,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
                           |) in
-                        M.alloc (| M.read (| Value.String "CONSTRAINT_NOT_SATISFIED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CONSTRAINT_NOT_SATISFIED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2392,7 +2918,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::NUMBER_OF_TYPE_ARGUMENTS_MISMATCH"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "NUMBER_OF_TYPE_ARGUMENTS_MISMATCH" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "NUMBER_OF_TYPE_ARGUMENTS_MISMATCH" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2402,7 +2933,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::LOOP_IN_INSTANTIATION_GRAPH"
                           |) in
-                        M.alloc (| M.read (| Value.String "LOOP_IN_INSTANTIATION_GRAPH" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LOOP_IN_INSTANTIATION_GRAPH" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2411,7 +2947,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::ZERO_SIZED_STRUCT"
                           |) in
-                        M.alloc (| M.read (| Value.String "ZERO_SIZED_STRUCT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ZERO_SIZED_STRUCT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2420,7 +2961,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::LINKER_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "LINKER_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LINKER_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2429,7 +2975,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_CONSTANT_TYPE"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_CONSTANT_TYPE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_CONSTANT_TYPE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2438,7 +2989,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA"
                           |) in
-                        M.alloc (| M.read (| Value.String "MALFORMED_CONSTANT_DATA" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MALFORMED_CONSTANT_DATA" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2447,7 +3003,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::EMPTY_CODE_UNIT"
                           |) in
-                        M.alloc (| M.read (| Value.String "EMPTY_CODE_UNIT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EMPTY_CODE_UNIT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2456,7 +3017,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_LOOP_SPLIT"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_LOOP_SPLIT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_LOOP_SPLIT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2465,7 +3031,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_LOOP_BREAK"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_LOOP_BREAK" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_LOOP_BREAK" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2474,7 +3045,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_LOOP_CONTINUE"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_LOOP_CONTINUE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_LOOP_CONTINUE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2484,7 +3060,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2494,7 +3075,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TOO_MANY_LOCALS"
                           |) in
-                        M.alloc (| M.read (| Value.String "TOO_MANY_LOCALS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TOO_MANY_LOCALS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2503,7 +3089,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::GENERIC_MEMBER_OPCODE_MISMATCH"
                           |) in
-                        M.alloc (| M.read (| Value.String "GENERIC_MEMBER_OPCODE_MISMATCH" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "GENERIC_MEMBER_OPCODE_MISMATCH" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2512,7 +3103,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::FUNCTION_RESOLUTION_FAILURE"
                           |) in
-                        M.alloc (| M.read (| Value.String "FUNCTION_RESOLUTION_FAILURE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FUNCTION_RESOLUTION_FAILURE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2521,7 +3117,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_OPERATION_IN_SCRIPT"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_OPERATION_IN_SCRIPT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_OPERATION_IN_SCRIPT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2530,7 +3131,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::DUPLICATE_MODULE_NAME"
                           |) in
-                        M.alloc (| M.read (| Value.String "DUPLICATE_MODULE_NAME" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "DUPLICATE_MODULE_NAME" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2540,7 +3146,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BACKWARD_INCOMPATIBLE_MODULE_UPDATE"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "BACKWARD_INCOMPATIBLE_MODULE_UPDATE" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "BACKWARD_INCOMPATIBLE_MODULE_UPDATE" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2550,7 +3161,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::CYCLIC_MODULE_DEPENDENCY"
                           |) in
-                        M.alloc (| M.read (| Value.String "CYCLIC_MODULE_DEPENDENCY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CYCLIC_MODULE_DEPENDENCY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2559,7 +3175,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::NUMBER_OF_ARGUMENTS_MISMATCH"
                           |) in
-                        M.alloc (| M.read (| Value.String "NUMBER_OF_ARGUMENTS_MISMATCH" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NUMBER_OF_ARGUMENTS_MISMATCH" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2569,7 +3190,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_PARAM_TYPE_FOR_DESERIALIZATION"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "INVALID_PARAM_TYPE_FOR_DESERIALIZATION" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "INVALID_PARAM_TYPE_FOR_DESERIALIZATION" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2579,7 +3205,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::FAILED_TO_DESERIALIZE_ARGUMENT"
                           |) in
-                        M.alloc (| M.read (| Value.String "FAILED_TO_DESERIALIZE_ARGUMENT" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FAILED_TO_DESERIALIZE_ARGUMENT" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2589,7 +3220,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2600,7 +3236,14 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                Value.String "CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE"
+                              |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2611,8 +3254,13 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION"
                           |) in
                         M.alloc (|
-                          M.read (|
-                            Value.String "EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                Value.String "EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION"
+                              |)
+                            |)
                           |)
                         |)));
                     fun γ =>
@@ -2623,7 +3271,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_SELF"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_FRIEND_DECL_WITH_SELF" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_FRIEND_DECL_WITH_SELF" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2633,8 +3286,14 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
                           |) in
                         M.alloc (|
-                          M.read (|
-                            Value.String "INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                Value.String
+                                  "INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
+                              |)
+                            |)
                           |)
                         |)));
                     fun γ =>
@@ -2646,8 +3305,13 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES"
                           |) in
                         M.alloc (|
-                          M.read (|
-                            Value.String "INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                Value.String "INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES"
+                              |)
+                            |)
                           |)
                         |)));
                     fun γ =>
@@ -2658,7 +3322,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::CYCLIC_MODULE_FRIENDSHIP"
                           |) in
-                        M.alloc (| M.read (| Value.String "CYCLIC_MODULE_FRIENDSHIP" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CYCLIC_MODULE_FRIENDSHIP" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2668,7 +3337,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_PHANTOM_TYPE_PARAM_POSITION"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "INVALID_PHANTOM_TYPE_PARAM_POSITION" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "INVALID_PHANTOM_TYPE_PARAM_POSITION" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2679,7 +3353,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2690,7 +3369,14 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                Value.String "VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR"
+                              |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2700,7 +3386,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::LOOP_MAX_DEPTH_REACHED"
                           |) in
-                        M.alloc (| M.read (| Value.String "LOOP_MAX_DEPTH_REACHED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LOOP_MAX_DEPTH_REACHED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2709,7 +3400,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_PARAMETERS"
                           |) in
-                        M.alloc (| M.read (| Value.String "TOO_MANY_TYPE_PARAMETERS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TOO_MANY_TYPE_PARAMETERS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2718,7 +3414,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TOO_MANY_PARAMETERS"
                           |) in
-                        M.alloc (| M.read (| Value.String "TOO_MANY_PARAMETERS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TOO_MANY_PARAMETERS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2727,7 +3428,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TOO_MANY_BASIC_BLOCKS"
                           |) in
-                        M.alloc (| M.read (| Value.String "TOO_MANY_BASIC_BLOCKS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TOO_MANY_BASIC_BLOCKS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2736,7 +3442,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VALUE_STACK_OVERFLOW"
                           |) in
-                        M.alloc (| M.read (| Value.String "VALUE_STACK_OVERFLOW" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VALUE_STACK_OVERFLOW" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2745,7 +3456,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_NODES"
                           |) in
-                        M.alloc (| M.read (| Value.String "TOO_MANY_TYPE_NODES" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TOO_MANY_TYPE_NODES" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2754,7 +3470,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VALUE_STACK_PUSH_OVERFLOW"
                           |) in
-                        M.alloc (| M.read (| Value.String "VALUE_STACK_PUSH_OVERFLOW" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VALUE_STACK_PUSH_OVERFLOW" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2763,7 +3484,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MAX_DEPENDENCY_DEPTH_REACHED"
                           |) in
-                        M.alloc (| M.read (| Value.String "MAX_DEPENDENCY_DEPTH_REACHED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MAX_DEPENDENCY_DEPTH_REACHED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2773,7 +3499,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MAX_FUNCTION_DEFINITIONS_REACHED"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "MAX_FUNCTION_DEFINITIONS_REACHED" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "MAX_FUNCTION_DEFINITIONS_REACHED" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2783,7 +3514,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MAX_STRUCT_DEFINITIONS_REACHED"
                           |) in
-                        M.alloc (| M.read (| Value.String "MAX_STRUCT_DEFINITIONS_REACHED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MAX_STRUCT_DEFINITIONS_REACHED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2792,7 +3528,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MAX_FIELD_DEFINITIONS_REACHED"
                           |) in
-                        M.alloc (| M.read (| Value.String "MAX_FIELD_DEFINITIONS_REACHED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MAX_FIELD_DEFINITIONS_REACHED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2801,7 +3542,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TOO_MANY_BACK_EDGES"
                           |) in
-                        M.alloc (| M.read (| Value.String "TOO_MANY_BACK_EDGES" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TOO_MANY_BACK_EDGES" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2810,7 +3556,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_1"
                           |) in
-                        M.alloc (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_1" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_1" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2819,7 +3570,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_2"
                           |) in
-                        M.alloc (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_2" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_2" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2828,7 +3584,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_3"
                           |) in
-                        M.alloc (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_3" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_3" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2837,7 +3598,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_4"
                           |) in
-                        M.alloc (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_4" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_4" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2846,7 +3612,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_5"
                           |) in
-                        M.alloc (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_5" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_5" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2855,7 +3626,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TOO_MANY_VECTOR_ELEMENTS"
                           |) in
-                        M.alloc (| M.read (| Value.String "TOO_MANY_VECTOR_ELEMENTS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TOO_MANY_VECTOR_ELEMENTS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2864,7 +3640,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::IDENTIFIER_TOO_LONG"
                           |) in
-                        M.alloc (| M.read (| Value.String "IDENTIFIER_TOO_LONG" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "IDENTIFIER_TOO_LONG" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2873,7 +3654,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::PROGRAM_TOO_COMPLEX"
                           |) in
-                        M.alloc (| M.read (| Value.String "PROGRAM_TOO_COMPLEX" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "PROGRAM_TOO_COMPLEX" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2883,7 +3669,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "UNKNOWN_INVARIANT_VIOLATION_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "UNKNOWN_INVARIANT_VIOLATION_ERROR" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2893,7 +3684,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::EMPTY_VALUE_STACK"
                           |) in
-                        M.alloc (| M.read (| Value.String "EMPTY_VALUE_STACK" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EMPTY_VALUE_STACK" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2902,7 +3698,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::PC_OVERFLOW"
                           |) in
-                        M.alloc (| M.read (| Value.String "PC_OVERFLOW" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "PC_OVERFLOW" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2911,7 +3712,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VERIFICATION_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "VERIFICATION_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VERIFICATION_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2920,7 +3726,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::STORAGE_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "STORAGE_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "STORAGE_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2929,7 +3740,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INTERNAL_TYPE_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "INTERNAL_TYPE_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INTERNAL_TYPE_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2938,7 +3754,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::EVENT_KEY_MISMATCH"
                           |) in
-                        M.alloc (| M.read (| Value.String "EVENT_KEY_MISMATCH" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EVENT_KEY_MISMATCH" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2947,7 +3768,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNREACHABLE"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNREACHABLE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNREACHABLE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2956,7 +3782,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VM_STARTUP_FAILURE"
                           |) in
-                        M.alloc (| M.read (| Value.String "VM_STARTUP_FAILURE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VM_STARTUP_FAILURE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2966,7 +3797,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2976,7 +3812,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VERIFIER_INVARIANT_VIOLATION"
                           |) in
-                        M.alloc (| M.read (| Value.String "VERIFIER_INVARIANT_VIOLATION" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VERIFIER_INVARIANT_VIOLATION" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2985,7 +3826,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_VERIFIER_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNEXPECTED_VERIFIER_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNEXPECTED_VERIFIER_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2995,7 +3841,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_DESERIALIZATION_ERROR"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "UNEXPECTED_DESERIALIZATION_ERROR" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "UNEXPECTED_DESERIALIZATION_ERROR" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -3006,7 +3857,12 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::FAILED_TO_SERIALIZE_WRITE_SET_CHANGES"
                           |) in
                         M.alloc (|
-                          M.read (| Value.String "FAILED_TO_SERIALIZE_WRITE_SET_CHANGES" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "FAILED_TO_SERIALIZE_WRITE_SET_CHANGES" |)
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -3016,7 +3872,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::FAILED_TO_DESERIALIZE_RESOURCE"
                           |) in
-                        M.alloc (| M.read (| Value.String "FAILED_TO_DESERIALIZE_RESOURCE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FAILED_TO_DESERIALIZE_RESOURCE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3025,7 +3886,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TYPE_RESOLUTION_FAILURE"
                           |) in
-                        M.alloc (| M.read (| Value.String "TYPE_RESOLUTION_FAILURE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TYPE_RESOLUTION_FAILURE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3034,7 +3900,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::DUPLICATE_NATIVE_FUNCTION"
                           |) in
-                        M.alloc (| M.read (| Value.String "DUPLICATE_NATIVE_FUNCTION" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "DUPLICATE_NATIVE_FUNCTION" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3043,7 +3914,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::ARITHMETIC_OVERFLOW"
                           |) in
-                        M.alloc (| M.read (| Value.String "ARITHMETIC_OVERFLOW" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ARITHMETIC_OVERFLOW" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3052,7 +3928,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_BINARY_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_BINARY_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_BINARY_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3061,7 +3942,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MALFORMED"
                           |) in
-                        M.alloc (| M.read (| Value.String "MALFORMED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MALFORMED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3070,7 +3956,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BAD_MAGIC"
                           |) in
-                        M.alloc (| M.read (| Value.String "BAD_MAGIC" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BAD_MAGIC" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3079,7 +3970,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_VERSION"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_VERSION" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_VERSION" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3088,7 +3984,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_TABLE_TYPE"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_TABLE_TYPE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_TABLE_TYPE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3097,7 +3998,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_SIGNATURE_TYPE"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_SIGNATURE_TYPE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_SIGNATURE_TYPE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3106,7 +4012,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_SERIALIZED_TYPE"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_SERIALIZED_TYPE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_SERIALIZED_TYPE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3115,7 +4026,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_OPCODE"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_OPCODE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_OPCODE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3124,7 +4040,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BAD_HEADER_TABLE"
                           |) in
-                        M.alloc (| M.read (| Value.String "BAD_HEADER_TABLE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BAD_HEADER_TABLE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3133,7 +4054,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_SIGNATURE_TYPE"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNEXPECTED_SIGNATURE_TYPE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNEXPECTED_SIGNATURE_TYPE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3142,7 +4068,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::DUPLICATE_TABLE"
                           |) in
-                        M.alloc (| M.read (| Value.String "DUPLICATE_TABLE" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "DUPLICATE_TABLE" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3151,7 +4082,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_ABILITY"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_ABILITY" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_ABILITY" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3160,7 +4096,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_NATIVE_STRUCT_FLAG"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_NATIVE_STRUCT_FLAG" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_NATIVE_STRUCT_FLAG" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3169,7 +4110,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BAD_U16"
                           |) in
-                        M.alloc (| M.read (| Value.String "BAD_U16" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BAD_U16" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3178,7 +4124,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BAD_U32"
                           |) in
-                        M.alloc (| M.read (| Value.String "BAD_U32" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BAD_U32" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3187,7 +4138,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BAD_U64"
                           |) in
-                        M.alloc (| M.read (| Value.String "BAD_U64" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BAD_U64" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3196,7 +4152,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BAD_U128"
                           |) in
-                        M.alloc (| M.read (| Value.String "BAD_U128" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BAD_U128" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3205,7 +4166,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::BAD_U256"
                           |) in
-                        M.alloc (| M.read (| Value.String "BAD_U256" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BAD_U256" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3214,7 +4180,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VALUE_SERIALIZATION_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "VALUE_SERIALIZATION_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VALUE_SERIALIZATION_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3223,7 +4194,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VALUE_DESERIALIZATION_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "VALUE_DESERIALIZATION_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VALUE_DESERIALIZATION_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3232,7 +4208,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::CODE_DESERIALIZATION_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "CODE_DESERIALIZATION_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CODE_DESERIALIZATION_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3241,7 +4222,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::INVALID_FLAG_BITS"
                           |) in
-                        M.alloc (| M.read (| Value.String "INVALID_FLAG_BITS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "INVALID_FLAG_BITS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3250,7 +4236,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::TRAILING_BYTES"
                           |) in
-                        M.alloc (| M.read (| Value.String "TRAILING_BYTES" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TRAILING_BYTES" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3259,7 +4250,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_RUNTIME_STATUS"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_RUNTIME_STATUS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_RUNTIME_STATUS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3268,7 +4264,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::EXECUTED"
                           |) in
-                        M.alloc (| M.read (| Value.String "EXECUTED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EXECUTED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3277,7 +4278,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::OUT_OF_GAS"
                           |) in
-                        M.alloc (| M.read (| Value.String "OUT_OF_GAS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OUT_OF_GAS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3286,7 +4292,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::RESOURCE_DOES_NOT_EXIST"
                           |) in
-                        M.alloc (| M.read (| Value.String "RESOURCE_DOES_NOT_EXIST" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RESOURCE_DOES_NOT_EXIST" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3295,7 +4306,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::RESOURCE_ALREADY_EXISTS"
                           |) in
-                        M.alloc (| M.read (| Value.String "RESOURCE_ALREADY_EXISTS" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RESOURCE_ALREADY_EXISTS" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3304,7 +4320,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MISSING_DATA"
                           |) in
-                        M.alloc (| M.read (| Value.String "MISSING_DATA" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MISSING_DATA" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3313,7 +4334,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::DATA_FORMAT_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "DATA_FORMAT_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "DATA_FORMAT_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3322,7 +4348,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::ABORTED"
                           |) in
-                        M.alloc (| M.read (| Value.String "ABORTED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ABORTED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3331,7 +4362,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::ARITHMETIC_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "ARITHMETIC_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ARITHMETIC_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3340,7 +4376,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VECTOR_OPERATION_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "VECTOR_OPERATION_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VECTOR_OPERATION_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3349,7 +4390,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::EXECUTION_STACK_OVERFLOW"
                           |) in
-                        M.alloc (| M.read (| Value.String "EXECUTION_STACK_OVERFLOW" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EXECUTION_STACK_OVERFLOW" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3358,7 +4404,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::CALL_STACK_OVERFLOW"
                           |) in
-                        M.alloc (| M.read (| Value.String "CALL_STACK_OVERFLOW" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CALL_STACK_OVERFLOW" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3367,7 +4418,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VM_MAX_TYPE_DEPTH_REACHED"
                           |) in
-                        M.alloc (| M.read (| Value.String "VM_MAX_TYPE_DEPTH_REACHED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VM_MAX_TYPE_DEPTH_REACHED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3376,7 +4432,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VM_MAX_VALUE_DEPTH_REACHED"
                           |) in
-                        M.alloc (| M.read (| Value.String "VM_MAX_VALUE_DEPTH_REACHED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VM_MAX_VALUE_DEPTH_REACHED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3385,7 +4446,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VM_EXTENSION_ERROR"
                           |) in
-                        M.alloc (| M.read (| Value.String "VM_EXTENSION_ERROR" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VM_EXTENSION_ERROR" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3394,7 +4460,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::STORAGE_WRITE_LIMIT_REACHED"
                           |) in
-                        M.alloc (| M.read (| Value.String "STORAGE_WRITE_LIMIT_REACHED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "STORAGE_WRITE_LIMIT_REACHED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3403,7 +4474,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::MEMORY_LIMIT_EXCEEDED"
                           |) in
-                        M.alloc (| M.read (| Value.String "MEMORY_LIMIT_EXCEEDED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MEMORY_LIMIT_EXCEEDED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3412,7 +4488,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::VM_MAX_TYPE_NODES_REACHED"
                           |) in
-                        M.alloc (| M.read (| Value.String "VM_MAX_TYPE_NODES_REACHED" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VM_MAX_TYPE_NODES_REACHED" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3421,7 +4502,12 @@ Module vm_status.
                             γ,
                             "move_core_types::vm_status::StatusCode::UNKNOWN_STATUS"
                           |) in
-                        M.alloc (| M.read (| Value.String "UNKNOWN_STATUS" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UNKNOWN_STATUS" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -3483,7 +4569,7 @@ Module vm_status.
                     [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -3497,7 +4583,13 @@ Module vm_status.
                   [],
                   [ __H ]
                 |),
-                [ __self_discr; M.read (| state |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |)
             |)
           |)))
@@ -3542,7 +4634,7 @@ Module vm_status.
                     [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -3553,7 +4645,7 @@ Module vm_status.
                     [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -3588,7 +4680,7 @@ Module vm_status.
                     [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -3599,7 +4691,7 @@ Module vm_status.
                     [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -3613,7 +4705,16 @@ Module vm_status.
                   [],
                   []
                 |),
-                [ __self_discr; __arg1_discr ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -3647,7 +4748,7 @@ Module vm_status.
                     [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -3658,13 +4759,22 @@ Module vm_status.
                     [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
-                [ __self_discr; __arg1_discr ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -6976,7 +8086,12 @@ Module vm_status.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
-                        [ M.read (| Value.String "invalid StatusCode" |) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "invalid StatusCode" |) |)
+                          |)
+                        ]
                     |)))
               ]
             |)
@@ -7068,9 +8183,11 @@ Module vm_status.
                                   BinOp.ge (|
                                     M.read (| major_status_number |),
                                     M.read (|
-                                      M.read (|
-                                        M.get_constant (|
-                                          "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE"
+                                      M.deref (|
+                                        M.read (|
+                                          M.get_constant (|
+                                            "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE"
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -7079,9 +8196,11 @@ Module vm_status.
                                     (BinOp.le (|
                                       M.read (| major_status_number |),
                                       M.read (|
-                                        M.read (|
-                                          M.get_constant (|
-                                            "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE"
+                                        M.deref (|
+                                          M.read (|
+                                            M.get_constant (|
+                                              "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE"
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -7117,9 +8236,11 @@ Module vm_status.
                                   BinOp.ge (|
                                     M.read (| major_status_number |),
                                     M.read (|
-                                      M.read (|
-                                        M.get_constant (|
-                                          "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE"
+                                      M.deref (|
+                                        M.read (|
+                                          M.get_constant (|
+                                            "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE"
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -7128,9 +8249,11 @@ Module vm_status.
                                     (BinOp.le (|
                                       M.read (| major_status_number |),
                                       M.read (|
-                                        M.read (|
-                                          M.get_constant (|
-                                            "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE"
+                                        M.deref (|
+                                          M.read (|
+                                            M.get_constant (|
+                                              "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE"
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -7166,9 +8289,11 @@ Module vm_status.
                                   BinOp.ge (|
                                     M.read (| major_status_number |),
                                     M.read (|
-                                      M.read (|
-                                        M.get_constant (|
-                                          "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE"
+                                      M.deref (|
+                                        M.read (|
+                                          M.get_constant (|
+                                            "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE"
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -7177,9 +8302,11 @@ Module vm_status.
                                     (BinOp.le (|
                                       M.read (| major_status_number |),
                                       M.read (|
-                                        M.read (|
-                                          M.get_constant (|
-                                            "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE"
+                                        M.deref (|
+                                          M.read (|
+                                            M.get_constant (|
+                                              "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE"
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -7215,9 +8342,11 @@ Module vm_status.
                                   BinOp.ge (|
                                     M.read (| major_status_number |),
                                     M.read (|
-                                      M.read (|
-                                        M.get_constant (|
-                                          "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE"
+                                      M.deref (|
+                                        M.read (|
+                                          M.get_constant (|
+                                            "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE"
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -7226,9 +8355,11 @@ Module vm_status.
                                     (BinOp.le (|
                                       M.read (| major_status_number |),
                                       M.read (|
-                                        M.read (|
-                                          M.get_constant (|
-                                            "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE"
+                                        M.deref (|
+                                          M.read (|
+                                            M.get_constant (|
+                                              "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE"
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -7264,9 +8395,11 @@ Module vm_status.
                                   BinOp.ge (|
                                     M.read (| major_status_number |),
                                     M.read (|
-                                      M.read (|
-                                        M.get_constant (|
-                                          "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE"
+                                      M.deref (|
+                                        M.read (|
+                                          M.get_constant (|
+                                            "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE"
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -7275,9 +8408,11 @@ Module vm_status.
                                     (BinOp.le (|
                                       M.read (| major_status_number |),
                                       M.read (|
-                                        M.read (|
-                                          M.get_constant (|
-                                            "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE"
+                                        M.deref (|
+                                          M.read (|
+                                            M.get_constant (|
+                                              "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE"
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -7340,7 +8475,7 @@ Module vm_status.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |) ]
+                [ M.read (| M.deref (| M.read (| self |) |) |) ]
               |)
             ]
           |)))

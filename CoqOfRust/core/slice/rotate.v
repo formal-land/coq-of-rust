@@ -522,7 +522,17 @@ Module slice.
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ iter ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        iter
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |),
                                                             [
@@ -900,7 +910,12 @@ Module slice.
                                                           [],
                                                           []
                                                         |),
-                                                        [ rawarray ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            rawarray
+                                                          |)
+                                                        ]
                                                       |))
                                                   |) in
                                                 let~ dim :=

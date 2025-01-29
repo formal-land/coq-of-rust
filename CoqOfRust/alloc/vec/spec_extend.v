@@ -33,7 +33,10 @@ Module vec.
                 [],
                 [ I ]
               |),
-              [ M.read (| self |); M.read (| iter |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                M.read (| iter |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -74,7 +77,10 @@ Module vec.
                 [],
                 [ I ]
               |),
-              [ M.read (| self |); M.read (| iterator |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                M.read (| iterator |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -123,21 +129,26 @@ Module vec.
                         []
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         M.read (|
                           M.use
                             (M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                                    []
-                                    [ T; Ty.path "alloc::alloc::Global" ],
-                                  "as_slice",
-                                  [],
-                                  []
-                                |),
-                                [ iterator ]
+                              M.borrow (|
+                                Pointer.Kind.ConstPointer,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [ T; Ty.path "alloc::alloc::Global" ],
+                                      "as_slice",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
+                                  |)
+                                |)
                               |)
                             |))
                         |)
@@ -157,7 +168,7 @@ Module vec.
                       [],
                       []
                     |),
-                    [ iterator ]
+                    [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -213,7 +224,7 @@ Module vec.
                 []
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
@@ -271,7 +282,7 @@ Module vec.
                       [],
                       []
                     |),
-                    [ iterator ]
+                    [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                   |)
                 |) in
               let~ _ :=
@@ -283,7 +294,10 @@ Module vec.
                       [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| slice |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| slice |) |) |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)

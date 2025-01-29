@@ -55,7 +55,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ M.read (| Value.String "Rc examples" |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "Rc examples" |) |)
+                |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -72,9 +77,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "--- rc_a is created ---
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "--- rc_a is created ---
 " |) ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -111,45 +124,76 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "Reference Count of rc_a: " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Reference Count of rc_a: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
+                                ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.path "usize" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::rc::Rc")
-                                        []
-                                        [
-                                          Ty.path "alloc::string::String";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "strong_count",
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
                                       [],
-                                      []
+                                      [ Ty.path "usize" ]
                                     |),
-                                    [ rc_a ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::rc::Rc")
+                                                    []
+                                                    [
+                                                      Ty.path "alloc::string::String";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  "strong_count",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, rc_a |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -172,10 +216,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "--- rc_a is cloned to rc_b ---
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "--- rc_a is cloned to rc_b ---
 " |) ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -198,7 +250,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [],
                   []
                 |),
-                [ rc_a ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, rc_a |) |)
+                  |)
+                ]
               |)
             |) in
           let~ _ :=
@@ -215,45 +272,76 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Reference Count of rc_b: " |);
-                              M.read (| Value.String "
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "Reference Count of rc_b: " |);
+                                    M.read (| Value.String "
 " |)
-                            ]
+                                  ]
+                              |)
+                            |)
+                          |)
                         |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::rc::Rc")
-                                          []
-                                          [
-                                            Ty.path "alloc::string::String";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "strong_count",
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
                                         [],
-                                        []
+                                        [ Ty.path "usize" ]
                                       |),
-                                      [ rc_b ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "alloc::rc::Rc")
+                                                      []
+                                                      [
+                                                        Ty.path "alloc::string::String";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
+                                                    "strong_count",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, rc_b |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  |)
-                                ]
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -275,45 +363,76 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Reference Count of rc_a: " |);
-                              M.read (| Value.String "
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "Reference Count of rc_a: " |);
+                                    M.read (| Value.String "
 " |)
-                            ]
+                                  ]
+                              |)
+                            |)
+                          |)
                         |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::rc::Rc")
-                                          []
-                                          [
-                                            Ty.path "alloc::string::String";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "strong_count",
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
                                         [],
-                                        []
+                                        [ Ty.path "usize" ]
                                       |),
-                                      [ rc_a ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "alloc::rc::Rc")
+                                                      []
+                                                      [
+                                                        Ty.path "alloc::string::String";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
+                                                    "strong_count",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, rc_a |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  |)
-                                ]
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -335,36 +454,239 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "rc_a and rc_b are equal: " |);
-                              M.read (| Value.String "
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "rc_a and rc_b are equal: " |);
+                                    M.read (| Value.String "
 " |)
-                            ]
+                                  ]
+                              |)
+                            |)
+                          |)
                         |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "bool" ]
-                                |),
-                                [
-                                  M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
                                     M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
-                                        Ty.apply
-                                          (Ty.path "alloc::rc::Rc")
-                                          []
-                                          [
-                                            Ty.path "alloc::string::String";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.path "bool" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::cmp::PartialEq",
+                                                    Ty.apply
+                                                      (Ty.path "alloc::rc::Rc")
+                                                      []
+                                                      [
+                                                        Ty.path "alloc::string::String";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
+                                                    [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::rc::Rc")
+                                                        []
+                                                        [
+                                                          Ty.path "alloc::string::String";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ]
+                                                    ],
+                                                    "eq",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.Ref, rc_a |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, rc_b |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |) in
+          let~ _ :=
+            let~ _ :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "Length of the value inside rc_a: " |);
+                                    M.read (| Value.String "
+" |)
+                                  ]
+                              |)
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "alloc::string::String",
+                                                    "len",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.apply
+                                                              (Ty.path "alloc::rc::Rc")
+                                                              []
+                                                              [
+                                                                Ty.path "alloc::string::String";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            [],
+                                                            [],
+                                                            "deref",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.Ref, rc_a |) ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |) in
+          let~ _ :=
+            let~ _ :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "Value of rc_b: " |);
+                                    M.read (| Value.String "
+" |)
+                                  ]
+                              |)
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
                                         [],
                                         [
                                           Ty.apply
@@ -374,140 +696,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Ty.path "alloc::string::String";
                                               Ty.path "alloc::alloc::Global"
                                             ]
-                                        ],
-                                        "eq",
-                                        [],
-                                        []
-                                      |),
-                                      [ rc_a; rc_b ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |)
-                      ]
-                    |)
-                  ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
-            let~ _ :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [], [] |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Arguments",
-                        "new_v1",
-                        [],
-                        []
-                      |),
-                      [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Length of the value inside rc_a: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "alloc::string::String",
-                                        "len",
-                                        [],
-                                        []
+                                        ]
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.apply
-                                              (Ty.path "alloc::rc::Rc")
-                                              []
-                                              [
-                                                Ty.path "alloc::string::String";
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [ rc_a ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, rc_b |) |)
                                         |)
                                       ]
                                     |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |)
-                      ]
-                    |)
-                  ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
-            let~ _ :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [], [] |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Arguments",
-                        "new_v1",
-                        [],
-                        []
-                      |),
-                      [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Value of rc_b: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::rc::Rc")
-                                      []
-                                      [
-                                        Ty.path "alloc::string::String";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
                                   ]
-                                |),
-                                [ rc_b ]
                               |)
-                            ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -529,10 +730,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "--- rc_b is dropped out of scope ---
-" |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "--- rc_b is dropped out of scope ---
+"
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -555,45 +768,76 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "Reference Count of rc_a: " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Reference Count of rc_a: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
+                                ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [],
-                                [ Ty.path "usize" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::rc::Rc")
-                                        []
-                                        [
-                                          Ty.path "alloc::string::String";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "strong_count",
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
                                       [],
-                                      []
+                                      [ Ty.path "usize" ]
                                     |),
-                                    [ rc_a ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::rc::Rc")
+                                                    []
+                                                    [
+                                                      Ty.path "alloc::string::String";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  "strong_count",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, rc_a |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -615,10 +859,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "--- rc_a is dropped out of scope ---
-" |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "--- rc_a is dropped out of scope ---
+" |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

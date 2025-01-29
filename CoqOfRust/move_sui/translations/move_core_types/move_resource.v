@@ -24,8 +24,15 @@ Module move_resource.
               []
             |),
             [
-              M.read (|
-                M.get_constant (| "move_core_types::move_resource::MoveStructType::MODULE_NAME" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (|
+                    M.get_constant (|
+                      "move_core_types::move_resource::MoveStructType::MODULE_NAME"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -57,8 +64,15 @@ Module move_resource.
               []
             |),
             [
-              M.read (|
-                M.get_constant (| "move_core_types::move_resource::MoveStructType::STRUCT_NAME" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (|
+                    M.get_constant (|
+                      "move_core_types::move_resource::MoveStructType::STRUCT_NAME"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -176,18 +190,21 @@ Module move_resource.
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "move_core_types::move_resource::MoveStructType",
-                    Self,
-                    [],
-                    [],
-                    "struct_tag",
-                    [],
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "move_core_types::move_resource::MoveStructType",
+                      Self,
+                      [],
+                      [],
+                      "struct_tag",
+                      [],
+                      []
+                    |),
                     []
-                  |),
-                  []
+                  |)
                 |)
               |)
             ]

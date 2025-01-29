@@ -89,7 +89,7 @@ Module Impl_Default_for_MemoryGas.
       run_symbolic;
         try apply Output.Success;
         try apply MemoryGas.Build_t;
-        try reflexivity.
+        try with_strategy transparent [φ] reflexivity.
     }
   Defined.
 
@@ -117,7 +117,7 @@ Module Impl_MemoryGas.
       try apply Output.Success;
       try apply MemoryGas.Build_t;
       try apply Integer.Build_t;
-      try reflexivity.
+      try with_strategy transparent [φ] reflexivity.
   Defined.
 End Impl_MemoryGas.
 
@@ -281,7 +281,7 @@ Module Impl_Default.
       run_symbolic;
         try apply Output.Success;
         try apply Gas.Build_t;
-        try reflexivity.
+        try with_strategy transparent [φ] reflexivity.
     }
   Defined.
 
@@ -322,7 +322,7 @@ Module Impl_revm_interpreter_gas_Gas.
       try apply Output.Success;
       try simple apply Gas.Build_t;
       try apply Integer.Build_t;
-      try reflexivity.
+      try with_strategy transparent [φ] reflexivity.
   Defined.
 
   (*
@@ -350,7 +350,7 @@ Module Impl_revm_interpreter_gas_Gas.
       try apply Output.Success;
       try simple apply Gas.Build_t;
       try apply Integer.Build_t;
-      try reflexivity.
+      try with_strategy transparent [φ] reflexivity.
   Defined.
 
   (*
@@ -379,7 +379,7 @@ Module Impl_revm_interpreter_gas_Gas.
     run_symbolic;
       try apply Output.Success;
       try apply Integer.Build_t;
-      try reflexivity.
+      try with_strategy transparent [φ] reflexivity.
   Defined.
 
   (*
@@ -412,7 +412,7 @@ Module Impl_revm_interpreter_gas_Gas.
     run_symbolic;
       try apply Output.Success;
       try apply Integer.Build_t;
-      try reflexivity.
+      try with_strategy transparent [φ] reflexivity.
   Defined.
 
   (*
@@ -445,7 +445,7 @@ Module Impl_revm_interpreter_gas_Gas.
     run_symbolic;
       try apply Output.Success;
       try apply Integer.Build_t;
-      try reflexivity.
+      try with_strategy transparent [φ] reflexivity.
   Defined.
 
   (*
@@ -462,7 +462,7 @@ Module Impl_revm_interpreter_gas_Gas.
     cbn.
     unshelve eapply Run.CallPrimitiveStateWrite;
       try apply Integer.Build_t;
-      try reflexivity.
+      try with_strategy transparent [φ] reflexivity.
     eapply Run.Let. {
       run_symbolic.
     }
@@ -485,7 +485,7 @@ Module Impl_revm_interpreter_gas_Gas.
       run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
       unshelve eapply Run.CallPrimitiveStateWrite;
         try apply Integer.Build_t;
-        try reflexivity.
+        try with_strategy transparent [φ] reflexivity.
       run_symbolic.
     }
     intros; run_symbolic;
@@ -506,7 +506,7 @@ Module Impl_revm_interpreter_gas_Gas.
     run_symbolic.
     unshelve eapply Run.CallPrimitiveStateWrite;
       try apply Integer.Build_t;
-      try reflexivity.
+      try with_strategy transparent [φ] reflexivity.
     eapply Run.Let. {
       run_symbolic.
     }

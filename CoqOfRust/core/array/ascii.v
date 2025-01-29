@@ -38,7 +38,7 @@ Module array.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -46,14 +46,20 @@ Module array.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ],
-                                "as_ascii_unchecked",
-                                [ N ],
-                                []
-                              |),
-                              [ M.read (| self |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ],
+                                    "as_ascii_unchecked",
+                                    [ N ],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                       |)));
@@ -90,9 +96,19 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ byte_ptr := M.alloc (| M.read (| self |) |) in
+              let~ byte_ptr :=
+                M.alloc (|
+                  M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
+                |) in
               let~ ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
-              M.alloc (| M.read (| ascii_ptr |) |)
+              M.alloc (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ascii_ptr |) |) |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

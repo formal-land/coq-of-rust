@@ -51,7 +51,7 @@ Module struct_defs.
                   [],
                   []
                 |),
-                [ M.read (| module |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -85,7 +85,12 @@ Module struct_defs.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| module |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| module |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                   ]
@@ -180,11 +185,16 @@ Module struct_defs.
                                     []
                                   |),
                                   [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        checker,
-                                        "move_bytecode_verifier::struct_defs::RecursiveStructDefChecker",
-                                        "module"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            checker,
+                                            "move_bytecode_verifier::struct_defs::RecursiveStructDefChecker",
+                                            "module"
+                                          |)
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -273,7 +283,10 @@ Module struct_defs.
                             ]
                         ]
                       |),
-                      [ graph; Value.StructTuple "core::option::Option::None" [] ]
+                      [
+                        M.borrow (| Pointer.Kind.Ref, graph |);
+                        Value.StructTuple "core::option::Option::None" []
+                      ]
                     |)
                   |),
                   [
@@ -340,7 +353,7 @@ Module struct_defs.
                                             [],
                                             []
                                           |),
-                                          [ cycle ]
+                                          [ M.borrow (| Pointer.Kind.Ref, cycle |) ]
                                         |)
                                       ]
                                     |))
@@ -475,14 +488,24 @@ Module struct_defs.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::CompiledModule",
-                                    "struct_defs",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| module |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "move_binary_format::file_format::CompiledModule",
+                                        "struct_defs",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| module |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -521,7 +544,12 @@ Module struct_defs.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -547,7 +575,7 @@ Module struct_defs.
                                       let~ sh_idx :=
                                         M.copy (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| struct_def |),
+                                            M.deref (| M.read (| struct_def |) |),
                                             "move_binary_format::file_format::StructDefinition",
                                             "struct_handle"
                                           |)
@@ -571,7 +599,7 @@ Module struct_defs.
                                               []
                                             |),
                                             [
-                                              handle_to_def;
+                                              M.borrow (| Pointer.Kind.MutRef, handle_to_def |);
                                               M.read (| sh_idx |);
                                               Value.StructTuple
                                                 "move_binary_format::file_format::StructDefinitionIndex"
@@ -678,22 +706,33 @@ Module struct_defs.
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_binary_format::file_format::CompiledModule",
-                                          "struct_defs",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              self,
-                                              "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
-                                              "module"
-                                            |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_binary_format::file_format::CompiledModule",
+                                              "struct_defs",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
+                                                      "module"
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |)
                                     ]
                                   |))
@@ -723,7 +762,12 @@ Module struct_defs.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -787,7 +831,19 @@ Module struct_defs.
                                                       [],
                                                       []
                                                     |),
-                                                    [ self; neighbors; M.read (| sd_idx |) ]
+                                                    [
+                                                      M.borrow (| Pointer.Kind.Ref, self |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            neighbors
+                                                          |)
+                                                        |)
+                                                      |);
+                                                      M.read (| sd_idx |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -1259,11 +1315,16 @@ Module struct_defs.
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
-                            "module"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
+                                "module"
+                              |)
+                            |)
                           |)
                         |);
                         M.read (| idx |)
@@ -1367,7 +1428,12 @@ Module struct_defs.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| struct_def |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| struct_def |) |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -1416,7 +1482,12 @@ Module struct_defs.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1468,17 +1539,31 @@ Module struct_defs.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| self |);
-                                                      M.read (| neighbors |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| neighbors |) |)
+                                                      |);
                                                       M.read (| idx |);
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| field |),
-                                                          "move_binary_format::file_format::FieldDefinition",
-                                                          "signature"
-                                                        |),
-                                                        "move_binary_format::file_format::TypeSignature",
-                                                        0
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| field |) |),
+                                                                "move_binary_format::file_format::FieldDefinition",
+                                                                "signature"
+                                                              |),
+                                                              "move_binary_format::file_format::TypeSignature",
+                                                              0
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -1800,9 +1885,14 @@ Module struct_defs.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Reference field when checking recursive structs"
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              Value.String
+                                                                "Reference field when checking recursive structs"
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -1854,10 +1944,19 @@ Module struct_defs.
                                       []
                                     |),
                                     [
-                                      M.read (| self |);
-                                      M.read (| neighbors |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| neighbors |) |)
+                                      |);
                                       M.read (| cur_idx |);
-                                      M.read (| M.read (| inner |) |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| M.deref (| M.read (| inner |) |) |) |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -1958,12 +2057,18 @@ Module struct_defs.
                                           ]
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
-                                            "handle_to_def"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
+                                              "handle_to_def"
+                                            |)
                                           |);
-                                          M.read (| sh_idx |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| sh_idx |) |)
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -1991,36 +2096,14 @@ Module struct_defs.
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path
-                                                  "alloc::collections::btree::map::entry::Entry")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::StructDefinitionIndex";
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::set::BTreeSet")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::StructDefinitionIndex";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ];
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              "or_default",
-                                              [],
-                                              []
-                                            |),
-                                            [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path
-                                                      "alloc::collections::btree::map::BTreeMap")
+                                                      "alloc::collections::btree::map::entry::Entry")
                                                     []
                                                     [
                                                       Ty.path
@@ -2036,15 +2119,48 @@ Module struct_defs.
                                                         ];
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
-                                                  "entry",
+                                                  "or_default",
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| neighbors |); M.read (| cur_idx |) ]
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::map::BTreeMap")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefinitionIndex";
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::btree::set::BTreeSet")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructDefinitionIndex";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ];
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      "entry",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| neighbors |) |)
+                                                      |);
+                                                      M.read (| cur_idx |)
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
-                                            ]
+                                            |)
                                           |);
-                                          M.read (| M.read (| struct_def_idx |) |)
+                                          M.read (| M.deref (| M.read (| struct_def_idx |) |) |)
                                         ]
                                       |)
                                     |) in
@@ -2063,7 +2179,12 @@ Module struct_defs.
                             |) in
                           let struct_inst := M.alloc (| γ1_0 |) in
                           M.match_operator (|
-                            M.alloc (| M.read (| M.read (| struct_inst |) |) |),
+                            M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| M.deref (| M.read (| struct_inst |) |) |) |)
+                              |)
+                            |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -2101,12 +2222,18 @@ Module struct_defs.
                                                     ]
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
-                                                      "handle_to_def"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
+                                                        "handle_to_def"
+                                                      |)
                                                     |);
-                                                    M.read (| sh_idx |)
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| sh_idx |) |)
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -2135,36 +2262,14 @@ Module struct_defs.
                                                     []
                                                   |),
                                                   [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloc::collections::btree::map::entry::Entry")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::StructDefinitionIndex";
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloc::collections::btree::set::BTreeSet")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::StructDefinitionIndex";
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ];
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ],
-                                                        "or_default",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
                                                         M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
-                                                                "alloc::collections::btree::map::BTreeMap")
+                                                                "alloc::collections::btree::map::entry::Entry")
                                                               []
                                                               [
                                                                 Ty.path
@@ -2180,18 +2285,53 @@ Module struct_defs.
                                                                   ];
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
-                                                            "entry",
+                                                            "or_default",
                                                             [],
                                                             []
                                                           |),
                                                           [
-                                                            M.read (| neighbors |);
-                                                            M.read (| cur_idx |)
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloc::collections::btree::map::BTreeMap")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::StructDefinitionIndex";
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::btree::set::BTreeSet")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructDefinitionIndex";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ];
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ],
+                                                                "entry",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.read (| neighbors |)
+                                                                  |)
+                                                                |);
+                                                                M.read (| cur_idx |)
+                                                              ]
+                                                            |)
                                                           ]
                                                         |)
-                                                      ]
+                                                      |)
                                                     |);
-                                                    M.read (| M.read (| struct_def_idx |) |)
+                                                    M.read (|
+                                                      M.deref (| M.read (| struct_def_idx |) |)
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -2252,7 +2392,17 @@ Module struct_defs.
                                                           [],
                                                           []
                                                         |),
-                                                        [ iter ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                iter
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |),
                                                     [
@@ -2306,10 +2456,23 @@ Module struct_defs.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (| self |);
-                                                                      M.read (| neighbors |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| self |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.read (| neighbors |)
+                                                                        |)
+                                                                      |);
                                                                       M.read (| cur_idx |);
-                                                                      M.read (| t |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (| M.read (| t |) |)
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]

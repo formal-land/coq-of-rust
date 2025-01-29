@@ -47,7 +47,14 @@ Module iter.
               M.alloc (|
                 Value.StructRecord
                   "core::iter::adapters::GenericShunt"
-                  [ ("iter", M.read (| iter |)); ("residual", residual) ]
+                  [
+                    ("iter", M.read (| iter |));
+                    ("residual",
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, residual |) |)
+                      |))
+                  ]
               |) in
             let~ value :=
               M.alloc (|
@@ -64,7 +71,7 @@ Module iter.
                     [],
                     []
                   |),
-                  [ f; Value.Tuple [ M.read (| shunt |) ] ]
+                  [ M.borrow (| Pointer.Kind.MutRef, f |); Value.Tuple [ M.read (| shunt |) ] ]
                 |)
               |) in
             M.match_operator (|
@@ -169,7 +176,7 @@ Module iter.
                     ]
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.constructor_as_closure "core::ops::control_flow::ControlFlow::Break"
                   ]
                 |)
@@ -211,11 +218,16 @@ Module iter.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::GenericShunt",
-                                    "residual"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::GenericShunt",
+                                        "residual"
+                                      |)
+                                    |)
                                   |)
                                 |)
                               ]
@@ -246,10 +258,13 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::GenericShunt",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::GenericShunt",
+                                  "iter"
+                                |)
                               |)
                             ]
                           |)
@@ -322,10 +337,13 @@ Module iter.
                     ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::GenericShunt",
-                      "iter"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::iter::adapters::GenericShunt",
+                        "iter"
+                      |)
                     |);
                     M.read (| init |);
                     M.closure
@@ -396,7 +414,10 @@ Module iter.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  f;
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    f
+                                                                  |);
                                                                   Value.Tuple
                                                                     [
                                                                       M.read (| acc |);
@@ -418,11 +439,13 @@ Module iter.
                                                         let r := M.copy (| γ0_0 |) in
                                                         let~ _ :=
                                                           M.write (|
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "core::iter::adapters::GenericShunt",
-                                                                "residual"
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "core::iter::adapters::GenericShunt",
+                                                                  "residual"
+                                                                |)
                                                               |)
                                                             |),
                                                             Value.StructTuple
@@ -499,7 +522,7 @@ Module iter.
                       ]
                     |),
                     [
-                      self;
+                      M.borrow (| Pointer.Kind.MutRef, self |);
                       M.read (| init |);
                       M.call_closure (|
                         M.get_associated_function (|
@@ -555,23 +578,46 @@ Module iter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::iter::adapters::SourceIter",
-                I,
-                [],
-                [],
-                "as_inner",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::iter::adapters::GenericShunt",
-                  "iter"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::iter::adapters::SourceIter",
+                            I,
+                            [],
+                            [],
+                            "as_inner",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::GenericShunt",
+                                    "iter"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

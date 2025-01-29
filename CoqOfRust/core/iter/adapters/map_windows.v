@@ -125,14 +125,22 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "array in `Iterator::map_windows` must contain more than 0 elements"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String
+                                                      "array in `Iterator::map_windows` must contain more than 0 elements"
+                                                  |)
+                                                ]
                                             |)
-                                          ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -187,22 +195,25 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "usize",
-                                                      "checked_mul",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (|
-                                                        M.get_constant (|
-                                                          "core::iter::adapters::map_windows::N"
-                                                        |)
-                                                      |);
-                                                      Value.Integer IntegerKind.Usize 2
-                                                    ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "usize",
+                                                        "checked_mul",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          M.get_constant (|
+                                                            "core::iter::adapters::map_windows::N"
+                                                          |)
+                                                        |);
+                                                        Value.Integer IntegerKind.Usize 2
+                                                      ]
+                                                    |)
                                                   |)
                                                 |)
                                               ]
@@ -227,14 +238,22 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "array size of `Iterator::map_windows` is too large"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.read (|
+                                                              Value.String
+                                                                "array size of `Iterator::map_windows` is too large"
+                                                            |)
+                                                          ]
                                                       |)
-                                                    ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -375,10 +394,13 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::map_windows::MapWindowsInner",
-                                      "iter"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::map_windows::MapWindowsInner",
+                                        "iter"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -449,7 +471,7 @@ Module iter.
                     let~ _ :=
                       M.match_operator (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::map_windows::MapWindowsInner",
                           "buffer"
                         |),
@@ -459,7 +481,7 @@ Module iter.
                               (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::iter::adapters::map_windows::MapWindowsInner",
                                   "buffer"
                                 |),
@@ -473,7 +495,12 @@ Module iter.
                                     [ N ],
                                     [ I ]
                                   |),
-                                  [ M.read (| iter |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| iter |) |)
+                                    |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -497,7 +524,12 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| iter |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -515,10 +547,13 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::iter::adapters::map_windows::MapWindowsInner",
-                                                "iter"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::iter::adapters::map_windows::MapWindowsInner",
+                                                  "iter"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -542,10 +577,13 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::iter::adapters::map_windows::MapWindowsInner",
-                                                "buffer"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::iter::adapters::map_windows::MapWindowsInner",
+                                                  "buffer"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -571,7 +609,13 @@ Module iter.
                                             [ N ],
                                             []
                                           |),
-                                          [ M.read (| buffer |); M.read (| item |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| buffer |) |)
+                                            |);
+                                            M.read (| item |)
+                                          ]
                                         |)
                                       |)))
                                 ]
@@ -637,10 +681,13 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::map_windows::MapWindowsInner",
-                                "buffer"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::map_windows::MapWindowsInner",
+                                  "buffer"
+                                |)
                               |)
                             ]
                           |);
@@ -696,7 +743,7 @@ Module iter.
               M.read (|
                 M.match_operator (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::iter::adapters::map_windows::MapWindowsInner",
                     "iter"
                   |),
@@ -722,7 +769,7 @@ Module iter.
                                 [],
                                 []
                               |),
-                              [ M.read (| iter |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| iter |) |) |) ]
                             |)
                           |),
                           [
@@ -757,10 +804,13 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "core::iter::adapters::map_windows::MapWindowsInner",
-                                                    "buffer"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::iter::adapters::map_windows::MapWindowsInner",
+                                                      "buffer"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -936,7 +986,12 @@ Module iter.
                                         [ N ],
                                         [ T; impl_Iterator_Item___T_ ]
                                       |),
-                                      [ M.read (| iter |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -1109,10 +1164,13 @@ Module iter.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::map_windows::Buffer",
-                        "buffer"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::map_windows::Buffer",
+                          "buffer"
+                        |)
                       |)
                     ]
                   |)
@@ -1174,10 +1232,13 @@ Module iter.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::map_windows::Buffer",
-                        "buffer"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::map_windows::Buffer",
+                          "buffer"
+                        |)
                       |)
                     ]
                   |)
@@ -1234,7 +1295,7 @@ Module iter.
                                               BinOp.Wrap.add (|
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
@@ -1282,50 +1343,71 @@ Module iter.
                     ]
                   |) in
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "*const")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                      "cast",
-                      [],
-                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "*const")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                          "add",
-                          [],
-                          []
-                        |),
-                        [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "core::iter::adapters::map_windows::Buffer")
-                                [ N ]
-                                [ T ],
-                              "buffer_ptr",
-                              [ N ],
-                              []
+                                (Ty.path "*const")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
+                              "cast",
+                              [],
+                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                             |),
-                            [ M.read (| self |) ]
-                          |);
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::map_windows::Buffer",
-                              "start"
-                            |)
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ],
+                                  "add",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                        [ N ]
+                                        [ T ],
+                                      "buffer_ptr",
+                                      [ N ],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::map_windows::Buffer",
+                                      "start"
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
-                    ]
+                    |)
                   |)
                 |)
               |)))
@@ -1356,127 +1438,166 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.read (|
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          UnOp.not (|
-                                            BinOp.le (|
-                                              BinOp.Wrap.add (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "core::iter::adapters::map_windows::Buffer",
-                                                    "start"
-                                                  |)
-                                                |),
-                                                M.read (|
-                                                  M.get_constant (|
-                                                    "core::iter::adapters::map_windows::N"
-                                                  |)
-                                                |)
-                                              |),
-                                              BinOp.Wrap.mul (|
-                                                Value.Integer IntegerKind.Usize 2,
-                                                M.read (|
-                                                  M.get_constant (|
-                                                    "core::iter::adapters::map_windows::N"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              UnOp.not (|
+                                                BinOp.le (|
+                                                  BinOp.Wrap.add (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::iter::adapters::map_windows::Buffer",
+                                                        "start"
+                                                      |)
+                                                    |),
+                                                    M.read (|
+                                                      M.get_constant (|
+                                                        "core::iter::adapters::map_windows::N"
+                                                      |)
+                                                    |)
+                                                  |),
+                                                  BinOp.Wrap.mul (|
+                                                    Value.Integer IntegerKind.Usize 2,
+                                                    M.read (|
+                                                      M.get_constant (|
+                                                        "core::iter::adapters::map_windows::N"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |)
                                               |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.call_closure (|
+                                              M.get_function (| "core::panicking::panic", [], [] |),
+                                              [
+                                                M.read (|
+                                                  Value.String
+                                                    "assertion failed: self.start + N <= 2 * N"
+                                                |)
+                                              ]
                                             |)
                                           |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.start + N <= 2 * N"
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "*mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ],
+                                      "cast",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                      ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ],
+                                          "add",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "core::iter::adapters::map_windows::Buffer")
+                                                [ N ]
+                                                [ T ],
+                                              "buffer_mut_ptr",
+                                              [ N ],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
+                                          |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::iter::adapters::map_windows::Buffer",
+                                              "start"
                                             |)
-                                          ]
-                                        |)
+                                          |)
+                                        ]
                                       |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "*mut")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                      "cast",
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                      ]
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "*mut")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                          "add",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::map_windows::Buffer")
-                                [ N ]
-                                [ T ],
-                              "buffer_mut_ptr",
-                              [ N ],
-                              []
-                            |),
-                            [ M.read (| self |) ]
-                          |);
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::map_windows::Buffer",
-                              "start"
+                                    ]
+                                  |)
+                                |)
+                              |)
                             |)
                           |)
-                        ]
+                        |)
                       |)
-                    ]
+                    |)
                   |)
                 |)
               |)))
@@ -1567,7 +1688,7 @@ Module iter.
                         [ N ],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -1593,7 +1714,7 @@ Module iter.
                                               BinOp.Wrap.add (|
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
@@ -1653,7 +1774,7 @@ Module iter.
                                   BinOp.eq (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::iter::adapters::map_windows::Buffer",
                                         "start"
                                       |)
@@ -1703,7 +1824,7 @@ Module iter.
                                               BinOp.Wrap.add (|
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
@@ -1737,32 +1858,38 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "*mut")
-                                              []
-                                              [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
                                                 Ty.apply
-                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  (Ty.path "*mut")
                                                   []
-                                                  [ T ]
-                                              ],
-                                            "add",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (| buffer_mut_ptr |);
-                                            BinOp.Wrap.sub (|
-                                              M.read (|
-                                                M.get_constant (|
-                                                  "core::iter::adapters::map_windows::N"
-                                                |)
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
+                                                      [ T ]
+                                                  ],
+                                                "add",
+                                                [],
+                                                []
                                               |),
-                                              Value.Integer IntegerKind.Usize 1
+                                              [
+                                                M.read (| buffer_mut_ptr |);
+                                                BinOp.Wrap.sub (|
+                                                  M.read (|
+                                                    M.get_constant (|
+                                                      "core::iter::adapters::map_windows::N"
+                                                    |)
+                                                  |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
                                         |);
                                         M.read (| next |)
                                       ]
@@ -1788,7 +1915,7 @@ Module iter.
                                       M.read (| buffer_mut_ptr |);
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::iter::adapters::map_windows::Buffer",
                                           "start"
                                         |)
@@ -1800,7 +1927,7 @@ Module iter.
                             let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::iter::adapters::map_windows::Buffer",
                                   "start"
                                 |),
@@ -1824,38 +1951,44 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "*mut")
-                                              []
-                                              [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
                                                 Ty.apply
-                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  (Ty.path "*mut")
                                                   []
-                                                  [ T ]
-                                              ],
-                                            "add",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (| buffer_mut_ptr |);
-                                            BinOp.Wrap.add (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::iter::adapters::map_windows::Buffer",
-                                                  "start"
-                                                |)
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
+                                                      [ T ]
+                                                  ],
+                                                "add",
+                                                [],
+                                                []
                                               |),
-                                              M.read (|
-                                                M.get_constant (|
-                                                  "core::iter::adapters::map_windows::N"
+                                              [
+                                                M.read (| buffer_mut_ptr |);
+                                                BinOp.Wrap.add (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::iter::adapters::map_windows::Buffer",
+                                                      "start"
+                                                    |)
+                                                  |),
+                                                  M.read (|
+                                                    M.get_constant (|
+                                                      "core::iter::adapters::map_windows::N"
+                                                    |)
+                                                  |)
                                                 |)
-                                              |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
                                         |);
                                         M.read (| next |)
                                       ]
@@ -1881,7 +2014,7 @@ Module iter.
                                       M.read (| buffer_mut_ptr |);
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::iter::adapters::map_windows::Buffer",
                                           "start"
                                         |)
@@ -1893,7 +2026,7 @@ Module iter.
                             let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::iter::adapters::map_windows::Buffer",
                                   "start"
                                 |) in
@@ -1994,7 +2127,7 @@ Module iter.
                         ("start",
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::map_windows::Buffer",
                               "start"
                             |)
@@ -2014,17 +2147,22 @@ Module iter.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::iter::adapters::map_windows::Buffer")
-                              [ N ]
-                              [ T ],
-                            "as_uninit_array_mut",
-                            [ N ],
-                            []
-                          |),
-                          [ buffer ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                  [ N ]
+                                  [ T ],
+                                "as_uninit_array_mut",
+                                [ N ],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, buffer |) ]
+                            |)
+                          |)
                         |);
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2037,17 +2175,23 @@ Module iter.
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::iter::adapters::map_windows::Buffer")
-                                  [ N ]
-                                  [ T ],
-                                "as_array_ref",
-                                [ N ],
-                                []
-                              |),
-                              [ M.read (| self |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                      [ N ]
+                                      [ T ],
+                                    "as_array_ref",
+                                    [ N ],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -2104,10 +2248,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::MapWindowsInner",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::map_windows::MapWindowsInner",
+                            "iter"
+                          |)
                         |)
                       ]
                     |));
@@ -2131,10 +2278,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::MapWindowsInner",
-                          "buffer"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::map_windows::MapWindowsInner",
+                            "buffer"
+                          |)
                         |)
                       ]
                     |))
@@ -2224,11 +2374,16 @@ Module iter.
                                     [ N ],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |)
+                                  ]
                                 |);
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::map_windows::Buffer",
                                     "start"
                                   |)
@@ -2329,10 +2484,13 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::map_windows::MapWindows",
-                                      "inner"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::map_windows::MapWindows",
+                                        "inner"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -2408,12 +2566,16 @@ Module iter.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::map_windows::MapWindows",
-                              "f"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::map_windows::MapWindows",
+                                "f"
+                              |)
                             |);
-                            Value.Tuple [ M.read (| window |) ]
+                            Value.Tuple
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| window |) |) |) ]
                           ]
                         |)
                       |) in
@@ -2453,10 +2615,13 @@ Module iter.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::map_windows::MapWindows",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::map_windows::MapWindows",
+                      "inner"
+                    |)
                   |)
                 ]
               |)))
@@ -2533,36 +2698,61 @@ Module iter.
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugStruct",
-                      "field",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_struct",
-                            [],
-                            []
-                          |),
-                          [ M.read (| f |); M.read (| Value.String "MapWindows" |) ]
-                        |)
-                      |);
-                      M.read (| Value.String "iter" |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::MapWindows",
-                          "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::builders::DebugStruct",
+                          "field",
+                          [],
+                          []
                         |),
-                        "core::iter::adapters::map_windows::MapWindowsInner",
-                        "iter"
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Formatter",
+                                  "debug_struct",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "MapWindows" |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "iter" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::map_windows::MapWindows",
+                                    "inner"
+                                  |),
+                                  "core::iter::adapters::map_windows::MapWindowsInner",
+                                  "iter"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -2606,10 +2796,13 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::MapWindows",
-                          "f"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::map_windows::MapWindows",
+                            "f"
+                          |)
                         |)
                       ]
                     |));
@@ -2628,10 +2821,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::MapWindows",
-                          "inner"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::map_windows::MapWindows",
+                            "inner"
+                          |)
                         |)
                       ]
                     |))

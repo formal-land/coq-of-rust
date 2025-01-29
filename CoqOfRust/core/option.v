@@ -96,7 +96,13 @@ Module option.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "None" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "None" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -117,7 +123,17 @@ Module option.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Some" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Some" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -155,7 +171,7 @@ Module option.
                     [],
                     [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -170,7 +186,13 @@ Module option.
                     [],
                     [ __H ]
                   |),
-                  [ __self_discr; M.read (| state |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
@@ -189,7 +211,10 @@ Module option.
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
-                        [ M.read (| __self_0 |); M.read (| state |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -224,7 +249,7 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -321,7 +346,7 @@ Module option.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -403,7 +428,7 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -415,7 +440,9 @@ Module option.
                       |) in
                     let x := M.alloc (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -447,7 +474,7 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -459,7 +486,9 @@ Module option.
                       |) in
                     let x := M.alloc (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -503,22 +532,27 @@ Module option.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::pin::Pin")
-                          []
-                          [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "core::pin::Pin")
                               []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                          ],
-                        "get_ref",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                              ],
+                            "get_ref",
+                            [],
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -547,7 +581,7 @@ Module option.
                               [],
                               []
                             |),
-                            [ M.read (| x |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                           |)
                         ]
                     |)));
@@ -595,22 +629,27 @@ Module option.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::pin::Pin")
-                          []
-                          [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "&mut")
+                              (Ty.path "core::pin::Pin")
                               []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                          ],
-                        "get_unchecked_mut",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                              ],
+                            "get_unchecked_mut",
+                            [],
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -639,7 +678,7 @@ Module option.
                               [],
                               []
                             |),
-                            [ M.read (| x |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
                           |)
                         ]
                     |)));
@@ -679,7 +718,7 @@ Module option.
                     [],
                     [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (| M.rust_cast (M.read (| discriminant |)) |)
@@ -715,19 +754,11 @@ Module option.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
-            [
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
               M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "*const")
-                    []
-                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                  "cast",
-                  [],
-                  [ T ]
-                |),
+                M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -735,29 +766,51 @@ Module option.
                         (Ty.path "*const")
                         []
                         [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                      "byte_add",
+                      "cast",
+                      [],
+                      [ T ]
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "*const")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                          "byte_add",
+                          [],
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.use
+                              (M.alloc (|
+                                M.borrow (|
+                                  Pointer.Kind.ConstPointer,
+                                  M.deref (| M.read (| self |) |)
+                                |)
+                              |))
+                          |);
+                          M.read (|
+                            (* `OffsetOf` expression are not handled yet *)
+                            M.alloc (| Value.Tuple [] |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |);
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                      "len",
                       [],
                       []
                     |),
-                    [
-                      M.read (| M.use (M.alloc (| M.read (| self |) |)) |);
-                      M.read (|
-                        (* `OffsetOf` expression are not handled yet *) M.alloc (| Value.Tuple [] |)
-                      |)
-                    ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 ]
-              |);
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                  "len",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -794,49 +847,73 @@ Module option.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "*mut")
-                    []
-                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                  "cast",
-                  [],
-                  [ T ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "*mut")
-                        []
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                      "byte_add",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| M.use (M.alloc (| M.read (| self |) |)) |);
-                      M.read (|
-                        (* `OffsetOf` expression are not handled yet *) M.alloc (| Value.Tuple [] |)
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                              "cast",
+                              [],
+                              [ T ]
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                                  "byte_add",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.use
+                                      (M.alloc (|
+                                        M.borrow (|
+                                          Pointer.Kind.MutPointer,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      |))
+                                  |);
+                                  M.read (|
+                                    (* `OffsetOf` expression are not handled yet *)
+                                    M.alloc (| Value.Tuple [] |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                              "len",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
-                ]
-              |);
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                  "len",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
+                |)
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -881,7 +958,7 @@ Module option.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::option::expect_failed", [], [] |),
-                          [ M.read (| msg |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |) ]
                         |)
                       |)
                     |)))
@@ -1273,7 +1350,11 @@ Module option.
                               [],
                               []
                             |),
-                            [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
+                            [
+                              M.read (| f |);
+                              Value.Tuple
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -1565,7 +1646,7 @@ Module option.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -1589,7 +1670,7 @@ Module option.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| t |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
                                 |)))
                           ]
                         |)))
@@ -1638,7 +1719,7 @@ Module option.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -1662,7 +1743,8 @@ Module option.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| t |) ]
+                                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| t |) |) |)
+                                  ]
                                 |)))
                           ]
                         |)))
@@ -1703,7 +1785,7 @@ Module option.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |))
                   ])
             ]))
@@ -1740,7 +1822,7 @@ Module option.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                       |))
                   ])
             ]))
@@ -1905,7 +1987,16 @@ Module option.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| predicate |); Value.Tuple [ x ] ]
+                                          [
+                                            M.read (| predicate |);
+                                            Value.Tuple
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
+                                                |)
+                                              ]
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -2111,34 +2202,54 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
-          M.read (|
-            let~ _ :=
-              M.write (|
-                M.read (| self |),
-                Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                  "unwrap_unchecked",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      "as_mut",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ _ :=
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                              "unwrap_unchecked",
+                              [],
+                              []
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                  "as_mut",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                ]
+                |)
               |)
             |)
           |)))
@@ -2161,28 +2272,38 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              "get_or_insert_with",
-              [],
-              [ Ty.function [ Ty.tuple [] ] T ]
-            |),
-            [
-              M.read (| self |);
-              M.closure
-                (fun γ =>
-                  ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (M.read (| value |))) ]
-                        |)))
-                    | _ => M.impossible "wrong number of arguments"
-                    end))
-            ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                      "get_or_insert_with",
+                      [],
+                      [ Ty.function [ Ty.tuple [] ] T ]
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [ fun γ => ltac:(M.monadic (M.read (| value |))) ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2210,17 +2331,35 @@ Module option.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              "get_or_insert_with",
-              [],
-              [ Ty.function [] T ]
-            |),
-            [
-              M.read (| self |);
-              M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |)
-            ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                      "get_or_insert_with",
+                      [],
+                      [ Ty.function [] T ]
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |)
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2255,62 +2394,82 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
-          M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := self in
-                      let γ := M.read (| γ |) in
-                      let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| self |),
-                          Value.StructTuple
-                            "core::option::Option::Some"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := self in
+                          let γ := M.read (| γ |) in
+                          let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| self |) |),
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::function::FnOnce",
+                                      F,
+                                      [],
+                                      [ Ty.tuple [] ],
+                                      "call_once",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| f |); Value.Tuple [] ]
+                                  |)
+                                ]
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                              "unwrap_unchecked",
+                              [],
+                              []
+                            |),
                             [
                               M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::function::FnOnce",
-                                  F,
-                                  [],
-                                  [ Ty.tuple [] ],
-                                  "call_once",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                  "as_mut",
                                   [],
                                   []
                                 |),
-                                [ M.read (| f |); Value.Tuple [] ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
                               |)
                             ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                  "unwrap_unchecked",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      "as_mut",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                ]
+                |)
               |)
             |)
           |)))
@@ -2339,7 +2498,10 @@ Module option.
               [],
               [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
             |),
-            [ M.read (| self |); Value.StructTuple "core::option::Option::None" [] ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              Value.StructTuple "core::option::Option::None" []
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2390,7 +2552,12 @@ Module option.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
                               |);
                               Value.Bool false;
                               M.read (| predicate |)
@@ -2406,7 +2573,7 @@ Module option.
                           [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |)));
                 fun γ =>
@@ -2440,7 +2607,7 @@ Module option.
               [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
             ]
           |)))
@@ -2735,7 +2902,7 @@ Module option.
                               [],
                               []
                             |),
-                            [ M.read (| t |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
                           |)
                         ]
                     |)));
@@ -2850,7 +3017,7 @@ Module option.
                               [],
                               []
                             |),
-                            [ M.read (| t |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
                           |)
                         ]
                     |)));
@@ -2986,7 +3153,7 @@ Module option.
             [],
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
           |),
-          [ msg ]
+          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, msg |) |) |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3038,7 +3205,7 @@ Module option.
                               [],
                               []
                             |),
-                            [ M.read (| x |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                           |)
                         ]
                     |)));
@@ -3103,7 +3270,10 @@ Module option.
                           [],
                           []
                         |),
-                        [ M.read (| to |); M.read (| from |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| to |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| from |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -3113,7 +3283,7 @@ Module option.
                     let to := M.copy (| γ0_0 |) in
                     let from := M.copy (| γ0_1 |) in
                     M.write (|
-                      M.read (| to |),
+                      M.deref (| M.read (| to |) |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
@@ -3124,7 +3294,7 @@ Module option.
                           [],
                           []
                         |),
-                        [ M.read (| from |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| from |) |) |) ]
                       |)
                     |)))
               ]
@@ -3238,7 +3408,7 @@ Module option.
               [],
               []
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3285,7 +3455,7 @@ Module option.
               [],
               []
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3353,7 +3523,7 @@ Module option.
               [],
               []
             |),
-            [ M.read (| o |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| o |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3390,7 +3560,7 @@ Module option.
               [],
               []
             |),
-            [ M.read (| o |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| o |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3469,7 +3639,10 @@ Module option.
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
-                        [ M.read (| l |); M.read (| r |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -3579,7 +3752,10 @@ Module option.
                           [],
                           []
                         |),
-                        [ M.read (| l |); M.read (| r |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -3693,7 +3869,10 @@ Module option.
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
-                        [ M.read (| l |); M.read (| r |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -3781,10 +3960,18 @@ Module option.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::option::Item",
-                      "opt"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::option::Item",
+                            "opt"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -3820,14 +4007,25 @@ Module option.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Item" |);
-              M.read (| Value.String "opt" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::option::Item",
-                  "opt"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Item" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "opt" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::option::Item",
+                          "opt"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -3869,10 +4067,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::Item",
-                "opt"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::Item",
+                  "opt"
+                |)
               |)
             ]
           |)))
@@ -3904,7 +4105,7 @@ Module option.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -3954,10 +4155,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::Item",
-                "opt"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::Item",
+                  "opt"
+                |)
               |)
             ]
           |)))
@@ -3995,10 +4199,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::Item",
-                "opt"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::Item",
+                  "opt"
+                |)
               |)
             ]
           |)))
@@ -4067,14 +4274,25 @@ Module option.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Iter" |);
-              M.read (| Value.String "inner" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::option::Iter",
-                  "inner"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Iter" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::option::Iter",
+                          "inner"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -4119,10 +4337,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::Iter",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::Iter",
+                  "inner"
+                |)
               |)
             ]
           |)))
@@ -4151,10 +4372,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::Iter",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::Iter",
+                  "inner"
+                |)
               |)
             ]
           |)))
@@ -4200,10 +4424,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::Iter",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::Iter",
+                  "inner"
+                |)
               |)
             ]
           |)))
@@ -4284,10 +4511,13 @@ Module option.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::option::Iter",
-                      "inner"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::option::Iter",
+                        "inner"
+                      |)
                     |)
                   ]
                 |))
@@ -4335,14 +4565,25 @@ Module option.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "IterMut" |);
-              M.read (| Value.String "inner" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::option::IterMut",
-                  "inner"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IterMut" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::option::IterMut",
+                          "inner"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -4387,10 +4628,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::IterMut",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::IterMut",
+                  "inner"
+                |)
               |)
             ]
           |)))
@@ -4419,10 +4663,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::IterMut",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::IterMut",
+                  "inner"
+                |)
               |)
             ]
           |)))
@@ -4468,10 +4715,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::IterMut",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::IterMut",
+                  "inner"
+                |)
               |)
             ]
           |)))
@@ -4556,10 +4806,18 @@ Module option.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::option::IntoIter",
-                      "inner"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::option::IntoIter",
+                            "inner"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -4595,14 +4853,25 @@ Module option.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "IntoIter" |);
-              M.read (| Value.String "inner" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::option::IntoIter",
-                  "inner"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IntoIter" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::option::IntoIter",
+                          "inner"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -4647,10 +4916,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::IntoIter",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::IntoIter",
+                  "inner"
+                |)
               |)
             ]
           |)))
@@ -4679,10 +4951,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::IntoIter",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::IntoIter",
+                  "inner"
+                |)
               |)
             ]
           |)))
@@ -4728,10 +5003,13 @@ Module option.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::IntoIter",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::option::IntoIter",
+                  "inner"
+                |)
               |)
             ]
           |)))

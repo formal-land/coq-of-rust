@@ -88,7 +88,12 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
                 [],
                 []
               |),
-              [ M.alloc (| Value.StructTuple "functions_order::OtherType" [ M.read (| b |) ] |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "functions_order::OtherType" [ M.read (| b |) ] |)
+                |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -103,7 +108,12 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
                 [],
                 []
               |),
-              [ M.alloc (| Value.StructTuple "functions_order::SomeType" [ M.read (| u |) ] |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "functions_order::SomeType" [ M.read (| u |) ] |)
+                |)
+              ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
@@ -140,7 +150,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
             [],
             []
           |),
-          [ M.read (| self |) ]
+          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

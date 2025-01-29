@@ -24,8 +24,19 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "called `function()`
-" |) ] |)
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "called `function()`
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -64,9 +75,18 @@ Module cool.
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array [ M.read (| Value.String "called `cool::function()`
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "called `cool::function()`
 " |) ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -107,9 +127,17 @@ Module my.
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array [ M.read (| Value.String "called `my::function()`
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "called `my::function()`
 " |) ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -149,10 +177,18 @@ Module my.
                           []
                         |),
                         [
-                          M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "called `my::cool::function()`
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [ M.read (| Value.String "called `my::cool::function()`
 " |) ]
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -212,10 +248,22 @@ Module my.
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "called `my::indirect_call()`, that
-> " |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "called `my::indirect_call()`, that
+> "
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)

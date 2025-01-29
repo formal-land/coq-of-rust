@@ -43,15 +43,21 @@ Module ffi.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ffi::c_str::CStr",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ffi::c_str::CStr",
+                    "inner"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::ffi::c_str::CStr",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::ffi::c_str::CStr",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -118,12 +124,20 @@ Module ffi.
                 [ __H ]
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ffi::c_str::CStr",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ffi::c_str::CStr",
+                        "inner"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -169,10 +183,18 @@ Module ffi.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ffi::c_str::FromBytesWithNulError",
-                        "kind"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ffi::c_str::FromBytesWithNulError",
+                              "kind"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -220,15 +242,21 @@ Module ffi.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ffi::c_str::FromBytesWithNulError",
-                  "kind"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ffi::c_str::FromBytesWithNulError",
+                    "kind"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::ffi::c_str::FromBytesWithNulError",
-                  "kind"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::ffi::c_str::FromBytesWithNulError",
+                    "kind"
+                  |)
                 |)
               ]
             |)))
@@ -292,14 +320,28 @@ Module ffi.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "FromBytesWithNulError" |);
-                M.read (| Value.String "kind" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ffi::c_str::FromBytesWithNulError",
-                    "kind"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "FromBytesWithNulError" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ffi::c_str::FromBytesWithNulError",
+                            "kind"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -373,7 +415,8 @@ Module ffi.
                                 [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)));
@@ -434,7 +477,7 @@ Module ffi.
                       [],
                       [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -445,7 +488,7 @@ Module ffi.
                       [],
                       [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -487,7 +530,10 @@ Module ffi.
                                     [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -571,7 +617,17 @@ Module ffi.
                             [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "InteriorNul" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "InteriorNul" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -590,7 +646,13 @@ Module ffi.
                             [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "NotNulTerminated" |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "NotNulTerminated" |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -679,7 +741,7 @@ Module ffi.
             M.read (|
               M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::ffi::c_str::FromBytesWithNulError",
                   "kind"
                 |),
@@ -692,7 +754,12 @@ Module ffi.
                           "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul"
                         |) in
                       M.alloc (|
-                        M.read (| Value.String "data provided contains an interior nul byte" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (| Value.String "data provided contains an interior nul byte" |)
+                          |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -702,7 +769,12 @@ Module ffi.
                           "core::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
                         |) in
                       M.alloc (|
-                        M.read (| Value.String "data provided is not nul terminated" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (| Value.String "data provided is not nul terminated" |)
+                          |)
+                        |)
                       |)))
                 ]
               |)
@@ -749,10 +821,18 @@ Module ffi.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::ffi::c_str::FromBytesUntilNulError",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ffi::c_str::FromBytesUntilNulError",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -800,15 +880,21 @@ Module ffi.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::ffi::c_str::FromBytesUntilNulError",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ffi::c_str::FromBytesUntilNulError",
+                    0
+                  |)
                 |);
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| other |),
-                  "core::ffi::c_str::FromBytesUntilNulError",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::ffi::c_str::FromBytesUntilNulError",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -872,13 +958,27 @@ Module ffi.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "FromBytesUntilNulError" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::ffi::c_str::FromBytesUntilNulError",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "FromBytesUntilNulError" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ffi::c_str::FromBytesUntilNulError",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -911,7 +1011,7 @@ Module ffi.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
@@ -920,9 +1020,17 @@ Module ffi.
                     []
                   |),
                   [
-                    M.alloc (|
-                      Value.Array
-                        [ M.read (| Value.String "data provided does not contain a nul" |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Value.Array
+                              [ M.read (| Value.String "data provided does not contain a nul" |) ]
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -956,48 +1064,83 @@ Module ffi.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
-                    M.alloc (|
-                      Value.Array [ M.read (| Value.String """" |); M.read (| Value.String """" |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Value.Array
+                              [ M.read (| Value.String """" |); M.read (| Value.String """" |) ]
+                          |)
+                        |)
+                      |)
                     |);
-                    M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [],
-                              [ Ty.path "core::slice::ascii::EscapeAscii" ]
-                            |),
-                            [
-                              M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Value.Array
+                              [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                    "escape_ascii",
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
                                     [],
-                                    []
+                                    [ Ty.path "core::slice::ascii::EscapeAscii" ]
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::ffi::c_str::CStr",
-                                        "to_bytes",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                "escape_ascii",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::ffi::c_str::CStr",
+                                                        "to_bytes",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| self |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
-                              |)
-                            ]
+                              ]
                           |)
-                        ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1028,19 +1171,36 @@ Module ffi.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "from_ptr", [], [] |),
-              [
+            (M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
-                    "as_ptr",
+                    Ty.path "core::ffi::c_str::CStr",
+                    "from_ptr",
                     [],
                     []
                   |),
-                  [ M.read (| M.get_constant (| "core::ffi::c_str::default::SLICE" |) |) ]
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
+                        "as_ptr",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (| M.get_constant (| "core::ffi::c_str::default::SLICE" |) |)
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1099,18 +1259,28 @@ Module ffi.
                                 []
                               |),
                               [
-                                M.read (| f |);
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::error::Error",
-                                    Ty.path "core::ffi::c_str::FromBytesWithNulError",
-                                    [],
-                                    [],
-                                    "description",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::error::Error",
+                                        Ty.path "core::ffi::c_str::FromBytesWithNulError",
+                                        [],
+                                        [],
+                                        "description",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -1178,7 +1348,7 @@ Module ffi.
                           ltac:(M.monadic
                             (let γ :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::ffi::c_str::FromBytesWithNulError",
                                 "kind"
                               |) in
@@ -1214,7 +1384,10 @@ Module ffi.
                                           []
                                         |),
                                         [
-                                          M.read (| f |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| f |) |)
+                                          |);
                                           M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
@@ -1223,23 +1396,50 @@ Module ffi.
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String " at byte pos " |) ]
-                                              |);
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [],
-                                                        [ Ty.path "usize" ]
-                                                      |),
-                                                      [ pos ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [ M.read (| Value.String " at byte pos " |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [],
+                                                              [ Ty.path "usize" ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    pos
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1351,30 +1551,47 @@ Module ffi.
                   |)
                 |) in
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::ffi::c_str::CStr",
-                    "from_bytes_with_nul_unchecked",
-                    [],
-                    []
-                  |),
-                  [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
+                      M.get_associated_function (|
+                        Ty.path "core::ffi::c_str::CStr",
+                        "from_bytes_with_nul_unchecked",
+                        [],
+                        []
+                      |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
-                            "cast",
-                            [],
-                            [ Ty.path "u8" ]
-                          |),
-                          [ M.read (| ptr |) ]
-                        |);
-                        BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::slice::raw::from_raw_parts",
+                                [],
+                                [ Ty.path "u8" ]
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
+                                    "cast",
+                                    [],
+                                    [ Ty.path "u8" ]
+                                  |),
+                                  [ M.read (| ptr |) ]
+                                |);
+                                BinOp.Wrap.add (|
+                                  M.read (| len |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
+                              ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
-                  ]
+                  |)
                 |)
               |)
             |)))
@@ -1409,7 +1626,10 @@ Module ffi.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::slice::memchr::memchr", [], [] |),
-                    [ Value.Integer IntegerKind.U8 0; M.read (| bytes |) ]
+                    [
+                      Value.Integer IntegerKind.U8 0;
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -1440,7 +1660,8 @@ Module ffi.
                                   [],
                                   []
                                 |),
-                                [ M.read (| bytes |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+                                ]
                               |);
                               BinOp.Wrap.add (|
                                 M.read (| nul_pos |),
@@ -1453,14 +1674,24 @@ Module ffi.
                         Value.StructTuple
                           "core::result::Result::Ok"
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::ffi::c_str::CStr",
-                                "from_bytes_with_nul_unchecked",
-                                [],
-                                []
-                              |),
-                              [ M.read (| subslice |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ffi::c_str::CStr",
+                                    "from_bytes_with_nul_unchecked",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| subslice |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                       |)));
@@ -1509,7 +1740,10 @@ Module ffi.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::slice::memchr::memchr", [], [] |),
-                    [ Value.Integer IntegerKind.U8 0; M.read (| bytes |) ]
+                    [
+                      Value.Integer IntegerKind.U8 0;
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -1538,7 +1772,7 @@ Module ffi.
                                 [],
                                 []
                               |),
-                              [ M.read (| bytes |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
                             |)
                           |)
                         |) in
@@ -1547,14 +1781,24 @@ Module ffi.
                         Value.StructTuple
                           "core::result::Result::Ok"
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::ffi::c_str::CStr",
-                                "from_bytes_with_nul_unchecked",
-                                [],
-                                []
-                              |),
-                              [ M.read (| bytes |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ffi::c_str::CStr",
+                                    "from_bytes_with_nul_unchecked",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| bytes |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                       |)));
@@ -1653,38 +1897,57 @@ Module ffi.
         | [], [], [ bytes ] =>
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
-            M.call_closure (|
-              M.get_function (|
-                "core::intrinsics::const_eval_select",
-                [],
-                [
-                  Ty.tuple
-                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                    ];
-                  Ty.function
-                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
-                    (Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ]);
-                  Ty.function
-                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
-                    (Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ]);
-                  Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ]
-                ]
-              |),
-              [
-                Value.Tuple [ M.read (| bytes |) ];
-                M.get_associated_function (|
-                  Self,
-                  "const_impl.from_bytes_with_nul_unchecked",
-                  [],
-                  []
-                |);
-                M.get_associated_function (|
-                  Self,
-                  "rt_impl.from_bytes_with_nul_unchecked",
-                  [],
-                  []
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_function (|
+                    "core::intrinsics::const_eval_select",
+                    [],
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ];
+                      Ty.function
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ]
+                        (Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ]);
+                      Ty.function
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ]
+                        (Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ]);
+                      Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ]
+                    ]
+                  |),
+                  [
+                    Value.Tuple [ M.read (| bytes |) ];
+                    M.get_associated_function (|
+                      Self,
+                      "const_impl.from_bytes_with_nul_unchecked",
+                      [],
+                      []
+                    |);
+                    M.get_associated_function (|
+                      Self,
+                      "rt_impl.from_bytes_with_nul_unchecked",
+                      [],
+                      []
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1710,10 +1973,13 @@ Module ffi.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ffi::c_str::CStr",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ffi::c_str::CStr",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -1761,10 +2027,18 @@ Module ffi.
                       (M.read (|
                         M.use
                           (M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::ffi::c_str::CStr",
-                              "inner"
+                            M.borrow (|
+                              Pointer.Kind.ConstPointer,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ffi::c_str::CStr",
+                                    "inner"
+                                  |)
+                                |)
+                              |)
                             |)
                           |))
                       |))
@@ -1797,10 +2071,13 @@ Module ffi.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ffi::c_str::CStr",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::ffi::c_str::CStr",
+                      "inner"
+                    |)
                   |)
                 ]
               |),
@@ -1826,20 +2103,25 @@ Module ffi.
             (let self := M.alloc (| self |) in
             BinOp.eq (|
               M.read (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
-                    "as_ptr",
-                    [],
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::ffi::c_str::CStr",
-                      "inner"
-                    |)
-                  ]
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::ffi::c_str::CStr",
+                          "inner"
+                        |)
+                      |)
+                    ]
+                  |)
                 |)
               |),
               Value.Integer IntegerKind.I8 0
@@ -1872,35 +2154,40 @@ Module ffi.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                  [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
                     M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                        "as_ptr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| bytes |) ]
-                    |);
-                    BinOp.Wrap.sub (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                          "len",
-                          [],
-                          []
-                        |),
-                        [ M.read (| bytes |) ]
-                      |),
-                      Value.Integer IntegerKind.Usize 1
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
+                        |);
+                        BinOp.Wrap.sub (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                              "len",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
+                          |),
+                          Value.Integer IntegerKind.Usize 1
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               |)
             |)))
@@ -1921,12 +2208,25 @@ Module ffi.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
-              (M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::ffi::c_str::CStr",
-                "inner"
-              |))))
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.rust_cast
+                      (M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::ffi::c_str::CStr",
+                          "inner"
+                        |)
+                      |))
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1945,7 +2245,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::ffi::c_str::Bytes", "new", [], [] |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1969,14 +2269,19 @@ Module ffi.
             M.call_closure (|
               M.get_function (| "core::str::converts::from_utf8", [], [] |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::ffi::c_str::CStr",
-                    "to_bytes",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::ffi::c_str::CStr",
+                        "to_bytes",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -2011,23 +2316,42 @@ Module ffi.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::ffi::c_str::CStr",
-                    "to_bytes",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::ffi::c_str::CStr",
+                        "to_bytes",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::ffi::c_str::CStr",
-                    "to_bytes",
-                    [],
-                    []
-                  |),
-                  [ M.read (| other |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ffi::c_str::CStr",
+                                "to_bytes",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -2067,23 +2391,42 @@ Module ffi.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::ffi::c_str::CStr",
-                    "to_bytes",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::ffi::c_str::CStr",
+                        "to_bytes",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::ffi::c_str::CStr",
-                    "to_bytes",
-                    [],
-                    []
-                  |),
-                  [ M.read (| other |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ffi::c_str::CStr",
+                                "to_bytes",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -2138,7 +2481,7 @@ Module ffi.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -2164,52 +2507,71 @@ Module ffi.
                                   [],
                                   []
                                 |),
-                                [ M.read (| bytes |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+                                ]
                               |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::ffi::c_str::CStr",
-                            "from_bytes_with_nul_unchecked",
-                            [],
-                            []
-                          |),
-                          [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
                             M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::index::Index",
-                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::RangeFrom")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ],
-                                "index",
+                              M.get_associated_function (|
+                                Ty.path "core::ffi::c_str::CStr",
+                                "from_bytes_with_nul_unchecked",
                                 [],
                                 []
                               |),
                               [
-                                M.read (| bytes |);
-                                Value.StructRecord
-                                  "core::ops::range::RangeFrom"
-                                  [
-                                    ("start",
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          index,
-                                          "core::ops::range::RangeFrom",
-                                          "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::index::Index",
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ops::range::RangeFrom")
+                                                []
+                                                [ Ty.path "usize" ]
+                                            ],
+                                            "index",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| bytes |) |)
+                                            |);
+                                            Value.StructRecord
+                                              "core::ops::range::RangeFrom"
+                                              [
+                                                ("start",
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      index,
+                                                      "core::ops::range::RangeFrom",
+                                                      "start"
+                                                    |)
+                                                  |))
+                                              ]
+                                          ]
                                         |)
-                                      |))
-                                  ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
-                          ]
+                          |)
                         |)
                       |)));
                   fun γ =>
@@ -2227,55 +2589,95 @@ Module ffi.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "index out of bounds: the len is "
-                                        |);
-                                        M.read (| Value.String " but the index is " |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "index out of bounds: the len is "
+                                              |);
+                                              M.read (| Value.String " but the index is " |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.alloc (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                  "len",
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
                                                   [],
-                                                  []
+                                                  [ Ty.path "usize" ]
                                                 |),
-                                                [ M.read (| bytes |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ],
+                                                              "len",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| bytes |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "usize" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          index,
+                                                          "core::ops::range::RangeFrom",
+                                                          "start"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              index,
-                                              "core::ops::range::RangeFrom",
-                                              "start"
-                                            |)
-                                          ]
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2411,14 +2813,16 @@ Module ffi.
                                 (M.alloc (|
                                   BinOp.ne (|
                                     M.read (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
-                                          "add",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| s |); M.read (| len |) ]
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
+                                            "add",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| s |); M.read (| len |) ]
+                                        |)
                                       |)
                                     |),
                                     Value.Integer IntegerKind.I8 0
@@ -2529,10 +2933,18 @@ Module ffi.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ffi::c_str::Bytes",
-                        "ptr"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ffi::c_str::Bytes",
+                              "ptr"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -2556,10 +2968,18 @@ Module ffi.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ffi::c_str::Bytes",
-                        "phantom"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ffi::c_str::Bytes",
+                              "phantom"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -2593,20 +3013,39 @@ Module ffi.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Bytes" |);
-                M.read (| Value.String "ptr" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ffi::c_str::Bytes",
-                  "ptr"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Bytes" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ptr" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ffi::c_str::Bytes",
+                        "ptr"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "phantom" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ffi::c_str::Bytes",
-                    "phantom"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "phantom" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ffi::c_str::Bytes",
+                            "phantom"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -2676,7 +3115,7 @@ Module ffi.
                           [],
                           []
                         |),
-                        [ M.read (| s |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                       |)
                     ]
                   |));
@@ -2711,7 +3150,7 @@ Module ffi.
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::ffi::c_str::Bytes",
                       "ptr"
                     |)
@@ -2769,7 +3208,7 @@ Module ffi.
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::ffi::c_str::Bytes",
                           "ptr"
                         |)
@@ -2794,7 +3233,7 @@ Module ffi.
                       (let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::ffi::c_str::Bytes",
                             "ptr"
                           |),
@@ -2808,7 +3247,7 @@ Module ffi.
                             [
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::ffi::c_str::Bytes",
                                   "ptr"
                                 |)
@@ -2852,7 +3291,7 @@ Module ffi.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

@@ -34,7 +34,7 @@ Module interpreter_types.
               []
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
               Value.StructRecord
                 "core::ops::range::Range"
                 [
@@ -71,7 +71,7 @@ Module interpreter_types.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |),
             Value.Integer IntegerKind.Usize 0
           |)))
@@ -100,7 +100,7 @@ Module interpreter_types.
                 [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |),
             Value.Integer IntegerKind.Usize 0
           |)))
@@ -126,7 +126,7 @@ Module interpreter_types.
               []
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.call_closure (|
                 M.get_trait_method (|
                   "core::convert::Into",
@@ -256,7 +256,7 @@ Module interpreter_types.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -347,7 +347,7 @@ Module interpreter_types.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -423,7 +423,7 @@ Module interpreter_types.
                   [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -469,7 +469,7 @@ Module interpreter_types.
                                         ],
                                         []
                                       |),
-                                      [ value ]
+                                      [ M.borrow (| Pointer.Kind.Ref, value |) ]
                                     |)
                                   ]
                                 |)))

@@ -92,20 +92,42 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_Abstra
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "AbstractStack" |);
-            M.read (| Value.String "values" |);
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "move_abstract_stack::AbstractStack",
-              "values"
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (| M.read (| Value.String "AbstractStack" |) |)
             |);
-            M.read (| Value.String "len" |);
-            M.alloc (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_abstract_stack::AbstractStack",
-                "len"
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "values" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_abstract_stack::AbstractStack",
+                    "values"
+                  |)
+                |)
+              |)
+            |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "len" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_abstract_stack::AbstractStack",
+                        "len"
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -212,10 +234,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_abstract_stack::AbstractStack",
-                                                "values"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_abstract_stack::AbstractStack",
+                                                  "values"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -224,7 +249,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           (BinOp.eq (|
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "move_abstract_stack::AbstractStack",
                                                 "len"
                                               |)
@@ -292,10 +317,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "move_abstract_stack::AbstractStack",
-                                              "values"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "move_abstract_stack::AbstractStack",
+                                                "values"
+                                              |)
                                             |)
                                           ]
                                         |),
@@ -303,67 +331,79 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           (BinOp.le (|
                                             M.read (|
                                               M.SubPointer.get_tuple_field (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [ Ty.tuple [ Ty.path "u64"; T ] ]
-                                                      ],
-                                                    "unwrap",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.tuple [ Ty.path "u64"; T ] ],
-                                                        "last",
-                                                        [],
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
                                                         []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.apply
-                                                              (Ty.path "alloc::vec::Vec")
-                                                              []
-                                                              [
-                                                                Ty.tuple [ Ty.path "u64"; T ];
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            [],
-                                                            [],
-                                                            "deref",
-                                                            [],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
                                                             []
-                                                          |),
-                                                          [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_abstract_stack::AbstractStack",
-                                                              "values"
+                                                            [ Ty.tuple [ Ty.path "u64"; T ] ]
+                                                        ],
+                                                      "unwrap",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.tuple [ Ty.path "u64"; T ] ],
+                                                          "last",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::deref::Deref",
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::vec::Vec")
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [ Ty.path "u64"; T ];
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ],
+                                                                  [],
+                                                                  [],
+                                                                  "deref",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "move_abstract_stack::AbstractStack",
+                                                                      "values"
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
                                                             |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
                                                 |),
                                                 0
                                               |)
                                             |),
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "move_abstract_stack::AbstractStack",
                                                 "len"
                                               |)
@@ -409,10 +449,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_abstract_stack::AbstractStack",
-                  "values"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_abstract_stack::AbstractStack",
+                    "values"
+                  |)
                 |)
               ]
             |)
@@ -465,7 +508,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         BinOp.ne (|
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "move_abstract_stack::AbstractStack",
                                               "len"
                                             |)
@@ -487,10 +530,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_abstract_stack::AbstractStack",
-                                                "values"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_abstract_stack::AbstractStack",
+                                                  "values"
+                                                |)
                                               |)
                                             ]
                                           |)))
@@ -544,7 +590,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         BinOp.eq (|
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "move_abstract_stack::AbstractStack",
                                               "len"
                                             |)
@@ -568,10 +614,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "move_abstract_stack::AbstractStack",
-                                                    "values"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "move_abstract_stack::AbstractStack",
+                                                      "values"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -580,67 +629,81 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                               (BinOp.le (|
                                                 M.read (|
                                                   M.SubPointer.get_tuple_field (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.tuple [ Ty.path "u64"; T ] ]
-                                                          ],
-                                                        "unwrap",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [ Ty.tuple [ Ty.path "u64"; T ] ],
-                                                            "last",
-                                                            [],
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
                                                             []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::deref::Deref",
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
-                                                                  []
-                                                                  [
-                                                                    Ty.tuple [ Ty.path "u64"; T ];
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ],
-                                                                [],
-                                                                [],
-                                                                "deref",
-                                                                [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
                                                                 []
-                                                              |),
-                                                              [
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "move_abstract_stack::AbstractStack",
-                                                                  "values"
+                                                                [ Ty.tuple [ Ty.path "u64"; T ] ]
+                                                            ],
+                                                          "unwrap",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.tuple [ Ty.path "u64"; T ] ],
+                                                              "last",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::deref::Deref",
+                                                                      Ty.apply
+                                                                        (Ty.path "alloc::vec::Vec")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple
+                                                                            [ Ty.path "u64"; T ];
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ],
+                                                                      [],
+                                                                      [],
+                                                                      "deref",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "move_abstract_stack::AbstractStack",
+                                                                          "values"
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
                                                                 |)
-                                                              ]
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |),
                                                     0
                                                   |)
                                                 |),
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "move_abstract_stack::AbstractStack",
                                                     "len"
                                                   |)
@@ -677,7 +740,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
               ]
             |) in
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "move_abstract_stack::AbstractStack",
             "len"
           |)
@@ -706,7 +769,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
             [],
             []
           |),
-          [ M.read (| self |); M.read (| item |); Value.Integer IntegerKind.U64 1 ]
+          [
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+            M.read (| item |);
+            Value.Integer IntegerKind.U64 1
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -778,7 +845,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "move_abstract_stack::AbstractStack",
                           "len"
                         |)
@@ -800,7 +867,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                       let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "move_abstract_stack::AbstractStack",
                             "len"
                           |),
@@ -817,29 +884,37 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::DerefMut",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::DerefMut",
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.tuple [ Ty.path "u64"; T ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        [],
+                                        "deref_mut",
+                                        [],
+                                        []
+                                      |),
                                       [
-                                        Ty.tuple [ Ty.path "u64"; T ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    [],
-                                    [],
-                                    "deref_mut",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_abstract_stack::AbstractStack",
-                                      "values"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_abstract_stack::AbstractStack",
+                                            "values"
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |)
@@ -870,7 +945,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         [],
                                         []
                                       |),
-                                      [ M.alloc (| item |); last_item ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (| M.borrow (| Pointer.Kind.Ref, item |) |)
+                                        |);
+                                        M.borrow (| Pointer.Kind.Ref, last_item |)
+                                      ]
                                     |)
                                   |) in
                                 let _ :=
@@ -901,7 +982,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                         (M.alloc (|
                                                           UnOp.not (|
                                                             BinOp.gt (|
-                                                              M.read (| M.read (| count |) |),
+                                                              M.read (|
+                                                                M.deref (| M.read (| count |) |)
+                                                              |),
                                                               Value.Integer IntegerKind.U64 0
                                                             |)
                                                           |)
@@ -936,7 +1019,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let β := M.read (| count |) in
+                                let β := M.deref (| M.read (| count |) |) in
                                 M.write (|
                                   β,
                                   BinOp.Wrap.add (| M.read (| β |), M.read (| n |) |)
@@ -958,10 +1041,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_abstract_stack::AbstractStack",
-                                        "values"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_abstract_stack::AbstractStack",
+                                          "values"
+                                        |)
                                       |);
                                       Value.Tuple [ M.read (| n |); M.read (| item |) ]
                                     ]
@@ -1002,7 +1088,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
             []
           |),
           [
-            M.read (| self |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
@@ -1097,14 +1183,15 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (BinOp.gt (|
                                     M.read (| n |),
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "move_abstract_stack::AbstractStack",
                                         "len"
                                       |)
@@ -1153,26 +1240,35 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::DerefMut",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.tuple [ Ty.path "u64"; T ]; Ty.path "alloc::alloc::Global" ],
-                              [],
-                              [],
-                              "deref_mut",
-                              [],
-                              []
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_abstract_stack::AbstractStack",
-                                "values"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::DerefMut",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.tuple [ Ty.path "u64"; T ]; Ty.path "alloc::alloc::Global"
+                                    ],
+                                  [],
+                                  [],
+                                  "deref_mut",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_abstract_stack::AbstractStack",
+                                      "values"
+                                    |)
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
@@ -1210,7 +1306,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                               (M.alloc (|
                                                 UnOp.not (|
                                                   BinOp.gt (|
-                                                    M.read (| M.read (| count |) |),
+                                                    M.read (| M.deref (| M.read (| count |) |) |),
                                                     Value.Integer IntegerKind.U64 0
                                                   |)
                                                 |)
@@ -1257,7 +1353,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                   [],
                                   []
                                 |),
-                                [ M.read (| count |); n ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| count |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, n |) |)
+                                  |)
+                                ]
                               |)
                             |),
                             [
@@ -1311,10 +1413,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_abstract_stack::AbstractStack",
-                                                "values"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_abstract_stack::AbstractStack",
+                                                  "values"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1335,7 +1440,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
                                   let~ _ :=
-                                    let β := M.read (| count |) in
+                                    let β := M.deref (| M.read (| count |) |) in
                                     M.write (|
                                       β,
                                       BinOp.Wrap.sub (| M.read (| β |), M.read (| n |) |)
@@ -1351,7 +1456,12 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| last |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| last |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)))
                             ]
@@ -1360,7 +1470,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                       let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "move_abstract_stack::AbstractStack",
                             "len"
                           |) in
@@ -1446,14 +1556,15 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (BinOp.gt (|
                                     M.read (| n |),
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "move_abstract_stack::AbstractStack",
                                         "len"
                                       |)
@@ -1526,29 +1637,37 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::deref::DerefMut",
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.tuple [ Ty.path "u64"; T ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                [],
+                                                [],
+                                                "deref_mut",
+                                                [],
+                                                []
+                                              |),
                                               [
-                                                Ty.tuple [ Ty.path "u64"; T ];
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            [],
-                                            [],
-                                            "deref_mut",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "move_abstract_stack::AbstractStack",
-                                              "values"
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_abstract_stack::AbstractStack",
+                                                    "values"
+                                                  |)
+                                                |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -1586,7 +1705,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                             (M.alloc (|
                                                               UnOp.not (|
                                                                 BinOp.gt (|
-                                                                  M.read (| M.read (| count |) |),
+                                                                  M.read (|
+                                                                    M.deref (| M.read (| count |) |)
+                                                                  |),
                                                                   Value.Integer IntegerKind.U64 0
                                                                 |)
                                                               |)
@@ -1634,7 +1755,16 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| count |); rem ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| count |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, rem |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       [
@@ -1671,7 +1801,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                           β,
                                                           BinOp.Wrap.sub (|
                                                             M.read (| β |),
-                                                            M.read (| M.read (| count |) |)
+                                                            M.read (|
+                                                              M.deref (| M.read (| count |) |)
+                                                            |)
                                                           |)
                                                         |) in
                                                       let~ _ :=
@@ -1701,10 +1833,15 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "move_abstract_stack::AbstractStack",
-                                                                    "values"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "move_abstract_stack::AbstractStack",
+                                                                      "values"
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -1726,7 +1863,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                               M.never_to_any (|
                                                 M.read (|
                                                   let~ _ :=
-                                                    let β := M.read (| count |) in
+                                                    let β := M.deref (| M.read (| count |) |) in
                                                     M.write (|
                                                       β,
                                                       BinOp.Wrap.sub (|
@@ -1759,7 +1896,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
               let~ _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "move_abstract_stack::AbstractStack",
                     "len"
                   |) in
@@ -1857,7 +1994,7 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
                   [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -1868,7 +2005,7 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
                   [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -1903,7 +2040,7 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
                   [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -1914,7 +2051,7 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
                   [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (|
@@ -1928,7 +2065,16 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
                 [],
                 []
               |),
-              [ __self_discr; __arg1_discr ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                |)
+              ]
             |)
           |)
         |)))
@@ -1962,7 +2108,7 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
                   [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -1973,13 +2119,22 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
                   [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
-              [ __self_discr; __arg1_discr ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                |)
+              ]
             |)
           |)
         |)))
@@ -2003,7 +2158,7 @@ Module Impl_core_clone_Clone_for_move_abstract_stack_AbsStackError.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.read (| self |) |)))
+        M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -2035,7 +2190,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
-            M.read (| f |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
                 self,
@@ -2048,7 +2203,12 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
                           γ,
                           "move_abstract_stack::AbsStackError::ElementNotEqual"
                         |) in
-                      M.alloc (| M.read (| Value.String "ElementNotEqual" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "ElementNotEqual" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -2057,13 +2217,23 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
                           γ,
                           "move_abstract_stack::AbsStackError::Underflow"
                         |) in
-                      M.alloc (| M.read (| Value.String "Underflow" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Underflow" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_abstract_stack::AbsStackError::Overflow" |) in
-                      M.alloc (| M.read (| Value.String "Overflow" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Overflow" |) |)
+                        |)
+                      |)))
                 ]
               |)
             |)
@@ -2125,7 +2295,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                         []
                       |),
                       [
-                        M.read (| f |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
@@ -2134,13 +2304,22 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "Popped element is not equal to specified item"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "Popped element is not equal to specified item"
+                                        |)
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -2161,7 +2340,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                         []
                       |),
                       [
-                        M.read (| f |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
@@ -2170,13 +2349,21 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "Popped more values than are on the stack"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "Popped more values than are on the stack"
+                                        |)
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -2197,7 +2384,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                         []
                       |),
                       [
-                        M.read (| f |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
@@ -2206,10 +2393,21 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "Pushed too many elements on the stack" |)
-                                ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "Pushed too many elements on the stack"
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)

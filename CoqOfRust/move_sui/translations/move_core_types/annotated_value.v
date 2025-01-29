@@ -49,20 +49,39 @@ Module annotated_value.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "MoveStruct" |);
-              M.read (| Value.String "type_" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::annotated_value::MoveStruct",
-                "type_"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "MoveStruct" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "type_" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::annotated_value::MoveStruct",
+                      "type_"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "fields" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::annotated_value::MoveStruct",
-                  "fields"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "fields" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::annotated_value::MoveStruct",
+                          "fields"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -111,15 +130,21 @@ Module annotated_value.
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::annotated_value::MoveStruct",
-                  "type_"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_core_types::annotated_value::MoveStruct",
+                    "type_"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "move_core_types::annotated_value::MoveStruct",
-                  "type_"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "move_core_types::annotated_value::MoveStruct",
+                    "type_"
+                  |)
                 |)
               ]
             |),
@@ -157,15 +182,21 @@ Module annotated_value.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::annotated_value::MoveStruct",
-                    "fields"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::annotated_value::MoveStruct",
+                      "fields"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_core_types::annotated_value::MoveStruct",
-                    "fields"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::annotated_value::MoveStruct",
+                      "fields"
+                    |)
                   |)
                 ]
               |)))
@@ -243,10 +274,18 @@ Module annotated_value.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::annotated_value::MoveStruct",
-                      "type_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::annotated_value::MoveStruct",
+                            "type_"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -272,10 +311,18 @@ Module annotated_value.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::annotated_value::MoveStruct",
-                      "fields"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::annotated_value::MoveStruct",
+                            "fields"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -399,7 +446,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U8" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U8" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -420,7 +477,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U64" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U64" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -441,7 +508,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U128" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U128" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -462,7 +539,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Bool" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Bool" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -483,7 +570,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Address" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Address" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -504,7 +601,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Vector" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -525,7 +632,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Struct" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -546,7 +663,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Signer" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Signer" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -567,7 +694,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U16" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U16" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -588,7 +725,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U32" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U32" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -609,7 +756,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U256" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U256" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -656,7 +813,7 @@ Module annotated_value.
                     [],
                     [ Ty.path "move_core_types::annotated_value::MoveValue" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -667,7 +824,7 @@ Module annotated_value.
                     [],
                     [ Ty.path "move_core_types::annotated_value::MoveValue" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -709,7 +866,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -743,7 +903,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -777,7 +940,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -811,7 +977,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -853,7 +1022,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -911,7 +1083,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -953,7 +1128,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -995,7 +1173,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1029,7 +1210,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1063,7 +1247,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1105,7 +1292,10 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1273,7 +1463,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1301,7 +1491,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1329,7 +1519,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1357,7 +1547,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1385,7 +1575,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1419,7 +1609,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1447,7 +1637,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1475,7 +1665,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1503,7 +1693,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1531,7 +1721,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1559,7 +1749,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)))
@@ -1607,20 +1797,42 @@ Module annotated_value.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "MoveFieldLayout" |);
-              M.read (| Value.String "name" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::annotated_value::MoveFieldLayout",
-                "name"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "MoveFieldLayout" |) |)
               |);
-              M.read (| Value.String "layout" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::annotated_value::MoveFieldLayout",
-                  "layout"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::annotated_value::MoveFieldLayout",
+                      "name"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "layout" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::annotated_value::MoveFieldLayout",
+                          "layout"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -1660,10 +1872,18 @@ Module annotated_value.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::annotated_value::MoveFieldLayout",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::annotated_value::MoveFieldLayout",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -1679,10 +1899,18 @@ Module annotated_value.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::annotated_value::MoveFieldLayout",
-                      "layout"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::annotated_value::MoveFieldLayout",
+                            "layout"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -1787,12 +2015,23 @@ Module annotated_value.
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "name" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::annotated_value::MoveFieldLayout",
-                              "name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::annotated_value::MoveFieldLayout",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1844,12 +2083,23 @@ Module annotated_value.
                             [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "layout" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::annotated_value::MoveFieldLayout",
-                              "layout"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::annotated_value::MoveFieldLayout",
+                                    "layout"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -2044,12 +2294,23 @@ Module annotated_value.
                             [ Ty.path "move_core_types::language_storage::StructTag" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "type_" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::annotated_value::MoveStructLayout",
-                              "type_"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::annotated_value::MoveStructLayout",
+                                    "type_"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -2109,12 +2370,23 @@ Module annotated_value.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "fields" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::annotated_value::MoveStructLayout",
-                              "fields"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::annotated_value::MoveStructLayout",
+                                    "fields"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -2233,7 +2505,7 @@ Module annotated_value.
             let __serializer := M.alloc (| __serializer |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2398,7 +2670,7 @@ Module annotated_value.
                             M.read (| Value.String "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 5;
                             M.read (| Value.String "vector" |);
-                            M.read (| __field0 |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
                       |)));
@@ -2427,7 +2699,7 @@ Module annotated_value.
                             M.read (| Value.String "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 6;
                             M.read (| Value.String "struct" |);
-                            M.read (| __field0 |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
                       |)));
@@ -2656,20 +2928,42 @@ Module annotated_value.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "MoveStructLayout" |);
-              M.read (| Value.String "type_" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::annotated_value::MoveStructLayout",
-                "type_"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "MoveStructLayout" |) |)
               |);
-              M.read (| Value.String "fields" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::annotated_value::MoveStructLayout",
-                  "fields"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "type_" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::annotated_value::MoveStructLayout",
+                      "type_"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "fields" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::annotated_value::MoveStructLayout",
+                          "fields"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -2709,10 +3003,18 @@ Module annotated_value.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::annotated_value::MoveStructLayout",
-                      "type_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::annotated_value::MoveStructLayout",
+                            "type_"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -2734,10 +3036,18 @@ Module annotated_value.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::annotated_value::MoveStructLayout",
-                      "fields"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::annotated_value::MoveStructLayout",
+                            "fields"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -2861,7 +3171,13 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Bool" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Bool" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2880,7 +3196,13 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U8" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U8" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2899,7 +3221,13 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U64" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U64" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2918,7 +3246,13 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U128" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U128" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2937,7 +3271,13 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Address" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Address" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2958,7 +3298,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Vector" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2979,7 +3329,17 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Struct" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2998,7 +3358,13 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Signer" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Signer" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -3017,7 +3383,13 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U16" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U16" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -3036,7 +3408,13 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U32" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U32" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -3055,7 +3433,13 @@ Module annotated_value.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U256" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U256" |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -3172,7 +3556,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -3200,7 +3584,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -3316,7 +3700,10 @@ Module annotated_value.
                                     [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ]
                                 ]
                               |),
-                              [ M.read (| ty |); M.read (| blob |) ]
+                              [
+                                M.read (| ty |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| blob |) |) |)
+                              ]
                             |)
                           ]
                         |)
@@ -3437,7 +3824,17 @@ Module annotated_value.
                                 [],
                                 [ V ]
                               |),
-                              [ blob; M.read (| ty |); M.read (| visitor |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, blob |) |)
+                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ty |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| visitor |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |)
@@ -3508,7 +3905,7 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ M.read (| blob |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| blob |) |) |) ]
                               |)
                             |)) in
                         let _ :=
@@ -3543,7 +3940,12 @@ Module annotated_value.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| blob |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| blob |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 ]
@@ -3593,7 +3995,7 @@ Module annotated_value.
                   [],
                   [ Ty.path "move_core_types::annotated_value::MoveValue" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             ]
           |)))
@@ -4024,9 +4426,19 @@ Module annotated_value.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| val |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| val |) |)
+                                          |)
+                                        ]
                                       |);
-                                      M.read (| Value.String "serialization should succeed" |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (| Value.String "serialization should succeed" |)
+                                        |)
+                                      |)
                                     ]
                                   |)))
                             ]
@@ -4112,7 +4524,10 @@ Module annotated_value.
                                     [ Ty.path "move_core_types::annotated_value::MoveStructLayout" ]
                                 ]
                               |),
-                              [ M.read (| ty |); M.read (| blob |) ]
+                              [
+                                M.read (| ty |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| blob |) |) |)
+                              ]
                             |)
                           ]
                         |)
@@ -4233,7 +4648,17 @@ Module annotated_value.
                                 [],
                                 [ V ]
                               |),
-                              [ blob; M.read (| ty |); M.read (| visitor |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, blob |) |)
+                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ty |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| visitor |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |)
@@ -4304,7 +4729,7 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ M.read (| blob |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| blob |) |) |) ]
                               |)
                             |)) in
                         let _ :=
@@ -4339,7 +4764,12 @@ Module annotated_value.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| blob |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| blob |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 ]
@@ -5252,7 +5682,13 @@ Module annotated_value.
                                                 [],
                                                 [ D ]
                                               |),
-                                              [ M.read (| ty |); M.read (| deserializer |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| ty |) |)
+                                                |);
+                                                M.read (| deserializer |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -5379,7 +5815,16 @@ Module annotated_value.
                                                 M.read (| deserializer |);
                                                 Value.StructTuple
                                                   "move_core_types::annotated_value::VectorElementVisitor"
-                                                  [ M.read (| M.read (| layout |) |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.read (|
+                                                          M.deref (| M.read (| layout |) |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
                                               ]
                                             |)
                                           ]
@@ -5495,7 +5940,10 @@ Module annotated_value.
           let formatter := M.alloc (| formatter |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-            [ M.read (| formatter |); M.read (| Value.String "Vector" |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| formatter |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Vector" |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5592,7 +6040,7 @@ Module annotated_value.
                                             ]
                                           |),
                                           [
-                                            seq;
+                                            M.borrow (| Pointer.Kind.MutRef, seq |);
                                             M.read (|
                                               M.SubPointer.get_struct_tuple_field (|
                                                 self,
@@ -5689,7 +6137,7 @@ Module annotated_value.
                                     [],
                                     []
                                   |),
-                                  [ vals; M.read (| elem |) ]
+                                  [ M.borrow (| Pointer.Kind.MutRef, vals |); M.read (| elem |) ]
                                 |)
                               |)));
                           fun γ =>
@@ -5777,7 +6225,10 @@ Module annotated_value.
           let formatter := M.alloc (| formatter |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-            [ M.read (| formatter |); M.read (| Value.String "Struct" |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| formatter |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Struct" |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5877,11 +6328,16 @@ Module annotated_value.
                                     []
                                   |),
                                   [
-                                    M.read (|
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        self,
-                                        "move_core_types::annotated_value::DecoratedStructFieldVisitor",
-                                        0
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            self,
+                                            "move_core_types::annotated_value::DecoratedStructFieldVisitor",
+                                            0
+                                          |)
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -5921,7 +6377,12 @@ Module annotated_value.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -5996,7 +6457,10 @@ Module annotated_value.
                                                             ]
                                                         ]
                                                       |),
-                                                      [ seq; M.read (| layout |) ]
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, seq |);
+                                                        M.read (| layout |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -6101,7 +6565,10 @@ Module annotated_value.
                                                         [],
                                                         []
                                                       |),
-                                                      [ vals; M.read (| elem |) ]
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, vals |);
+                                                        M.read (| elem |)
+                                                      ]
                                                     |)
                                                   |)));
                                               fun γ =>
@@ -6128,7 +6595,18 @@ Module annotated_value.
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| i |); self ]
+                                                                [
+                                                                  M.read (| i |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        self
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             ]
                                                         |)
@@ -6206,10 +6684,13 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_core_types::annotated_value::MoveFieldLayout",
-                            "name"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::annotated_value::MoveFieldLayout",
+                              "name"
+                            |)
                           |)
                         ]
                       |);
@@ -6248,10 +6729,13 @@ Module annotated_value.
                                     [ D ]
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_core_types::annotated_value::MoveFieldLayout",
-                                      "layout"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_core_types::annotated_value::MoveFieldLayout",
+                                        "layout"
+                                      |)
                                     |);
                                     M.read (| deserializer |)
                                   ]
@@ -6424,40 +6908,56 @@ Module annotated_value.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_core_types::annotated_value::MoveStructLayout",
-                                      "fields"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_core_types::annotated_value::MoveStructLayout",
+                                        "fields"
+                                      |)
                                     |)
                                   ]
                                 |);
                                 Value.StructTuple
                                   "move_core_types::annotated_value::DecoratedStructFieldVisitor"
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::annotated_value::MoveFieldLayout";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
                                           [
-                                            Ty.path
-                                              "move_core_types::annotated_value::MoveFieldLayout";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_core_types::annotated_value::MoveStructLayout",
-                                          "fields"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_core_types::annotated_value::MoveStructLayout",
+                                                    "fields"
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
+                                      |)
                                     |)
                                   ]
                               ]
@@ -6538,10 +7038,13 @@ Module annotated_value.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "move_core_types::annotated_value::MoveStructLayout",
-                                  "type_"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::annotated_value::MoveStructLayout",
+                                    "type_"
+                                  |)
                                 |)
                               ]
                             |));
@@ -6622,7 +7125,10 @@ Module annotated_value.
                               [],
                               [ S ]
                             |),
-                            [ M.read (| s |); M.read (| serializer |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
+                              M.read (| serializer |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -6646,7 +7152,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| b |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| b |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -6670,7 +7176,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| i |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -6694,7 +7200,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| i |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -6718,7 +7224,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| i |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -6742,7 +7248,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| i |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -6766,7 +7272,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| i |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -6790,7 +7296,10 @@ Module annotated_value.
                               [],
                               [ S ]
                             |),
-                            [ M.read (| i |); M.read (| serializer |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| i |) |) |);
+                              M.read (| serializer |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -6814,7 +7323,10 @@ Module annotated_value.
                               [],
                               [ S ]
                             |),
-                            [ M.read (| a |); M.read (| serializer |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
+                              M.read (| serializer |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -6838,7 +7350,10 @@ Module annotated_value.
                               [],
                               [ S ]
                             |),
-                            [ M.read (| a |); M.read (| serializer |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
+                              M.read (| serializer |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -6898,7 +7413,12 @@ Module annotated_value.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| v |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                       ]
@@ -7013,7 +7533,14 @@ Module annotated_value.
                                                   [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -7066,7 +7593,16 @@ Module annotated_value.
                                                                     "move_core_types::annotated_value::MoveValue"
                                                                 ]
                                                               |),
-                                                              [ t; M.read (| val |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  t
+                                                                |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| val |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
@@ -7263,11 +7799,16 @@ Module annotated_value.
                                         []
                                       |),
                                       [
-                                        M.read (|
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            M.read (| self |),
-                                            "move_core_types::annotated_value::MoveFields",
-                                            0
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "move_core_types::annotated_value::MoveFields",
+                                                0
+                                              |)
+                                            |)
                                           |)
                                         |)
                                       ]
@@ -7370,11 +7911,16 @@ Module annotated_value.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.read (| self |),
-                                    "move_core_types::annotated_value::MoveFields",
-                                    0
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_core_types::annotated_value::MoveFields",
+                                        0
+                                      |)
+                                    |)
                                   |)
                                 |)
                               ]
@@ -7411,7 +7957,12 @@ Module annotated_value.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -7470,7 +8021,17 @@ Module annotated_value.
                                                             "move_core_types::annotated_value::MoveValue"
                                                         ]
                                                       |),
-                                                      [ t; M.read (| f |); M.read (| v |) ]
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, t |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| f |) |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| v |) |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -7709,30 +8270,41 @@ Module annotated_value.
                               [ Ty.path "alloc::string::String" ]
                             |),
                             [
-                              t;
+                              M.borrow (| Pointer.Kind.MutRef, t |);
                               M.read (|
                                 M.get_constant (|
                                   "move_core_types::annotated_value::MOVE_STRUCT_TYPE"
                                 |)
                               |);
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "alloc::string::ToString",
-                                    Ty.path "move_core_types::language_storage::StructTag",
-                                    [],
-                                    [],
-                                    "to_string",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_core_types::annotated_value::MoveStruct",
-                                      "type_"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "alloc::string::ToString",
+                                          Ty.path "move_core_types::language_storage::StructTag",
+                                          [],
+                                          [],
+                                          "to_string",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_core_types::annotated_value::MoveStruct",
+                                              "type_"
+                                            |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
-                                  ]
+                                  |)
                                 |)
                               |)
                             ]
@@ -7818,46 +8390,68 @@ Module annotated_value.
                               [ Ty.path "move_core_types::annotated_value::MoveFields" ]
                             |),
                             [
-                              t;
+                              M.borrow (| Pointer.Kind.MutRef, t |);
                               M.read (|
                                 M.get_constant (|
                                   "move_core_types::annotated_value::MOVE_STRUCT_FIELDS"
                                 |)
                               |);
-                              M.alloc (|
-                                Value.StructTuple
-                                  "move_core_types::annotated_value::MoveFields"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.path "move_core_types::identifier::Identifier";
-                                                Ty.path
-                                                  "move_core_types::annotated_value::MoveValue"
-                                              ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_core_types::annotated_value::MoveStruct",
-                                          "fields"
-                                        |)
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.StructTuple
+                                        "move_core_types::annotated_value::MoveFields"
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::identifier::Identifier";
+                                                          Ty.path
+                                                            "move_core_types::annotated_value::MoveValue"
+                                                        ];
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "move_core_types::annotated_value::MoveStruct",
+                                                          "fields"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7991,7 +8585,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -7999,7 +8593,17 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8021,7 +8625,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8029,7 +8633,17 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8051,7 +8665,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8059,7 +8673,17 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8081,7 +8705,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8089,7 +8713,17 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8111,7 +8745,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8119,7 +8753,17 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8141,7 +8785,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8149,7 +8793,17 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8171,7 +8825,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8179,7 +8833,17 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8201,7 +8865,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8209,7 +8873,19 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "address" |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8231,7 +8907,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8239,7 +8915,17 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8263,7 +8949,7 @@ Module annotated_value.
                             [],
                             []
                           |),
-                          [ M.read (| f |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                         |)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8276,7 +8962,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8285,61 +8971,92 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "vector<" |);
-                                    M.read (| Value.String ">" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::annotated_value::MoveTypeLayout";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
+                                          M.read (| Value.String "vector<" |);
+                                          M.read (| Value.String ">" |)
                                         ]
-                                      |),
-                                      [ typ ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer IntegerKind.U32 4;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::annotated_value::MoveTypeLayout";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, typ |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Placeholder",
+                                              "new",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.UnicodeChar 32;
+                                              Value.StructTuple
+                                                "core::fmt::rt::Alignment::Unknown"
+                                                [];
+                                              Value.Integer IntegerKind.U32 4;
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -8374,7 +9091,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8383,40 +9100,61 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "vector<" |);
-                                    M.read (| Value.String ">" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::annotated_value::MoveTypeLayout";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
+                                          M.read (| Value.String "vector<" |);
+                                          M.read (| Value.String ">" |)
                                         ]
-                                      |),
-                                      [ typ ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::annotated_value::MoveTypeLayout";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, typ |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -8442,7 +9180,7 @@ Module annotated_value.
                             [],
                             []
                           |),
-                          [ M.read (| f |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                         |)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8455,7 +9193,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8464,49 +9202,80 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_core_types::annotated_value::MoveStructLayout"
-                                            ]
-                                        ]
-                                      |),
-                                      [ s ]
-                                    |)
-                                  ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer IntegerKind.U32 4;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::annotated_value::MoveStructLayout"
+                                                  ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Placeholder",
+                                              "new",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.UnicodeChar 32;
+                                              Value.StructTuple
+                                                "core::fmt::rt::Alignment::Unknown"
+                                                [];
+                                              Value.Integer IntegerKind.U32 4;
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -8541,7 +9310,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8550,28 +9319,49 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::annotated_value::MoveStructLayout"
+                                                  ]
+                                              ]
+                                            |),
                                             [
-                                              Ty.path
-                                                "move_core_types::annotated_value::MoveStructLayout"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                              |)
                                             ]
+                                          |)
                                         ]
-                                      |),
-                                      [ s ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -8636,7 +9426,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| f |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8649,7 +9439,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8658,47 +9448,81 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          M.read (| self |),
-                                          "move_core_types::annotated_value::DebugAsDisplay",
-                                          0
-                                        |)
-                                      ]
-                                    |)
-                                  ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer IntegerKind.U32 4;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "move_core_types::annotated_value::DebugAsDisplay",
+                                                      0
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Placeholder",
+                                              "new",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.UnicodeChar 32;
+                                              Value.StructTuple
+                                                "core::fmt::rt::Alignment::Unknown"
+                                                [];
+                                              Value.Integer IntegerKind.U32 4;
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -8725,7 +9549,7 @@ Module annotated_value.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -8734,26 +9558,50 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          M.read (| self |),
-                                          "move_core_types::annotated_value::DebugAsDisplay",
-                                          0
-                                        |)
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "move_core_types::annotated_value::DebugAsDisplay",
+                                                      0
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -8824,7 +9672,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -8832,7 +9680,18 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "struct " |) ] |)
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "struct " |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -8918,7 +9777,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -8927,31 +9786,59 @@ Module annotated_value.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "" |); M.read (| Value.String " " |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "move_core_types::language_storage::StructTag"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "" |);
+                                              M.read (| Value.String " " |)
                                             ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "move_core_types::annotated_value::MoveStructLayout",
-                                              "type_"
-                                            |)
-                                          ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::StructTag"
+                                                  ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "move_core_types::annotated_value::MoveStructLayout",
+                                                          "type_"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9022,7 +9909,7 @@ Module annotated_value.
                         [],
                         []
                       |),
-                      [ M.read (| f |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -9051,10 +9938,13 @@ Module annotated_value.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::annotated_value::MoveStructLayout",
-                              "fields"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_core_types::annotated_value::MoveStructLayout",
+                                "fields"
+                              |)
                             |)
                           ]
                         |)
@@ -9084,7 +9974,12 @@ Module annotated_value.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -9117,28 +10012,64 @@ Module annotated_value.
                                                   []
                                                 |),
                                                 [
-                                                  map;
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "move_core_types::annotated_value::DebugAsDisplay"
-                                                      [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| field |),
-                                                          "move_core_types::annotated_value::MoveFieldLayout",
-                                                          "name"
+                                                  M.borrow (| Pointer.Kind.MutRef, map |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.StructTuple
+                                                            "move_core_types::annotated_value::DebugAsDisplay"
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| field |)
+                                                                      |),
+                                                                      "move_core_types::annotated_value::MoveFieldLayout",
+                                                                      "name"
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
                                                         |)
-                                                      ]
+                                                      |)
+                                                    |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "move_core_types::annotated_value::DebugAsDisplay"
-                                                      [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| field |),
-                                                          "move_core_types::annotated_value::MoveFieldLayout",
-                                                          "layout"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.StructTuple
+                                                            "move_core_types::annotated_value::DebugAsDisplay"
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| field |)
+                                                                      |),
+                                                                      "move_core_types::annotated_value::MoveFieldLayout",
+                                                                      "layout"
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
                                                         |)
-                                                      ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -9158,7 +10089,7 @@ Module annotated_value.
                       [],
                       []
                     |),
-                    [ map ]
+                    [ M.borrow (| Pointer.Kind.MutRef, map |) ]
                   |)
                 |)
               |)))
@@ -9315,7 +10246,13 @@ Module annotated_value.
                         0
                       |) in
                     let v := M.alloc (| γ1_0 |) in
-                    let~ inner_type := M.alloc (| M.read (| M.read (| v |) |) |) in
+                    let~ inner_type :=
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| M.deref (| M.read (| v |) |) |) |)
+                        |)
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::language_storage::TypeTag::Vector"
@@ -9347,7 +10284,12 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ M.read (| inner_type |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| inner_type |) |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -9395,7 +10337,7 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ M.read (| v |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                               |)
                             ]
                           |)
@@ -9443,10 +10385,13 @@ Module annotated_value.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| val |),
-                "move_core_types::annotated_value::MoveStructLayout",
-                "type_"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| val |) |),
+                  "move_core_types::annotated_value::MoveStructLayout",
+                  "type_"
+                |)
               |)
             ]
           |)))
@@ -9525,7 +10470,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -9534,24 +10479,47 @@ Module annotated_value.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "" |); M.read (| Value.String "u8" |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                          |),
-                                          [ u ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "" |);
+                                              M.read (| Value.String "u8" |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9577,7 +10545,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -9586,26 +10554,47 @@ Module annotated_value.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "u16" |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          |),
-                                          [ u ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "" |);
+                                              M.read (| Value.String "u16" |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9631,7 +10620,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -9640,26 +10629,47 @@ Module annotated_value.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "u32" |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
-                                          |),
-                                          [ u ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "" |);
+                                              M.read (| Value.String "u32" |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9685,7 +10695,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -9694,26 +10704,47 @@ Module annotated_value.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "u64" |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                          |),
-                                          [ u ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "" |);
+                                              M.read (| Value.String "u64" |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9739,7 +10770,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -9748,26 +10779,47 @@ Module annotated_value.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "u128" |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
-                                          |),
-                                          [ u ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "" |);
+                                              M.read (| Value.String "u128" |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9793,7 +10845,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -9802,31 +10854,52 @@ Module annotated_value.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "u256" |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.path "move_core_types::u256::U256" ]
+                                              M.read (| Value.String "" |);
+                                              M.read (| Value.String "u256" |)
                                             ]
-                                          |),
-                                          [ u ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [ Ty.path "move_core_types::u256::U256" ]
+                                                  ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9853,7 +10926,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -9861,7 +10934,19 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "false" |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "false" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -9886,7 +10971,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -9894,7 +10979,19 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "true" |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "true" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -9918,7 +11015,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -9927,33 +11024,62 @@ Module annotated_value.
                                   []
                                 |),
                                 [
-                                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "alloc::string::String" ]
-                                          |),
-                                          [
-                                            M.alloc (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_core_types::account_address::AccountAddress",
-                                                  "to_hex_literal",
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
                                                   [],
-                                                  []
+                                                  [ Ty.path "alloc::string::String" ]
                                                 |),
-                                                [ M.read (| a |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_core_types::account_address::AccountAddress",
+                                                              "to_hex_literal",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| a |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
-                                            |)
-                                          ]
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9979,7 +11105,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -9988,39 +11114,68 @@ Module annotated_value.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "signer(" |);
-                                        M.read (| Value.String ")" |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "signer(" |);
+                                              M.read (| Value.String ")" |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "alloc::string::String" ]
-                                          |),
-                                          [
-                                            M.alloc (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_core_types::account_address::AccountAddress",
-                                                  "to_hex_literal",
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
                                                   [],
-                                                  []
+                                                  [ Ty.path "alloc::string::String" ]
                                                 |),
-                                                [ M.read (| a |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_core_types::account_address::AccountAddress",
+                                                              "to_hex_literal",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| a |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
-                                            |)
-                                          ]
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -10062,7 +11217,10 @@ Module annotated_value.
                                       []
                                     |),
                                     [
-                                      M.read (| f |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| f |) |)
+                                      |);
                                       M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
@@ -10071,8 +11229,16 @@ Module annotated_value.
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array [ M.read (| Value.String "vector" |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array [ M.read (| Value.String "vector" |) ]
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -10143,7 +11309,7 @@ Module annotated_value.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |) in
                         let~ _ :=
@@ -10199,7 +11365,14 @@ Module annotated_value.
                                                   [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -10232,11 +11405,26 @@ Module annotated_value.
                                                           []
                                                         |),
                                                         [
-                                                          list;
-                                                          M.alloc (|
-                                                            Value.StructTuple
-                                                              "move_core_types::annotated_value::DebugAsDisplay"
-                                                              [ M.read (| val |) ]
+                                                          M.borrow (| Pointer.Kind.MutRef, list |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.StructTuple
+                                                                    "move_core_types::annotated_value::DebugAsDisplay"
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| val |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -10256,7 +11444,7 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ list ]
+                            [ M.borrow (| Pointer.Kind.MutRef, list |) ]
                           |)
                         |)));
                     fun γ =>
@@ -10280,7 +11468,10 @@ Module annotated_value.
                               [],
                               []
                             |),
-                            [ M.read (| s |); M.read (| f |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                            ]
                           |)
                         |)))
                   ]
@@ -10350,12 +11541,20 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_core_types::annotated_value::MoveStruct",
-                                "type_"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_core_types::annotated_value::MoveStruct",
+                                      "type_"
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.read (| f |)
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                             ]
                           |)
                         ]
@@ -10439,7 +11638,7 @@ Module annotated_value.
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
@@ -10447,7 +11646,17 @@ Module annotated_value.
                                   [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String " " |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (| Value.Array [ M.read (| Value.String " " |) ] |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -10516,7 +11725,7 @@ Module annotated_value.
                         [],
                         []
                       |),
-                      [ M.read (| f |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -10549,10 +11758,13 @@ Module annotated_value.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::annotated_value::MoveStruct",
-                              "fields"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_core_types::annotated_value::MoveStruct",
+                                "fields"
+                              |)
                             |)
                           ]
                         |)
@@ -10586,7 +11798,12 @@ Module annotated_value.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -10623,16 +11840,42 @@ Module annotated_value.
                                                   []
                                                 |),
                                                 [
-                                                  map;
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "move_core_types::annotated_value::DebugAsDisplay"
-                                                      [ M.read (| field |) ]
+                                                  M.borrow (| Pointer.Kind.MutRef, map |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.StructTuple
+                                                            "move_core_types::annotated_value::DebugAsDisplay"
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| field |) |)
+                                                              |)
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "move_core_types::annotated_value::DebugAsDisplay"
-                                                      [ M.read (| value |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.StructTuple
+                                                            "move_core_types::annotated_value::DebugAsDisplay"
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| value |) |)
+                                                              |)
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -10652,7 +11895,7 @@ Module annotated_value.
                       [],
                       []
                     |),
-                    [ map ]
+                    [ M.borrow (| Pointer.Kind.MutRef, map |) ]
                   |)
                 |)
               |)))

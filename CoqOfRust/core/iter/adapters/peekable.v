@@ -38,10 +38,18 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::peekable::Peekable",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::peekable::Peekable",
+                                "iter"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -60,10 +68,18 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::peekable::Peekable",
-                          "peeked"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::peekable::Peekable",
+                                "peeked"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -100,20 +116,42 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Peekable" |);
-                  M.read (| Value.String "iter" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::peekable::Peekable",
-                    "iter"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "Peekable" |) |)
                   |);
-                  M.read (| Value.String "peeked" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::peekable::Peekable",
-                      "peeked"
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::peekable::Peekable",
+                          "iter"
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "peeked" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::peekable::Peekable",
+                              "peeked"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -172,10 +210,13 @@ Module iter.
               M.read (|
                 let~ iter :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::peekable::Peekable",
-                      "iter"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::iter::adapters::peekable::Peekable",
+                        "iter"
+                      |)
                     |)
                   |) in
                 M.alloc (|
@@ -187,54 +228,67 @@ Module iter.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
-                          "get_or_insert_with",
-                          [],
-                          [
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
-                          ]
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::peekable::Peekable",
-                            "peeked"
-                          |);
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [ α0 ] =>
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
+                              "get_or_insert_with",
+                              [],
+                              [
+                                Ty.function
+                                  [ Ty.tuple [] ]
+                                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                              ]
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::peekable::Peekable",
+                                  "peeked"
+                                |)
+                              |);
+                              M.closure
+                                (fun γ =>
                                   ltac:(M.monadic
-                                    (M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                I,
-                                                [],
-                                                [],
-                                                "next",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| iter |) ]
-                                            |)))
-                                      ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
-                        ]
+                                    match γ with
+                                    | [ α0 ] =>
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::iter::traits::iterator::Iterator",
+                                                    I,
+                                                    [],
+                                                    [],
+                                                    "next",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| iter |) |)
+                                                    |)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
+                                    end))
+                            ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -262,10 +316,13 @@ Module iter.
               M.read (|
                 let~ iter :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::peekable::Peekable",
-                      "iter"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::iter::adapters::peekable::Peekable",
+                        "iter"
+                      |)
                     |)
                   |) in
                 M.alloc (|
@@ -277,54 +334,67 @@ Module iter.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
-                          "get_or_insert_with",
-                          [],
-                          [
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
-                          ]
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::peekable::Peekable",
-                            "peeked"
-                          |);
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [ α0 ] =>
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
+                              "get_or_insert_with",
+                              [],
+                              [
+                                Ty.function
+                                  [ Ty.tuple [] ]
+                                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                              ]
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::peekable::Peekable",
+                                  "peeked"
+                                |)
+                              |);
+                              M.closure
+                                (fun γ =>
                                   ltac:(M.monadic
-                                    (M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                I,
-                                                [],
-                                                [],
-                                                "next",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| iter |) ]
-                                            |)))
-                                      ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
-                        ]
+                                    match γ with
+                                    | [ α0 ] =>
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::iter::traits::iterator::Iterator",
+                                                    I,
+                                                    [],
+                                                    [],
+                                                    "next",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| iter |) |)
+                                                    |)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
+                                    end))
+                            ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -370,7 +440,7 @@ Module iter.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |),
                   [
@@ -395,7 +465,16 @@ Module iter.
                                 [],
                                 []
                               |),
-                              [ M.read (| func |); Value.Tuple [ matched ] ]
+                              [
+                                M.read (| func |);
+                                Value.Tuple
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, matched |) |)
+                                    |)
+                                  ]
+                              ]
                             |)
                           |) in
                         let _ :=
@@ -432,10 +511,13 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::iter::adapters::peekable::Peekable",
-                                                "peeked"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::iter::adapters::peekable::Peekable",
+                                                  "peeked"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -464,7 +546,7 @@ Module iter.
                         let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::peekable::Peekable",
                               "peeked"
                             |),
@@ -514,7 +596,7 @@ Module iter.
                   ]
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -537,7 +619,10 @@ Module iter.
                                         [],
                                         []
                                       |),
-                                      [ next; expected ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, next |);
+                                        M.borrow (| Pointer.Kind.Ref, expected |)
+                                      ]
                                     |)))
                               ]
                             |)))
@@ -588,10 +673,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::peekable::Peekable",
-                          "peeked"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::peekable::Peekable",
+                            "peeked"
+                          |)
                         |)
                       ]
                     |)
@@ -622,10 +710,13 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::peekable::Peekable",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::peekable::Peekable",
+                                  "iter"
+                                |)
                               |)
                             ]
                           |)
@@ -665,10 +756,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::iter::adapters::peekable::Peekable",
-                          "peeked"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::iter::adapters::peekable::Peekable",
+                            "peeked"
+                          |)
                         |)
                       ]
                     |)
@@ -785,10 +879,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::peekable::Peekable",
-                          "peeked"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::peekable::Peekable",
+                            "peeked"
+                          |)
                         |)
                       ]
                     |)
@@ -852,10 +949,13 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::peekable::Peekable",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::peekable::Peekable",
+                                  "iter"
+                                |)
                               |);
                               BinOp.Wrap.sub (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
                             ]
@@ -876,10 +976,13 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::peekable::Peekable",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::peekable::Peekable",
+                                  "iter"
+                                |)
                               |);
                               M.read (| n |)
                             ]
@@ -926,10 +1029,13 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::iter::adapters::peekable::Peekable",
-                                  "peeked"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::iter::adapters::peekable::Peekable",
+                                    "peeked"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1038,7 +1144,7 @@ Module iter.
                       M.copy (|
                         M.match_operator (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::iter::adapters::peekable::Peekable",
                             "peeked"
                           |),
@@ -1103,10 +1209,13 @@ Module iter.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::peekable::Peekable",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::peekable::Peekable",
+                                "iter"
+                              |)
                             |)
                           ]
                         |)
@@ -1215,10 +1324,13 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::peekable::Peekable",
-                                  "peeked"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::peekable::Peekable",
+                                    "peeked"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1292,7 +1404,10 @@ Module iter.
                                             [],
                                             []
                                           |),
-                                          [ f; Value.Tuple [ M.read (| init |); M.read (| v |) ] ]
+                                          [
+                                            M.borrow (| Pointer.Kind.MutRef, f |);
+                                            Value.Tuple [ M.read (| init |); M.read (| v |) ]
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -1358,10 +1473,13 @@ Module iter.
                           [ B; F; R ]
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::peekable::Peekable",
-                            "iter"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::peekable::Peekable",
+                              "iter"
+                            |)
                           |);
                           M.read (| acc |);
                           M.read (| f |)
@@ -1447,7 +1565,10 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ fold; Value.Tuple [ M.read (| init |); M.read (| v |) ] ]
+                                    [
+                                      M.borrow (| Pointer.Kind.MutRef, fold |);
+                                      Value.Tuple [ M.read (| init |); M.read (| v |) ]
+                                    ]
                                   |)
                                 |)));
                             fun γ =>
@@ -1538,10 +1659,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::peekable::Peekable",
-                          "peeked"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::peekable::Peekable",
+                            "peeked"
+                          |)
                         |)
                       ]
                     |)
@@ -1587,10 +1711,13 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::peekable::Peekable",
-                                    "iter"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::peekable::Peekable",
+                                      "iter"
+                                    |)
                                   |)
                                 ]
                               |);
@@ -1615,7 +1742,12 @@ Module iter.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| v |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| v |) |)
+                                                    |)
+                                                  ]
                                                 |)))
                                           ]
                                         |)))
@@ -1650,10 +1782,13 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::peekable::Peekable",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::peekable::Peekable",
+                                  "iter"
+                                |)
                               |)
                             ]
                           |)
@@ -1706,10 +1841,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::peekable::Peekable",
-                          "peeked"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::peekable::Peekable",
+                            "peeked"
+                          |)
                         |)
                       ]
                     |)
@@ -1777,13 +1915,16 @@ Module iter.
                                     [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::peekable::Peekable",
-                                      "iter"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::peekable::Peekable",
+                                        "iter"
+                                      |)
                                     |);
                                     M.read (| init |);
-                                    f
+                                    M.borrow (| Pointer.Kind.MutRef, f |)
                                   ]
                                 |)
                               ]
@@ -1810,7 +1951,10 @@ Module iter.
                                       [],
                                       []
                                     |),
-                                    [ f; Value.Tuple [ M.read (| acc |); M.read (| v |) ] ]
+                                    [
+                                      M.borrow (| Pointer.Kind.MutRef, f |);
+                                      Value.Tuple [ M.read (| acc |); M.read (| v |) ]
+                                    ]
                                   |)
                                 |)));
                             fun γ =>
@@ -1825,7 +1969,7 @@ Module iter.
                                 let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::iter::adapters::peekable::Peekable",
                                       "peeked"
                                     |),
@@ -1868,10 +2012,13 @@ Module iter.
                               [ B; F; R ]
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::peekable::Peekable",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::peekable::Peekable",
+                                  "iter"
+                                |)
                               |);
                               M.read (| init |);
                               M.read (| f |)
@@ -1961,7 +2108,7 @@ Module iter.
                                   |)
                                 |);
                                 M.read (| init |);
-                                fold
+                                M.borrow (| Pointer.Kind.MutRef, fold |)
                               ]
                             |)
                           |) in
@@ -1976,7 +2123,10 @@ Module iter.
                               [],
                               []
                             |),
-                            [ fold; Value.Tuple [ M.read (| acc |); M.read (| v |) ] ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, fold |);
+                              Value.Tuple [ M.read (| acc |); M.read (| v |) ]
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -2085,23 +2235,46 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::iter::adapters::SourceIter",
-                  I,
-                  [],
-                  [],
-                  "as_inner",
-                  [],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::peekable::Peekable",
-                    "iter"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::adapters::SourceIter",
+                              I,
+                              [],
+                              [],
+                              "as_inner",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::peekable::Peekable",
+                                      "iter"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

@@ -63,7 +63,10 @@ Module asserting.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-            [ M.read (| f |); M.read (| Value.String "N/A" |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "N/A" |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -108,7 +111,7 @@ Module asserting.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| to |),
+                  M.deref (| M.read (| to |) |),
                   "core::asserting::Capture",
                   "elem"
                 |),
@@ -116,11 +119,13 @@ Module asserting.
                   "core::option::Option::Some"
                   [
                     M.read (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "core::asserting::Wrapper",
-                          0
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::asserting::Wrapper",
+                            0
+                          |)
                         |)
                       |)
                     |)
@@ -166,7 +171,7 @@ Module asserting.
           M.read (|
             M.match_operator (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::asserting::Capture",
                 "elem"
               |),
@@ -182,7 +187,13 @@ Module asserting.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "N/A" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "N/A" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -197,7 +208,10 @@ Module asserting.
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (| "core::fmt::Debug", E, [], [], "fmt", [], [] |),
-                        [ M.read (| value |); M.read (| f |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                        ]
                       |)
                     |)))
               ]

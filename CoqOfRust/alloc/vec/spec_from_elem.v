@@ -46,7 +46,7 @@ Module vec.
                       [],
                       []
                     |),
-                    [ v; M.read (| n |); M.read (| elem |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, v |); M.read (| n |); M.read (| elem |) ]
                   |)
                 |) in
               v
@@ -106,7 +106,7 @@ Module vec.
                                       [],
                                       []
                                     |),
-                                    [ elem ]
+                                    [ M.borrow (| Pointer.Kind.Ref, elem |) ]
                                   |)
                                 |)) in
                             let _ :=
@@ -161,7 +161,7 @@ Module vec.
                           [],
                           []
                         |),
-                        [ v; M.read (| n |); M.read (| elem |) ]
+                        [ M.borrow (| Pointer.Kind.MutRef, v |); M.read (| n |); M.read (| elem |) ]
                       |)
                     |) in
                   v
@@ -276,7 +276,7 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ v ]
+                              [ M.borrow (| Pointer.Kind.MutRef, v |) ]
                             |);
                             M.rust_cast (M.read (| elem |));
                             M.read (| n |)
@@ -292,7 +292,7 @@ Module vec.
                             [],
                             []
                           |),
-                          [ v; M.read (| n |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, v |); M.read (| n |) ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |) in
@@ -407,7 +407,7 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ v ]
+                              [ M.borrow (| Pointer.Kind.MutRef, v |) ]
                             |);
                             M.read (| elem |);
                             M.read (| n |)
@@ -423,7 +423,7 @@ Module vec.
                             [],
                             []
                           |),
-                          [ v; M.read (| n |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, v |); M.read (| n |) ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |) in
@@ -485,7 +485,7 @@ Module vec.
                         [],
                         []
                       |),
-                      [ v; M.read (| n |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, v |); M.read (| n |) ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in

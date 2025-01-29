@@ -343,7 +343,7 @@ Module boxed.
                         [],
                         []
                       |),
-                      [ M.read (| boxed |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| boxed |) |) |) ]
                     |);
                     M.read (| x |)
                   ]
@@ -509,7 +509,7 @@ Module boxed.
                             [],
                             []
                           |),
-                          [ M.read (| boxed |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| boxed |) |) |) ]
                         |);
                         M.read (| x |)
                       ]
@@ -751,7 +751,10 @@ Module boxed.
                                                 [],
                                                 []
                                               |),
-                                              [ alloc; M.read (| layout |) ]
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, alloc |);
+                                                M.read (| layout |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -1080,7 +1083,10 @@ Module boxed.
                                                 [],
                                                 []
                                               |),
-                                              [ alloc; M.read (| layout |) ]
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, alloc |);
+                                                M.read (| layout |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -1314,7 +1320,7 @@ Module boxed.
       | [], [], [ boxed ] =>
         ltac:(M.monadic
           (let boxed := M.alloc (| boxed |) in
-          M.read (| M.read (| boxed |) |)))
+          M.read (| M.deref (| M.read (| boxed |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1411,20 +1417,30 @@ Module boxed.
       | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
-          M.read (|
-            M.SubPointer.get_tuple_field (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                    "into_raw_with_allocator",
-                    [],
-                    []
-                  |),
-                  [ M.read (| b |) ]
+          M.borrow (|
+            Pointer.Kind.MutPointer,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    M.SubPointer.get_tuple_field (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                            "into_raw_with_allocator",
+                            [],
+                            []
+                          |),
+                          [ M.read (| b |) ]
+                        |)
+                      |),
+                      0
+                    |)
+                  |)
                 |)
-              |),
-              0
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1519,21 +1535,28 @@ Module boxed.
               |) in
             let~ ptr :=
               M.alloc (|
-                M.read (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::DerefMut",
-                      Ty.apply
-                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                        []
-                        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
-                      [],
-                      [],
-                      "deref_mut",
-                      [],
-                      []
-                    |),
-                    [ b ]
+                M.borrow (|
+                  Pointer.Kind.MutPointer,
+                  M.deref (|
+                    M.read (|
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::DerefMut",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
+                              [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
+                            [],
+                            [],
+                            "deref_mut",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.MutRef, b |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               |) in
@@ -1542,24 +1565,34 @@ Module boxed.
                 M.call_closure (|
                   M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [ b ]
-                      |),
-                      "alloc::boxed::Box",
-                      1
+                    M.borrow (|
+                      Pointer.Kind.ConstPointer,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, b |) ]
+                              |)
+                            |),
+                            "alloc::boxed::Box",
+                            1
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1684,7 +1717,7 @@ Module boxed.
                               [],
                               []
                             |),
-                            [ M.read (| ptr |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| ptr |) |) |) ]
                           |);
                           M.read (| alloc |)
                         ]
@@ -1712,7 +1745,10 @@ Module boxed.
       | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
-          M.read (| M.read (| b |) |)))
+          M.borrow (|
+            Pointer.Kind.MutPointer,
+            M.deref (| M.read (| M.deref (| M.read (| b |) |) |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1733,7 +1769,10 @@ Module boxed.
       | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
-          M.read (| M.read (| b |) |)))
+          M.borrow (|
+            Pointer.Kind.ConstPointer,
+            M.deref (| M.read (| M.deref (| M.read (| b |) |) |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1752,7 +1791,19 @@ Module boxed.
       | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
-          M.SubPointer.get_struct_tuple_field (| M.read (| b |), "alloc::boxed::Box", 1 |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| b |) |),
+                  "alloc::boxed::Box",
+                  1
+                |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1774,14 +1825,34 @@ Module boxed.
       | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-              "into_raw",
-              [],
-              []
-            |),
-            [ M.read (| b |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                              "into_raw",
+                              [],
+                              []
+                            |),
+                            [ M.read (| b |) ]
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2089,8 +2160,11 @@ Module boxed.
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  Value.StructTuple "alloc::alloc::Global" []
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.StructTuple "alloc::alloc::Global" []
+                                                  |)
                                                 |);
                                                 M.read (| layout |)
                                               ]
@@ -2392,8 +2466,11 @@ Module boxed.
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  Value.StructTuple "alloc::alloc::Global" []
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.StructTuple "alloc::alloc::Global" []
+                                                  |)
                                                 |);
                                                 M.read (| layout |)
                                               ]
@@ -2791,7 +2868,10 @@ Module boxed.
                                                 [],
                                                 []
                                               |),
-                                              [ alloc; M.read (| layout |) ]
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, alloc |);
+                                                M.read (| layout |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -3087,7 +3167,10 @@ Module boxed.
                                                 [],
                                                 []
                                               |),
-                                              [ alloc; M.read (| layout |) ]
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, alloc |);
+                                                M.read (| layout |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -3306,7 +3389,10 @@ Module boxed.
                     [],
                     []
                   |),
-                  [ M.read (| boxed |); M.read (| value |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| boxed |) |) |);
+                    M.read (| value |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -3439,7 +3525,11 @@ Module boxed.
           M.read (|
             let~ ptr :=
               M.copy (|
-                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "alloc::boxed::Box", 0 |)
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::boxed::Box",
+                  0
+                |)
               |) in
             let~ layout :=
               M.alloc (|
@@ -3481,7 +3571,7 @@ Module boxed.
                                 [],
                                 []
                               |),
-                              [ layout ]
+                              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                             |),
                             Value.Integer IntegerKind.Usize 0
                           |)
@@ -3500,10 +3590,13 @@ Module boxed.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "alloc::boxed::Box",
-                              1
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::boxed::Box",
+                                1
+                              |)
                             |);
                             M.call_closure (|
                               M.get_trait_method (|
@@ -3761,10 +3854,13 @@ Module boxed.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "alloc::boxed::Box",
-                          1
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::boxed::Box",
+                            1
+                          |)
                         |)
                       ]
                     |)
@@ -3784,7 +3880,10 @@ Module boxed.
                     []
                   |),
                   [
-                    M.read (| M.read (| self |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                    |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
@@ -3792,7 +3891,7 @@ Module boxed.
                         [],
                         []
                       |),
-                      [ M.read (| boxed |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| boxed |) |) |) ]
                     |)
                   ]
                 |)
@@ -3832,7 +3931,21 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", T, [], [], "clone_from", [], [] |),
-                  [ M.read (| M.read (| self |) |); M.read (| M.read (| source |) |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| M.deref (| M.read (| source |) |) |) |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -3891,9 +4004,19 @@ Module boxed.
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| M.read (| self |) |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -3933,7 +4056,26 @@ Module boxed.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3952,7 +4094,26 @@ Module boxed.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3984,7 +4145,26 @@ Module boxed.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4003,7 +4183,26 @@ Module boxed.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4022,7 +4221,26 @@ Module boxed.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4041,7 +4259,26 @@ Module boxed.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4060,7 +4297,26 @@ Module boxed.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4098,7 +4354,26 @@ Module boxed.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4144,7 +4419,13 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
-                  [ M.read (| M.read (| self |) |); M.read (| state |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -4177,7 +4458,12 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "finish", [], [] |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4196,7 +4482,13 @@ Module boxed.
           let bytes := M.alloc (| bytes |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| bytes |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4215,7 +4507,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_u8", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4234,7 +4532,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_u16", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4253,7 +4557,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_u32", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4272,7 +4582,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_u64", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4291,7 +4607,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_u128", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4310,7 +4632,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_usize", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4329,7 +4657,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_i8", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4348,7 +4682,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_i16", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4367,7 +4707,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_i32", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4386,7 +4732,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_i64", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4405,7 +4757,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_i128", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4424,7 +4782,13 @@ Module boxed.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_isize", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4448,7 +4812,13 @@ Module boxed.
           let len := M.alloc (| len |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_length_prefix", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| len |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| len |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4467,7 +4837,13 @@ Module boxed.
           let s := M.alloc (| s |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_str", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| s |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4607,7 +4983,7 @@ Module boxed.
                   [],
                   []
                 |),
-                [ M.read (| slice |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
               |)
             ]
           |)))
@@ -4656,7 +5032,7 @@ Module boxed.
                     [],
                     []
                   |),
-                  [ M.read (| slice |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                 |)
               |) in
             let~ buf :=
@@ -4686,7 +5062,7 @@ Module boxed.
                         [],
                         []
                       |),
-                      [ M.read (| slice |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
@@ -4698,7 +5074,7 @@ Module boxed.
                         [],
                         []
                       |),
-                      [ buf ]
+                      [ M.borrow (| Pointer.Kind.Ref, buf |) ]
                     |);
                     M.read (| len |)
                   ]
@@ -4741,7 +5117,7 @@ Module boxed.
                           [],
                           []
                         |),
-                        [ M.read (| slice |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                       |)
                     ]
                   |)
@@ -4792,7 +5168,7 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| slice |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4936,7 +5312,7 @@ Module boxed.
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                    [ M.read (| s |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                   |)
                 ]
               |)
@@ -5189,18 +5565,31 @@ Module boxed.
                         M.alloc (|
                           Value.Tuple
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| boxed_slice |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| boxed_slice |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |);
-                              M.get_constant (| "alloc::boxed::boxed_slice_as_array_unchecked::N" |)
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.get_constant (|
+                                  "alloc::boxed::boxed_slice_as_array_unchecked::N"
+                                |)
+                              |)
                             ]
                         |),
                         [
@@ -5220,8 +5609,8 @@ Module boxed.
                                           (M.alloc (|
                                             UnOp.not (|
                                               BinOp.eq (|
-                                                M.read (| M.read (| left_val |) |),
-                                                M.read (| M.read (| right_val |) |)
+                                                M.read (| M.deref (| M.read (| left_val |) |) |),
+                                                M.read (| M.deref (| M.read (| right_val |) |) |)
                                               |)
                                             |)
                                           |)) in
@@ -5248,8 +5637,24 @@ Module boxed.
                                                 |),
                                                 [
                                                   M.read (| kind |);
-                                                  M.read (| left_val |);
-                                                  M.read (| right_val |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |)
+                                                    |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
+                                                    |)
+                                                  |);
                                                   Value.StructTuple "core::option::Option::None" []
                                                 ]
                                               |)
@@ -5363,7 +5768,12 @@ Module boxed.
                                 [],
                                 []
                               |),
-                              [ M.read (| boxed_slice |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| boxed_slice |) |)
+                                |)
+                              ]
                             |),
                             M.read (| M.get_constant (| "alloc::boxed::N" |) |)
                           |)
@@ -5467,7 +5877,7 @@ Module boxed.
                                 [],
                                 []
                               |),
-                              [ vec ]
+                              [ M.borrow (| Pointer.Kind.Ref, vec |) ]
                             |),
                             M.read (| M.get_constant (| "alloc::boxed::N" |) |)
                           |)
@@ -5558,7 +5968,7 @@ Module boxed.
                               [],
                               [ T ]
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5641,7 +6051,12 @@ Module boxed.
                                             [],
                                             [ T ]
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |)) in
@@ -5748,7 +6163,7 @@ Module boxed.
                               [],
                               [ T ]
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5842,7 +6257,12 @@ Module boxed.
                                             [],
                                             [ T ]
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |)) in
@@ -5962,7 +6382,7 @@ Module boxed.
                               [],
                               [ T ]
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6059,7 +6479,12 @@ Module boxed.
                                             [],
                                             [ T ]
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |)) in
@@ -6153,7 +6578,18 @@ Module boxed.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6184,7 +6620,18 @@ Module boxed.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6217,7 +6664,18 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ ptr := M.alloc (| M.read (| M.read (| self |) |) |) in
+            let~ ptr :=
+              M.alloc (|
+                M.borrow (|
+                  Pointer.Kind.ConstPointer,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                    |)
+                  |)
+                |)
+              |) in
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -6229,7 +6687,13 @@ Module boxed.
                   [],
                   []
                 |),
-                [ ptr; M.read (| f |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, ptr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                ]
               |)
             |)
           |)))
@@ -6262,7 +6726,15 @@ Module boxed.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6290,7 +6762,20 @@ Module boxed.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6354,7 +6839,12 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6380,7 +6870,12 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6407,7 +6902,13 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| n |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| n |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6537,7 +7038,7 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |) ]
+            [ M.read (| M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6575,7 +7076,12 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6602,7 +7108,13 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| n |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| n |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6644,7 +7156,12 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6670,7 +7187,12 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6731,7 +7253,7 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| args |) ]
+            [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| args |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6779,7 +7301,13 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| args |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| args |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6810,7 +7338,13 @@ Module boxed.
           let args := M.alloc (| args |) in
           M.call_closure (|
             M.get_trait_method (| "core::ops::function::Fn", F, [], [ Args ], "call", [], [] |),
-            [ M.read (| M.read (| self |) |); M.read (| args |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| args |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6860,7 +7394,7 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| args |) ]
+            [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| args |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6917,7 +7451,13 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| args |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| args |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6965,7 +7505,13 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| args |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| args |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7203,7 +7749,12 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter", [], [] |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7249,7 +7800,12 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter_mut", [], [] |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7576,17 +8132,22 @@ Module boxed.
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-                        "allocator",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
+                            "allocator",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -7607,7 +8168,13 @@ Module boxed.
                       [],
                       [ A ]
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| alloc |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                      |);
+                      M.read (| alloc |)
+                    ]
                   |)
                 ]
               |)
@@ -7649,7 +8216,12 @@ Module boxed.
                                 [],
                                 []
                               |),
-                              [ M.read (| M.read (| self |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                                |)
+                              ]
                             |),
                             M.call_closure (|
                               M.get_associated_function (|
@@ -7658,7 +8230,12 @@ Module boxed.
                                 [],
                                 []
                               |),
-                              [ M.read (| M.read (| source |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| M.deref (| M.read (| source |) |) |) |)
+                                |)
+                              ]
                             |)
                           |)
                         |)) in
@@ -7672,7 +8249,24 @@ Module boxed.
                             [],
                             []
                           |),
-                          [ M.read (| M.read (| self |) |); M.read (| M.read (| source |) |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.read (|
+                                  M.deref (|
+                                    M.read (|
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, source |) |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)));
@@ -7680,7 +8274,7 @@ Module boxed.
                   ltac:(M.monadic
                     (let~ _ :=
                       M.write (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::clone::Clone",
@@ -7694,7 +8288,7 @@ Module boxed.
                             [],
                             []
                           |),
-                          [ M.read (| source |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)))
@@ -7731,7 +8325,15 @@ Module boxed.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -7758,7 +8360,20 @@ Module boxed.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -7785,7 +8400,15 @@ Module boxed.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -7812,7 +8435,20 @@ Module boxed.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |)
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -7877,26 +8513,38 @@ Module boxed.
                   []
                 |),
                 [
-                  M.read (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::DerefMut",
-                        Ty.apply
-                          (Ty.path "core::pin::Pin")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ]
-                          ],
-                        [],
-                        [],
-                        "deref_mut",
-                        [],
-                        []
-                      |),
-                      [ self ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::DerefMut",
+                                  Ty.apply
+                                    (Ty.path "core::pin::Pin")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ]
+                                    ],
+                                  [],
+                                  [],
+                                  "deref_mut",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -7965,30 +8613,35 @@ Module boxed.
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::DerefMut",
-                      Ty.apply
-                        (Ty.path "core::pin::Pin")
-                        []
-                        [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::DerefMut",
                           Ty.apply
-                            (Ty.path "&mut")
+                            (Ty.path "core::pin::Pin")
                             []
                             [
                               Ty.apply
-                                (Ty.path "core::pin::Pin")
+                                (Ty.path "&mut")
                                 []
-                                [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ]
-                            ]
-                        ],
-                      [],
-                      [],
-                      "deref_mut",
-                      [],
-                      []
-                    |),
-                    [ self ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::pin::Pin")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ]
+                                ]
+                            ],
+                          [],
+                          [],
+                          "deref_mut",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                      |)
+                    |)
                   |)
                 ]
               |);
@@ -8041,31 +8694,43 @@ Module boxed.
                   []
                 |),
                 [
-                  M.read (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::DerefMut",
-                        Ty.apply
-                          (Ty.path "core::pin::Pin")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ] ]
-                          ],
-                        [],
-                        [],
-                        "deref_mut",
-                        [],
-                        []
-                      |),
-                      [ self ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::DerefMut",
+                                  Ty.apply
+                                    (Ty.path "core::pin::Pin")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ] ]
+                                    ],
+                                  [],
+                                  [],
+                                  "deref_mut",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
               |);
-              M.read (| cx |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8119,36 +8784,43 @@ Module boxed.
                   []
                 |),
                 [
-                  M.read (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::DerefMut",
-                        Ty.apply
-                          (Ty.path "core::pin::Pin")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "&mut")
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
+                              Ty.apply
+                                (Ty.path "core::pin::Pin")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [ S; Ty.path "alloc::alloc::Global" ]
+                                    ]
+                                ],
+                              [],
+                              [],
+                              "deref_mut",
+                              [],
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [ S; Ty.path "alloc::alloc::Global" ]
-                              ]
-                          ],
-                        [],
-                        [],
-                        "deref_mut",
-                        [],
-                        []
-                      |),
-                      [ self ]
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
               |);
-              M.read (| cx |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8175,7 +8847,12 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8230,7 +8907,7 @@ Module boxed.
                               [],
                               [ T ]
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9063,9 +9740,24 @@ Module boxed.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], [], "description", [], [] |),
-            [ M.read (| M.read (| self |) |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (| "core::error::Error", T, [], [], "description", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                      |)
+                    |)
+                  |)
+                ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9083,7 +9775,17 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", T, [], [], "cause", [], [] |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9101,7 +9803,17 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", T, [], [], "source", [], [] |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9123,7 +9835,18 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::error::Error", T, [], [], "provide", [], [] |),
-                  [ M.read (| M.read (| self |) |); M.read (| request |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                        |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| request |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)

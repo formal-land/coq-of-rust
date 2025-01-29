@@ -81,7 +81,12 @@ Module collections.
                                   [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |)
+                                ]
                               |)
                             ]
                         |)));
@@ -109,7 +114,12 @@ Module collections.
                                   [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |)
+                                ]
                               |)
                             ]
                         |)))
@@ -162,7 +172,17 @@ Module collections.
                               [],
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "A" |); __self_0 ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "A" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                              |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -183,7 +203,17 @@ Module collections.
                               [],
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "B" |); __self_0 ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "B" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                              |)
+                            ]
                           |)
                         |)))
                   ]
@@ -223,10 +253,13 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::merge_iter::MergeIterInner",
-                          "a"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::merge_iter::MergeIterInner",
+                            "a"
+                          |)
                         |)
                       ]
                     |));
@@ -234,10 +267,13 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::merge_iter::MergeIterInner",
-                          "b"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::merge_iter::MergeIterInner",
+                            "b"
+                          |)
                         |)
                       ]
                     |));
@@ -261,10 +297,13 @@ Module collections.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::merge_iter::MergeIterInner",
-                          "peeked"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::merge_iter::MergeIterInner",
+                            "peeked"
+                          |)
                         |)
                       ]
                     |))
@@ -305,14 +344,9 @@ Module collections.
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugTuple",
-                      "field",
-                      [],
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
@@ -321,45 +355,103 @@ Module collections.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::builders::DebugTuple",
-                              "field",
-                              [],
-                              []
-                            |),
-                            [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::Formatter",
-                                    "debug_tuple",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| f |); M.read (| Value.String "MergeIterInner" |) ]
-                                |)
-                              |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::btree::merge_iter::MergeIterInner",
-                                "a"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::builders::DebugTuple",
+                                  "field",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::builders::DebugTuple",
+                                          "field",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::Formatter",
+                                                  "debug_tuple",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| f |) |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (| Value.String "MergeIterInner" |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::collections::btree::merge_iter::MergeIterInner",
+                                                  "a"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::btree::merge_iter::MergeIterInner",
+                                          "b"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::btree::merge_iter::MergeIterInner",
-                            "b"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::merge_iter::MergeIterInner",
+                                  "peeked"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::merge_iter::MergeIterInner",
-                        "peeked"
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -468,10 +560,13 @@ Module collections.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::btree::merge_iter::MergeIterInner",
-                            "peeked"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::merge_iter::MergeIterInner",
+                              "peeked"
+                            |)
                           |)
                         ]
                       |)
@@ -511,10 +606,13 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "b"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "b"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -554,10 +652,13 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "a"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "a"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -580,10 +681,13 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "a"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "a"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -602,10 +706,13 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "b"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "b"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -619,7 +726,14 @@ Module collections.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.alloc (| Value.Tuple [ a_next; b_next ] |) in
+                          (let γ :=
+                            M.alloc (|
+                              Value.Tuple
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, a_next |);
+                                  M.borrow (| Pointer.Kind.Ref, b_next |)
+                                ]
+                            |) in
                           let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let γ0_0 := M.read (| γ0_0 |) in
@@ -656,7 +770,17 @@ Module collections.
                                   [],
                                   []
                                 |),
-                                [ cmp; Value.Tuple [ M.read (| a1 |); M.read (| b1 |) ] ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, cmp |);
+                                  Value.Tuple
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| a1 |) |)
+                                      |);
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b1 |) |) |)
+                                    ]
+                                ]
                               |)
                             |),
                             [
@@ -666,7 +790,7 @@ Module collections.
                                     M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::collections::btree::merge_iter::MergeIterInner",
                                       "peeked"
                                     |),
@@ -704,7 +828,7 @@ Module collections.
                                             [],
                                             []
                                           |),
-                                          [ b_next ]
+                                          [ M.borrow (| Pointer.Kind.MutRef, b_next |) ]
                                         |);
                                         M.constructor_as_closure
                                           "alloc::collections::btree::merge_iter::Peeked::B"
@@ -717,7 +841,7 @@ Module collections.
                                     M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::collections::btree::merge_iter::MergeIterInner",
                                       "peeked"
                                     |),
@@ -755,7 +879,7 @@ Module collections.
                                             [],
                                             []
                                           |),
-                                          [ a_next ]
+                                          [ M.borrow (| Pointer.Kind.MutRef, a_next |) ]
                                         |);
                                         M.constructor_as_closure
                                           "alloc::collections::btree::merge_iter::Peeked::A"
@@ -802,7 +926,7 @@ Module collections.
               M.read (|
                 M.match_operator (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "alloc::collections::btree::merge_iter::MergeIterInner",
                     "peeked"
                   |),
@@ -837,10 +961,13 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::btree::merge_iter::MergeIterInner",
-                                      "a"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "a"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -856,10 +983,13 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "b"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "b"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -893,10 +1023,13 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "a"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "a"
+                                    |)
                                   |)
                                 ]
                               |);
@@ -913,10 +1046,13 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::btree::merge_iter::MergeIterInner",
-                                      "b"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "b"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -939,10 +1075,13 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "a"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "a"
+                                    |)
                                   |)
                                 ]
                               |);
@@ -957,10 +1096,13 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "b"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "b"
+                                    |)
                                   |)
                                 ]
                               |)

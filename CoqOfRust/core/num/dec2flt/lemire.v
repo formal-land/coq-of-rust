@@ -1004,7 +1004,9 @@ Module num.
                 |) in
               M.match_operator (|
                 M.SubPointer.get_array_field (|
-                  M.read (| M.get_constant (| "core::num::dec2flt::table::POWER_OF_FIVE_128" |) |),
+                  M.deref (|
+                    M.read (| M.get_constant (| "core::num::dec2flt::table::POWER_OF_FIVE_128" |) |)
+                  |),
                   index
                 |),
                 [

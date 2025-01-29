@@ -151,10 +151,18 @@ Module char.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::EscapeUnicode",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::EscapeUnicode",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -188,13 +196,27 @@ Module char.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "EscapeUnicode" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::char::EscapeUnicode",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "EscapeUnicode" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::EscapeUnicode",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -280,10 +302,13 @@ Module char.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::EscapeUnicode",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::char::EscapeUnicode",
+                      0
+                    |)
                   |)
                 ]
               |);
@@ -326,10 +351,13 @@ Module char.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::char::EscapeUnicode",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::char::EscapeUnicode",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -363,7 +391,12 @@ Module char.
               [ Value.Integer IntegerKind.Usize 10 ],
               []
             |),
-            [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeUnicode", 0 |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeUnicode", 0 |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -396,7 +429,12 @@ Module char.
                   [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
-                [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeUnicode", 0 |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeUnicode", 0 |)
+                  |)
+                ]
               |);
               M.get_trait_method (|
                 "core::convert::From",
@@ -434,10 +472,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::EscapeUnicode",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::EscapeUnicode",
+                  0
+                |)
               |);
               M.read (| n |)
             ]
@@ -485,10 +526,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::EscapeUnicode",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::EscapeUnicode",
+                  0
+                |)
               |)
             ]
           |)))
@@ -531,24 +575,32 @@ Module char.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::escape::EscapeIterInner")
-                    [ Value.Integer IntegerKind.Usize 10 ]
-                    [],
-                  "as_str",
-                  [ Value.Integer IntegerKind.Usize 10 ],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::EscapeUnicode",
-                    0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::escape::EscapeIterInner")
+                        [ Value.Integer IntegerKind.Usize 10 ]
+                        [],
+                      "as_str",
+                      [ Value.Integer IntegerKind.Usize 10 ],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::EscapeUnicode",
+                          0
+                        |)
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |)
             ]
           |)))
@@ -603,10 +655,18 @@ Module char.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::EscapeDefault",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::EscapeDefault",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -640,13 +700,27 @@ Module char.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "EscapeDefault" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::char::EscapeDefault",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "EscapeDefault" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::EscapeDefault",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -804,10 +878,13 @@ Module char.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::EscapeDefault",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::char::EscapeDefault",
+                      0
+                    |)
                   |)
                 ]
               |);
@@ -850,10 +927,13 @@ Module char.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::char::EscapeDefault",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::char::EscapeDefault",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -887,7 +967,12 @@ Module char.
               [ Value.Integer IntegerKind.Usize 10 ],
               []
             |),
-            [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeDefault", 0 |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeDefault", 0 |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -920,7 +1005,12 @@ Module char.
                   [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
-                [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeDefault", 0 |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeDefault", 0 |)
+                  |)
+                ]
               |);
               M.get_trait_method (|
                 "core::convert::From",
@@ -958,10 +1048,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::EscapeDefault",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::EscapeDefault",
+                  0
+                |)
               |);
               M.read (| n |)
             ]
@@ -1009,10 +1102,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::EscapeDefault",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::EscapeDefault",
+                  0
+                |)
               |)
             ]
           |)))
@@ -1055,24 +1151,32 @@ Module char.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::escape::EscapeIterInner")
-                    [ Value.Integer IntegerKind.Usize 10 ]
-                    [],
-                  "as_str",
-                  [ Value.Integer IntegerKind.Usize 10 ],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::EscapeDefault",
-                    0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::escape::EscapeIterInner")
+                        [ Value.Integer IntegerKind.Usize 10 ]
+                        [],
+                      "as_str",
+                      [ Value.Integer IntegerKind.Usize 10 ],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::EscapeDefault",
+                          0
+                        |)
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |)
             ]
           |)))
@@ -1118,10 +1222,18 @@ Module char.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::EscapeDebug",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::EscapeDebug",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1155,13 +1267,27 @@ Module char.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "EscapeDebug" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::char::EscapeDebug",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "EscapeDebug" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::EscapeDebug",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -1245,7 +1371,7 @@ Module char.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1273,7 +1399,7 @@ Module char.
                               [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)))
@@ -1323,7 +1449,17 @@ Module char.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Bytes" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Bytes" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1344,7 +1480,17 @@ Module char.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Char" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Char" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -1466,7 +1612,7 @@ Module char.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::char::EscapeDebug",
                   0
                 |),
@@ -1520,7 +1666,7 @@ Module char.
           M.read (|
             M.match_operator (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::char::EscapeDebug",
                 0
               |),
@@ -1553,7 +1699,7 @@ Module char.
                               [ Value.Integer IntegerKind.Usize 10 ],
                               []
                             |),
-                            [ M.read (| bytes |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |) ]
                           |);
                           M.get_trait_method (|
                             "core::convert::From",
@@ -1585,7 +1731,7 @@ Module char.
                             [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |) in
                     M.alloc (|
@@ -1621,7 +1767,7 @@ Module char.
                     [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -1653,7 +1799,7 @@ Module char.
               [],
               []
             |),
-            [ self ]
+            [ M.borrow (| Pointer.Kind.Ref, self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1691,10 +1837,13 @@ Module char.
           M.read (|
             M.match_operator (|
               M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::char::EscapeDebug",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::char::EscapeDebug",
+                    0
+                  |)
                 |)
               |),
               [
@@ -1719,7 +1868,7 @@ Module char.
                           [ Value.Integer IntegerKind.Usize 10 ],
                           []
                         |),
-                        [ M.read (| bytes |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
                       |)
                     |)));
                 fun γ =>
@@ -1777,10 +1926,13 @@ Module char.
           M.read (|
             M.match_operator (|
               M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::char::EscapeDebug",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::char::EscapeDebug",
+                    0
+                  |)
                 |)
               |),
               [
@@ -1803,18 +1955,24 @@ Module char.
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::escape::EscapeIterInner")
-                                [ Value.Integer IntegerKind.Usize 10 ]
-                                [],
-                              "as_str",
-                              [ Value.Integer IntegerKind.Usize 10 ],
-                              []
-                            |),
-                            [ M.read (| bytes |) ]
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::escape::EscapeIterInner")
+                                    [ Value.Integer IntegerKind.Usize 10 ]
+                                    [],
+                                  "as_str",
+                                  [ Value.Integer IntegerKind.Usize 10 ],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+                                ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -1840,7 +1998,10 @@ Module char.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| M.read (| chr |) |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.read (| M.deref (| M.read (| chr |) |) |)
+                        ]
                       |)
                     |)))
               ]
@@ -1883,13 +2044,27 @@ Module char.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "ToLowercase" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::char::ToLowercase",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "ToLowercase" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::ToLowercase",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -1928,10 +2103,18 @@ Module char.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::ToLowercase",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::ToLowercase",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1974,10 +2157,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToLowercase",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToLowercase",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2005,10 +2191,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToLowercase",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToLowercase",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2131,10 +2320,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToLowercase",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToLowercase",
+                  0
+                |)
               |);
               M.read (| n |)
             ]
@@ -2165,10 +2357,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToLowercase",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToLowercase",
+                  0
+                |)
               |);
               M.read (| idx |)
             ]
@@ -2218,10 +2413,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToLowercase",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToLowercase",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2286,10 +2484,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToLowercase",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToLowercase",
+                  0
+                |)
               |);
               M.read (| n |)
             ]
@@ -2345,10 +2546,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToLowercase",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToLowercase",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2376,10 +2580,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToLowercase",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToLowercase",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2459,12 +2666,20 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToLowercase",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::char::ToLowercase",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2504,13 +2719,27 @@ Module char.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "ToUppercase" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::char::ToUppercase",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "ToUppercase" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::ToUppercase",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -2549,10 +2778,18 @@ Module char.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::ToUppercase",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::ToUppercase",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -2595,10 +2832,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToUppercase",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToUppercase",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2626,10 +2866,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToUppercase",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToUppercase",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2752,10 +2995,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToUppercase",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToUppercase",
+                  0
+                |)
               |);
               M.read (| n |)
             ]
@@ -2786,10 +3032,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToUppercase",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToUppercase",
+                  0
+                |)
               |);
               M.read (| idx |)
             ]
@@ -2839,10 +3088,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToUppercase",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToUppercase",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2907,10 +3159,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToUppercase",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToUppercase",
+                  0
+                |)
               |);
               M.read (| n |)
             ]
@@ -2966,10 +3221,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToUppercase",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToUppercase",
+                  0
+                |)
               |)
             ]
           |)))
@@ -2997,10 +3255,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToUppercase",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::ToUppercase",
+                  0
+                |)
               |)
             ]
           |)))
@@ -3080,12 +3341,20 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::ToUppercase",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::char::ToUppercase",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3131,13 +3400,27 @@ Module char.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "CaseMappingIter" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::char::CaseMappingIter",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "CaseMappingIter" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::CaseMappingIter",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -3179,10 +3462,18 @@ Module char.
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::CaseMappingIter",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::CaseMappingIter",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -3275,7 +3566,7 @@ Module char.
                               [],
                               []
                             |),
-                            [ iter ]
+                            [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
                           |)
                         |) in
                       M.match_operator (|
@@ -3316,7 +3607,7 @@ Module char.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -3364,10 +3655,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::CaseMappingIter",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::CaseMappingIter",
+                  0
+                |)
               |)
             ]
           |)))
@@ -3398,10 +3692,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::CaseMappingIter",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::CaseMappingIter",
+                  0
+                |)
               |)
             ]
           |)))
@@ -3536,10 +3833,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::CaseMappingIter",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::CaseMappingIter",
+                  0
+                |)
               |);
               M.read (| n |)
             ]
@@ -3573,10 +3873,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::CaseMappingIter",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::CaseMappingIter",
+                  0
+                |)
               |);
               M.read (| idx |)
             ]
@@ -3629,10 +3932,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::CaseMappingIter",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::CaseMappingIter",
+                  0
+                |)
               |)
             ]
           |)))
@@ -3703,10 +4009,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::CaseMappingIter",
-                0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::CaseMappingIter",
+                  0
+                |)
               |);
               M.read (| n |)
             ]
@@ -3754,10 +4063,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::CaseMappingIter",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::CaseMappingIter",
+                  0
+                |)
               |)
             ]
           |)))
@@ -3788,10 +4100,13 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::CaseMappingIter",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::CaseMappingIter",
+                  0
+                |)
               |)
             ]
           |)))
@@ -3909,10 +4224,13 @@ Module char.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.read (| self |),
-                                  "core::char::CaseMappingIter",
-                                  0
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::char::CaseMappingIter",
+                                    0
+                                  |)
                                 |)
                               ]
                             |)
@@ -3941,7 +4259,12 @@ Module char.
                                           [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -3991,7 +4314,13 @@ Module char.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| f |); M.read (| c |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| f |) |)
+                                                        |);
+                                                        M.read (| c |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -4100,13 +4429,27 @@ Module char.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "TryFromCharError" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::char::TryFromCharError",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "TryFromCharError" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::char::TryFromCharError",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -4145,7 +4488,7 @@ Module char.
           M.read (|
             M.match_operator (|
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4191,15 +4534,21 @@ Module char.
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::char::TryFromCharError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::char::TryFromCharError",
+                  0
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "core::char::TryFromCharError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::char::TryFromCharError",
+                  0
+                |)
               |)
             ]
           |)))
@@ -4261,7 +4610,13 @@ Module char.
           let fmt := M.alloc (| fmt |) in
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
-            [ M.read (| Value.String "unicode code point out of range" |); M.read (| fmt |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "unicode code point out of range" |) |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

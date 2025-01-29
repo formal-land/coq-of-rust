@@ -36,13 +36,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroU8Inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroU8Inner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroU8Inner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroU8Inner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -70,7 +84,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -119,14 +133,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroU8Inner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroU8Inner",
                     0
                   |)
@@ -169,13 +183,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroU16Inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroU16Inner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroU16Inner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroU16Inner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -203,7 +231,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -252,14 +280,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroU16Inner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroU16Inner",
                     0
                   |)
@@ -302,13 +330,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroU32Inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroU32Inner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroU32Inner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroU32Inner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -336,7 +378,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -385,14 +427,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroU32Inner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroU32Inner",
                     0
                   |)
@@ -435,13 +477,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroU64Inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroU64Inner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroU64Inner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroU64Inner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -469,7 +525,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -518,14 +574,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroU64Inner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroU64Inner",
                     0
                   |)
@@ -568,13 +624,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroU128Inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroU128Inner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroU128Inner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroU128Inner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -602,7 +672,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -651,14 +721,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroU128Inner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroU128Inner",
                     0
                   |)
@@ -701,13 +771,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroUsizeInner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroUsizeInner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroUsizeInner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroUsizeInner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -735,7 +819,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -784,14 +868,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroUsizeInner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroUsizeInner",
                     0
                   |)
@@ -834,13 +918,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroI8Inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroI8Inner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroI8Inner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroI8Inner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -868,7 +966,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -917,14 +1015,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroI8Inner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroI8Inner",
                     0
                   |)
@@ -967,13 +1065,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroI16Inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroI16Inner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroI16Inner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroI16Inner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -1001,7 +1113,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1050,14 +1162,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroI16Inner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroI16Inner",
                     0
                   |)
@@ -1100,13 +1212,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroI32Inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroI32Inner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroI32Inner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroI32Inner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -1134,7 +1260,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1183,14 +1309,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroI32Inner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroI32Inner",
                     0
                   |)
@@ -1233,13 +1359,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroI64Inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroI64Inner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroI64Inner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroI64Inner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -1267,7 +1407,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1316,14 +1456,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroI64Inner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroI64Inner",
                     0
                   |)
@@ -1366,13 +1506,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroI128Inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroI128Inner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroI128Inner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroI128Inner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -1400,7 +1554,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1449,14 +1603,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroI128Inner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroI128Inner",
                     0
                   |)
@@ -1499,13 +1653,27 @@ Module num.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "NonZeroIsizeInner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::nonzero::private::NonZeroIsizeInner",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "NonZeroIsizeInner" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::nonzero::private::NonZeroIsizeInner",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -1533,7 +1701,7 @@ Module num.
               M.read (|
                 M.match_operator (|
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1582,14 +1750,14 @@ Module num.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::private::NonZeroIsizeInner",
                     0
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::num::nonzero::private::NonZeroIsizeInner",
                     0
                   |)
@@ -1934,18 +2102,21 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1979,18 +2150,21 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2024,18 +2198,21 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Binary", T, [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2069,18 +2246,21 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Octal", T, [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2114,18 +2294,21 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::LowerHex", T, [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2159,18 +2342,21 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::UpperHex", T, [], [], "fmt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2283,7 +2469,7 @@ Module num.
               [
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::nonzero::NonZero",
                     0
                   |)
@@ -2333,26 +2519,32 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                    |)
                   |)
                 |)
               ]
@@ -2375,26 +2567,32 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                    |)
                   |)
                 |)
               ]
@@ -2457,26 +2655,37 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                            "get",
+                            [],
+                            []
+                          |),
+                          [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -2499,26 +2708,32 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                    |)
                   |)
                 |)
               ]
@@ -2541,26 +2756,32 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                    |)
                   |)
                 |)
               ]
@@ -2583,26 +2804,32 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                    |)
                   |)
                 |)
               ]
@@ -2625,26 +2852,32 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                    |)
                   |)
                 |)
               ]
@@ -2687,26 +2920,37 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                            "get",
+                            [],
+                            []
+                          |),
+                          [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -2908,18 +3152,21 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3180,7 +3427,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -3191,7 +3438,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3232,7 +3479,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
@@ -3243,7 +3490,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3429,24 +3676,34 @@ Module num.
             M.read (|
               let~ opt_n :=
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*mut") [] [ T ],
-                      "cast",
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
-                      ]
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_function (| "core::ptr::from_mut", [], [ T ] |),
-                        [ M.read (| n |) ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              "cast",
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
+                              ]
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_function (| "core::ptr::from_mut", [], [ T ] |),
+                                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| n |) |) |) ]
+                              |)
+                            ]
+                          |)
+                        |)
                       |)
-                    ]
+                    |)
                   |)
                 |) in
               M.alloc (|
@@ -3460,7 +3717,7 @@ Module num.
                     [],
                     []
                   |),
-                  [ M.read (| opt_n |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| opt_n |) |) |) ]
                 |)
               |)
             |)))
@@ -3500,85 +3757,106 @@ Module num.
         | [], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      "from_mut",
-                      [],
-                      []
-                    |),
-                    [ M.read (| n |) ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let n := M.copy (| γ0_0 |) in
-                      M.alloc (| M.read (| n |) |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                      M.alloc (|
-                        M.read (|
-                          let~ _ :=
-                            M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.read (|
+                      M.match_operator (|
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                              "from_mut",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| n |) |) |) ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::option::Option::Some",
+                                  0
+                                |) in
+                              let n := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| n |) |) |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.alloc (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.read (|
+                                      let~ _ :=
+                                        M.match_operator (|
+                                          M.alloc (| Value.Tuple [] |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ :=
+                                                  M.use
+                                                    (M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::intrinsics::ub_checks",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        []
+                                                      |)
+                                                    |)) in
+                                                let _ :=
+                                                  M.is_constant_or_break_match (|
+                                                    M.read (| γ |),
+                                                    Value.Bool true
+                                                  |) in
+                                                let~ _ :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Self,
+                                                        "precondition_check.from_mut_unchecked",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      []
+                                                    |)
+                                                  |) in
+                                                M.alloc (| Value.Tuple [] |)));
+                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          ]
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
                                           M.call_closure (|
                                             M.get_function (|
-                                              "core::intrinsics::ub_checks",
+                                              "core::intrinsics::unreachable",
                                               [],
                                               []
                                             |),
                                             []
                                           |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    let~ _ :=
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Self,
-                                            "precondition_check.from_mut_unchecked",
-                                            [],
-                                            []
-                                          |),
-                                          []
                                         |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.call_closure (|
-                                M.get_function (| "core::intrinsics::unreachable", [], [] |),
-                                []
-                              |)
-                            |)
-                          |)
-                        |)
-                      |)))
-                ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)))
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5079,7 +5357,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -5228,7 +5512,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -5239,7 +5523,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5320,7 +5604,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -5331,7 +5615,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6800,7 +7084,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -6949,7 +7239,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -6960,7 +7250,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7041,7 +7331,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -7052,7 +7342,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8521,7 +8811,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -8670,7 +8966,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -8681,7 +8977,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8762,7 +9058,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -8773,7 +9069,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10242,7 +10538,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -10391,7 +10693,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -10402,7 +10704,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10483,7 +10785,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -10494,7 +10796,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11963,7 +12265,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -12112,7 +12420,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -12123,7 +12431,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12204,7 +12512,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -12215,7 +12523,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13684,7 +13992,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -13833,7 +14147,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
@@ -13844,7 +14158,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13925,7 +14239,7 @@ Module num.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
@@ -13936,7 +14250,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |); M.read (| other |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15556,7 +15870,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -17307,7 +17627,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -19058,7 +19384,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -20809,7 +21141,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -22560,7 +22898,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)
@@ -24311,7 +24655,13 @@ Module num.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| src |) |)
+                                      |);
+                                      Value.Integer IntegerKind.U32 10
+                                    ]
                                   |)
                                 ]
                               |)

@@ -30,10 +30,18 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::cycle::Cycle",
-                          "orig"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::cycle::Cycle",
+                                "orig"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -41,10 +49,18 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::cycle::Cycle",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::cycle::Cycle",
+                                "iter"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -81,20 +97,39 @@ Module iter.
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Cycle" |);
-                  M.read (| Value.String "orig" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::cycle::Cycle",
-                    "orig"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Cycle" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "orig" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::cycle::Cycle",
+                          "orig"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| Value.String "iter" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::cycle::Cycle",
-                      "iter"
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::cycle::Cycle",
+                              "iter"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -132,7 +167,7 @@ Module iter.
                   ("orig",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
-                      [ iter ]
+                      [ M.borrow (| Pointer.Kind.Ref, iter |) ]
                     |));
                   ("iter", M.read (| iter |))
                 ]))
@@ -182,10 +217,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::cycle::Cycle",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::cycle::Cycle",
+                            "iter"
+                          |)
                         |)
                       ]
                     |)
@@ -197,7 +235,7 @@ Module iter.
                         let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::cycle::Cycle",
                               "iter"
                             |),
@@ -212,10 +250,13 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::cycle::Cycle",
-                                  "orig"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::cycle::Cycle",
+                                    "orig"
+                                  |)
                                 |)
                               ]
                             |)
@@ -232,10 +273,13 @@ Module iter.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::cycle::Cycle",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::cycle::Cycle",
+                                  "iter"
+                                |)
                               |)
                             ]
                           |)
@@ -280,10 +324,13 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::cycle::Cycle",
-                          "orig"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::cycle::Cycle",
+                            "orig"
+                          |)
                         |)
                       ]
                     |)
@@ -411,13 +458,16 @@ Module iter.
                                       [ Acc; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::iter::adapters::cycle::Cycle",
-                                        "iter"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::cycle::Cycle",
+                                          "iter"
+                                        |)
                                       |);
                                       M.read (| acc |);
-                                      f
+                                      M.borrow (| Pointer.Kind.MutRef, f |)
                                     ]
                                   |)
                                 ]
@@ -470,17 +520,20 @@ Module iter.
                     let~ _ :=
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::cycle::Cycle",
                           "iter"
                         |),
                         M.call_closure (|
                           M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::cycle::Cycle",
-                              "orig"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::cycle::Cycle",
+                                "orig"
+                              |)
                             |)
                           ]
                         |)
@@ -514,10 +567,13 @@ Module iter.
                                       [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.associated ] ] R; R ]
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::iter::adapters::cycle::Cycle",
-                                        "iter"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::cycle::Cycle",
+                                          "iter"
+                                        |)
                                       |);
                                       M.read (| acc |);
                                       M.closure
@@ -559,7 +615,10 @@ Module iter.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        f;
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          f
+                                                                        |);
                                                                         Value.Tuple
                                                                           [
                                                                             M.read (| acc |);
@@ -667,7 +726,7 @@ Module iter.
                               (let~ _ :=
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::cycle::Cycle",
                                     "iter"
                                   |),
@@ -682,10 +741,13 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::iter::adapters::cycle::Cycle",
-                                        "orig"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::cycle::Cycle",
+                                          "orig"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -718,13 +780,16 @@ Module iter.
                                                 [ Acc; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::iter::adapters::cycle::Cycle",
-                                                  "iter"
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::iter::adapters::cycle::Cycle",
+                                                    "iter"
+                                                  |)
                                                 |);
                                                 M.read (| acc |);
-                                                f
+                                                M.borrow (| Pointer.Kind.MutRef, f |)
                                               ]
                                             |)
                                           ]
@@ -833,10 +898,13 @@ Module iter.
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::cycle::Cycle",
-                                  "iter"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::cycle::Cycle",
+                                    "iter"
+                                  |)
                                 |);
                                 M.read (| n |)
                               ]
@@ -912,7 +980,7 @@ Module iter.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::iter::adapters::cycle::Cycle",
                                         "iter"
                                       |),
@@ -927,10 +995,13 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::iter::adapters::cycle::Cycle",
-                                            "orig"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::iter::adapters::cycle::Cycle",
+                                              "orig"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -952,10 +1023,13 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::iter::adapters::cycle::Cycle",
-                                                  "iter"
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::iter::adapters::cycle::Cycle",
+                                                    "iter"
+                                                  |)
                                                 |);
                                                 M.read (| n |)
                                               ]

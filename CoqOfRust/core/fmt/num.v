@@ -32,7 +32,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -42,7 +42,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -52,7 +52,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -97,7 +97,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -107,7 +107,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -117,7 +117,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -162,7 +162,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -172,7 +172,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -182,7 +182,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -227,7 +227,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -237,7 +237,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -247,7 +247,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -292,7 +292,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -302,7 +302,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -312,7 +312,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -357,7 +357,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -367,7 +367,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -377,7 +377,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -422,7 +422,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.use (M.read (| self |)) |)))
+            M.read (| M.use (M.deref (| M.read (| self |) |)) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -432,7 +432,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -442,7 +442,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -487,7 +487,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -497,7 +497,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -507,7 +507,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -552,7 +552,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -562,7 +562,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -572,7 +572,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -617,7 +617,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -627,7 +627,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.use (M.read (| self |)) |)))
+            M.read (| M.use (M.deref (| M.read (| self |) |)) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -637,7 +637,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -682,7 +682,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -692,7 +692,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -702,7 +702,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.use (M.read (| self |)) |)))
+            M.read (| M.use (M.deref (| M.read (| self |) |)) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -747,7 +747,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -757,7 +757,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -767,7 +767,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.read (| self |) |))))
+            M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -815,7 +815,7 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
-                    [ x; zero ]
+                    [ M.borrow (| Pointer.Kind.Ref, x |); M.borrow (| Pointer.Kind.Ref, zero |) ]
                   |)
                 |) in
               let~ buf :=
@@ -853,7 +853,7 @@ Module fmt.
                       [],
                       []
                     |),
-                    [ buf ]
+                    [ M.borrow (| Pointer.Kind.Ref, buf |) ]
                   |)
                 |) in
               let~ base :=
@@ -941,7 +941,7 @@ Module fmt.
                                           [],
                                           []
                                         |),
-                                        [ buf ]
+                                        [ M.borrow (| Pointer.Kind.MutRef, buf |) ]
                                       |)
                                     ]
                                   |)
@@ -981,7 +981,14 @@ Module fmt.
                                                 [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -1049,7 +1056,10 @@ Module fmt.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| byte |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| byte |) |)
+                                                        |);
                                                         M.call_closure (|
                                                           M.get_trait_method (|
                                                             "core::fmt::num::GenericRadix",
@@ -1071,7 +1081,7 @@ Module fmt.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ n ]
+                                                              [ M.borrow (| Pointer.Kind.Ref, n |) ]
                                                             |)
                                                           ]
                                                         |)
@@ -1106,7 +1116,16 @@ Module fmt.
                                                                     [],
                                                                     []
                                                                   |),
-                                                                  [ x; zero ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      x
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      zero
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -1194,7 +1213,7 @@ Module fmt.
                                           [],
                                           []
                                         |),
-                                        [ buf ]
+                                        [ M.borrow (| Pointer.Kind.MutRef, buf |) ]
                                       |)
                                     ]
                                   |)
@@ -1234,7 +1253,14 @@ Module fmt.
                                                 [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -1316,7 +1342,10 @@ Module fmt.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| byte |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| byte |) |)
+                                                        |);
                                                         M.call_closure (|
                                                           M.get_trait_method (|
                                                             "core::fmt::num::GenericRadix",
@@ -1338,7 +1367,7 @@ Module fmt.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ n ]
+                                                              [ M.borrow (| Pointer.Kind.Ref, n |) ]
                                                             |)
                                                           ]
                                                         |)
@@ -1373,7 +1402,16 @@ Module fmt.
                                                                     [],
                                                                     []
                                                                   |),
-                                                                  [ x; zero ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      x
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      zero
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -1402,30 +1440,36 @@ Module fmt.
                 |) in
               let~ buf :=
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::index::Index",
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 128 ]
-                        [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
                           Ty.apply
-                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                            []
-                            [ Ty.path "u8" ]
-                        ],
-                      [],
-                      [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
-                      "index",
-                      [],
-                      []
-                    |),
-                    [
-                      buf;
-                      Value.StructRecord
-                        "core::ops::range::RangeFrom"
-                        [ ("start", M.read (| curr |)) ]
-                    ]
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 128 ]
+                            [
+                              Ty.apply
+                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
+                                [ Ty.path "u8" ]
+                            ],
+                          [],
+                          [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ]
+                          ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, buf |);
+                          Value.StructRecord
+                            "core::ops::range::RangeFrom"
+                            [ ("start", M.read (| curr |)) ]
+                        ]
+                      |)
+                    |)
                   |)
                 |) in
               let~ buf :=
@@ -1433,43 +1477,48 @@ Module fmt.
                   M.call_closure (|
                     M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                     [
-                      M.call_closure (|
-                        M.get_function (|
-                          "core::slice::raw::from_raw_parts",
-                          [],
-                          [ Ty.path "u8" ]
-                        |),
-                        [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
                           M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                []
-                                [ Ty.path "u8" ],
-                              "slice_as_ptr",
+                            M.get_function (|
+                              "core::slice::raw::from_raw_parts",
                               [],
-                              []
+                              [ Ty.path "u8" ]
                             |),
-                            [ M.read (| buf |) ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                     []
-                                    [ Ty.path "u8" ]
-                                ],
-                              "len",
-                              [],
-                              []
-                            |),
-                            [ M.read (| buf |) ]
+                                    [ Ty.path "u8" ],
+                                  "slice_as_ptr",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |) ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ Ty.path "u8" ]
+                                    ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |) ]
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
                     ]
                   |)
@@ -1483,10 +1532,15 @@ Module fmt.
                     []
                   |),
                   [
-                    M.read (| f |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                     M.read (| is_nonnegative |);
-                    M.read (| M.get_constant (| "core::fmt::num::GenericRadix::PREFIX" |) |);
-                    M.read (| buf |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (| M.get_constant (| "core::fmt::num::GenericRadix::PREFIX" |) |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |)
                   ]
                 |)
               |)
@@ -1797,46 +1851,77 @@ Module fmt.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "number not in the range 0..=" |);
-                                        M.read (| Value.String ": " |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              BinOp.Wrap.sub (|
-                                                M.read (|
-                                                  M.get_constant (|
-                                                    "core::fmt::num::GenericRadix::BASE"
-                                                  |)
-                                                |),
-                                                Value.Integer IntegerKind.U8 1
-                                              |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [ x ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "number not in the range 0..="
+                                              |);
+                                              M.read (| Value.String ": " |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "u8" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          BinOp.Wrap.sub (|
+                                                            M.read (|
+                                                              M.get_constant (|
+                                                                "core::fmt::num::GenericRadix::BASE"
+                                                              |)
+                                                            |),
+                                                            Value.Integer IntegerKind.U8 1
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "u8" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1914,46 +1999,77 @@ Module fmt.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "number not in the range 0..=" |);
-                                        M.read (| Value.String ": " |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              BinOp.Wrap.sub (|
-                                                M.read (|
-                                                  M.get_constant (|
-                                                    "core::fmt::num::GenericRadix::BASE"
-                                                  |)
-                                                |),
-                                                Value.Integer IntegerKind.U8 1
-                                              |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [ x ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "number not in the range 0..="
+                                              |);
+                                              M.read (| Value.String ": " |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "u8" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          BinOp.Wrap.sub (|
+                                                            M.read (|
+                                                              M.get_constant (|
+                                                                "core::fmt::num::GenericRadix::BASE"
+                                                              |)
+                                                            |),
+                                                            Value.Integer IntegerKind.U8 1
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "u8" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2040,46 +2156,77 @@ Module fmt.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "number not in the range 0..=" |);
-                                        M.read (| Value.String ": " |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              BinOp.Wrap.sub (|
-                                                M.read (|
-                                                  M.get_constant (|
-                                                    "core::fmt::num::GenericRadix::BASE"
-                                                  |)
-                                                |),
-                                                Value.Integer IntegerKind.U8 1
-                                              |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [ x ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "number not in the range 0..="
+                                              |);
+                                              M.read (| Value.String ": " |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "u8" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          BinOp.Wrap.sub (|
+                                                            M.read (|
+                                                              M.get_constant (|
+                                                                "core::fmt::num::GenericRadix::BASE"
+                                                              |)
+                                                            |),
+                                                            Value.Integer IntegerKind.U8 1
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "u8" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2166,46 +2313,77 @@ Module fmt.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "number not in the range 0..=" |);
-                                        M.read (| Value.String ": " |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              BinOp.Wrap.sub (|
-                                                M.read (|
-                                                  M.get_constant (|
-                                                    "core::fmt::num::GenericRadix::BASE"
-                                                  |)
-                                                |),
-                                                Value.Integer IntegerKind.U8 1
-                                              |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [ x ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "number not in the range 0..="
+                                              |);
+                                              M.read (| Value.String ": " |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "u8" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          BinOp.Wrap.sub (|
+                                                            M.read (|
+                                                              M.get_constant (|
+                                                                "core::fmt::num::GenericRadix::BASE"
+                                                              |)
+                                                            |),
+                                                            Value.Integer IntegerKind.U8 1
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "u8" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2257,9 +2435,12 @@ Module fmt.
                 [ Ty.path "usize" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2298,9 +2479,12 @@ Module fmt.
                 [ Ty.path "usize" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2339,9 +2523,12 @@ Module fmt.
                 [ Ty.path "usize" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2380,9 +2567,12 @@ Module fmt.
                 [ Ty.path "usize" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2421,9 +2611,12 @@ Module fmt.
                 [ Ty.path "usize" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2462,9 +2655,12 @@ Module fmt.
                 [ Ty.path "usize" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2503,9 +2699,12 @@ Module fmt.
                 [ Ty.path "usize" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2544,9 +2743,12 @@ Module fmt.
                 [ Ty.path "usize" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2585,9 +2787,12 @@ Module fmt.
                 [ Ty.path "u8" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2626,9 +2831,12 @@ Module fmt.
                 [ Ty.path "u8" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2667,9 +2875,12 @@ Module fmt.
                 [ Ty.path "u8" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2708,9 +2919,12 @@ Module fmt.
                 [ Ty.path "u8" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2749,9 +2963,12 @@ Module fmt.
                 [ Ty.path "u8" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2790,9 +3007,12 @@ Module fmt.
                 [ Ty.path "u8" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2831,9 +3051,12 @@ Module fmt.
                 [ Ty.path "u8" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2872,9 +3095,12 @@ Module fmt.
                 [ Ty.path "u8" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2913,9 +3139,12 @@ Module fmt.
                 [ Ty.path "u16" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2954,9 +3183,12 @@ Module fmt.
                 [ Ty.path "u16" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2995,9 +3227,12 @@ Module fmt.
                 [ Ty.path "u16" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3036,9 +3271,12 @@ Module fmt.
                 [ Ty.path "u16" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3077,9 +3315,12 @@ Module fmt.
                 [ Ty.path "u16" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3118,9 +3359,12 @@ Module fmt.
                 [ Ty.path "u16" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3159,9 +3403,12 @@ Module fmt.
                 [ Ty.path "u16" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3200,9 +3447,12 @@ Module fmt.
                 [ Ty.path "u16" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3241,9 +3491,12 @@ Module fmt.
                 [ Ty.path "u32" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3282,9 +3535,12 @@ Module fmt.
                 [ Ty.path "u32" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3323,9 +3579,12 @@ Module fmt.
                 [ Ty.path "u32" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3364,9 +3623,12 @@ Module fmt.
                 [ Ty.path "u32" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3405,9 +3667,12 @@ Module fmt.
                 [ Ty.path "u32" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3446,9 +3711,12 @@ Module fmt.
                 [ Ty.path "u32" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3487,9 +3755,12 @@ Module fmt.
                 [ Ty.path "u32" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3528,9 +3799,12 @@ Module fmt.
                 [ Ty.path "u32" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3569,9 +3843,12 @@ Module fmt.
                 [ Ty.path "u64" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3610,9 +3887,12 @@ Module fmt.
                 [ Ty.path "u64" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3651,9 +3931,12 @@ Module fmt.
                 [ Ty.path "u64" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3692,9 +3975,12 @@ Module fmt.
                 [ Ty.path "u64" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3733,9 +4019,12 @@ Module fmt.
                 [ Ty.path "u64" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3774,9 +4063,12 @@ Module fmt.
                 [ Ty.path "u64" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3815,9 +4107,12 @@ Module fmt.
                 [ Ty.path "u64" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3856,9 +4151,12 @@ Module fmt.
                 [ Ty.path "u64" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3897,9 +4195,12 @@ Module fmt.
                 [ Ty.path "u128" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3938,9 +4239,12 @@ Module fmt.
                 [ Ty.path "u128" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3979,9 +4283,12 @@ Module fmt.
                 [ Ty.path "u128" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4020,9 +4327,12 @@ Module fmt.
                 [ Ty.path "u128" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.rust_cast (M.read (| M.read (| self |) |));
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.rust_cast (M.read (| M.deref (| M.read (| self |) |) |));
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4061,9 +4371,12 @@ Module fmt.
                 [ Ty.path "u128" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4102,9 +4415,12 @@ Module fmt.
                 [ Ty.path "u128" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4143,9 +4459,12 @@ Module fmt.
                 [ Ty.path "u128" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4184,9 +4503,12 @@ Module fmt.
                 [ Ty.path "u128" ]
               |),
               [
-                M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |);
-                M.read (| M.use (M.read (| self |)) |);
-                M.read (| f |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                |);
+                M.read (| M.use (M.deref (| M.read (| self |) |)) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4236,7 +4558,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4251,7 +4573,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -4271,7 +4596,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -4290,7 +4620,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -4306,7 +4642,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -4361,7 +4703,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4376,7 +4718,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -4396,7 +4741,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -4415,7 +4765,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -4431,7 +4787,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -4486,7 +4848,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4501,7 +4863,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -4521,7 +4886,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -4540,7 +4910,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -4556,7 +4932,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -4611,7 +4993,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4626,7 +5008,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -4646,7 +5031,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -4665,7 +5055,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -4681,7 +5077,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -4736,7 +5138,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4751,7 +5153,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -4771,7 +5176,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -4790,7 +5200,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -4806,7 +5222,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -4861,7 +5283,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4876,7 +5298,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -4896,7 +5321,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -4915,7 +5345,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -4931,7 +5367,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -4986,7 +5428,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5001,7 +5443,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -5021,7 +5466,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -5040,7 +5490,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -5056,7 +5512,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -5111,7 +5573,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5126,7 +5588,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -5146,7 +5611,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -5165,7 +5635,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -5181,7 +5657,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -5236,7 +5718,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5251,7 +5733,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -5271,7 +5756,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -5290,7 +5780,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -5306,7 +5802,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -5361,7 +5863,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5376,7 +5878,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -5396,7 +5901,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -5415,7 +5925,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -5431,7 +5947,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -5486,7 +6008,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5501,7 +6023,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -5521,7 +6046,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -5540,7 +6070,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -5556,7 +6092,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -5611,7 +6153,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| f |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5626,7 +6168,10 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| f |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -5646,7 +6191,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| f |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| f |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -5665,7 +6215,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -5681,7 +6237,13 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| f |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -5813,7 +6375,7 @@ Module fmt.
                       [],
                       []
                     |),
-                    [ buf ]
+                    [ M.borrow (| Pointer.Kind.Ref, buf |) ]
                   |)
                 |) in
               let~ buf_ptr :=
@@ -5825,7 +6387,12 @@ Module fmt.
                       [],
                       []
                     |),
-                    [ buf ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                      |)
+                    ]
                   |)
                 |) in
               let~ lut_ptr :=
@@ -5838,8 +6405,15 @@ Module fmt.
                       []
                     |),
                     [
-                      M.read (|
-                        M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.deref (|
+                              M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -6132,14 +6706,16 @@ Module fmt.
                           |) in
                         let~ _ :=
                           M.write (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                "add",
-                                [],
-                                []
-                              |),
-                              [ M.read (| buf_ptr |); M.read (| curr |) ]
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                  "add",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| buf_ptr |); M.read (| curr |) ]
+                              |)
                             |),
                             BinOp.Wrap.add (|
                               M.rust_cast (M.read (| n |)),
@@ -6198,45 +6774,50 @@ Module fmt.
                   M.call_closure (|
                     M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                     [
-                      M.call_closure (|
-                        M.get_function (|
-                          "core::slice::raw::from_raw_parts",
-                          [],
-                          [ Ty.path "u8" ]
-                        |),
-                        [
-                          (* MutToConstPointer *)
-                          M.pointer_coercion
-                            (M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                "add",
-                                [],
-                                []
-                              |),
-                              [ M.read (| buf_ptr |); M.read (| curr |) ]
-                            |));
-                          BinOp.Wrap.sub (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ Ty.path "u8" ]
-                                  ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [ buf ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::slice::raw::from_raw_parts",
+                              [],
+                              [ Ty.path "u8" ]
                             |),
-                            M.read (| curr |)
+                            [
+                              (* MutToConstPointer *)
+                              M.pointer_coercion
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                    "add",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                |));
+                              BinOp.Wrap.sub (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ Ty.path "u8" ]
+                                      ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                |),
+                                M.read (| curr |)
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
                     ]
                   |)
@@ -6250,10 +6831,10 @@ Module fmt.
                     []
                   |),
                   [
-                    M.read (| f |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                     M.read (| is_nonnegative |);
-                    M.read (| Value.String "" |);
-                    M.read (| buf_slice |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf_slice |) |) |)
                   ]
                 |)
               |)
@@ -6287,7 +6868,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I8 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I8 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -6310,7 +6894,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -6335,7 +6919,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -6348,7 +6937,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -6387,7 +6980,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U8 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U8 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -6410,7 +7006,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -6435,7 +7031,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -6448,7 +7049,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -6487,7 +7092,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I16 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I16 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -6510,7 +7118,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -6535,7 +7143,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -6548,7 +7161,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -6587,7 +7204,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U16 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U16 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -6610,7 +7230,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -6635,7 +7255,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -6648,7 +7273,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -6687,7 +7316,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I32 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I32 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -6710,7 +7342,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -6735,7 +7367,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -6748,7 +7385,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -6787,7 +7428,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U32 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U32 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -6810,7 +7454,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -6835,7 +7479,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -6848,7 +7497,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -6887,7 +7540,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I64 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I64 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -6910,7 +7566,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -6935,7 +7591,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -6948,7 +7609,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -6987,7 +7652,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U64 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U64 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -7010,7 +7678,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -7035,7 +7703,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -7048,7 +7721,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -7087,7 +7764,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Usize 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.Usize 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -7110,7 +7790,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -7135,7 +7815,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -7148,7 +7833,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -7187,7 +7876,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Isize 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.Isize 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -7210,7 +7902,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -7235,7 +7927,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -7248,7 +7945,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -7485,7 +8186,7 @@ Module fmt.
                           [],
                           []
                         |),
-                        [ M.read (| f |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                       |)
                     |),
                     [
@@ -7645,7 +8346,14 @@ Module fmt.
                                                   [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -7912,7 +8620,7 @@ Module fmt.
                               [],
                               []
                             |),
-                            [ buf ]
+                            [ M.borrow (| Pointer.Kind.Ref, buf |) ]
                           |)
                         |) in
                       let~ buf_ptr :=
@@ -7927,7 +8635,12 @@ Module fmt.
                               [],
                               []
                             |),
-                            [ buf ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                              |)
+                            ]
                           |)
                         |) in
                       let~ lut_ptr :=
@@ -7940,8 +8653,17 @@ Module fmt.
                               []
                             |),
                             [
-                              M.read (|
-                                M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (|
+                                    M.deref (|
+                                      M.read (|
+                                        M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -8087,14 +8809,16 @@ Module fmt.
                                 let~ _ :=
                                   let~ _ :=
                                     M.write (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                          "add",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                            "add",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                        |)
                                       |),
                                       BinOp.Wrap.add (|
                                         BinOp.Wrap.rem (|
@@ -8164,14 +8888,16 @@ Module fmt.
                                   |) in
                                 let~ _ :=
                                   M.write (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                        "add",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                          "add",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                      |)
                                     |),
                                     M.read (| UnsupportedLiteral |)
                                   |) in
@@ -8189,14 +8915,16 @@ Module fmt.
                             |) in
                           let~ _ :=
                             M.write (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                  "add",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| buf_ptr |); M.read (| curr |) ]
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                    "add",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                |)
                               |),
                               BinOp.Wrap.add (|
                                 M.rust_cast (M.read (| n |)),
@@ -8221,7 +8949,7 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ buf ]
+                                  [ M.borrow (| Pointer.Kind.Ref, buf |) ]
                                 |),
                                 M.read (| M.use curr |)
                               |)
@@ -8280,21 +9008,28 @@ Module fmt.
                               [],
                               []
                             |),
-                            [ exp_buf ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, exp_buf |) |)
+                              |)
+                            ]
                           |)
                         |) in
                       let~ exp_slice :=
                         M.copy (|
                           let~ _ :=
                             M.write (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                  "add",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 0 ]
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                    "add",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 0 ]
+                                |)
                               |),
                               M.read (|
                                 M.match_operator (|
@@ -8336,17 +9071,19 @@ Module fmt.
                                         |) in
                                       let~ _ :=
                                         M.write (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                              "add",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.read (| exp_ptr |);
-                                              Value.Integer IntegerKind.Usize 1
-                                            ]
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                                "add",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.read (| exp_ptr |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
+                                            |)
                                           |),
                                           BinOp.Wrap.add (|
                                             M.rust_cast (M.read (| exponent |)),
@@ -8417,19 +9154,32 @@ Module fmt.
                         |) in
                       let~ parts :=
                         M.alloc (|
-                          M.alloc (|
-                            Value.Array
-                              [
-                                Value.StructTuple
-                                  "core::num::fmt::Part::Copy"
-                                  [ M.read (| buf_slice |) ];
-                                Value.StructTuple
-                                  "core::num::fmt::Part::Zero"
-                                  [ M.read (| added_precision |) ];
-                                Value.StructTuple
-                                  "core::num::fmt::Part::Copy"
-                                  [ M.read (| exp_slice |) ]
-                              ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  Value.StructTuple
+                                    "core::num::fmt::Part::Copy"
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| buf_slice |) |)
+                                      |)
+                                    ];
+                                  Value.StructTuple
+                                    "core::num::fmt::Part::Zero"
+                                    [ M.read (| added_precision |) ];
+                                  Value.StructTuple
+                                    "core::num::fmt::Part::Copy"
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| exp_slice |) |)
+                                      |)
+                                    ]
+                                ]
+                            |)
                           |)
                         |) in
                       let~ sign :=
@@ -8451,35 +9201,50 @@ Module fmt.
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
-                                    M.read (|
-                                      M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ :=
-                                                M.use
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::Formatter",
+                                                            "sign_plus",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| f |) |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  Value.String "+"));
+                                              fun γ =>
+                                                ltac:(M.monadic
                                                   (M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Formatter",
-                                                        "sign_plus",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| f |) ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| Value.String "" |) |)
                                                     |)
-                                                  |)) in
-                                              let _ :=
-                                                M.is_constant_or_break_match (|
-                                                  M.read (| γ |),
-                                                  Value.Bool true
-                                                |) in
-                                              Value.String "+"));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.alloc (| M.read (| Value.String "" |) |)))
-                                        ]
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)
                                       |)
                                     |)
                                   |)))
@@ -8490,7 +9255,12 @@ Module fmt.
                         M.alloc (|
                           Value.StructRecord
                             "core::num::fmt::Formatted"
-                            [ ("sign", M.read (| sign |)); ("parts", M.read (| parts |)) ]
+                            [
+                              ("sign",
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sign |) |) |));
+                              ("parts",
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| parts |) |) |))
+                            ]
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -8500,7 +9270,13 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.read (| f |); formatted ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, formatted |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -8535,7 +9311,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I8 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I8 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -8558,7 +9337,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -8583,7 +9362,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -8596,7 +9380,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool false;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                     ]
                   |)
                 |)
@@ -8636,7 +9424,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U8 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U8 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -8659,7 +9450,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -8684,7 +9475,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -8697,7 +9493,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool false;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                     ]
                   |)
                 |)
@@ -8737,7 +9537,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I16 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I16 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -8760,7 +9563,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -8785,7 +9588,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -8798,7 +9606,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool false;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                     ]
                   |)
                 |)
@@ -8838,7 +9650,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U16 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U16 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -8861,7 +9676,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -8886,7 +9701,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -8899,7 +9719,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool false;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                     ]
                   |)
                 |)
@@ -8939,7 +9763,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I32 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I32 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -8962,7 +9789,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -8987,7 +9814,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -9000,7 +9832,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool false;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                     ]
                   |)
                 |)
@@ -9040,7 +9876,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U32 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U32 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -9063,7 +9902,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -9088,7 +9927,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -9101,7 +9945,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool false;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                     ]
                   |)
                 |)
@@ -9141,7 +9989,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I64 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I64 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -9164,7 +10015,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -9189,7 +10040,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -9202,7 +10058,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool false;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                     ]
                   |)
                 |)
@@ -9242,7 +10102,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U64 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U64 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -9265,7 +10128,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -9290,7 +10153,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -9303,7 +10171,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool false;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                     ]
                   |)
                 |)
@@ -9343,7 +10215,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Usize 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.Usize 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -9366,7 +10241,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -9391,7 +10266,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -9404,7 +10284,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool false;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                     ]
                   |)
                 |)
@@ -9444,7 +10328,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Isize 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.Isize 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -9467,7 +10354,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -9492,7 +10379,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -9505,7 +10397,11 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool false;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
                     ]
                   |)
                 |)
@@ -9545,7 +10441,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I8 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I8 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -9568,7 +10467,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -9593,7 +10492,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -9606,7 +10510,12 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool true;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -9645,7 +10554,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U8 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U8 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -9668,7 +10580,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -9693,7 +10605,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -9706,7 +10623,12 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool true;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -9745,7 +10667,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I16 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I16 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -9768,7 +10693,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -9793,7 +10718,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -9806,7 +10736,12 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool true;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -9845,7 +10780,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U16 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U16 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -9868,7 +10806,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -9893,7 +10831,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -9906,7 +10849,12 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool true;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -9945,7 +10893,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I32 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I32 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -9968,7 +10919,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -9993,7 +10944,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -10006,7 +10962,12 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool true;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -10045,7 +11006,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U32 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U32 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -10068,7 +11032,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -10093,7 +11057,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -10106,7 +11075,12 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool true;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -10145,7 +11119,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I64 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.I64 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -10168,7 +11145,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -10193,7 +11170,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -10206,7 +11188,12 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool true;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -10245,7 +11232,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U64 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.U64 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -10268,7 +11258,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -10293,7 +11283,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -10306,7 +11301,12 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool true;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -10345,7 +11345,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Usize 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.Usize 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -10368,7 +11371,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -10393,7 +11396,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -10406,7 +11414,12 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool true;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -10445,7 +11458,10 @@ Module fmt.
               M.read (|
                 let~ is_nonnegative :=
                   M.alloc (|
-                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Isize 0 |)
+                    BinOp.ge (|
+                      M.read (| M.deref (| M.read (| self |) |) |),
+                      Value.Integer IntegerKind.Isize 0
+                    |)
                   |) in
                 let~ n :=
                   M.copy (|
@@ -10468,7 +11484,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -10493,7 +11509,12 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |);
                                   Value.Integer IntegerKind.U64 1
@@ -10506,7 +11527,12 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
-                    [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                    [
+                      M.read (| n |);
+                      M.read (| is_nonnegative |);
+                      Value.Bool true;
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -10739,7 +11765,7 @@ Module fmt.
                         [],
                         []
                       |),
-                      [ M.read (| f |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                     |)
                   |),
                   [
@@ -10898,7 +11924,14 @@ Module fmt.
                                                 [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -11164,7 +12197,7 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ buf ]
+                          [ M.borrow (| Pointer.Kind.Ref, buf |) ]
                         |)
                       |) in
                     let~ buf_ptr :=
@@ -11179,7 +12212,12 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ buf ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ lut_ptr :=
@@ -11192,8 +12230,17 @@ Module fmt.
                             []
                           |),
                           [
-                            M.read (|
-                              M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.read (|
+                                  M.deref (|
+                                    M.read (|
+                                      M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |)
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -11339,14 +12386,16 @@ Module fmt.
                               let~ _ :=
                                 let~ _ :=
                                   M.write (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                        "add",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                          "add",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                      |)
                                     |),
                                     BinOp.Wrap.add (|
                                       BinOp.Wrap.rem (|
@@ -11416,14 +12465,16 @@ Module fmt.
                                 |) in
                               let~ _ :=
                                 M.write (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                    |)
                                   |),
                                   M.read (| UnsupportedLiteral |)
                                 |) in
@@ -11441,14 +12492,16 @@ Module fmt.
                           |) in
                         let~ _ :=
                           M.write (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                "add",
-                                [],
-                                []
-                              |),
-                              [ M.read (| buf_ptr |); M.read (| curr |) ]
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                  "add",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| buf_ptr |); M.read (| curr |) ]
+                              |)
                             |),
                             BinOp.Wrap.add (|
                               M.rust_cast (M.read (| n |)),
@@ -11473,7 +12526,7 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ buf ]
+                                [ M.borrow (| Pointer.Kind.Ref, buf |) ]
                               |),
                               M.read (| M.use curr |)
                             |)
@@ -11532,21 +12585,28 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ exp_buf ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, exp_buf |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ exp_slice :=
                       M.copy (|
                         let~ _ :=
                           M.write (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                "add",
-                                [],
-                                []
-                              |),
-                              [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 0 ]
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                  "add",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 0 ]
+                              |)
                             |),
                             M.read (|
                               M.match_operator (|
@@ -11588,15 +12648,19 @@ Module fmt.
                                       |) in
                                     let~ _ :=
                                       M.write (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                            "add",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 1
-                                          ]
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                              "add",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.read (| exp_ptr |);
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
+                                          |)
                                         |),
                                         BinOp.Wrap.add (|
                                           M.rust_cast (M.read (| exponent |)),
@@ -11667,19 +12731,32 @@ Module fmt.
                       |) in
                     let~ parts :=
                       M.alloc (|
-                        M.alloc (|
-                          Value.Array
-                            [
-                              Value.StructTuple
-                                "core::num::fmt::Part::Copy"
-                                [ M.read (| buf_slice |) ];
-                              Value.StructTuple
-                                "core::num::fmt::Part::Zero"
-                                [ M.read (| added_precision |) ];
-                              Value.StructTuple
-                                "core::num::fmt::Part::Copy"
-                                [ M.read (| exp_slice |) ]
-                            ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Value.Array
+                              [
+                                Value.StructTuple
+                                  "core::num::fmt::Part::Copy"
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| buf_slice |) |)
+                                    |)
+                                  ];
+                                Value.StructTuple
+                                  "core::num::fmt::Part::Zero"
+                                  [ M.read (| added_precision |) ];
+                                Value.StructTuple
+                                  "core::num::fmt::Part::Copy"
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| exp_slice |) |)
+                                    |)
+                                  ]
+                              ]
+                          |)
                         |)
                       |) in
                     let~ sign :=
@@ -11701,35 +12778,50 @@ Module fmt.
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
-                                  M.read (|
-                                    M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.match_operator (|
+                                          M.alloc (| Value.Tuple [] |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ :=
+                                                  M.use
+                                                    (M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Formatter",
+                                                          "sign_plus",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| f |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)) in
+                                                let _ :=
+                                                  M.is_constant_or_break_match (|
+                                                    M.read (| γ |),
+                                                    Value.Bool true
+                                                  |) in
+                                                Value.String "+"));
+                                            fun γ =>
+                                              ltac:(M.monadic
                                                 (M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::Formatter",
-                                                      "sign_plus",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| f |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| Value.String "" |) |)
                                                   |)
-                                                |)) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            Value.String "+"));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (| M.read (| Value.String "" |) |)))
-                                      ]
+                                                |)))
+                                          ]
+                                        |)
+                                      |)
                                     |)
                                   |)
                                 |)))
@@ -11740,7 +12832,12 @@ Module fmt.
                       M.alloc (|
                         Value.StructRecord
                           "core::num::fmt::Formatted"
-                          [ ("sign", M.read (| sign |)); ("parts", M.read (| parts |)) ]
+                          [
+                            ("sign",
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sign |) |) |));
+                            ("parts",
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| parts |) |) |))
+                          ]
                       |) in
                     M.alloc (|
                       M.call_closure (|
@@ -11750,7 +12847,13 @@ Module fmt.
                           [],
                           []
                         |),
-                        [ M.read (| f |); formatted ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, formatted |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -11785,7 +12888,10 @@ Module fmt.
             M.read (|
               let~ is_nonnegative :=
                 M.alloc (|
-                  BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I128 0 |)
+                  BinOp.ge (|
+                    M.read (| M.deref (| M.read (| self |) |) |),
+                    Value.Integer IntegerKind.I128 0
+                  |)
                 |) in
               let~ n :=
                 M.copy (|
@@ -11808,7 +12914,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -11833,7 +12939,12 @@ Module fmt.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |);
                                 Value.Integer IntegerKind.U128 1
@@ -11846,7 +12957,12 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::num::exp_u128", [], [] |),
-                  [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |) ]
+                  [
+                    M.read (| n |);
+                    M.read (| is_nonnegative |);
+                    Value.Bool false;
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -11885,7 +13001,10 @@ Module fmt.
             M.read (|
               let~ is_nonnegative :=
                 M.alloc (|
-                  BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U128 0 |)
+                  BinOp.ge (|
+                    M.read (| M.deref (| M.read (| self |) |) |),
+                    Value.Integer IntegerKind.U128 0
+                  |)
                 |) in
               let~ n :=
                 M.copy (|
@@ -11908,7 +13027,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -11933,7 +13052,12 @@ Module fmt.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |);
                                 Value.Integer IntegerKind.U128 1
@@ -11946,7 +13070,12 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::num::exp_u128", [], [] |),
-                  [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |) ]
+                  [
+                    M.read (| n |);
+                    M.read (| is_nonnegative |);
+                    Value.Bool false;
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -11985,7 +13114,10 @@ Module fmt.
             M.read (|
               let~ is_nonnegative :=
                 M.alloc (|
-                  BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I128 0 |)
+                  BinOp.ge (|
+                    M.read (| M.deref (| M.read (| self |) |) |),
+                    Value.Integer IntegerKind.I128 0
+                  |)
                 |) in
               let~ n :=
                 M.copy (|
@@ -12008,7 +13140,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -12033,7 +13165,12 @@ Module fmt.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |);
                                 Value.Integer IntegerKind.U128 1
@@ -12046,7 +13183,12 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::num::exp_u128", [], [] |),
-                  [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                  [
+                    M.read (| n |);
+                    M.read (| is_nonnegative |);
+                    Value.Bool true;
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -12085,7 +13227,10 @@ Module fmt.
             M.read (|
               let~ is_nonnegative :=
                 M.alloc (|
-                  BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U128 0 |)
+                  BinOp.ge (|
+                    M.read (| M.deref (| M.read (| self |) |) |),
+                    Value.Integer IntegerKind.U128 0
+                  |)
                 |) in
               let~ n :=
                 M.copy (|
@@ -12108,7 +13253,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -12133,7 +13278,12 @@ Module fmt.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |);
                                 Value.Integer IntegerKind.U128 1
@@ -12146,7 +13296,12 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::num::exp_u128", [], [] |),
-                  [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
+                  [
+                    M.read (| n |);
+                    M.read (| is_nonnegative |);
+                    Value.Bool true;
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -12265,7 +13420,7 @@ Module fmt.
                     [],
                     []
                   |),
-                  [ M.read (| buf |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |) ]
                 |)
               |) in
             let~ lut_ptr :=
@@ -12277,7 +13432,17 @@ Module fmt.
                     [],
                     []
                   |),
-                  [ M.read (| M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |) |)
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          M.deref (|
+                            M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
+                          |)
+                        |)
+                      |)
+                    |)
                   ]
                 |)
               |) in
@@ -12292,7 +13457,7 @@ Module fmt.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.gt (|
-                                M.read (| M.read (| curr |) |),
+                                M.read (| M.deref (| M.read (| curr |) |) |),
                                 Value.Integer IntegerKind.Usize 19
                               |)
                             |)
@@ -12445,7 +13610,7 @@ Module fmt.
                           |)
                         |) in
                       let~ _ :=
-                        let β := M.read (| curr |) in
+                        let β := M.deref (| M.read (| curr |) |) in
                         M.write (|
                           β,
                           BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 16 |)
@@ -12478,7 +13643,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
                                 ]
@@ -12515,7 +13680,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 2
                                   |)
                                 ]
@@ -12552,7 +13717,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 4
                                   |)
                                 ]
@@ -12589,7 +13754,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 6
                                   |)
                                 ]
@@ -12626,7 +13791,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 8
                                   |)
                                 ]
@@ -12663,7 +13828,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 10
                                   |)
                                 ]
@@ -12700,7 +13865,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 12
                                   |)
                                 ]
@@ -12737,7 +13902,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 14
                                   |)
                                 ]
@@ -12834,7 +13999,7 @@ Module fmt.
                           |)
                         |) in
                       let~ _ :=
-                        let β := M.read (| curr |) in
+                        let β := M.deref (| M.read (| curr |) |) in
                         M.write (|
                           β,
                           BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 8 |)
@@ -12867,7 +14032,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
                                 ]
@@ -12904,7 +14069,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 2
                                   |)
                                 ]
@@ -12941,7 +14106,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 4
                                   |)
                                 ]
@@ -12978,7 +14143,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 6
                                   |)
                                 ]
@@ -13044,7 +14209,7 @@ Module fmt.
                           |)
                         |) in
                       let~ _ :=
-                        let β := M.read (| curr |) in
+                        let β := M.deref (| M.read (| curr |) |) in
                         M.write (|
                           β,
                           BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 4 |)
@@ -13077,7 +14242,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
                                 ]
@@ -13114,7 +14279,7 @@ Module fmt.
                                 [
                                   M.read (| buf_ptr |);
                                   BinOp.Wrap.add (|
-                                    M.read (| M.read (| curr |) |),
+                                    M.read (| M.deref (| M.read (| curr |) |) |),
                                     Value.Integer IntegerKind.Usize 2
                                   |)
                                 ]
@@ -13154,7 +14319,7 @@ Module fmt.
                           BinOp.Wrap.div (| M.read (| β |), Value.Integer IntegerKind.U16 100 |)
                         |) in
                       let~ _ :=
-                        let β := M.read (| curr |) in
+                        let β := M.deref (| M.read (| curr |) |) in
                         M.write (|
                           β,
                           BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 2 |)
@@ -13184,7 +14349,8 @@ Module fmt.
                                   [],
                                   []
                                 |),
-                                [ M.read (| buf_ptr |); M.read (| M.read (| curr |) |) ]
+                                [ M.read (| buf_ptr |); M.read (| M.deref (| M.read (| curr |) |) |)
+                                ]
                               |);
                               Value.Integer IntegerKind.Usize 2
                             ]
@@ -13206,21 +14372,23 @@ Module fmt.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
-                      let β := M.read (| curr |) in
+                      let β := M.deref (| M.read (| curr |) |) in
                       M.write (|
                         β,
                         BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     let~ _ :=
                       M.write (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                            "add",
-                            [],
-                            []
-                          |),
-                          [ M.read (| buf_ptr |); M.read (| M.read (| curr |) |) ]
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                              "add",
+                              [],
+                              []
+                            |),
+                            [ M.read (| buf_ptr |); M.read (| M.deref (| M.read (| curr |) |) |) ]
+                          |)
                         |),
                         BinOp.Wrap.add (|
                           M.rust_cast (M.read (| n |)),
@@ -13235,7 +14403,7 @@ Module fmt.
                         BinOp.Wrap.shl (| M.read (| n |), Value.Integer IntegerKind.I32 1 |)
                       |) in
                     let~ _ :=
-                      let β := M.read (| curr |) in
+                      let β := M.deref (| M.read (| curr |) |) in
                       M.write (|
                         β,
                         BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 2 |)
@@ -13265,7 +14433,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| buf_ptr |); M.read (| M.read (| curr |) |) ]
+                              [ M.read (| buf_ptr |); M.read (| M.deref (| M.read (| curr |) |) |) ]
                             |);
                             Value.Integer IntegerKind.Usize 2
                           ]
@@ -13296,7 +14464,11 @@ Module fmt.
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_function (| "core::fmt::num::fmt_u128", [], [] |),
-              [ M.read (| M.read (| self |) |); Value.Bool true; M.read (| f |) ]
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                Value.Bool true;
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13333,7 +14505,10 @@ Module fmt.
             M.read (|
               let~ is_nonnegative :=
                 M.alloc (|
-                  BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I128 0 |)
+                  BinOp.ge (|
+                    M.read (| M.deref (| M.read (| self |) |) |),
+                    Value.Integer IntegerKind.I128 0
+                  |)
                 |) in
               let~ n :=
                 M.copy (|
@@ -13356,7 +14531,7 @@ Module fmt.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -13381,7 +14556,12 @@ Module fmt.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |);
                                 Value.Integer IntegerKind.U128 1
@@ -13394,7 +14574,11 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::num::fmt_u128", [], [] |),
-                  [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
+                  [
+                    M.read (| n |);
+                    M.read (| is_nonnegative |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -13501,7 +14685,7 @@ Module fmt.
                     [],
                     []
                   |),
-                  [ buf ]
+                  [ M.borrow (| Pointer.Kind.Ref, buf |) ]
                 |)
               |) in
             M.match_operator (|
@@ -13526,7 +14710,17 @@ Module fmt.
                             [ Value.Integer IntegerKind.Usize 39 ],
                             []
                           |),
-                          [ M.read (| rem |); buf; curr ]
+                          [
+                            M.read (| rem |);
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, curr |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -13563,7 +14757,7 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ buf ]
+                                      [ M.borrow (| Pointer.Kind.Ref, buf |) ]
                                     |),
                                     Value.Integer IntegerKind.Usize 19
                                   |)
@@ -13596,7 +14790,14 @@ Module fmt.
                                                 [],
                                                 []
                                               |),
-                                              [ buf ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
+                                                |)
+                                              ]
                                             |);
                                             M.read (| target |)
                                           ]
@@ -13630,7 +14831,21 @@ Module fmt.
                                               [ Value.Integer IntegerKind.Usize 39 ],
                                               []
                                             |),
-                                            [ M.read (| rem |); buf; curr ]
+                                            [
+                                              M.read (| rem |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, curr |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         |) in
                                       M.match_operator (|
@@ -13670,7 +14885,7 @@ Module fmt.
                                                         [],
                                                         []
                                                       |),
-                                                      [ buf ]
+                                                      [ M.borrow (| Pointer.Kind.Ref, buf |) ]
                                                     |),
                                                     Value.Integer IntegerKind.Usize 38
                                                   |)
@@ -13688,7 +14903,14 @@ Module fmt.
                                                       [],
                                                       []
                                                     |),
-                                                    [ buf ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |) in
                                               let~ _ :=
@@ -13731,14 +14953,19 @@ Module fmt.
                                                 |) in
                                               let~ _ :=
                                                 M.write (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                                      "add",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "*mut")
+                                                          []
+                                                          [ Ty.path "u8" ],
+                                                        "add",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.read (| buf_ptr |); M.read (| curr |) ]
+                                                    |)
                                                   |),
                                                   BinOp.Wrap.add (|
                                                     M.rust_cast (M.read (| n |)),
@@ -13759,59 +14986,71 @@ Module fmt.
                         M.call_closure (|
                           M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                           [
-                            M.call_closure (|
-                              M.get_function (|
-                                "core::slice::raw::from_raw_parts",
-                                [],
-                                [ Ty.path "u8" ]
-                              |),
-                              [
-                                (* MutToConstPointer *)
-                                M.pointer_coercion
-                                  (M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_function (|
+                                    "core::slice::raw::from_raw_parts",
+                                    [],
+                                    [ Ty.path "u8" ]
+                                  |),
+                                  [
+                                    (* MutToConstPointer *)
+                                    M.pointer_coercion
+                                      (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                            []
-                                            [ Ty.path "u8" ],
-                                          "slice_as_mut_ptr",
+                                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                          "add",
                                           [],
                                           []
                                         |),
-                                        [ buf ]
-                                      |);
-                                      M.read (| curr |)
-                                    ]
-                                  |));
-                                BinOp.Wrap.sub (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
                                         [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ Ty.path "u8" ],
+                                              "slice_as_mut_ptr",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                |)
+                                              |)
+                                            ]
+                                          |);
+                                          M.read (| curr |)
+                                        ]
+                                      |));
+                                    BinOp.Wrap.sub (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
                                           Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            (Ty.path "slice")
                                             []
-                                            [ Ty.path "u8" ]
-                                        ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [ buf ]
-                                  |),
-                                  M.read (| curr |)
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ Ty.path "u8" ]
+                                            ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                      |),
+                                      M.read (| curr |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |)
                             |)
                           ]
                         |)
@@ -13825,10 +15064,13 @@ Module fmt.
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.read (| is_nonnegative |);
-                          M.read (| Value.String "" |);
-                          M.read (| buf_slice |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "" |) |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf_slice |) |) |)
                         ]
                       |)
                     |)))

@@ -24,7 +24,7 @@ Definition call_me (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 [],
                 []
               |),
-              [ f; Value.Tuple [] ]
+              [ M.borrow (| Pointer.Kind.Ref, f |); Value.Tuple [] ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
@@ -57,8 +57,20 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "I'm a function!
-" |) ] |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "I'm a function!
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -112,10 +124,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [ M.read (| Value.String "I'm a closure!
-" |) ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [ M.read (| Value.String "I'm a closure!
+" |)
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)

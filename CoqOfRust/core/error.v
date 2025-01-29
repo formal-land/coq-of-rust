@@ -45,7 +45,10 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| Value.String "description() is deprecated; use Display" |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (| M.read (| Value.String "description() is deprecated; use Display" |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -58,7 +61,7 @@ Module error.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", Self, [], [], "source", [], [] |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -98,7 +101,10 @@ Module error.
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
-              [ M.read (| f |); M.read (| Value.String "Internal" |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Internal" |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -163,7 +169,10 @@ Module error.
                     [],
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::error::private::Internal" [] ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    Value.StructTuple "core::error::private::Internal" []
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -177,7 +186,7 @@ Module error.
                   [],
                   []
                 |),
-                [ t; concrete ]
+                [ M.borrow (| Pointer.Kind.Ref, t |); M.borrow (| Pointer.Kind.Ref, concrete |) ]
               |)
             |)
           |)))
@@ -217,14 +226,35 @@ Module error.
                               [],
                               [ T ]
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.rust_cast
+                                    (M.read (|
+                                      M.use
+                                        (M.alloc (|
+                                          M.borrow (|
+                                            Pointer.Kind.ConstPointer,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        |))
+                                    |))
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -267,14 +297,35 @@ Module error.
                               [],
                               [ T ]
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.rust_cast
+                                    (M.read (|
+                                      M.use
+                                        (M.alloc (|
+                                          M.borrow (|
+                                            Pointer.Kind.MutPointer,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        |))
+                                    |))
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -308,7 +359,12 @@ Module error.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::error::Source"
-            [ ("current", Value.StructTuple "core::option::Option::Some" [ M.read (| self |) ]) ]))
+            [
+              ("current",
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ])
+            ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -336,7 +392,7 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -360,7 +416,7 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -384,7 +440,7 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -418,7 +474,7 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -442,7 +498,7 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -466,7 +522,7 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -494,7 +550,7 @@ Module error.
             [],
             [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ]; impl_Error__plus___Sized ]
           |),
-          [ M.read (| err |) ]
+          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| err |) |) |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -526,7 +582,7 @@ Module error.
               impl_Error__plus___Sized
             ]
           |),
-          [ M.read (| err |) ]
+          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| err |) |) |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -578,18 +634,23 @@ Module error.
                   []
                 |),
                 [
-                  M.read (| err |);
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::error::Tagged")
-                        []
-                        [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ],
-                      "as_request",
-                      [],
-                      []
-                    |),
-                    [ tagged ]
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| err |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::error::Tagged")
+                            []
+                            [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ],
+                          "as_request",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, tagged |) ]
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -637,14 +698,27 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.path "core::error::Request",
-              "provide",
-              [],
-              [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ] ]
-            |),
-            [ M.read (| self |); M.read (| value |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::error::Request",
+                      "provide",
+                      [],
+                      [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ] ]
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| value |)
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -666,14 +740,30 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let fulfil := M.alloc (| fulfil |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.path "core::error::Request",
-              "provide_with",
-              [],
-              [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ]; impl_FnOnce___arrow_T ]
-            |),
-            [ M.read (| self |); M.read (| fulfil |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::error::Request",
+                      "provide_with",
+                      [],
+                      [
+                        Ty.apply (Ty.path "core::error::tags::Value") [] [ T ];
+                        impl_FnOnce___arrow_T
+                      ]
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| fulfil |)
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -692,19 +782,32 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.path "core::error::Request",
-              "provide",
-              [],
-              [
-                Ty.apply
-                  (Ty.path "core::error::tags::Ref")
-                  []
-                  [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ] ]
-              ]
-            |),
-            [ M.read (| self |); M.read (| value |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::error::Request",
+                      "provide",
+                      [],
+                      [
+                        Ty.apply
+                          (Ty.path "core::error::tags::Ref")
+                          []
+                          [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ] ]
+                      ]
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| value |)
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -725,20 +828,33 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let fulfil := M.alloc (| fulfil |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.path "core::error::Request",
-              "provide_with",
-              [],
-              [
-                Ty.apply
-                  (Ty.path "core::error::tags::Ref")
-                  []
-                  [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ] ];
-                impl_FnOnce___arrow__'a_T
-              ]
-            |),
-            [ M.read (| self |); M.read (| fulfil |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::error::Request",
+                      "provide_with",
+                      [],
+                      [
+                        Ty.apply
+                          (Ty.path "core::error::tags::Ref")
+                          []
+                          [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ] ];
+                        impl_FnOnce___arrow__'a_T
+                      ]
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| fulfil |)
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -763,63 +879,71 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
-          M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::error::Tagged")
-                                []
-                                [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
-                              "downcast_mut",
-                              [],
-                              [ I ]
-                            |),
-                            [
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.read (| self |),
-                                "core::error::Request",
-                                0
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::error::Tagged")
+                                    []
+                                    [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
+                                  "downcast_mut",
+                                  [],
+                                  [ I ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::error::Request",
+                                      0
+                                    |)
+                                  |)
+                                ]
                               |)
-                            ]
-                          |)
-                        |) in
-                      let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let res := M.copy (| γ0_0 |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
-                      let γ3_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::error::TaggedOption",
-                          0
-                        |) in
-                      let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
-                      let~ _ :=
-                        M.write (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.read (| res |),
-                            "core::error::TaggedOption",
-                            0
-                          |),
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-            M.alloc (| M.read (| self |) |)
+                            |) in
+                          let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::option::Option::Some",
+                              0
+                            |) in
+                          let res := M.copy (| γ0_0 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ3_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "core::error::TaggedOption",
+                              0
+                            |) in
+                          let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
+                          let~ _ :=
+                            M.write (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| res |) |),
+                                "core::error::TaggedOption",
+                                0
+                              |),
+                              Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -843,78 +967,86 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let fulfil := M.alloc (| fulfil |) in
-          M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::error::Tagged")
-                                []
-                                [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
-                              "downcast_mut",
-                              [],
-                              [ I ]
-                            |),
-                            [
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.read (| self |),
-                                "core::error::Request",
-                                0
-                              |)
-                            ]
-                          |)
-                        |) in
-                      let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let res := M.copy (| γ0_0 |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
-                      let γ3_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::error::TaggedOption",
-                          0
-                        |) in
-                      let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
-                      let~ _ :=
-                        M.write (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.read (| res |),
-                            "core::error::TaggedOption",
-                            0
-                          |),
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::function::FnOnce",
-                                  impl_FnOnce___arrow_I_Reified,
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::error::Tagged")
+                                    []
+                                    [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
+                                  "downcast_mut",
                                   [],
-                                  [ Ty.tuple [] ],
-                                  "call_once",
-                                  [],
-                                  []
+                                  [ I ]
                                 |),
-                                [ M.read (| fulfil |); Value.Tuple [] ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::error::Request",
+                                      0
+                                    |)
+                                  |)
+                                ]
                               |)
-                            ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-            M.alloc (| M.read (| self |) |)
+                            |) in
+                          let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::option::Option::Some",
+                              0
+                            |) in
+                          let res := M.copy (| γ0_0 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ3_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "core::error::TaggedOption",
+                              0
+                            |) in
+                          let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
+                          let~ _ :=
+                            M.write (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| res |) |),
+                                "core::error::TaggedOption",
+                                0
+                              |),
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::function::FnOnce",
+                                      impl_FnOnce___arrow_I_Reified,
+                                      [],
+                                      [ Ty.tuple [] ],
+                                      "call_once",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| fulfil |); Value.Tuple [] ]
+                                  |)
+                                ]
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -945,7 +1077,7 @@ Module error.
               [],
               [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ] ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -982,7 +1114,7 @@ Module error.
                   [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ] ]
               ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1017,10 +1149,13 @@ Module error.
                     [ I ]
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::error::Request",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::error::Request",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -1076,15 +1211,24 @@ Module error.
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    [],
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "Request" |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "Request" |) |)
+                      |)
+                    ]
+                  |)
                 |)
               |)
             ]
@@ -1149,13 +1293,24 @@ Module error.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Value" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::error::tags::Value",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Value" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::error::tags::Value",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -1215,13 +1370,27 @@ Module error.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "MaybeSizedValue" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::error::tags::MaybeSizedValue",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "MaybeSizedValue" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::error::tags::MaybeSizedValue",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -1281,13 +1450,24 @@ Module error.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Ref" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::error::tags::Ref",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Ref" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::error::tags::Ref",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -1349,9 +1529,46 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ erased := M.copy (| M.use (M.alloc (| M.read (| self |) |)) |) in
-            M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| erased |) |)) |)) |)
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ erased :=
+                  M.copy (|
+                    M.use
+                      (M.alloc (|
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                      |))
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.rust_cast
+                                (M.read (|
+                                  M.use
+                                    (M.alloc (|
+                                      M.borrow (|
+                                        Pointer.Kind.MutPointer,
+                                        M.deref (| M.read (| erased |) |)
+                                      |)
+                                    |))
+                                |))
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1426,20 +1643,26 @@ Module error.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::error::Tagged",
-                                "tag_id"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::error::Tagged",
+                                  "tag_id"
+                                |)
                               |);
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::any::TypeId",
-                                    "of",
-                                    [],
-                                    [ I ]
-                                  |),
-                                  []
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::any::TypeId",
+                                      "of",
+                                      [],
+                                      [ I ]
+                                    |),
+                                    []
+                                  |)
                                 |)
                               |)
                             ]
@@ -1450,31 +1673,61 @@ Module error.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*const")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::error::Tagged")
-                                      []
-                                      [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
-                                  ],
-                                "cast",
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::error::Tagged")
-                                    []
-                                    [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
-                                ]
-                              |),
-                              [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |) ]
-                            |),
-                            "core::error::Tagged",
-                            "value"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "*const")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::error::Tagged")
+                                                  []
+                                                  [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                                              ],
+                                            "cast",
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::error::Tagged")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::error::TaggedOption")
+                                                    []
+                                                    [ I ]
+                                                ]
+                                            ]
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.use
+                                                (M.alloc (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.ConstPointer,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                |))
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    |)
+                                  |),
+                                  "core::error::Tagged",
+                                  "value"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                     |)));
@@ -1529,20 +1782,26 @@ Module error.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::error::Tagged",
-                                "tag_id"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::error::Tagged",
+                                  "tag_id"
+                                |)
                               |);
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::any::TypeId",
-                                    "of",
-                                    [],
-                                    [ I ]
-                                  |),
-                                  []
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::any::TypeId",
+                                      "of",
+                                      [],
+                                      [ I ]
+                                    |),
+                                    []
+                                  |)
                                 |)
                               |)
                             ]
@@ -1553,31 +1812,61 @@ Module error.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::error::Tagged")
-                                      []
-                                      [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
-                                  ],
-                                "cast",
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::error::Tagged")
-                                    []
-                                    [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
-                                ]
-                              |),
-                              [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |) ]
-                            |),
-                            "core::error::Tagged",
-                            "value"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "*mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::error::Tagged")
+                                                  []
+                                                  [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                                              ],
+                                            "cast",
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::error::Tagged")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::error::TaggedOption")
+                                                    []
+                                                    [ I ]
+                                                ]
+                                            ]
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.use
+                                                (M.alloc (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutPointer,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                |))
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    |)
+                                  |),
+                                  "core::error::Tagged",
+                                  "value"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                     |)));
@@ -1635,10 +1924,18 @@ Module error.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::error::Source",
-                      "current"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::error::Source",
+                            "current"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -1672,14 +1969,25 @@ Module error.
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Source" |);
-              M.read (| Value.String "current" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::error::Source",
-                  "current"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Source" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "current" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::error::Source",
+                          "current"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -1718,7 +2026,7 @@ Module error.
             let~ current :=
               M.copy (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::error::Source",
                   "current"
                 |)
@@ -1726,7 +2034,7 @@ Module error.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::error::Source",
                   "current"
                 |),
@@ -1758,7 +2066,7 @@ Module error.
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::error::Source",
                         "current"
                       |)
@@ -1815,10 +2123,13 @@ Module error.
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::error::Source",
-                                "current"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::error::Source",
+                                  "current"
+                                |)
                               |)
                             ]
                           |)
@@ -1886,9 +2197,24 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], [], "description", [], [] |),
-            [ M.read (| M.read (| self |) |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (| "core::error::Error", T, [], [], "description", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                      |)
+                    |)
+                  |)
+                ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1906,7 +2232,17 @@ Module error.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", T, [], [], "cause", [], [] |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1924,7 +2260,17 @@ Module error.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", T, [], [], "source", [], [] |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1946,7 +2292,18 @@ Module error.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::error::Error", T, [], [], "provide", [], [] |),
-                  [ M.read (| M.read (| self |) |); M.read (| request |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                        |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| request |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -1982,7 +2339,10 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| Value.String "an error occurred when formatting an argument" |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (| M.read (| Value.String "an error occurred when formatting an argument" |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2007,7 +2367,10 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| Value.String "already mutably borrowed" |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (| M.read (| Value.String "already mutably borrowed" |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2032,7 +2395,10 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| Value.String "already borrowed" |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (| M.read (| Value.String "already borrowed" |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2057,7 +2423,10 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| Value.String "converted integer out of range for `char`" |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (| M.read (| Value.String "converted integer out of range for `char`" |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

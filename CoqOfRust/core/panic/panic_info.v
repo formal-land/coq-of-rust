@@ -35,32 +35,76 @@ Module panic.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "PanicInfo" |);
-                M.read (| Value.String "message" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::panic::panic_info::PanicInfo",
-                  "message"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "PanicInfo" |) |)
                 |);
-                M.read (| Value.String "location" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::panic::panic_info::PanicInfo",
-                  "location"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "message" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::panic::panic_info::PanicInfo",
+                        "message"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "can_unwind" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::panic::panic_info::PanicInfo",
-                  "can_unwind"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "location" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::panic::panic_info::PanicInfo",
+                        "location"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "force_no_backtrace" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicInfo",
-                    "force_no_backtrace"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "can_unwind" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::panic::panic_info::PanicInfo",
+                        "can_unwind"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "force_no_backtrace" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::panic::panic_info::PanicInfo",
+                            "force_no_backtrace"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -108,8 +152,8 @@ Module panic.
             Value.StructRecord
               "core::panic::panic_info::PanicInfo"
               [
-                ("location", M.read (| location |));
-                ("message", M.read (| message |));
+                ("location", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| location |) |) |));
+                ("message", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| message |) |) |));
                 ("can_unwind", M.read (| can_unwind |));
                 ("force_no_backtrace", M.read (| force_no_backtrace |))
               ]))
@@ -132,11 +176,16 @@ Module panic.
               "core::panic::panic_info::PanicMessage"
               [
                 ("message",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::panic::panic_info::PanicInfo",
-                      "message"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::panic::panic_info::PanicInfo",
+                          "message"
+                        |)
+                      |)
                     |)
                   |))
               ]))
@@ -160,11 +209,21 @@ Module panic.
             Value.StructTuple
               "core::option::Option::Some"
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicInfo",
-                    "location"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::panic::panic_info::PanicInfo",
+                            "location"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]))
@@ -184,7 +243,22 @@ Module panic.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.alloc (| Value.StructTuple "core::panic::panic_info::payload::NoPayload" [] |)))
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.StructTuple "core::panic::panic_info::payload::NoPayload" []
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -202,7 +276,7 @@ Module panic.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::panic::panic_info::PanicInfo",
                 "can_unwind"
               |)
@@ -224,7 +298,7 @@ Module panic.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::panic::panic_info::PanicInfo",
                 "force_no_backtrace"
               |)
@@ -281,7 +355,16 @@ Module panic.
                                 [],
                                 []
                               |),
-                              [ M.read (| formatter |); M.read (| Value.String "panicked at " |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| formatter |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "panicked at " |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |)
@@ -367,14 +450,22 @@ Module panic.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::panic::panic_info::PanicInfo",
-                                    "location"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::panic::panic_info::PanicInfo",
+                                        "location"
+                                      |)
+                                    |)
                                   |)
                                 |);
-                                M.read (| formatter |)
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| formatter |) |)
+                                |)
                               ]
                             |)
                           ]
@@ -457,8 +548,17 @@ Module panic.
                                 [],
                                 []
                               |),
-                              [ M.read (| formatter |); M.read (| Value.String ":
-" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| formatter |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String ":
+" |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |)
@@ -541,13 +641,18 @@ Module panic.
                                 []
                               |),
                               [
-                                M.read (| formatter |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| formatter |) |)
+                                |);
                                 M.read (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::panic::panic_info::PanicInfo",
-                                      "message"
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::panic::panic_info::PanicInfo",
+                                        "message"
+                                      |)
                                     |)
                                   |)
                                 |)
@@ -639,11 +744,16 @@ Module panic.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [], [] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicMessage",
-                    "message"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::panic::panic_info::PanicMessage",
+                        "message"
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -671,13 +781,15 @@ Module panic.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
-                M.read (| formatter |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| formatter |) |) |);
                 M.read (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::panic::panic_info::PanicMessage",
-                      "message"
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::panic::panic_info::PanicMessage",
+                        "message"
+                      |)
                     |)
                   |)
                 |)
@@ -711,13 +823,15 @@ Module panic.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
-                M.read (| formatter |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| formatter |) |) |);
                 M.read (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::panic::panic_info::PanicMessage",
-                      "message"
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::panic::panic_info::PanicMessage",
+                        "message"
+                      |)
                     |)
                   |)
                 |)

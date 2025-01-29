@@ -83,20 +83,30 @@ Module collections.
                   |) in
                 let~ new_ref :=
                   M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                        "as_ptr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| ptr |) ]
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                "as_ptr",
+                                [],
+                                []
+                              |),
+                              [ M.read (| ptr |) ]
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |) in
                 M.alloc (|
                   Value.Tuple
                     [
-                      M.read (| new_ref |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| new_ref |) |) |);
                       Value.StructRecord
                         "alloc::collections::btree::borrow::DormantMutRef"
                         [
@@ -125,22 +135,42 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                  "as_ptr",
-                  [],
-                  []
-                |),
-                [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      self,
-                      "alloc::collections::btree::borrow::DormantMutRef",
-                      "ptr"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                  "as_ptr",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "alloc::collections::btree::borrow::DormantMutRef",
+                                      "ptr"
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -161,22 +191,42 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                  "as_ptr",
-                  [],
-                  []
-                |),
-                [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::borrow::DormantMutRef",
-                      "ptr"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                  "as_ptr",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::borrow::DormantMutRef",
+                                      "ptr"
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -202,22 +252,32 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                  "as_ptr",
-                  [],
-                  []
-                |),
-                [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::borrow::DormantMutRef",
-                      "ptr"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                          "as_ptr",
+                          [],
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::borrow::DormantMutRef",
+                              "ptr"
+                            |)
+                          |)
+                        ]
+                      |)
                     |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

@@ -209,7 +209,7 @@ Module parser.
                     [],
                     [ Ty.path "move_core_types::parser::Token" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -220,7 +220,7 @@ Module parser.
                     [],
                     [ Ty.path "move_core_types::parser::Token" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -262,7 +262,10 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -296,7 +299,10 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -330,7 +336,10 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -364,7 +373,10 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -398,7 +410,10 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -432,7 +447,10 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -466,7 +484,10 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -500,7 +521,10 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -534,7 +558,10 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -568,7 +595,10 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -615,7 +645,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U8Type" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U8Type" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -630,7 +666,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U16Type" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U16Type" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -645,7 +687,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U32Type" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U32Type" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -660,7 +708,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U64Type" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U64Type" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -676,7 +730,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U128Type" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U128Type" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -692,7 +752,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U256Type" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U256Type" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -708,7 +774,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "BoolType" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BoolType" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -724,7 +796,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "AddressType" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "AddressType" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -740,7 +818,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "VectorType" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VectorType" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -756,7 +840,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "SignerType" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SignerType" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -777,7 +867,17 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Whitespace" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Whitespace" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -798,7 +898,17 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Name" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Name" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -819,7 +929,17 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Address" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Address" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -840,7 +960,17 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U8" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U8" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -861,7 +991,17 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U16" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U16" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -882,7 +1022,17 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U32" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U32" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -903,7 +1053,17 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U64" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U64" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -924,7 +1084,17 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U128" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U128" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -945,7 +1115,17 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U256" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U256" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -966,7 +1146,17 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Bytes" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Bytes" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -981,7 +1171,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "True" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "True" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -996,7 +1192,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "False" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "False" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1012,7 +1214,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "ColonColon" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ColonColon" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1027,7 +1235,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Lt" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Lt" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1042,7 +1256,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Gt" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Gt" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1057,7 +1277,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Comma" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Comma" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1072,7 +1298,13 @@ Module parser.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "EOF" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EOF" |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -1180,7 +1412,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "u8" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "u8" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1198,7 +1435,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "u16" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "u16" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1216,7 +1458,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "u32" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "u32" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1234,7 +1481,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "u64" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "u64" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1252,7 +1504,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "u128" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "u128" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1270,7 +1527,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "u256" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "u256" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1288,7 +1550,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "bool" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "bool" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1309,7 +1576,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "address" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "address" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1330,7 +1602,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "vector" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "vector" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1348,7 +1625,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "true" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "true" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1366,7 +1648,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "false" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "false" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1387,7 +1674,12 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| Value.String "signer" |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "signer" |) |)
+                                |)
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -1573,32 +1865,58 @@ Module parser.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "Invalid token. Expected a name but got "
-                                                                            |)
-                                                                          ]
-                                                                      |);
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument",
-                                                                                "new_debug",
-                                                                                [],
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Value.Array
                                                                                 [
-                                                                                  Ty.path
-                                                                                    "move_core_types::parser::Token"
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      "Invalid token. Expected a name but got "
+                                                                                  |)
                                                                                 ]
-                                                                              |),
-                                                                              [ tok ]
                                                                             |)
-                                                                          ]
+                                                                          |)
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_debug",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_core_types::parser::Token"
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            tok
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -1659,7 +1977,7 @@ Module parser.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "alloc::string::String", "as_str", [], [] |),
-                [ s ]
+                [ M.borrow (| Pointer.Kind.Ref, s |) ]
               |)
             |),
             [
@@ -1791,7 +2109,7 @@ Module parser.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "alloc::string::String", "push", [], [] |),
-                    [ num; M.read (| initial |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, num |); M.read (| initial |) ]
                   |)
                 |) in
               M.alloc (|
@@ -1811,7 +2129,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ it ]
+                              [ M.borrow (| Pointer.Kind.MutRef, it |) ]
                             |)
                           |),
                           [
@@ -1834,7 +2152,7 @@ Module parser.
                                           [],
                                           []
                                         |),
-                                        [ c ]
+                                        [ M.borrow (| Pointer.Kind.Ref, c |) ]
                                       |),
                                       ltac:(M.monadic
                                         (BinOp.eq (| M.read (| c |), Value.UnicodeChar 95 |)))
@@ -1853,7 +2171,7 @@ Module parser.
                                       [],
                                       []
                                     |),
-                                    [ num; M.read (| c |) ]
+                                    [ M.borrow (| Pointer.Kind.MutRef, num |); M.read (| c |) ]
                                   |)
                                 |)));
                             fun γ =>
@@ -1903,7 +2221,7 @@ Module parser.
                                         [],
                                         []
                                       |),
-                                      [ suffix; M.read (| c |) ]
+                                      [ M.borrow (| Pointer.Kind.MutRef, suffix |); M.read (| c |) ]
                                     |)
                                   |) in
                                 M.alloc (|
@@ -1923,7 +2241,7 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ it ]
+                                                [ M.borrow (| Pointer.Kind.MutRef, it |) ]
                                               |)
                                             |),
                                             [
@@ -1945,7 +2263,7 @@ Module parser.
                                                           [],
                                                           []
                                                         |),
-                                                        [ c ]
+                                                        [ M.borrow (| Pointer.Kind.Ref, c |) ]
                                                       |)
                                                     |) in
                                                   let _ :=
@@ -1961,7 +2279,10 @@ Module parser.
                                                         [],
                                                         []
                                                       |),
-                                                      [ suffix; M.read (| c |) ]
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, suffix |);
+                                                        M.read (| c |)
+                                                      ]
                                                     |)
                                                   |)));
                                               fun γ =>
@@ -1979,7 +2300,12 @@ Module parser.
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ num ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    num
+                                                                  |)
+                                                                ]
                                                               |),
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
@@ -1988,7 +2314,12 @@ Module parser.
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ suffix ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    suffix
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |)
                                                           |) in
@@ -2003,7 +2334,12 @@ Module parser.
                                                                     [],
                                                                     []
                                                                   |),
-                                                                  [ suffix ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      suffix
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |),
                                                               [
@@ -2107,14 +2443,22 @@ Module parser.
                                                                                               []
                                                                                             |),
                                                                                             [
-                                                                                              M.alloc (|
-                                                                                                Value.Array
-                                                                                                  [
-                                                                                                    M.read (|
-                                                                                                      Value.String
-                                                                                                        "invalid suffix"
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.alloc (|
+                                                                                                      Value.Array
+                                                                                                        [
+                                                                                                          M.read (|
+                                                                                                            Value.String
+                                                                                                              "invalid suffix"
+                                                                                                          |)
+                                                                                                        ]
                                                                                                     |)
-                                                                                                  ]
+                                                                                                  |)
+                                                                                                |)
                                                                                               |)
                                                                                             ]
                                                                                           |)
@@ -2163,7 +2507,7 @@ Module parser.
                                               [],
                                               []
                                             |),
-                                            [ num ]
+                                            [ M.borrow (| Pointer.Kind.Ref, num |) ]
                                           |)
                                         |) in
                                       M.return_ (|
@@ -2310,7 +2654,7 @@ Module parser.
                     [
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "str", "chars", [], [] |),
-                        [ M.read (| s |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                       |)
                     ]
                   |)
@@ -2330,7 +2674,7 @@ Module parser.
                       [],
                       []
                     |),
-                    [ it ]
+                    [ M.borrow (| Pointer.Kind.MutRef, it |) ]
                   |)
                 |),
                 [
@@ -2433,7 +2777,7 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ it ]
+                                                [ M.borrow (| Pointer.Kind.MutRef, it |) ]
                                               |)
                                             |),
                                             [
@@ -2487,14 +2831,22 @@ Module parser.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "unrecognized token"
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "unrecognized token"
+                                                                                        |)
+                                                                                      ]
                                                                                   |)
-                                                                                ]
+                                                                                |)
+                                                                              |)
                                                                             |)
                                                                           ]
                                                                         |)
@@ -2545,25 +2897,43 @@ Module parser.
                                                     []
                                                   |),
                                                   [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "core::iter::adapters::peekable::Peekable")
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::iter::adapters::peekable::Peekable")
+                                                              []
+                                                              [ Ty.path "core::str::iter::Chars" ],
+                                                            "peek",
+                                                            [],
                                                             []
-                                                            [ Ty.path "core::str::iter::Chars" ],
-                                                          "peek",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ it ]
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.MutRef, it |) ]
+                                                        |)
                                                       |)
                                                     |);
-                                                    M.alloc (|
-                                                      Value.StructTuple
-                                                        "core::option::Option::Some"
-                                                        [ M.alloc (| Value.UnicodeChar 120 |) ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.StructTuple
+                                                          "core::option::Option::Some"
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.UnicodeChar 120
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                      |)
                                                     |)
                                                   ]
                                                 |),
@@ -2597,25 +2967,45 @@ Module parser.
                                                       []
                                                     |),
                                                     [
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "core::iter::adapters::peekable::Peekable")
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::iter::adapters::peekable::Peekable")
+                                                                []
+                                                                [ Ty.path "core::str::iter::Chars"
+                                                                ],
+                                                              "peek",
+                                                              [],
                                                               []
-                                                              [ Ty.path "core::str::iter::Chars" ],
-                                                            "peek",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ it ]
+                                                            |),
+                                                            [ M.borrow (| Pointer.Kind.MutRef, it |)
+                                                            ]
+                                                          |)
                                                         |)
                                                       |);
-                                                      M.alloc (|
-                                                        Value.StructTuple
-                                                          "core::option::Option::Some"
-                                                          [ M.alloc (| Value.UnicodeChar 88 |) ]
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.StructTuple
+                                                            "core::option::Option::Some"
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.UnicodeChar 88
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                        |)
                                                       |)
                                                     ]
                                                   |)))
@@ -2653,7 +3043,7 @@ Module parser.
                                                       [],
                                                       []
                                                     |),
-                                                    [ it ]
+                                                    [ M.borrow (| Pointer.Kind.MutRef, it |) ]
                                                   |)
                                                 ]
                                               |)
@@ -2674,7 +3064,7 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ it ]
+                                                [ M.borrow (| Pointer.Kind.MutRef, it |) ]
                                               |)
                                             |),
                                             [
@@ -2696,7 +3086,7 @@ Module parser.
                                                           [],
                                                           []
                                                         |),
-                                                        [ c ]
+                                                        [ M.borrow (| Pointer.Kind.Ref, c |) ]
                                                       |)
                                                     |) in
                                                   let _ :=
@@ -2725,7 +3115,10 @@ Module parser.
                                                           [],
                                                           []
                                                         |),
-                                                        [ r; Value.UnicodeChar 48 ]
+                                                        [
+                                                          M.borrow (| Pointer.Kind.MutRef, r |);
+                                                          Value.UnicodeChar 48
+                                                        ]
                                                       |)
                                                     |) in
                                                   let~ _ :=
@@ -2737,7 +3130,10 @@ Module parser.
                                                           [],
                                                           []
                                                         |),
-                                                        [ r; Value.UnicodeChar 120 ]
+                                                        [
+                                                          M.borrow (| Pointer.Kind.MutRef, r |);
+                                                          Value.UnicodeChar 120
+                                                        ]
                                                       |)
                                                     |) in
                                                   let~ _ :=
@@ -2749,7 +3145,10 @@ Module parser.
                                                           [],
                                                           []
                                                         |),
-                                                        [ r; M.read (| c |) ]
+                                                        [
+                                                          M.borrow (| Pointer.Kind.MutRef, r |);
+                                                          M.read (| c |)
+                                                        ]
                                                       |)
                                                     |) in
                                                   let~ _ :=
@@ -2800,7 +3199,17 @@ Module parser.
                                                                             [],
                                                                             []
                                                                           |),
-                                                                          [ iter ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.MutRef,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.MutRef,
+                                                                                  iter
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       |),
                                                                       [
@@ -2846,7 +3255,12 @@ Module parser.
                                                                                               [],
                                                                                               []
                                                                                             |),
-                                                                                            [ c ]
+                                                                                            [
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                c
+                                                                                              |)
+                                                                                            ]
                                                                                           |)
                                                                                         |)) in
                                                                                     let _ :=
@@ -2868,7 +3282,10 @@ Module parser.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            r;
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.MutRef,
+                                                                                              r
+                                                                                            |);
                                                                                             M.read (|
                                                                                               c
                                                                                             |)
@@ -2904,7 +3321,7 @@ Module parser.
                                                           [],
                                                           []
                                                         |),
-                                                        [ r ]
+                                                        [ M.borrow (| Pointer.Kind.Ref, r |) ]
                                                       |)
                                                     |) in
                                                   M.alloc (|
@@ -2944,14 +3361,22 @@ Module parser.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "unrecognized token"
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "unrecognized token"
+                                                                                        |)
+                                                                                      ]
                                                                                   |)
-                                                                                ]
+                                                                                |)
+                                                                              |)
                                                                             |)
                                                                           ]
                                                                         |)
@@ -2979,7 +3404,7 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ c ]
+                                                [ M.borrow (| Pointer.Kind.Ref, c |) ]
                                               |)
                                             |) in
                                           let _ :=
@@ -3124,25 +3549,41 @@ Module parser.
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::iter::adapters::peekable::Peekable")
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::iter::adapters::peekable::Peekable")
+                                                            []
+                                                            [ Ty.path "core::str::iter::Chars" ],
+                                                          "peek",
+                                                          [],
                                                           []
-                                                          [ Ty.path "core::str::iter::Chars" ],
-                                                        "peek",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ it ]
+                                                        |),
+                                                        [ M.borrow (| Pointer.Kind.MutRef, it |) ]
+                                                      |)
                                                     |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::Some"
-                                                      [ M.alloc (| Value.UnicodeChar 34 |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::Some"
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (| Value.UnicodeChar 34 |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -3179,7 +3620,7 @@ Module parser.
                                                       [],
                                                       []
                                                     |),
-                                                    [ it ]
+                                                    [ M.borrow (| Pointer.Kind.MutRef, it |) ]
                                                   |)
                                                 ]
                                               |)
@@ -3215,7 +3656,7 @@ Module parser.
                                                         [],
                                                         []
                                                       |),
-                                                      [ it ]
+                                                      [ M.borrow (| Pointer.Kind.MutRef, it |) ]
                                                     |)
                                                   |),
                                                   [
@@ -3255,7 +3696,7 @@ Module parser.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ c ]
+                                                              [ M.borrow (| Pointer.Kind.Ref, c |) ]
                                                             |)
                                                           |) in
                                                         let _ :=
@@ -3271,7 +3712,10 @@ Module parser.
                                                               [],
                                                               []
                                                             |),
-                                                            [ r; M.read (| c |) ]
+                                                            [
+                                                              M.borrow (| Pointer.Kind.MutRef, r |);
+                                                              M.read (| c |)
+                                                            ]
                                                           |)
                                                         |)));
                                                     fun γ =>
@@ -3302,14 +3746,22 @@ Module parser.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "unrecognized token"
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.alloc (|
+                                                                                          Value.Array
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                Value.String
+                                                                                                  "unrecognized token"
+                                                                                              |)
+                                                                                            ]
                                                                                         |)
-                                                                                      ]
+                                                                                      |)
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -3336,7 +3788,7 @@ Module parser.
                                                     [],
                                                     []
                                                   |),
-                                                  [ r ]
+                                                  [ M.borrow (| Pointer.Kind.Ref, r |) ]
                                                 |),
                                                 Value.Integer IntegerKind.Usize 3
                                               |)
@@ -3389,25 +3841,41 @@ Module parser.
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::iter::adapters::peekable::Peekable")
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::iter::adapters::peekable::Peekable")
+                                                            []
+                                                            [ Ty.path "core::str::iter::Chars" ],
+                                                          "peek",
+                                                          [],
                                                           []
-                                                          [ Ty.path "core::str::iter::Chars" ],
-                                                        "peek",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ it ]
+                                                        |),
+                                                        [ M.borrow (| Pointer.Kind.MutRef, it |) ]
+                                                      |)
                                                     |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::Some"
-                                                      [ M.alloc (| Value.UnicodeChar 34 |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::Some"
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (| Value.UnicodeChar 34 |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -3444,7 +3912,7 @@ Module parser.
                                                       [],
                                                       []
                                                     |),
-                                                    [ it ]
+                                                    [ M.borrow (| Pointer.Kind.MutRef, it |) ]
                                                   |)
                                                 ]
                                               |)
@@ -3480,7 +3948,7 @@ Module parser.
                                                         [],
                                                         []
                                                       |),
-                                                      [ it ]
+                                                      [ M.borrow (| Pointer.Kind.MutRef, it |) ]
                                                     |)
                                                   |),
                                                   [
@@ -3520,7 +3988,7 @@ Module parser.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ c ]
+                                                              [ M.borrow (| Pointer.Kind.Ref, c |) ]
                                                             |)
                                                           |) in
                                                         let _ :=
@@ -3536,7 +4004,10 @@ Module parser.
                                                               [],
                                                               []
                                                             |),
-                                                            [ r; M.read (| c |) ]
+                                                            [
+                                                              M.borrow (| Pointer.Kind.MutRef, r |);
+                                                              M.read (| c |)
+                                                            ]
                                                           |)
                                                         |)));
                                                     fun γ =>
@@ -3567,14 +4038,22 @@ Module parser.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "unrecognized token"
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.alloc (|
+                                                                                          Value.Array
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                Value.String
+                                                                                                  "unrecognized token"
+                                                                                              |)
+                                                                                            ]
                                                                                         |)
-                                                                                      ]
+                                                                                      |)
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -3601,7 +4080,7 @@ Module parser.
                                                     [],
                                                     []
                                                   |),
-                                                  [ r ]
+                                                  [ M.borrow (| Pointer.Kind.Ref, r |) ]
                                                 |),
                                                 Value.Integer IntegerKind.Usize 3
                                               |)
@@ -3627,7 +4106,7 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ c ]
+                                                [ M.borrow (| Pointer.Kind.Ref, c |) ]
                                               |)
                                             |) in
                                           let _ :=
@@ -3656,7 +4135,10 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ r; M.read (| c |) ]
+                                                [
+                                                  M.borrow (| Pointer.Kind.MutRef, r |);
+                                                  M.read (| c |)
+                                                ]
                                               |)
                                             |) in
                                           let~ _ :=
@@ -3706,7 +4188,17 @@ Module parser.
                                                                     [],
                                                                     []
                                                                   |),
-                                                                  [ iter ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          iter
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |),
                                                               [
@@ -3747,7 +4239,12 @@ Module parser.
                                                                                       [],
                                                                                       []
                                                                                     |),
-                                                                                    [ c ]
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        c
+                                                                                      |)
+                                                                                    ]
                                                                                   |)
                                                                                 |)) in
                                                                             let _ :=
@@ -3766,7 +4263,10 @@ Module parser.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    r;
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.MutRef,
+                                                                                      r
+                                                                                    |);
                                                                                     M.read (| c |)
                                                                                   ]
                                                                                 |)
@@ -3800,7 +4300,7 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ r ]
+                                                [ M.borrow (| Pointer.Kind.Ref, r |) ]
                                               |)
                                             |) in
                                           M.alloc (|
@@ -3824,7 +4324,7 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ c ]
+                                                [ M.borrow (| Pointer.Kind.Ref, c |) ]
                                               |)
                                             |) in
                                           let _ :=
@@ -3853,7 +4353,10 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ r; M.read (| c |) ]
+                                                [
+                                                  M.borrow (| Pointer.Kind.MutRef, r |);
+                                                  M.read (| c |)
+                                                ]
                                               |)
                                             |) in
                                           let~ _ :=
@@ -3903,7 +4406,17 @@ Module parser.
                                                                     [],
                                                                     []
                                                                   |),
-                                                                  [ iter ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          iter
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |),
                                                               [
@@ -3962,7 +4475,10 @@ Module parser.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    r;
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.MutRef,
+                                                                                      r
+                                                                                    |);
                                                                                     M.read (| c |)
                                                                                   ]
                                                                                 |)
@@ -3996,7 +4512,7 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ r ]
+                                                [ M.borrow (| Pointer.Kind.Ref, r |) ]
                                               |)
                                             |) in
                                           M.alloc (|
@@ -4040,14 +4556,22 @@ Module parser.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "unrecognized token"
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.read (|
+                                                                                  Value.String
+                                                                                    "unrecognized token"
+                                                                                |)
+                                                                              ]
                                                                           |)
-                                                                        ]
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -4153,7 +4677,12 @@ Module parser.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| s |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| s |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -4245,33 +4774,46 @@ Module parser.
                                     [],
                                     []
                                   |),
-                                  [ v; M.read (| tok |) ]
+                                  [ M.borrow (| Pointer.Kind.MutRef, v |); M.read (| tok |) ]
                                 |)
                               |) in
                             let~ _ :=
                               M.write (|
                                 s,
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::index::Index",
-                                    Ty.path "str",
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeFrom")
-                                        []
-                                        [ Ty.path "usize" ]
-                                    ],
-                                    "index",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (| s |);
-                                    Value.StructRecord
-                                      "core::ops::range::RangeFrom"
-                                      [ ("start", M.read (| n |)) ]
-                                  ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::index::Index",
+                                            Ty.path "str",
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ops::range::RangeFrom")
+                                                []
+                                                [ Ty.path "usize" ]
+                                            ],
+                                            "index",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| s |) |)
+                                            |);
+                                            Value.StructRecord
+                                              "core::ops::range::RangeFrom"
+                                              [ ("start", M.read (| n |)) ]
+                                          ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -4387,10 +4929,13 @@ Module parser.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_core_types::parser::Parser",
-                          "it"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::parser::Parser",
+                            "it"
+                          |)
                         |)
                       ]
                     |)
@@ -4436,14 +4981,22 @@ Module parser.
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "out of tokens, this should not happen"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (|
+                                                                Value.String
+                                                                  "out of tokens, this should not happen"
+                                                              |)
+                                                            ]
                                                         |)
-                                                      ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -4487,10 +5040,13 @@ Module parser.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::parser::Parser",
-                "it"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::parser::Parser",
+                  "it"
+                |)
               |)
             ]
           |)))
@@ -4545,7 +5101,8 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           ]
                         |)
@@ -4623,7 +5180,10 @@ Module parser.
                                     [],
                                     []
                                   |),
-                                  [ t; tok ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, t |);
+                                    M.borrow (| Pointer.Kind.Ref, tok |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -4668,45 +5228,84 @@ Module parser.
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String "expected token "
-                                                                  |);
-                                                                  M.read (| Value.String ", got " |)
-                                                                ]
-                                                            |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_debug",
-                                                                      [],
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        Ty.path
-                                                                          "move_core_types::parser::Token"
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "expected token "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String ", got "
+                                                                        |)
                                                                       ]
-                                                                    |),
-                                                                    [ tok ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_debug",
-                                                                      [],
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_core_types::parser::Token"
-                                                                      ]
-                                                                    |),
-                                                                    [ t ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_debug",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_core_types::parser::Token"
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  tok
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_debug",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_core_types::parser::Token"
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  t
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -4835,22 +5434,42 @@ Module parser.
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "move_core_types::parser::Parser")
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "move_core_types::parser::Parser")
+                                                []
+                                                [ I ],
+                                              "peek",
+                                              [],
                                               []
-                                              [ I ],
-                                            "peek",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| self |) ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |);
-                                      M.alloc (|
-                                        Value.StructTuple "core::option::Option::Some" [ end_token ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.Ref, end_token |)
+                                                |)
+                                              |)
+                                            ]
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -4873,7 +5492,7 @@ Module parser.
                                       []
                                     |),
                                     [
-                                      v;
+                                      M.borrow (| Pointer.Kind.MutRef, v |);
                                       M.read (|
                                         M.match_operator (|
                                           M.alloc (|
@@ -4916,8 +5535,17 @@ Module parser.
                                                     []
                                                   |),
                                                   [
-                                                    parse_list_item;
-                                                    Value.Tuple [ M.read (| self |) ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      parse_list_item
+                                                    |);
+                                                    Value.Tuple
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| self |) |)
+                                                        |)
+                                                      ]
                                                   ]
                                                 |)
                                               ]
@@ -5029,25 +5657,46 @@ Module parser.
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "move_core_types::parser::Parser")
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "move_core_types::parser::Parser")
+                                                            []
+                                                            [ I ],
+                                                          "peek",
+                                                          [],
                                                           []
-                                                          [ I ],
-                                                        "peek",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| self |) |)
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::Some"
-                                                      [ end_token ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::Some"
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                end_token
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -5091,7 +5740,10 @@ Module parser.
                                             []
                                           |),
                                           [
-                                            M.read (| self |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| self |) |)
+                                            |);
                                             Value.StructTuple
                                               "move_core_types::parser::Token::Comma"
                                               []
@@ -5198,25 +5850,46 @@ Module parser.
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "move_core_types::parser::Parser")
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "move_core_types::parser::Parser")
+                                                            []
+                                                            [ I ],
+                                                          "peek",
+                                                          [],
                                                           []
-                                                          [ I ],
-                                                        "peek",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| self |) |)
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::Some"
-                                                      [ end_token ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::Some"
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                end_token
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                    |)
                                                   |)
                                                 ]
                                               |),
@@ -5293,7 +5966,12 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -5408,36 +6086,62 @@ Module parser.
                                                               []
                                                             |),
                                                             [
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "unexpected token "
-                                                                    |);
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        ", expected string"
-                                                                    |)
-                                                                  ]
-                                                              |);
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [],
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
                                                                         [
-                                                                          Ty.path
-                                                                            "move_core_types::parser::Token"
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "unexpected token "
+                                                                          |);
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              ", expected string"
+                                                                          |)
                                                                         ]
-                                                                      |),
-                                                                      [ tok ]
                                                                     |)
-                                                                  ]
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument",
+                                                                              "new_debug",
+                                                                              [],
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_core_types::parser::Token"
+                                                                              ]
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    tok
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                    |)
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -5552,7 +6256,12 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -5746,7 +6455,10 @@ Module parser.
                                           []
                                         |),
                                         [
-                                          M.read (| self |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
                                           Value.StructTuple "move_core_types::parser::Token::Lt" []
                                         ]
                                       |)
@@ -5841,7 +6553,12 @@ Module parser.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -5932,7 +6649,10 @@ Module parser.
                                           []
                                         |),
                                         [
-                                          M.read (| self |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
                                           Value.StructTuple "move_core_types::parser::Token::Gt" []
                                         ]
                                       |)
@@ -6054,7 +6774,10 @@ Module parser.
                                           []
                                         |),
                                         [
-                                          M.read (| self |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
                                           Value.StructTuple
                                             "move_core_types::parser::Token::ColonColon"
                                             []
@@ -6174,7 +6897,12 @@ Module parser.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| self |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |);
                                             M.get_function (|
                                               "move_core_types::parser::token_as_name",
@@ -6272,7 +7000,10 @@ Module parser.
                                           []
                                         |),
                                         [
-                                          M.read (| self |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
                                           Value.StructTuple
                                             "move_core_types::parser::Token::ColonColon"
                                             []
@@ -6392,7 +7123,12 @@ Module parser.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| self |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |);
                                             M.get_function (|
                                               "move_core_types::parser::token_as_name",
@@ -6502,31 +7238,50 @@ Module parser.
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "move_core_types::parser::Parser")
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "move_core_types::parser::Parser")
+                                                            []
+                                                            [ I ],
+                                                          "peek",
+                                                          [],
                                                           []
-                                                          [ I ],
-                                                        "peek",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| self |) |)
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
                                                   |);
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::Some"
-                                                      [
-                                                        M.alloc (|
-                                                          Value.StructTuple
-                                                            "move_core_types::parser::Token::Lt"
-                                                            []
-                                                        |)
-                                                      ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::Some"
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.StructTuple
+                                                                    "move_core_types::parser::Token::Lt"
+                                                                    []
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -6566,7 +7321,12 @@ Module parser.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| self |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -6696,7 +7456,10 @@ Module parser.
                                                         ]
                                                       |),
                                                       [
-                                                        M.read (| self |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| self |) |)
+                                                        |);
                                                         M.closure
                                                           (fun γ =>
                                                             ltac:(M.monadic
@@ -6721,7 +7484,16 @@ Module parser.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| parser |) ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    parser
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |)))
                                                                     ]
                                                                   |)))
@@ -6825,7 +7597,10 @@ Module parser.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| self |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |);
                                                       Value.StructTuple
                                                         "move_core_types::parser::Token::Gt"
                                                         []
@@ -6969,17 +7744,32 @@ Module parser.
                                                           []
                                                         |),
                                                         [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::deref::Deref",
-                                                              Ty.path "alloc::string::String",
-                                                              [],
-                                                              [],
-                                                              "deref",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ addr ]
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::deref::Deref",
+                                                                  Ty.path "alloc::string::String",
+                                                                  [],
+                                                                  [],
+                                                                  "deref",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        addr
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -7286,36 +8076,62 @@ Module parser.
                                                               []
                                                             |),
                                                             [
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "unexpected token "
-                                                                    |);
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        ", expected type tag"
-                                                                    |)
-                                                                  ]
-                                                              |);
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [],
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
                                                                         [
-                                                                          Ty.path
-                                                                            "move_core_types::parser::Token"
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "unexpected token "
+                                                                          |);
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              ", expected type tag"
+                                                                          |)
                                                                         ]
-                                                                      |),
-                                                                      [ tok ]
                                                                     |)
-                                                                  ]
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument",
+                                                                              "new_debug",
+                                                                              [],
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_core_types::parser::Token"
+                                                                              ]
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    tok
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                    |)
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -7406,7 +8222,12 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -7510,44 +8331,68 @@ Module parser.
                                                 [ Ty.path "u8" ]
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "alloc::string::String",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "str",
-                                                          "replace",
-                                                          [],
-                                                          [ Ty.path "char" ]
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::deref::Deref",
-                                                              Ty.path "alloc::string::String",
-                                                              [],
-                                                              [],
-                                                              "deref",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ s ]
-                                                          |);
-                                                          Value.UnicodeChar 95;
-                                                          M.read (| Value.String "" |)
-                                                        ]
-                                                      |)
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "alloc::string::String",
+                                                        [],
+                                                        [],
+                                                        "deref",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "str",
+                                                                "replace",
+                                                                [],
+                                                                [ Ty.path "char" ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::deref::Deref",
+                                                                        Ty.path
+                                                                          "alloc::string::String",
+                                                                        [],
+                                                                        [],
+                                                                        "deref",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          s
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                Value.UnicodeChar 95;
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| Value.String "" |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -7656,44 +8501,68 @@ Module parser.
                                                 [ Ty.path "u16" ]
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "alloc::string::String",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "str",
-                                                          "replace",
-                                                          [],
-                                                          [ Ty.path "char" ]
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::deref::Deref",
-                                                              Ty.path "alloc::string::String",
-                                                              [],
-                                                              [],
-                                                              "deref",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ s ]
-                                                          |);
-                                                          Value.UnicodeChar 95;
-                                                          M.read (| Value.String "" |)
-                                                        ]
-                                                      |)
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "alloc::string::String",
+                                                        [],
+                                                        [],
+                                                        "deref",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "str",
+                                                                "replace",
+                                                                [],
+                                                                [ Ty.path "char" ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::deref::Deref",
+                                                                        Ty.path
+                                                                          "alloc::string::String",
+                                                                        [],
+                                                                        [],
+                                                                        "deref",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          s
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                Value.UnicodeChar 95;
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| Value.String "" |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -7802,44 +8671,68 @@ Module parser.
                                                 [ Ty.path "u32" ]
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "alloc::string::String",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "str",
-                                                          "replace",
-                                                          [],
-                                                          [ Ty.path "char" ]
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::deref::Deref",
-                                                              Ty.path "alloc::string::String",
-                                                              [],
-                                                              [],
-                                                              "deref",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ s ]
-                                                          |);
-                                                          Value.UnicodeChar 95;
-                                                          M.read (| Value.String "" |)
-                                                        ]
-                                                      |)
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "alloc::string::String",
+                                                        [],
+                                                        [],
+                                                        "deref",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "str",
+                                                                "replace",
+                                                                [],
+                                                                [ Ty.path "char" ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::deref::Deref",
+                                                                        Ty.path
+                                                                          "alloc::string::String",
+                                                                        [],
+                                                                        [],
+                                                                        "deref",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          s
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                Value.UnicodeChar 95;
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| Value.String "" |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -7948,44 +8841,68 @@ Module parser.
                                                 [ Ty.path "u64" ]
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "alloc::string::String",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "str",
-                                                          "replace",
-                                                          [],
-                                                          [ Ty.path "char" ]
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::deref::Deref",
-                                                              Ty.path "alloc::string::String",
-                                                              [],
-                                                              [],
-                                                              "deref",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ s ]
-                                                          |);
-                                                          Value.UnicodeChar 95;
-                                                          M.read (| Value.String "" |)
-                                                        ]
-                                                      |)
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "alloc::string::String",
+                                                        [],
+                                                        [],
+                                                        "deref",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "str",
+                                                                "replace",
+                                                                [],
+                                                                [ Ty.path "char" ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::deref::Deref",
+                                                                        Ty.path
+                                                                          "alloc::string::String",
+                                                                        [],
+                                                                        [],
+                                                                        "deref",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          s
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                Value.UnicodeChar 95;
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| Value.String "" |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -8094,44 +9011,68 @@ Module parser.
                                                 [ Ty.path "u128" ]
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "alloc::string::String",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "str",
-                                                          "replace",
-                                                          [],
-                                                          [ Ty.path "char" ]
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::deref::Deref",
-                                                              Ty.path "alloc::string::String",
-                                                              [],
-                                                              [],
-                                                              "deref",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ s ]
-                                                          |);
-                                                          Value.UnicodeChar 95;
-                                                          M.read (| Value.String "" |)
-                                                        ]
-                                                      |)
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "alloc::string::String",
+                                                        [],
+                                                        [],
+                                                        "deref",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "str",
+                                                                "replace",
+                                                                [],
+                                                                [ Ty.path "char" ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::deref::Deref",
+                                                                        Ty.path
+                                                                          "alloc::string::String",
+                                                                        [],
+                                                                        [],
+                                                                        "deref",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          s
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                Value.UnicodeChar 95;
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| Value.String "" |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -8240,44 +9181,68 @@ Module parser.
                                                 [ Ty.path "move_core_types::u256::U256" ]
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "alloc::string::String",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "str",
-                                                          "replace",
-                                                          [],
-                                                          [ Ty.path "char" ]
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::deref::Deref",
-                                                              Ty.path "alloc::string::String",
-                                                              [],
-                                                              [],
-                                                              "deref",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ s ]
-                                                          |);
-                                                          Value.UnicodeChar 95;
-                                                          M.read (| Value.String "" |)
-                                                        ]
-                                                      |)
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "alloc::string::String",
+                                                        [],
+                                                        [],
+                                                        "deref",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "str",
+                                                                "replace",
+                                                                [],
+                                                                [ Ty.path "char" ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::deref::Deref",
+                                                                        Ty.path
+                                                                          "alloc::string::String",
+                                                                        [],
+                                                                        [],
+                                                                        "deref",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          s
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                Value.UnicodeChar 95;
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| Value.String "" |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -8407,17 +9372,29 @@ Module parser.
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "alloc::string::String",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ addr ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "alloc::string::String",
+                                                        [],
+                                                        [],
+                                                        "deref",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.Ref, addr |)
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -8635,36 +9612,62 @@ Module parser.
                                                               []
                                                             |),
                                                             [
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "unexpected token "
-                                                                    |);
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        ", expected transaction argument"
-                                                                    |)
-                                                                  ]
-                                                              |);
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [],
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
                                                                         [
-                                                                          Ty.path
-                                                                            "move_core_types::parser::Token"
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "unexpected token "
+                                                                          |);
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              ", expected transaction argument"
+                                                                          |)
                                                                         ]
-                                                                      |),
-                                                                      [ tok ]
                                                                     |)
-                                                                  ]
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument",
+                                                                              "new_debug",
+                                                                              [],
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_core_types::parser::Token"
+                                                                              ]
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    tok
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                    |)
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -8839,7 +9842,12 @@ Module parser.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| s |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| s |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -8920,7 +9928,12 @@ Module parser.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| tok |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| tok |) |)
+                                                  |)
+                                                ]
                                               |)
                                             |)))
                                       ]
@@ -8945,7 +9958,10 @@ Module parser.
                       [],
                       []
                     |),
-                    [ tokens; Value.StructTuple "move_core_types::parser::Token::EOF" [] ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, tokens |);
+                      Value.StructTuple "move_core_types::parser::Token::EOF" []
+                    ]
                   |)
                 |) in
               let~ parser :=
@@ -9026,7 +10042,16 @@ Module parser.
                               [],
                               []
                             |),
-                            [ f; Value.Tuple [ parser ] ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, f |);
+                              Value.Tuple
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, parser |) |)
+                                  |)
+                                ]
+                            ]
                           |)
                         ]
                       |)
@@ -9120,7 +10145,10 @@ Module parser.
                             [],
                             []
                           |),
-                          [ parser; Value.StructTuple "move_core_types::parser::Token::EOF" [] ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, parser |);
+                            Value.StructTuple "move_core_types::parser::Token::EOF" []
+                          ]
                         |)
                       ]
                     |)
@@ -9243,7 +10271,7 @@ Module parser.
             ]
           |),
           [
-            M.read (| s |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -9305,7 +10333,10 @@ Module parser.
                                   ]
                                 |),
                                 [
-                                  M.read (| parser |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| parser |) |)
+                                  |);
                                   M.closure
                                     (fun γ =>
                                       ltac:(M.monadic
@@ -9339,7 +10370,12 @@ Module parser.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| parser |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| parser |) |)
+                                                        |)
+                                                      ]
                                                     |)))
                                               ]
                                             |)))
@@ -9424,7 +10460,7 @@ Module parser.
             ]
           |),
           [
-            M.read (| s |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -9488,7 +10524,10 @@ Module parser.
                                   ]
                                 |),
                                 [
-                                  M.read (| parser |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| parser |) |)
+                                  |);
                                   M.closure
                                     (fun γ =>
                                       ltac:(M.monadic
@@ -9522,7 +10561,12 @@ Module parser.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| parser |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| parser |) |)
+                                                        |)
+                                                      ]
                                                     |)))
                                               ]
                                             |)))
@@ -9591,7 +10635,7 @@ Module parser.
             ]
           |),
           [
-            M.read (| s |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -9622,7 +10666,12 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ M.read (| parser |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| parser |) |)
+                                  |)
+                                ]
                               |)))
                         ]
                       |)))
@@ -9707,7 +10756,7 @@ Module parser.
             ]
           |),
           [
-            M.read (| s |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -9773,7 +10822,10 @@ Module parser.
                                   ]
                                 |),
                                 [
-                                  M.read (| parser |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| parser |) |)
+                                  |);
                                   M.closure
                                     (fun γ =>
                                       ltac:(M.monadic
@@ -9807,7 +10859,12 @@ Module parser.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| parser |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| parser |) |)
+                                                        |)
+                                                      ]
                                                     |)))
                                               ]
                                             |)))
@@ -9878,7 +10935,7 @@ Module parser.
             ]
           |),
           [
-            M.read (| s |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -9909,7 +10966,12 @@ Module parser.
                                   [],
                                   []
                                 |),
-                                [ M.read (| parser |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| parser |) |)
+                                  |)
+                                ]
                               |)))
                         ]
                       |)))
@@ -10021,7 +11083,7 @@ Module parser.
                                   ]
                                 |),
                                 [
-                                  M.read (| s |);
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
                                   M.closure
                                     (fun γ =>
                                       ltac:(M.monadic
@@ -10055,7 +11117,12 @@ Module parser.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| parser |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| parser |) |)
+                                                        |)
+                                                      ]
                                                     |)))
                                               ]
                                             |)))
@@ -10109,51 +11176,91 @@ Module parser.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "invalid struct tag: "
-                                                                            |);
-                                                                            M.read (|
-                                                                              Value.String ", "
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      "invalid struct tag: "
+                                                                                  |);
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      ", "
+                                                                                  |)
+                                                                                ]
                                                                             |)
-                                                                          ]
+                                                                          |)
+                                                                        |)
                                                                       |);
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument",
-                                                                                "new_display",
-                                                                                [],
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Value.Array
                                                                                 [
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [ Ty.path "str"
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_display",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "str"
+                                                                                          ]
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            s
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
                                                                                     ]
+                                                                                  |);
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_display",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "anyhow::Error"
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            e
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
                                                                                 ]
-                                                                              |),
-                                                                              [ s ]
-                                                                            |);
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument",
-                                                                                "new_display",
-                                                                                [],
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "anyhow::Error"
-                                                                                ]
-                                                                              |),
-                                                                              [ e ]
                                                                             |)
-                                                                          ]
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -10248,7 +11355,7 @@ Module parser.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.read (| M.read (| struct_tag |) |) ]
+                          [ M.read (| M.deref (| M.read (| struct_tag |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -10288,32 +11395,60 @@ Module parser.
                                                         []
                                                       |),
                                                       [
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String "invalid struct tag: "
-                                                              |)
-                                                            ]
-                                                        |);
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [],
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                Value.Array
                                                                   [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [ Ty.path "str" ]
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        "invalid struct tag: "
+                                                                    |)
                                                                   ]
-                                                                |),
-                                                                [ s ]
                                                               |)
-                                                            ]
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_display",
+                                                                        [],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ Ty.path "str" ]
+                                                                        ]
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              s
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)

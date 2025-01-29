@@ -30,7 +30,13 @@ Module ops.
               let args := M.alloc (| args |) in
               M.call_closure (|
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
-                [ M.read (| M.read (| self |) |); M.read (| args |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -66,7 +72,13 @@ Module ops.
               let args := M.alloc (| args |) in
               M.call_closure (|
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
-                [ M.read (| M.read (| self |) |); M.read (| args |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -105,7 +117,10 @@ Module ops.
               let args := M.alloc (| args |) in
               M.call_closure (|
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
-                [ M.read (| self |); M.read (| args |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -153,7 +168,13 @@ Module ops.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| args |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -200,7 +221,10 @@ Module ops.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| args |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

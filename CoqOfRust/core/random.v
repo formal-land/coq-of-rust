@@ -33,7 +33,7 @@ Module random.
                   [],
                   [ impl_RandomSource__plus___Sized ]
                 |),
-                [ M.read (| source |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |) ]
               |))
               (Value.Integer IntegerKind.U8 1),
             Value.Integer IntegerKind.U8 1
@@ -84,7 +84,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -140,7 +146,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -196,7 +208,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -252,7 +270,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -308,7 +332,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -364,7 +394,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -420,7 +456,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -476,7 +518,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -532,7 +580,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -588,7 +642,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -644,7 +704,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -700,7 +766,13 @@ Module random.
                     [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|

@@ -16,7 +16,17 @@ Module raw_vec.
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
-              [ M.alloc (| Value.Array [ M.read (| Value.String "capacity overflow" |) ] |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (| Value.Array [ M.read (| Value.String "capacity overflow" |) ] |)
+                    |)
+                  |)
+                |)
+              ]
             |)
           ]
         |)))
@@ -642,7 +652,7 @@ Module raw_vec.
                                               [],
                                               []
                                             |),
-                                            [ self ]
+                                            [ M.borrow (| Pointer.Kind.Ref, self |) ]
                                           |)
                                         |)
                                       |)
@@ -665,14 +675,22 @@ Module raw_vec.
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String
-                                                      "`len` must be smaller than or equal to `self.capacity()`"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "`len` must be smaller than or equal to `self.capacity()`"
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -720,20 +738,25 @@ Module raw_vec.
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.apply
-                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                []
-                                [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ],
-                              [],
-                              [],
-                              "deref",
-                              [],
-                              []
-                            |),
-                            [ me ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                              |)
+                            |)
                           |)
                         ]
                       |));
@@ -763,28 +786,38 @@ Module raw_vec.
                   M.call_closure (|
                     M.get_function (| "core::ptr::read", [], [ A ] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.apply
-                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                []
-                                [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ],
-                              [],
-                              [],
-                              "deref",
-                              [],
-                              []
-                            |),
-                            [ me ]
-                          |),
-                          "alloc::raw_vec::RawVec",
-                          "inner"
-                        |),
-                        "alloc::raw_vec::RawVecInner",
-                        "alloc"
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                                  |)
+                                |),
+                                "alloc::raw_vec::RawVec",
+                                "inner"
+                              |),
+                              "alloc::raw_vec::RawVecInner",
+                              "alloc"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -957,10 +990,13 @@ Module raw_vec.
               [ T ]
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVec",
+                  "inner"
+                |)
               |)
             ]
           |)))
@@ -990,10 +1026,13 @@ Module raw_vec.
               [ T ]
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVec",
+                  "inner"
+                |)
               |)
             ]
           |)))
@@ -1023,10 +1062,13 @@ Module raw_vec.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVec",
+                  "inner"
+                |)
               |);
               M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
             ]
@@ -1049,20 +1091,28 @@ Module raw_vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
-              "allocator",
-              [],
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
+                  "allocator",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::raw_vec::RawVec",
+                      "inner"
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1092,10 +1142,13 @@ Module raw_vec.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVec",
+                  "inner"
+                |)
               |);
               M.read (| len |);
               M.read (| additional |);
@@ -1128,10 +1181,13 @@ Module raw_vec.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVec",
+                  "inner"
+                |)
               |);
               M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
             ]
@@ -1164,10 +1220,13 @@ Module raw_vec.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVec",
+                  "inner"
+                |)
               |);
               M.read (| len |);
               M.read (| additional |);
@@ -1207,10 +1266,13 @@ Module raw_vec.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVec",
+                  "inner"
+                |)
               |);
               M.read (| len |);
               M.read (| additional |);
@@ -1254,10 +1316,13 @@ Module raw_vec.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVec",
+                  "inner"
+                |)
               |);
               M.read (| len |);
               M.read (| additional |);
@@ -1296,10 +1361,13 @@ Module raw_vec.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVec",
+                  "inner"
+                |)
               |);
               M.read (| cap |);
               M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
@@ -1336,10 +1404,13 @@ Module raw_vec.
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::raw_vec::RawVec",
-                "inner"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVec",
+                  "inner"
+                |)
               |);
               M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
             ]
@@ -1471,7 +1542,7 @@ Module raw_vec.
                                     []
                                   |),
                                   [
-                                    this;
+                                    M.borrow (| Pointer.Kind.Ref, this |);
                                     Value.Integer IntegerKind.Usize 0;
                                     M.read (| capacity |);
                                     M.read (| elem_layout |)
@@ -1750,7 +1821,7 @@ Module raw_vec.
                                       [],
                                       []
                                     |),
-                                    [ layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                   |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
@@ -1780,7 +1851,7 @@ Module raw_vec.
                                               [],
                                               []
                                             |),
-                                            [ elem_layout ]
+                                            [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                                           |)
                                         ]
                                       |)
@@ -1810,7 +1881,7 @@ Module raw_vec.
                                       [],
                                       []
                                     |),
-                                    [ layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                   |)
                                 ]
                               |)
@@ -1857,7 +1928,7 @@ Module raw_vec.
                                   [],
                                   []
                                 |),
-                                [ alloc; M.read (| layout |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, alloc |); M.read (| layout |) ]
                               |)
                             |)));
                         fun γ =>
@@ -1875,7 +1946,7 @@ Module raw_vec.
                                   [],
                                   []
                                 |),
-                                [ alloc; M.read (| layout |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, alloc |); M.read (| layout |) ]
                               |)
                             |)))
                       ]
@@ -2102,7 +2173,7 @@ Module raw_vec.
                   [],
                   [ T ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             ]
           |)))
@@ -2143,7 +2214,7 @@ Module raw_vec.
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::raw_vec::RawVecInner",
                       "ptr"
                     |)
@@ -2188,7 +2259,7 @@ Module raw_vec.
                   ltac:(M.monadic
                     (M.SubPointer.get_struct_tuple_field (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::raw_vec::RawVecInner",
                         "cap"
                       |),
@@ -2216,10 +2287,18 @@ Module raw_vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "alloc::raw_vec::RawVecInner",
-            "alloc"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::raw_vec::RawVecInner",
+                  "alloc"
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2275,7 +2354,7 @@ Module raw_vec.
                                   [],
                                   []
                                 |),
-                                [ elem_layout ]
+                                [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                               |),
                               Value.Integer IntegerKind.Usize 0
                             |),
@@ -2284,7 +2363,7 @@ Module raw_vec.
                                 M.read (|
                                   M.SubPointer.get_struct_tuple_field (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::raw_vec::RawVecInner",
                                       "cap"
                                     |),
@@ -2312,12 +2391,12 @@ Module raw_vec.
                                 [],
                                 []
                               |),
-                              [ elem_layout ]
+                              [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                             |);
                             M.read (|
                               M.SubPointer.get_struct_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "alloc::raw_vec::RawVecInner",
                                   "cap"
                                 |),
@@ -2346,7 +2425,7 @@ Module raw_vec.
                                 [],
                                 []
                               |),
-                              [ elem_layout ]
+                              [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                             |)
                           ]
                         |)
@@ -2378,7 +2457,7 @@ Module raw_vec.
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::raw_vec::RawVecInner",
                                       "ptr"
                                     |)
@@ -2448,7 +2527,7 @@ Module raw_vec.
                               []
                             |),
                             [
-                              M.read (| self |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                               M.read (| len |);
                               M.read (| additional |);
                               M.read (| elem_layout |)
@@ -2466,7 +2545,7 @@ Module raw_vec.
                             []
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                             M.read (| len |);
                             M.read (| additional |);
                             M.read (| elem_layout |)
@@ -2515,11 +2594,11 @@ Module raw_vec.
                             []
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                             M.read (|
                               M.SubPointer.get_struct_tuple_field (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "alloc::raw_vec::RawVecInner",
                                   "cap"
                                 |),
@@ -2600,7 +2679,10 @@ Module raw_vec.
                                     []
                                   |),
                                   [
-                                    M.read (| self |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
                                     M.read (| len |);
                                     M.read (| additional |);
                                     M.read (| elem_layout |)
@@ -2635,7 +2717,10 @@ Module raw_vec.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| len |);
                                         M.read (| additional |);
                                         M.read (| elem_layout |)
@@ -2719,7 +2804,7 @@ Module raw_vec.
                                 []
                               |),
                               [
-                                M.read (| self |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                                 M.read (| len |);
                                 M.read (| additional |);
                                 M.read (| elem_layout |)
@@ -2772,7 +2857,7 @@ Module raw_vec.
                             []
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                             M.read (| len |);
                             M.read (| additional |);
                             M.read (| elem_layout |)
@@ -2852,7 +2937,10 @@ Module raw_vec.
                                     []
                                   |),
                                   [
-                                    M.read (| self |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
                                     M.read (| len |);
                                     M.read (| additional |);
                                     M.read (| elem_layout |)
@@ -2887,7 +2975,10 @@ Module raw_vec.
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| len |);
                                         M.read (| additional |);
                                         M.read (| elem_layout |)
@@ -2971,7 +3062,7 @@ Module raw_vec.
                                 []
                               |),
                               [
-                                M.read (| self |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                                 M.read (| len |);
                                 M.read (| additional |);
                                 M.read (| elem_layout |)
@@ -3022,7 +3113,11 @@ Module raw_vec.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| cap |); M.read (| elem_layout |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.read (| cap |);
+                            M.read (| elem_layout |)
+                          ]
                         |)
                       |) in
                     let γ0_0 :=
@@ -3074,7 +3169,7 @@ Module raw_vec.
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
@@ -3082,7 +3177,7 @@ Module raw_vec.
                         [],
                         []
                       |),
-                      [ elem_layout ]
+                      [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                     |)
                   ]
                 |);
@@ -3123,7 +3218,7 @@ Module raw_vec.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::raw_vec::RawVecInner",
                   "ptr"
                 |),
@@ -3156,7 +3251,7 @@ Module raw_vec.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::raw_vec::RawVecInner",
                   "cap"
                 |),
@@ -3287,7 +3382,7 @@ Module raw_vec.
                                       [],
                                       []
                                     |),
-                                    [ elem_layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                                   |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
@@ -3435,7 +3530,7 @@ Module raw_vec.
                           M.read (|
                             M.SubPointer.get_struct_tuple_field (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::raw_vec::RawVecInner",
                                 "cap"
                               |),
@@ -3464,7 +3559,7 @@ Module raw_vec.
                                 [],
                                 []
                               |),
-                              [ elem_layout ]
+                              [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                             |)
                           ]
                         |);
@@ -3592,12 +3687,26 @@ Module raw_vec.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| elem_layout |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.read (| elem_layout |)
+                                  ]
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::raw_vec::RawVecInner",
-                                  "alloc"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::raw_vec::RawVecInner",
+                                        "alloc"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -3670,7 +3779,11 @@ Module raw_vec.
                         [],
                         []
                       |),
-                      [ M.read (| self |); M.read (| ptr |); M.read (| cap |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                        M.read (| ptr |);
+                        M.read (| cap |)
+                      ]
                     |)
                   |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
@@ -3736,7 +3849,7 @@ Module raw_vec.
                                       [],
                                       []
                                     |),
-                                    [ elem_layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                                   |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
@@ -3995,12 +4108,26 @@ Module raw_vec.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| elem_layout |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.read (| elem_layout |)
+                                  ]
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::raw_vec::RawVecInner",
-                                  "alloc"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::raw_vec::RawVecInner",
+                                        "alloc"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -4074,7 +4201,11 @@ Module raw_vec.
                           [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| ptr |); M.read (| cap |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                          M.read (| ptr |);
+                          M.read (| cap |)
+                        ]
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
@@ -4124,7 +4255,10 @@ Module raw_vec.
                                     []
                                   |),
                                   [
-                                    M.read (| self |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
@@ -4132,7 +4266,7 @@ Module raw_vec.
                                         [],
                                         []
                                       |),
-                                      [ elem_layout ]
+                                      [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                                     |)
                                   ]
                                 |)
@@ -4153,13 +4287,21 @@ Module raw_vec.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "Tried to shrink to a larger capacity"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "Tried to shrink to a larger capacity"
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -4178,7 +4320,11 @@ Module raw_vec.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| cap |); M.read (| elem_layout |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| cap |);
+                  M.read (| elem_layout |)
+                ]
               |)
             |)
           |)))
@@ -4255,7 +4401,10 @@ Module raw_vec.
                                   [],
                                   []
                                 |),
-                                [ M.read (| self |); M.read (| elem_layout |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                  M.read (| elem_layout |)
+                                ]
                               |)
                             |) in
                           let γ0_0 :=
@@ -4318,10 +4467,13 @@ Module raw_vec.
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::raw_vec::RawVecInner",
-                                            "alloc"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::raw_vec::RawVecInner",
+                                              "alloc"
+                                            |)
                                           |);
                                           M.read (| ptr |);
                                           M.read (| layout |)
@@ -4331,7 +4483,7 @@ Module raw_vec.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "alloc::raw_vec::RawVecInner",
                                         "ptr"
                                       |),
@@ -4360,7 +4512,7 @@ Module raw_vec.
                                                   [],
                                                   []
                                                 |),
-                                                [ elem_layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                                               |)
                                             ]
                                           |)
@@ -4370,7 +4522,7 @@ Module raw_vec.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "alloc::raw_vec::RawVecInner",
                                         "cap"
                                       |),
@@ -4398,7 +4550,7 @@ Module raw_vec.
                                                   [],
                                                   []
                                                 |),
-                                                [ elem_layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
                                               |);
                                               M.read (| cap |)
                                             ]
@@ -4422,7 +4574,7 @@ Module raw_vec.
                                                   [],
                                                   []
                                                 |),
-                                                [ layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                               |)
                                             ]
                                           |)
@@ -4493,10 +4645,13 @@ Module raw_vec.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "alloc::raw_vec::RawVecInner",
-                                                        "alloc"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "alloc::raw_vec::RawVecInner",
+                                                          "alloc"
+                                                        |)
                                                       |);
                                                       M.read (| ptr |);
                                                       M.read (| layout |);
@@ -4600,7 +4755,14 @@ Module raw_vec.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| self |); M.read (| ptr |); M.read (| cap |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.read (| ptr |);
+                                          M.read (| cap |)
+                                        ]
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)))
@@ -4651,7 +4813,10 @@ Module raw_vec.
                             [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| elem_layout |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| elem_layout |)
+                          ]
                         |)
                       |) in
                     let γ0_0 :=
@@ -4677,10 +4842,13 @@ Module raw_vec.
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::raw_vec::RawVecInner",
-                              "alloc"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::raw_vec::RawVecInner",
+                                "alloc"
+                              |)
                             |);
                             M.read (| ptr |);
                             M.read (| layout |)
@@ -4762,7 +4930,7 @@ Module raw_vec.
                                 [],
                                 []
                               |),
-                              [ new_layout ]
+                              [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                             |)
                           ]
                         |)
@@ -4863,26 +5031,32 @@ Module raw_vec.
                                         M.alloc (|
                                           Value.Tuple
                                             [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::alloc::layout::Layout",
-                                                    "align",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ old_layout ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::alloc::layout::Layout",
+                                                      "align",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                                  |)
                                                 |)
                                               |);
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::alloc::layout::Layout",
-                                                    "align",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ new_layout ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::alloc::layout::Layout",
+                                                      "align",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
+                                                  |)
                                                 |)
                                               |)
                                             ]
@@ -4905,8 +5079,16 @@ Module raw_vec.
                                                           (M.alloc (|
                                                             UnOp.not (|
                                                               BinOp.eq (|
-                                                                M.read (| M.read (| left_val |) |),
-                                                                M.read (| M.read (| right_val |) |)
+                                                                M.read (|
+                                                                  M.deref (|
+                                                                    M.read (| left_val |)
+                                                                  |)
+                                                                |),
+                                                                M.read (|
+                                                                  M.deref (|
+                                                                    M.read (| right_val |)
+                                                                  |)
+                                                                |)
                                                               |)
                                                             |)
                                                           |)) in
@@ -4934,8 +5116,28 @@ Module raw_vec.
                                                                 |),
                                                                 [
                                                                   M.read (| kind |);
-                                                                  M.read (| left_val |);
-                                                                  M.read (| right_val |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| left_val |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| right_val |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |);
                                                                   Value.StructTuple
                                                                     "core::option::Option::None"
                                                                     []
@@ -4968,7 +5170,7 @@ Module raw_vec.
                                         [],
                                         []
                                       |),
-                                      [ old_layout ]
+                                      [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                                     |),
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -4977,7 +5179,7 @@ Module raw_vec.
                                         [],
                                         []
                                       |),
-                                      [ new_layout ]
+                                      [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                                     |)
                                   |)
                                 ]
@@ -4995,7 +5197,7 @@ Module raw_vec.
                                 []
                               |),
                               [
-                                M.read (| alloc |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| alloc |) |) |);
                                 M.read (| ptr |);
                                 M.read (| old_layout |);
                                 M.read (| new_layout |)
@@ -5015,7 +5217,10 @@ Module raw_vec.
                                 [],
                                 []
                               |),
-                              [ M.read (| alloc |); M.read (| new_layout |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| alloc |) |) |);
+                                M.read (| new_layout |)
+                              ]
                             |)
                           |)))
                     ]
@@ -5112,7 +5317,7 @@ Module raw_vec.
                   [],
                   []
                 |),
-                [ e ]
+                [ M.borrow (| Pointer.Kind.Ref, e |) ]
               |)
             |),
             [
@@ -5277,7 +5482,7 @@ Module raw_vec.
                     [],
                     []
                   |),
-                  [ elem_layout; M.read (| cap |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, elem_layout |); M.read (| cap |) ]
                 |);
                 M.closure
                   (fun γ =>

@@ -11,6 +11,8 @@ Class Link (A : Set) : Set := {
 (* We make explicit the argument [A]. *)
 Arguments Φ _ {_}.
 
+Global Opaque φ.
+
 Global Instance BoolIsLink : Link bool := {
   Φ := Ty.path "bool";
   φ b := Value.Bool b;
@@ -222,30 +224,41 @@ Module TupleIsLink.
   }.
 End TupleIsLink.
 
+(** A general type for references. Can be used for mutable or non-mutable references, as well as
+    for unsafe pointers (we assume that the `unsafe` code is safe). *)
 Module Ref.
-  (** A general type for references. Can be used for mutable or non-mutable references, as well as
-      for unsafe pointers (we assume that the `unsafe` code is safe). *)
-  Inductive t (kind : Pointer.Kind.t) (A : Set) `{Link A} : Set :=
-  | Immediate (value : A)
-  | Mutable {Address Big_A : Set}
-    (address : Address)
-    (path : Pointer.Path.t)
-    (big_to_value : Big_A -> Value.t)
-    (projection : Big_A -> option A)
-    (injection : Big_A -> A -> option Big_A).
-  Arguments Immediate _ {_ _}.
-  Arguments Mutable _ {_ _ _ _}.
+  Module Core.
+    Inductive t (A : Set) `{Link A} : Set :=
+    | Immediate (value : A)
+    | Mutable {Address Big_A : Set}
+      (address : Address)
+      (path : Pointer.Path.t)
+      (big_to_value : Big_A -> Value.t)
+      (projection : Big_A -> option A)
+      (injection : Big_A -> A -> option Big_A).
+    Arguments Immediate {_ _}.
+    Arguments Mutable {_ _ _ _}.
+
+    Definition to_core {A : Set} `{Link A} (ref : t A) :
+        Pointer.Core.t Value.t A :=
+      match ref with
+      | Immediate value =>
+        Pointer.Core.Immediate (φ value)
+      | Mutable address path big_to_value projection injection =>
+        Pointer.Core.Mutable (Pointer.Mutable.Make
+          address path big_to_value projection injection
+        )
+      end.
+  End Core.
+
+  Record t {kind : Pointer.Kind.t} {A : Set} `{Link A} : Set := {
+    core : Core.t A;
+  }.
+  Arguments t _ _ {_}.
 
   Definition to_core {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
       Pointer.Core.t Value.t A :=
-    match ref with
-    | Immediate _ value =>
-      Pointer.Core.Immediate (φ value)
-    | Mutable _ address path big_to_value projection injection =>
-      Pointer.Core.Mutable (Pointer.Mutable.Make
-        address path big_to_value projection injection
-      )
-    end.
+    Core.to_core ref.(core).
 
   Definition to_pointer {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
       Pointer.t Value.t :=
@@ -255,6 +268,19 @@ Module Ref.
     Φ := Ty.apply (Ty.path (Pointer.Kind.to_ty_path kind)) [] [Φ A];
     φ ref := Value.Pointer (to_pointer ref);
   }.
+
+  Definition immediate {kind : Pointer.Kind.t} {A : Set} `{Link A} (value : A) : t kind A :=
+    {| core := Core.Immediate value |}.
+
+  Definition deref {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
+      t Pointer.Kind.Raw A :=
+    {| core := ref.(core) |}.
+
+  Lemma deref_eq {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
+    M.deref (φ ref) = M.pure (φ (deref ref)).
+  Proof.
+    reflexivity.
+  Qed.
 End Ref.
 
 Module SubPointer.
@@ -289,25 +315,24 @@ End SubPointer.
 
 Module IsSubPointer.
   (** If a pointer (the sub-pointer) targets the field given by a [runner] of another value
-      targetted by a pointer. *)
-  Inductive t {kind : Pointer.Kind.t} {A Sub_A : Set} `{Link A} `{Link Sub_A}
-      (runner : SubPointer.Runner.t A Sub_A) : Ref.t kind A -> Ref.t kind Sub_A -> Set :=
+      targeted by a pointer. We only consider the core part of a pointer. *)
+  Inductive t {A Sub_A : Set} `{Link A} `{Link Sub_A}
+      (runner : SubPointer.Runner.t A Sub_A) : Ref.Core.t A -> Ref.Core.t Sub_A -> Set :=
   | Immediate (value : A) (sub_value : Sub_A) :
     runner.(SubPointer.Runner.projection) value = Some sub_value ->
     t runner
-      (Ref.Immediate kind value)
-      (Ref.Immediate kind sub_value)
+      (Ref.Core.Immediate value)
+      (Ref.Core.Immediate sub_value)
   | Mutable {Address Big_A : Set}
       (address : Address)
       (path : Pointer.Path.t)
       (big_to_value : Big_A -> Value.t)
       (projection : Big_A -> option A)
       (injection : Big_A -> A -> option Big_A) :
-    let ref : Ref.t kind A :=
-      Ref.Mutable kind address path big_to_value projection injection in
-    let sub_ref : Ref.t kind Sub_A :=
-      Ref.Mutable
-        kind
+    let ref : Ref.Core.t A :=
+      Ref.Core.Mutable address path big_to_value projection injection in
+    let sub_ref : Ref.Core.t Sub_A :=
+      Ref.Core.Mutable
         address
         (path ++ [runner.(SubPointer.Runner.index)])
         big_to_value
@@ -375,66 +400,56 @@ Module Run.
     output' = output_to_value output ->
     {{ LowM.Pure output' ⇓ output_to_value }}
   | CallPrimitiveStateAlloc {A : Set} `{Link A}
-      (kind : Pointer.Kind.t)
       (value : A) (value' : Value.t)
       (k : Value.t -> M) :
     value' = φ value ->
-    (forall (ref : Ref.t kind A),
+    (forall (ref : Ref.t Pointer.Kind.Raw A),
       {{ k (φ ref) ⇓ output_to_value }}
      ) ->
     {{ LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
   | CallPrimitiveStateAllocImmediate {A : Set} `{Link A}
-      (kind : Pointer.Kind.t)
       (value : A) (value' : Value.t)
       (k : Value.t -> M) :
     value' = φ value ->
-    {{ k (φ (Ref.Immediate kind value)) ⇓ output_to_value }} ->
+    {{
+      k (φ ({| Ref.core := Ref.Core.Immediate value |} : Ref.t Pointer.Kind.Raw A)) ⇓
+      output_to_value
+    }} ->
     {{ LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
-  | CallPrimitiveStateRead {kind : Pointer.Kind.t} {A : Set}
-      (* We make the [ty] and [φ] explicit instead of using the class to avoid inference
-         problems. *)
-      (ty : Ty.t) (φ : A -> Value.t)
-      (ref : @Ref.t kind A {| Φ := ty; φ := φ |})
-      (pointer_core : Pointer.Core.t Value.t A)
+  | CallPrimitiveStateRead {A : Set} `{Link A}
+      (ref_core : Ref.Core.t A)
       (k : Value.t -> M) :
-    let pointer := Pointer.Make kind ty φ pointer_core in
-    pointer_core = Ref.to_core ref ->
+    let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
     (forall (value : A),
       {{ k (φ value) ⇓ output_to_value }}
     ) ->
-    {{ LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓ output_to_value }}
-  | CallPrimitiveStateReadImmediate {kind : Pointer.Kind.t} {A : Set}
-      (* Same as with read, we make the [Link] class explicit. *)
-      (ty : Ty.t) (φ : A -> Value.t)
+    {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k ⇓ output_to_value }}
+  | CallPrimitiveStateReadImmediate {A : Set} `{Link A}
       (value : A)
-      (pointer_core : Pointer.Core.t Value.t A)
       (k : Value.t -> M) :
-    let pointer := Pointer.Make kind ty φ pointer_core in
-    let ref := @Ref.Immediate kind A {| Φ := ty; φ := φ |} value in
-    pointer_core = Ref.to_core ref ->
+    let ref := Ref.immediate (kind := Pointer.Kind.Raw) value in
     {{ k (φ value) ⇓ output_to_value }} ->
-    {{ LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓ output_to_value }}
-  | CallPrimitiveStateWrite {kind : Pointer.Kind.t} {A : Set}
-      (* Same as with read, we make the [Link] class explicit. *)
-      (ty : Ty.t) (φ : A -> Value.t)
-      (ref : @Ref.t kind A {| Φ := ty; φ := φ |})
+    {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k ⇓ output_to_value }}
+  | CallPrimitiveStateWrite {A : Set} `{Link A}
+      (ref_core : Ref.Core.t A)
       (pointer_core : Pointer.Core.t Value.t A)
       (value : A) (value' : Value.t)
       (k : Value.t -> M) :
-    let pointer := Pointer.Make kind ty φ pointer_core in
-    pointer_core = Ref.to_core ref ->
+    let pointer := Pointer.Make Pointer.Kind.Raw (Φ A) φ pointer_core in
+    pointer_core = Ref.Core.to_core ref_core ->
     value' = φ value ->
-    {{ k (Value.Tuple []) ⇓ output_to_value }} ->
+    {{ k (φ tt) ⇓ output_to_value }} ->
     {{ LowM.CallPrimitive (Primitive.StateWrite pointer value') k ⇓ output_to_value }}
-  | CallPrimitiveGetSubPointer {kind : Pointer.Kind.t} {A Sub_A : Set} `{Link A} `{Link Sub_A}
-      (ref : Ref.t kind A) (pointer : Pointer.t Value.t)
+  | CallPrimitiveGetSubPointer {A Sub_A : Set} `{Link A} `{Link Sub_A}
+      (ref_core : Ref.Core.t A)
+      (pointer_core : Pointer.Core.t Value.t A)
       (runner : SubPointer.Runner.t A Sub_A)
       (k : Value.t -> M) :
-    pointer = Ref.to_pointer ref ->
+    let pointer := Pointer.Make Pointer.Kind.Raw (Φ A) φ pointer_core in
+    pointer_core = Ref.Core.to_core ref_core ->
     SubPointer.Runner.Valid.t runner ->
-    (forall (sub_ref : Ref.t kind Sub_A),
-      let sub_pointer := Ref.to_pointer sub_ref in
-      {{ k (Value.Pointer sub_pointer) ⇓ output_to_value }}
+    (forall (sub_ref : Ref.t Pointer.Kind.Raw Sub_A),
+      {{ k (φ sub_ref) ⇓ output_to_value }}
     ) ->
     {{
       LowM.CallPrimitive (Primitive.GetSubPointer pointer runner.(SubPointer.Runner.index)) k ⇓
@@ -526,20 +541,21 @@ End Run.
 
 Import Run.
 
-(** This lemma is convenient to handle the case of sub-pointers. We even have a dedicated tactic
+(** This lemma is convenient to handle the case of sub-pointers. We also have a dedicated tactic
     using it (defined below). Using the tactic is the recommended way. *)
-Definition run_sub_pointer {kind : Pointer.Kind.t} {Output A Sub_A : Set}
+Definition run_sub_pointer {Output A Sub_A : Set}
     {IsLinkA : Link A} {IsLinkSub_A : Link Sub_A}
     {runner : SubPointer.Runner.t A Sub_A}
     (H_runner : SubPointer.Runner.Valid.t runner)
-    (ref : Ref.t kind A) (pointer : Pointer.t Value.t)
+    (ref_core : Ref.Core.t A)
+    (pointer_core : Pointer.Core.t Value.t A)
     (k : Value.t -> M)
     (output_to_value : Output -> Value.t + Exception.t)
-    (H_pointer : pointer = Ref.to_pointer ref)
-    (H_k : forall (sub_ref : Ref.t kind Sub_A),
-      let sub_pointer := Ref.to_pointer sub_ref in
-      {{ k (Value.Pointer sub_pointer) ⇓ output_to_value }}
+    (H_pointer_core : pointer_core = Ref.Core.to_core ref_core)
+    (H_k : forall (sub_ref : Ref.t Pointer.Kind.Raw Sub_A),
+      {{ k (φ sub_ref) ⇓ output_to_value }}
     ) :
+  let pointer := Pointer.Make Pointer.Kind.Raw (Φ A) φ pointer_core in
   {{
     LowM.CallPrimitive (Primitive.GetSubPointer pointer runner.(SubPointer.Runner.index)) k ⇓
     output_to_value
@@ -547,7 +563,7 @@ Definition run_sub_pointer {kind : Pointer.Kind.t} {Output A Sub_A : Set}
 Proof.
   intros.
   eapply Run.CallPrimitiveGetSubPointer;
-    try apply H_pointer;
+    try apply H_pointer_core;
     try apply H_runner;
     try apply H_k.
 Defined.
@@ -557,12 +573,12 @@ Module Primitive.
       with types. We have also removed the primitives related to name/trait resolution, as this is
       now done. *)
   Inductive t : Set -> Set :=
-  | StateAlloc (kind : Pointer.Kind.t) {A : Set} `{Link A} (value : A) : t (Ref.t kind A)
-  | StateRead {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : Ref.t kind A) : t A
-  | StateWrite {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : Ref.t kind A) (value : A) : t unit
-  | GetSubPointer {kind : Pointer.Kind.t} {A Sub_A : Set} `{Link A} `{Link Sub_A}
-    (ref : Ref.t kind A) (runner : SubPointer.Runner.t A Sub_A) :
-    t (Ref.t kind Sub_A)
+  | StateAlloc {A : Set} `{Link A} (value : A) : t (Ref.Core.t A)
+  | StateRead {A : Set} `{Link A} (ref_core : Ref.Core.t A) : t A
+  | StateWrite {A : Set} `{Link A} (ref_core : Ref.Core.t A) (value : A) : t unit
+  | GetSubPointer {A Sub_A : Set} `{Link A} `{Link Sub_A}
+    (ref_core : Ref.Core.t A) (runner : SubPointer.Runner.t A Sub_A) :
+    t (Ref.Core.t Sub_A)
   | AreEqual {A : Set} `{Link A} (x y : A) : t bool.
 End Primitive.
 
@@ -597,18 +613,18 @@ Proof.
     exact (LowM.Pure output).
   }
   { (* Alloc *)
-    apply (LowM.CallPrimitive (Primitive.StateAlloc kind value)).
+    apply (LowM.CallPrimitive (Primitive.StateAlloc value)).
     intros ref_core.
     eapply evaluate.
     match goal with
-    | H : forall _, _ |- _ => apply (H ref_core)
+    | H : forall _, _ |- _ => apply (H {| Ref.core := ref_core |})
     end.
   }
   { (* AllocImmediate *)
     exact (evaluate _ _ _ run).
   }
   { (* Read *)
-    apply (LowM.CallPrimitive (Primitive.StateRead ref)).
+    apply (LowM.CallPrimitive (Primitive.StateRead ref_core)).
     intros value.
     eapply evaluate.
     match goal with
@@ -619,16 +635,16 @@ Proof.
     exact (evaluate _ _ _ run).
   }
   { (* Write *)
-    apply (LowM.CallPrimitive (Primitive.StateWrite ref value)).
+    apply (LowM.CallPrimitive (Primitive.StateWrite ref_core value)).
     intros _.
     exact (evaluate _ _ _ run).
   }
   { (* SubPointer *)
-    apply (LowM.CallPrimitive (Primitive.GetSubPointer ref runner)).
-    intros sub_ref.
+    apply (LowM.CallPrimitive (Primitive.GetSubPointer ref_core runner)).
+    intros sub_ref_core.
     eapply evaluate.
     match goal with
-    | H : forall _, _ |- _ => apply (H sub_ref)
+    | H : forall _, _ |- _ => apply (H {| Ref.core := sub_ref_core |})
     end.
   }
   { (* AreEqual *)
@@ -715,17 +731,23 @@ Ltac run_symbolic_state_alloc_immediate :=
 
 Ltac run_symbolic_state_read :=
   cbn;
-  eapply Run.CallPrimitiveStateRead; [reflexivity |];
+  eapply Run.CallPrimitiveStateRead;
   intros.
 
 Ltac run_symbolic_state_read_immediate :=
   cbn;
-  eapply Run.CallPrimitiveStateReadImmediate; [reflexivity |].
+  apply Run.CallPrimitiveStateReadImmediate.
 
 Ltac run_symbolic_state_write :=
   cbn;
   eapply Run.CallPrimitiveStateWrite; [reflexivity | reflexivity |];
   intros.
+
+Ltac run_rewrite_deref :=
+  eapply Run.Rewrite; [
+    rewrite Ref.deref_eq;
+    reflexivity
+  |].
 
 Ltac run_symbolic_one_step :=
   match goal with
@@ -734,7 +756,8 @@ Ltac run_symbolic_one_step :=
     run_symbolic_state_alloc ||
     run_symbolic_state_read_immediate ||
     run_symbolic_state_read ||
-    run_symbolic_state_write
+    run_symbolic_state_write ||
+    run_rewrite_deref
   end.
 
 Ltac run_symbolic_one_step_immediate :=
@@ -744,17 +767,18 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_state_alloc_immediate ||
     run_symbolic_state_read_immediate ||
     run_symbolic_state_read ||
-    run_symbolic_state_write
+    run_symbolic_state_write ||
+    run_rewrite_deref
   end.
 
 (** We should use this tactic instead of the ones above, as this one calls all the others. *)
 Ltac run_symbolic :=
   (* Ideally, we should have the information about which kind of pointer to use. TODO: add it! *)
-  unshelve (repeat run_symbolic_one_step_immediate); try exact Pointer.Kind.Ref.
+  unshelve (repeat run_symbolic_one_step_immediate).
 
 Ltac run_symbolic_mutable :=
   (* Ideally, we should have the information about which kind of pointer to use. TODO: add it! *)
-  unshelve (repeat run_symbolic_one_step); try exact Pointer.Kind.Ref.
+  unshelve (repeat run_symbolic_one_step).
 
 Ltac run_panic :=
   run_symbolic; try apply Output.Panic; try reflexivity.

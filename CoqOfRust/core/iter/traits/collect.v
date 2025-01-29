@@ -57,7 +57,7 @@ Module iter.
                         [],
                         [ I ]
                       |),
-                      [ res; M.read (| iter |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, res |); M.read (| iter |) ]
                     |)
                   |) in
                 res
@@ -142,7 +142,7 @@ Module iter.
                         [ Ty.apply (Ty.path "core::option::Option") [] [ A ] ]
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         Value.StructTuple "core::option::Option::Some" [ M.read (| item |) ]
                       ]
                     |)
@@ -205,7 +205,10 @@ Module iter.
                         [],
                         []
                       |),
-                      [ M.read (| self |); M.read (| item |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                        M.read (| item |)
+                      ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -347,7 +350,11 @@ Module iter.
                                 [],
                                 []
                               |),
-                              [ M.read (| iter |); M.read (| a |); M.read (| b |) ]
+                              [
+                                M.read (| iter |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)))
@@ -389,7 +396,10 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
+                        |);
                         M.read (| M.SubPointer.get_tuple_field (| item, 0 |) |)
                       ]
                     |)
@@ -407,7 +417,10 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
+                        |);
                         M.read (| M.SubPointer.get_tuple_field (| item, 1 |) |)
                       ]
                     |)
@@ -449,7 +462,10 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
+                        |);
                         M.read (| additional |)
                       ]
                     |)
@@ -467,7 +483,10 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
+                        |);
                         M.read (| additional |)
                       ]
                     |)
@@ -512,7 +531,10 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
+                        |);
                         M.read (| M.SubPointer.get_tuple_field (| item, 0 |) |)
                       ]
                     |)
@@ -530,7 +552,10 @@ Module iter.
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
+                        |);
                         M.read (| M.SubPointer.get_tuple_field (| item, 1 |) |)
                       ]
                     |)
@@ -604,7 +629,7 @@ Module iter.
                       [],
                       []
                     |),
-                    [ iter ]
+                    [ M.borrow (| Pointer.Kind.Ref, iter |) ]
                   |)
                 |),
                 [
@@ -644,7 +669,13 @@ Module iter.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| a |); M.read (| lower_bound |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| a |) |)
+                                        |);
+                                        M.read (| lower_bound |)
+                                      ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -659,7 +690,13 @@ Module iter.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| b |); M.read (| lower_bound |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| b |) |)
+                                        |);
+                                        M.read (| lower_bound |)
+                                      ]
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -687,7 +724,10 @@ Module iter.
                                   [],
                                   []
                                 |),
-                                [ M.read (| a |); M.read (| b |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
+                                ]
                               |)
                             ]
                           |)
@@ -753,7 +793,13 @@ Module iter.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| a |); M.read (| t |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| a |) |)
+                                                  |);
+                                                  M.read (| t |)
+                                                ]
                                               |)
                                             |) in
                                           let~ _ :=
@@ -768,7 +814,13 @@ Module iter.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| b |); M.read (| u |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| b |) |)
+                                                  |);
+                                                  M.read (| u |)
+                                                ]
                                               |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)
@@ -823,7 +875,11 @@ Module iter.
                         [],
                         [ A; B; ExtendA; ExtendB; Iter ]
                       |),
-                      [ M.read (| self |); M.read (| a |); M.read (| b |) ]
+                      [
+                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
+                      ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -901,7 +957,7 @@ Module iter.
                             [],
                             []
                           |),
-                          [ self ]
+                          [ M.borrow (| Pointer.Kind.Ref, self |) ]
                         |)
                       |),
                       [
@@ -930,7 +986,7 @@ Module iter.
                                                 [],
                                                 []
                                               |),
-                                              [ upper_bound ]
+                                              [ M.borrow (| Pointer.Kind.Ref, upper_bound |) ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -951,8 +1007,14 @@ Module iter.
                                                   |),
                                                   [
                                                     M.read (| self |);
-                                                    M.read (| a |);
-                                                    M.read (| b |)
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| a |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| b |) |)
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -994,7 +1056,13 @@ Module iter.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| a |); M.read (| lower_bound |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| a |) |)
+                                              |);
+                                              M.read (| lower_bound |)
+                                            ]
                                           |)
                                         |) in
                                       let~ _ :=
@@ -1009,7 +1077,13 @@ Module iter.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| b |); M.read (| lower_bound |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| b |) |)
+                                              |);
+                                              M.read (| lower_bound |)
+                                            ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
@@ -1033,7 +1107,16 @@ Module iter.
                                     Value.Tuple [];
                                     M.call_closure (|
                                       M.get_associated_function (| Self, "extend.extend", [], [] |),
-                                      [ M.read (| a |); M.read (| b |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| a |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| b |) |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)

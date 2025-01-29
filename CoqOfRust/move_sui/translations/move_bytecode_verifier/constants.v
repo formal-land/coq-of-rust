@@ -30,7 +30,7 @@ Module constants.
           [
             M.call_closure (|
               M.get_function (| "move_bytecode_verifier::constants::verify_module_impl", [], [] |),
-              [ M.read (| module |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
             |);
             M.closure
               (fun γ =>
@@ -63,7 +63,12 @@ Module constants.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| module |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| module |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 ]
@@ -144,14 +149,24 @@ Module constants.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "constant_pool",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| module |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "constant_pool",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| module |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -188,7 +203,12 @@ Module constants.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -237,7 +257,13 @@ Module constants.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| idx |); M.read (| constant |) ]
+                                                  [
+                                                    M.read (| idx |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| constant |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -356,10 +382,18 @@ Module constants.
                           |),
                           [
                             M.read (| idx |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| constant |),
-                              "move_binary_format::file_format::Constant",
-                              "type_"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| constant |) |),
+                                    "move_binary_format::file_format::Constant",
+                                    "type_"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -429,7 +463,10 @@ Module constants.
                     [],
                     []
                   |),
-                  [ M.read (| idx |); M.read (| constant |) ]
+                  [
+                    M.read (| idx |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| constant |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -475,7 +512,7 @@ Module constants.
                             [],
                             []
                           |),
-                          [ M.read (| type_ |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| type_ |) |) |) ]
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -539,7 +576,7 @@ Module constants.
                   [],
                   []
                 |),
-                [ M.read (| constant |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| constant |) |) |) ]
               |)
             |),
             [

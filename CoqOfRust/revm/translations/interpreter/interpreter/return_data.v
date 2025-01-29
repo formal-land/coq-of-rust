@@ -35,10 +35,18 @@ Module interpreter.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter::return_data::ReturnDataImpl",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::return_data::ReturnDataImpl",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -73,13 +81,27 @@ Module interpreter.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "ReturnDataImpl" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter::return_data::ReturnDataImpl",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "ReturnDataImpl" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::return_data::ReturnDataImpl",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -145,23 +167,31 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::convert::AsRef",
-                Ty.path "alloy_primitives::bytes_::Bytes",
-                [],
-                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                "as_ref",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter::return_data::ReturnDataImpl",
-                  0
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::AsRef",
+                    Ty.path "alloy_primitives::bytes_::Bytes",
+                    [],
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    "as_ref",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::return_data::ReturnDataImpl",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -176,10 +206,23 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_tuple_field (|
-              M.read (| self |),
-              "revm_interpreter::interpreter::return_data::ReturnDataImpl",
-              0
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::return_data::ReturnDataImpl",
+                        0
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

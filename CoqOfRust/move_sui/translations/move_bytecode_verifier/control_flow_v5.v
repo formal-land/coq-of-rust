@@ -77,10 +77,18 @@ Module control_flow_v5.
                           |),
                           [
                             M.read (| current_function |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| code |),
-                              "move_binary_format::file_format::CodeUnit",
-                              "code"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| code |) |),
+                                    "move_binary_format::file_format::CodeUnit",
+                                    "code"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -145,18 +153,29 @@ Module control_flow_v5.
                 |) in
               let~ context :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.StructRecord
-                      "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier"
-                      [
-                        ("current_function", M.read (| current_function |));
-                        ("code",
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| code |),
-                            "move_binary_format::file_format::CodeUnit",
-                            "code"
-                          |))
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructRecord
+                        "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier"
+                        [
+                          ("current_function", M.read (| current_function |));
+                          ("code",
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| code |) |),
+                                    "move_binary_format::file_format::CodeUnit",
+                                    "code"
+                                  |)
+                                |)
+                              |)
+                            |))
+                        ]
+                    |)
                   |)
                 |) in
               let~ labels :=
@@ -167,7 +186,7 @@ Module control_flow_v5.
                       [],
                       []
                     |),
-                    [ M.read (| context |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -177,7 +196,11 @@ Module control_flow_v5.
                     [],
                     []
                   |),
-                  [ M.read (| verifier_config |); M.read (| context |); M.read (| labels |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| verifier_config |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+                    M.read (| labels |)
+                  ]
                 |)
               |)
             |)))
@@ -223,23 +246,28 @@ Module control_flow_v5.
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [
-                          Ty.path "move_binary_format::file_format::Bytecode";
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      [],
-                      [],
-                      "deref",
-                      [],
-                      []
-                    |),
-                    [ M.read (| code |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::Bytecode";
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |) ]
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -282,7 +310,7 @@ Module control_flow_v5.
                             [],
                             []
                           |),
-                          [ M.read (| last |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| last |) |) |) ]
                         |)
                       |)
                     |) in
@@ -328,7 +356,8 @@ Module control_flow_v5.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| code |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |)
+                                  ]
                                 |),
                                 Value.Integer IntegerKind.Usize 1
                               |))
@@ -383,7 +412,7 @@ Module control_flow_v5.
           M.read (|
             M.match_operator (|
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -524,31 +553,41 @@ Module control_flow_v5.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::file_format::Bytecode";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
                             [
-                              Ty.path "move_binary_format::file_format::Bytecode";
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
-                              "code"
-                            |)
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
+                                      "code"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
                     ]
                   |)
@@ -722,7 +761,7 @@ Module control_flow_v5.
                       [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |);
                   M.read (| labels |)
                 ]
@@ -789,7 +828,7 @@ Module control_flow_v5.
               |);
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
                   "current_function"
                 |)
@@ -893,11 +932,16 @@ Module control_flow_v5.
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| context |),
-                                    "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
-                                    "code"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| context |) |),
+                                        "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
+                                        "code"
+                                      |)
+                                    |)
                                   |)
                                 |)
                               ]
@@ -948,24 +992,29 @@ Module control_flow_v5.
                                         (let last_continue := M.copy (| γ |) in
                                         M.read (|
                                           M.write (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::index::IndexMut",
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::index::IndexMut",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::control_flow_v5::Label";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  [],
+                                                  [ Ty.path "usize" ],
+                                                  "index_mut",
+                                                  [],
                                                   []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::control_flow_v5::Label";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ],
-                                                [],
-                                                [ Ty.path "usize" ],
-                                                "index_mut",
-                                                [],
-                                                []
-                                              |),
-                                              [ labels; M.rust_cast (M.read (| loop_idx |)) ]
+                                                |),
+                                                [
+                                                  M.borrow (| Pointer.Kind.MutRef, labels |);
+                                                  M.rust_cast (M.read (| loop_idx |))
+                                                ]
+                                              |)
                                             |),
                                             Value.StructRecord
                                               "move_bytecode_verifier::control_flow_v5::Label::Loop"
@@ -1001,7 +1050,7 @@ Module control_flow_v5.
                           [],
                           []
                         |),
-                        [ M.read (| context |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |) ]
                       |)
                     ]
                   |)
@@ -1025,7 +1074,12 @@ Module control_flow_v5.
                                     [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -1103,7 +1157,9 @@ Module control_flow_v5.
                                                             |),
                                                             [
                                                               M.read (| i |);
-                                                              M.read (| M.read (| prev |) |)
+                                                              M.read (|
+                                                                M.deref (| M.read (| prev |) |)
+                                                              |)
                                                             ]
                                                           |)
                                                         |) in
@@ -1132,10 +1188,15 @@ Module control_flow_v5.
                                                             []
                                                           |),
                                                           [
-                                                            loop_continue;
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              loop_continue
+                                                            |);
                                                             Value.Tuple
                                                               [
-                                                                M.read (| M.read (| prev |) |);
+                                                                M.read (|
+                                                                  M.deref (| M.read (| prev |) |)
+                                                                |);
                                                                 M.read (| i |)
                                                               ]
                                                           ]
@@ -1214,24 +1275,34 @@ Module control_flow_v5.
                             []
                           |),
                           [
-                            M.read (| context |);
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_bytecode_verifier::control_flow_v5::Label";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
                                   [
-                                    Ty.path "move_bytecode_verifier::control_flow_v5::Label";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [ labels ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, labels |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1318,24 +1389,34 @@ Module control_flow_v5.
                             []
                           |),
                           [
-                            M.read (| context |);
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_bytecode_verifier::control_flow_v5::Label";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
                                   [
-                                    Ty.path "move_bytecode_verifier::control_flow_v5::Label";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [ labels ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, labels |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1407,23 +1488,33 @@ Module control_flow_v5.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_bytecode_verifier::control_flow_v5::Label";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
                             [
-                              Ty.path "move_bytecode_verifier::control_flow_v5::Label";
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [ labels ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, labels |) |)
+                              |)
+                            ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -1452,39 +1543,59 @@ Module control_flow_v5.
                             []
                           |),
                           [
-                            M.read (| context |);
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_bytecode_verifier::control_flow_v5::Label";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
                                   [
-                                    Ty.path "move_bytecode_verifier::control_flow_v5::Label";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [ labels ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, labels |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |);
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [ loop_depth ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, loop_depth |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1555,40 +1666,60 @@ Module control_flow_v5.
                     []
                   |),
                   [
-                    M.read (| verifier_config |);
-                    M.read (| context |);
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| verifier_config |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_bytecode_verifier::control_flow_v5::Label";
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
                           [
-                            Ty.path "move_bytecode_verifier::control_flow_v5::Label";
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [ labels ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, labels |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |);
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
-                        [],
-                        [],
-                        "deref",
-                        [],
-                        []
-                      |),
-                      [ loop_depth ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, loop_depth |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1684,7 +1815,10 @@ Module control_flow_v5.
                               [],
                               []
                             |),
-                            [ M.read (| context |); M.read (| labels |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| labels |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -1708,7 +1842,12 @@ Module control_flow_v5.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -1765,12 +1904,17 @@ Module control_flow_v5.
                                                           []
                                                         |),
                                                         [
-                                                          loop_stack;
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            loop_stack
+                                                          |);
                                                           Value.Tuple
                                                             [
                                                               M.read (| cur_instr |);
                                                               M.read (|
-                                                                M.read (| last_continue |)
+                                                                M.deref (|
+                                                                  M.read (| last_continue |)
+                                                                |)
                                                               |)
                                                             ]
                                                         ]
@@ -1839,12 +1983,23 @@ Module control_flow_v5.
                                                       []
                                                     |),
                                                     [
-                                                      check;
+                                                      M.borrow (| Pointer.Kind.MutRef, check |);
                                                       Value.Tuple
                                                         [
-                                                          loop_stack;
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                loop_stack
+                                                              |)
+                                                            |)
+                                                          |);
                                                           M.read (| cur_instr |);
-                                                          M.read (| instr |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| instr |) |)
+                                                          |)
                                                         ]
                                                     ]
                                                   |)
@@ -1967,7 +2122,11 @@ Module control_flow_v5.
                                                                 |),
                                                                 [
                                                                   M.read (| cur_instr |);
-                                                                  M.read (| M.read (| target |) |)
+                                                                  M.read (|
+                                                                    M.deref (|
+                                                                      M.read (| target |)
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |) in
@@ -1996,29 +2155,39 @@ Module control_flow_v5.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::deref::Deref",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::vec::Vec")
-                                                                          []
-                                                                          [
-                                                                            Ty.tuple
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.call_closure (|
+                                                                          M.get_trait_method (|
+                                                                            "core::ops::deref::Deref",
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::vec::Vec")
+                                                                              []
                                                                               [
-                                                                                Ty.path "u16";
-                                                                                Ty.path "u16"
-                                                                              ];
-                                                                            Ty.path
-                                                                              "alloc::alloc::Global"
-                                                                          ],
-                                                                        [],
-                                                                        [],
-                                                                        "deref",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [ loop_stack ]
+                                                                                Ty.tuple
+                                                                                  [
+                                                                                    Ty.path "u16";
+                                                                                    Ty.path "u16"
+                                                                                  ];
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ],
+                                                                            [],
+                                                                            [],
+                                                                            "deref",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              loop_stack
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -2095,25 +2264,41 @@ Module control_flow_v5.
                                                                                               []
                                                                                             |),
                                                                                             [
-                                                                                              M.alloc (|
-                                                                                                Value.Array
-                                                                                                  [
-                                                                                                    M.read (|
-                                                                                                      Value.String
-                                                                                                        "crates/move-bytecode-verifier/src/control_flow_v5.rs:150 (none)"
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.alloc (|
+                                                                                                      Value.Array
+                                                                                                        [
+                                                                                                          M.read (|
+                                                                                                            Value.String
+                                                                                                              "crates/move-bytecode-verifier/src/control_flow_v5.rs:150 (none)"
+                                                                                                          |)
+                                                                                                        ]
                                                                                                     |)
-                                                                                                  ]
+                                                                                                  |)
+                                                                                                |)
                                                                                               |);
-                                                                                              M.alloc (|
-                                                                                                M.call_closure (|
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.path
-                                                                                                      "core::fmt::rt::Argument",
-                                                                                                    "none",
-                                                                                                    [],
-                                                                                                    []
-                                                                                                  |),
-                                                                                                  []
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.alloc (|
+                                                                                                      M.call_closure (|
+                                                                                                        M.get_associated_function (|
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::rt::Argument",
+                                                                                                          "none",
+                                                                                                          [],
+                                                                                                          []
+                                                                                                        |),
+                                                                                                        []
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)
                                                                                               |)
                                                                                             ]
@@ -2161,34 +2346,58 @@ Module control_flow_v5.
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        M.alloc (|
-                                                                                          Value.Array
-                                                                                            [
-                                                                                              M.read (|
-                                                                                                Value.String
-                                                                                                  ""
-                                                                                              |)
-                                                                                            ]
-                                                                                        |);
-                                                                                        M.alloc (|
-                                                                                          Value.Array
-                                                                                            [
-                                                                                              M.call_closure (|
-                                                                                                M.get_associated_function (|
-                                                                                                  Ty.path
-                                                                                                    "core::fmt::rt::Argument",
-                                                                                                  "new_debug",
-                                                                                                  [],
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.alloc (|
+                                                                                                Value.Array
                                                                                                   [
-                                                                                                    Ty.path
-                                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                                    M.read (|
+                                                                                                      Value.String
+                                                                                                        ""
+                                                                                                    |)
                                                                                                   ]
-                                                                                                |),
-                                                                                                [
-                                                                                                  err
-                                                                                                ]
                                                                                               |)
-                                                                                            ]
+                                                                                            |)
+                                                                                          |)
+                                                                                        |);
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.alloc (|
+                                                                                                Value.Array
+                                                                                                  [
+                                                                                                    M.call_closure (|
+                                                                                                      M.get_associated_function (|
+                                                                                                        Ty.path
+                                                                                                          "core::fmt::rt::Argument",
+                                                                                                        "new_debug",
+                                                                                                        [],
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                                        ]
+                                                                                                      |),
+                                                                                                      [
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.deref (|
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.Ref,
+                                                                                                              err
+                                                                                                            |)
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                    |)
+                                                                                                  ]
+                                                                                              |)
+                                                                                            |)
+                                                                                          |)
                                                                                         |)
                                                                                       ]
                                                                                     |)
@@ -2248,8 +2457,10 @@ Module control_flow_v5.
                                                                                     cur_instr
                                                                                   |),
                                                                                   M.read (|
-                                                                                    M.read (|
-                                                                                      last_continue
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        last_continue
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
@@ -2282,7 +2493,12 @@ Module control_flow_v5.
                                                                                   [],
                                                                                   []
                                                                                 |),
-                                                                                [ loop_stack ]
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    loop_stack
+                                                                                  |)
+                                                                                ]
                                                                               |)
                                                                             |) in
                                                                           M.alloc (|
@@ -2399,8 +2615,8 @@ Module control_flow_v5.
             ]
           |),
           [
-            M.read (| context |);
-            M.read (| labels |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| labels |) |) |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -2484,7 +2700,9 @@ Module control_flow_v5.
                                                                         [
                                                                           M.read (| cur_instr |);
                                                                           M.read (|
-                                                                            M.read (| target |)
+                                                                            M.deref (|
+                                                                              M.read (| target |)
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -2514,35 +2732,45 @@ Module control_flow_v5.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.call_closure (|
-                                                                              M.get_trait_method (|
-                                                                                "core::ops::deref::Deref",
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "alloc::vec::Vec")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.tuple
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.call_closure (|
+                                                                                  M.get_trait_method (|
+                                                                                    "core::ops::deref::Deref",
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::vec::Vec")
+                                                                                      []
                                                                                       [
+                                                                                        Ty.tuple
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u16";
+                                                                                            Ty.path
+                                                                                              "u16"
+                                                                                          ];
                                                                                         Ty.path
-                                                                                          "u16";
-                                                                                        Ty.path
-                                                                                          "u16"
-                                                                                      ];
-                                                                                    Ty.path
-                                                                                      "alloc::alloc::Global"
-                                                                                  ],
-                                                                                [],
-                                                                                [],
-                                                                                "deref",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.read (|
-                                                                                  loop_stack
+                                                                                          "alloc::alloc::Global"
+                                                                                      ],
+                                                                                    [],
+                                                                                    [],
+                                                                                    "deref",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          loop_stack
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
-                                                                              ]
+                                                                              |)
                                                                             |)
                                                                           ]
                                                                         |)
@@ -2621,25 +2849,41 @@ Module control_flow_v5.
                                                                                                       []
                                                                                                     |),
                                                                                                     [
-                                                                                                      M.alloc (|
-                                                                                                        Value.Array
-                                                                                                          [
-                                                                                                            M.read (|
-                                                                                                              Value.String
-                                                                                                                "crates/move-bytecode-verifier/src/control_flow_v5.rs:173 (none)"
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.Ref,
+                                                                                                        M.deref (|
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.Ref,
+                                                                                                            M.alloc (|
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  M.read (|
+                                                                                                                    Value.String
+                                                                                                                      "crates/move-bytecode-verifier/src/control_flow_v5.rs:173 (none)"
+                                                                                                                  |)
+                                                                                                                ]
                                                                                                             |)
-                                                                                                          ]
+                                                                                                          |)
+                                                                                                        |)
                                                                                                       |);
-                                                                                                      M.alloc (|
-                                                                                                        M.call_closure (|
-                                                                                                          M.get_associated_function (|
-                                                                                                            Ty.path
-                                                                                                              "core::fmt::rt::Argument",
-                                                                                                            "none",
-                                                                                                            [],
-                                                                                                            []
-                                                                                                          |),
-                                                                                                          []
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.Ref,
+                                                                                                        M.deref (|
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.Ref,
+                                                                                                            M.alloc (|
+                                                                                                              M.call_closure (|
+                                                                                                                M.get_associated_function (|
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::rt::Argument",
+                                                                                                                  "none",
+                                                                                                                  [],
+                                                                                                                  []
+                                                                                                                |),
+                                                                                                                []
+                                                                                                              |)
+                                                                                                            |)
+                                                                                                          |)
                                                                                                         |)
                                                                                                       |)
                                                                                                     ]
@@ -2693,34 +2937,58 @@ Module control_flow_v5.
                                                                                                 []
                                                                                               |),
                                                                                               [
-                                                                                                M.alloc (|
-                                                                                                  Value.Array
-                                                                                                    [
-                                                                                                      M.read (|
-                                                                                                        Value.String
-                                                                                                          ""
-                                                                                                      |)
-                                                                                                    ]
-                                                                                                |);
-                                                                                                M.alloc (|
-                                                                                                  Value.Array
-                                                                                                    [
-                                                                                                      M.call_closure (|
-                                                                                                        M.get_associated_function (|
-                                                                                                          Ty.path
-                                                                                                            "core::fmt::rt::Argument",
-                                                                                                          "new_debug",
-                                                                                                          [],
+                                                                                                M.borrow (|
+                                                                                                  Pointer.Kind.Ref,
+                                                                                                  M.deref (|
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.alloc (|
+                                                                                                        Value.Array
                                                                                                           [
-                                                                                                            Ty.path
-                                                                                                              "move_binary_format::errors::PartialVMError"
+                                                                                                            M.read (|
+                                                                                                              Value.String
+                                                                                                                ""
+                                                                                                            |)
                                                                                                           ]
-                                                                                                        |),
-                                                                                                        [
-                                                                                                          err
-                                                                                                        ]
                                                                                                       |)
-                                                                                                    ]
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                |);
+                                                                                                M.borrow (|
+                                                                                                  Pointer.Kind.Ref,
+                                                                                                  M.deref (|
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.alloc (|
+                                                                                                        Value.Array
+                                                                                                          [
+                                                                                                            M.call_closure (|
+                                                                                                              M.get_associated_function (|
+                                                                                                                Ty.path
+                                                                                                                  "core::fmt::rt::Argument",
+                                                                                                                "new_debug",
+                                                                                                                [],
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                                                ]
+                                                                                                              |),
+                                                                                                              [
+                                                                                                                M.borrow (|
+                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                  M.deref (|
+                                                                                                                    M.borrow (|
+                                                                                                                      Pointer.Kind.Ref,
+                                                                                                                      err
+                                                                                                                    |)
+                                                                                                                  |)
+                                                                                                                |)
+                                                                                                              ]
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)
                                                                                               ]
                                                                                             |)
@@ -2805,8 +3073,14 @@ Module control_flow_v5.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            target;
-                                                                                            cur_loop_head
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              target
+                                                                                            |);
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              cur_loop_head
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |)) in
@@ -2831,8 +3105,13 @@ Module control_flow_v5.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.read (|
-                                                                                              context
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.deref (|
+                                                                                                M.read (|
+                                                                                                  context
+                                                                                                |)
+                                                                                              |)
                                                                                             |);
                                                                                             Value.StructTuple
                                                                                               "move_core_types::vm_status::StatusCode::INVALID_LOOP_CONTINUE"
@@ -2954,8 +3233,8 @@ Module control_flow_v5.
             ]
           |),
           [
-            M.read (| context |);
-            M.read (| labels |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| labels |) |) |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -3040,7 +3319,9 @@ Module control_flow_v5.
                                                                           [
                                                                             M.read (| cur_instr |);
                                                                             M.read (|
-                                                                              M.read (| target |)
+                                                                              M.deref (|
+                                                                                M.read (| target |)
+                                                                              |)
                                                                             |)
                                                                           ]
                                                                         |)
@@ -3070,33 +3351,45 @@ Module control_flow_v5.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.call_closure (|
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::deref::Deref",
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
-                                                                                []
-                                                                                [
-                                                                                  Ty.tuple
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.call_closure (|
+                                                                                M.get_trait_method (|
+                                                                                  "core::ops::deref::Deref",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::vec::Vec")
+                                                                                    []
                                                                                     [
-                                                                                      Ty.path "u16";
-                                                                                      Ty.path "u16"
-                                                                                    ];
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              [],
-                                                                              [],
-                                                                              "deref",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                loop_stack
+                                                                                      Ty.tuple
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u16";
+                                                                                          Ty.path
+                                                                                            "u16"
+                                                                                        ];
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ],
+                                                                                  [],
+                                                                                  [],
+                                                                                  "deref",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        loop_stack
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
                                                                               |)
-                                                                            ]
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -3151,10 +3444,21 @@ Module control_flow_v5.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  target;
-                                                                                  M.alloc (|
-                                                                                    M.read (|
-                                                                                      last_continue
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    target
+                                                                                  |);
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.alloc (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            last_continue
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 ]
@@ -3169,8 +3473,10 @@ Module control_flow_v5.
                                                                             M.alloc (|
                                                                               BinOp.ne (|
                                                                                 M.read (|
-                                                                                  M.read (|
-                                                                                    target
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      target
+                                                                                    |)
                                                                                   |)
                                                                                 |),
                                                                                 M.call_closure (|
@@ -3219,8 +3525,13 @@ Module control_flow_v5.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.read (|
-                                                                                      context
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          context
+                                                                                        |)
+                                                                                      |)
                                                                                     |);
                                                                                     Value.StructTuple
                                                                                       "move_core_types::vm_status::StatusCode::INVALID_LOOP_BREAK"
@@ -3350,23 +3661,34 @@ Module control_flow_v5.
                                                   []
                                                 |),
                                                 [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
-                                                      Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
-                                                        []
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::Deref",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::vec::Vec")
+                                                            []
+                                                            [
+                                                              Ty.tuple
+                                                                [ Ty.path "u16"; Ty.path "u16" ];
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          [],
+                                                          "deref",
+                                                          [],
+                                                          []
+                                                        |),
                                                         [
-                                                          Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ],
-                                                      [],
-                                                      [],
-                                                      "deref",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| loop_stack |) ]
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| loop_stack |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -3398,7 +3720,9 @@ Module control_flow_v5.
                                                   M.alloc (|
                                                     BinOp.gt (|
                                                       M.read (| jump_target |),
-                                                      M.read (| M.read (| last_continue |) |)
+                                                      M.read (|
+                                                        M.deref (| M.read (| last_continue |) |)
+                                                      |)
                                                     |)
                                                   |)))
                                             ]
@@ -3447,8 +3771,8 @@ Module control_flow_v5.
                 ]
               |),
               [
-                M.read (| context |);
-                M.read (| labels |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| labels |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -3525,7 +3849,9 @@ Module control_flow_v5.
                                                                         M.alloc (|
                                                                           BinOp.gt (|
                                                                             M.read (|
-                                                                              M.read (| j |)
+                                                                              M.deref (|
+                                                                                M.read (| j |)
+                                                                              |)
                                                                             |),
                                                                             M.read (| i |)
                                                                           |)
@@ -3604,14 +3930,26 @@ Module control_flow_v5.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                is_break;
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  is_break
+                                                                                |);
                                                                                 Value.Tuple
                                                                                   [
-                                                                                    M.read (|
-                                                                                      loop_stack
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          loop_stack
+                                                                                        |)
+                                                                                      |)
                                                                                     |);
                                                                                     M.read (|
-                                                                                      M.read (| j |)
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          j
+                                                                                        |)
+                                                                                      |)
                                                                                     |)
                                                                                   ]
                                                                               ]
@@ -3625,12 +3963,18 @@ Module control_flow_v5.
                                                                         |) in
                                                                       let~ j :=
                                                                         M.copy (|
-                                                                          M.read (| j |)
+                                                                          M.deref (|
+                                                                            M.read (| j |)
+                                                                          |)
                                                                         |) in
                                                                       let~ before_depth :=
                                                                         M.copy (|
                                                                           M.SubPointer.get_array_field (|
-                                                                            M.read (| loop_depth |),
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                loop_depth
+                                                                              |)
+                                                                            |),
                                                                             M.alloc (|
                                                                               M.rust_cast
                                                                                 (M.read (| i |))
@@ -3641,11 +3985,20 @@ Module control_flow_v5.
                                                                         M.copy (|
                                                                           M.match_operator (|
                                                                             M.alloc (|
-                                                                              M.SubPointer.get_array_field (|
-                                                                                M.read (| labels |),
-                                                                                M.alloc (|
-                                                                                  M.rust_cast
-                                                                                    (M.read (| j |))
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.SubPointer.get_array_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      labels
+                                                                                    |)
+                                                                                  |),
+                                                                                  M.alloc (|
+                                                                                    M.rust_cast
+                                                                                      (M.read (|
+                                                                                        j
+                                                                                      |))
+                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             |),
@@ -3665,8 +4018,10 @@ Module control_flow_v5.
                                                                                     BinOp.Wrap.sub (|
                                                                                       M.read (|
                                                                                         M.SubPointer.get_array_field (|
-                                                                                          M.read (|
-                                                                                            loop_depth
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              loop_depth
+                                                                                            |)
                                                                                           |),
                                                                                           M.alloc (|
                                                                                             M.rust_cast
@@ -3693,8 +4048,10 @@ Module control_flow_v5.
                                                                                       "move_bytecode_verifier::control_flow_v5::Label::Code"
                                                                                     |) in
                                                                                   M.SubPointer.get_array_field (|
-                                                                                    M.read (|
-                                                                                      loop_depth
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        loop_depth
+                                                                                      |)
                                                                                     |),
                                                                                     M.alloc (|
                                                                                       M.rust_cast
@@ -3743,8 +4100,13 @@ Module control_flow_v5.
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        M.read (|
-                                                                                          context
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              context
+                                                                                            |)
+                                                                                          |)
                                                                                         |);
                                                                                         Value.StructTuple
                                                                                           "move_core_types::vm_status::StatusCode::INVALID_LOOP_SPLIT"
@@ -3834,7 +4196,7 @@ Module control_flow_v5.
                 M.copy (|
                   M.match_operator (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| verifier_config |),
+                      M.deref (| M.read (| verifier_config |) |),
                       "move_vm_config::verifier::VerifierConfig",
                       "max_loop_depth"
                     |),
@@ -3900,8 +4262,8 @@ Module control_flow_v5.
                     ]
                   |),
                   [
-                    M.read (| context |);
-                    M.read (| labels |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| labels |) |) |);
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -3939,8 +4301,10 @@ Module control_flow_v5.
                                                                         BinOp.gt (|
                                                                           M.read (|
                                                                             M.SubPointer.get_array_field (|
-                                                                              M.read (|
-                                                                                loop_depth
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  loop_depth
+                                                                                |)
                                                                               |),
                                                                               M.alloc (|
                                                                                 M.rust_cast
@@ -3972,8 +4336,13 @@ Module control_flow_v5.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    context
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        context
+                                                                                      |)
+                                                                                    |)
                                                                                   |);
                                                                                   Value.StructTuple
                                                                                     "move_core_types::vm_status::StatusCode::LOOP_MAX_DEPTH_REACHED"
@@ -4119,7 +4488,7 @@ Module control_flow_v5.
                           [],
                           []
                         |),
-                        [ M.read (| labels |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| labels |) |) |) ]
                       |);
                       M.closure
                         (fun γ =>
@@ -4150,7 +4519,11 @@ Module control_flow_v5.
                                                   M.alloc (|
                                                     Value.StructTuple
                                                       "core::option::Option::Some"
-                                                      [ M.read (| M.read (| last_continue |) |) ]
+                                                      [
+                                                        M.read (|
+                                                          M.deref (| M.read (| last_continue |) |)
+                                                        |)
+                                                      ]
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -4240,7 +4613,7 @@ Module control_flow_v5.
                               [],
                               []
                             |),
-                            [ M.read (| labels |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| labels |) |) |) ]
                           |)
                         ]
                       |)
@@ -4275,7 +4648,12 @@ Module control_flow_v5.
                                     [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -4332,7 +4710,10 @@ Module control_flow_v5.
                                             [],
                                             []
                                           |),
-                                          [ counts; M.read (| count |) ]
+                                          [
+                                            M.borrow (| Pointer.Kind.MutRef, counts |);
+                                            M.read (| count |)
+                                          ]
                                         |)
                                       |) in
                                     M.match_operator (|
@@ -4358,36 +4739,47 @@ Module control_flow_v5.
                                                       [ Ty.path "u16" ]
                                                     |),
                                                     [
-                                                      last_continues;
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "u16";
-                                                                Ty.path
-                                                                  "core::num::error::TryFromIntError"
-                                                              ],
-                                                            "unwrap",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::convert::TryInto",
-                                                                Ty.path "usize",
-                                                                [],
-                                                                [ Ty.path "u16" ],
-                                                                "try_into",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [ M.read (| idx |) ]
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        last_continues
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "u16";
+                                                                      Ty.path
+                                                                        "core::num::error::TryFromIntError"
+                                                                    ],
+                                                                  "unwrap",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::convert::TryInto",
+                                                                      Ty.path "usize",
+                                                                      [],
+                                                                      [ Ty.path "u16" ],
+                                                                      "try_into",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| idx |) ]
+                                                                  |)
+                                                                ]
+                                                              |)
                                                             |)
-                                                          ]
+                                                          |)
                                                         |)
                                                       |)
                                                     ]

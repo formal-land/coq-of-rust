@@ -106,14 +106,14 @@ Module mem.
                   BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::mem::transmutability::Assume",
                         "alignment"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::mem::transmutability::Assume",
                         "alignment"
                       |)
@@ -123,14 +123,14 @@ Module mem.
                     (BinOp.eq (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::mem::transmutability::Assume",
                           "lifetimes"
                         |)
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
+                          M.deref (| M.read (| other |) |),
                           "core::mem::transmutability::Assume",
                           "lifetimes"
                         |)
@@ -141,14 +141,14 @@ Module mem.
                   (BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::mem::transmutability::Assume",
                         "safety"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::mem::transmutability::Assume",
                         "safety"
                       |)
@@ -159,14 +159,14 @@ Module mem.
                 (BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::mem::transmutability::Assume",
                       "validity"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "core::mem::transmutability::Assume",
                       "validity"
                     |)
@@ -227,7 +227,7 @@ Module mem.
             M.read (|
               M.match_operator (|
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -270,32 +270,73 @@ Module mem.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Assume" |);
-                M.read (| Value.String "alignment" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::mem::transmutability::Assume",
-                  "alignment"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Assume" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "alignment" |) |)
                 |);
-                M.read (| Value.String "lifetimes" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::mem::transmutability::Assume",
-                  "lifetimes"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::mem::transmutability::Assume",
+                        "alignment"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "safety" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::mem::transmutability::Assume",
-                  "safety"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "lifetimes" |) |)
                 |);
-                M.read (| Value.String "validity" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::mem::transmutability::Assume",
-                    "validity"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::mem::transmutability::Assume",
+                        "lifetimes"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "safety" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::mem::transmutability::Assume",
+                        "safety"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "validity" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::mem::transmutability::Assume",
+                            "validity"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]

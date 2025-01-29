@@ -73,8 +73,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "Guess the number!
-" |) ] |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Guess the number!
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -100,9 +112,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                         |),
                         [
-                          M.alloc (|
-                            Value.Array [ M.read (| Value.String "Please input your guess.
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [ M.read (| Value.String "Please input your guess.
 " |) ]
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -138,16 +159,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                       |),
                       [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_function (| "std::io::stdio::stdin", [], [] |),
-                            []
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "std::io::stdio::stdin", [], [] |),
+                              []
+                            |)
                           |)
                         |);
-                        guess
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, guess |) |)
+                        |)
                       ]
                     |);
-                    M.read (| Value.String "Failed to read line" |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "Failed to read line" |) |)
+                    |)
                   ]
                 |)
               |) in
@@ -158,22 +188,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "u32" ] |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "trim", [], [] |),
-                          [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
                             M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.path "alloc::string::String",
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [ guess ]
+                              M.get_associated_function (| Ty.path "str", "trim", [], [] |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.path "alloc::string::String",
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, guess |) ]
+                                    |)
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -215,27 +255,48 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                         |),
                         [
-                          M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "You guessed: " |);
-                                M.read (| Value.String "
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "You guessed: " |);
+                                      M.read (| Value.String "
 " |)
-                              ]
-                          |);
-                          M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [],
-                                    [ Ty.path "u32" ]
-                                  |),
-                                  [ guess ]
+                                    ]
                                 |)
-                              ]
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.path "u32" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, guess |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -247,7 +308,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], [], "cmp", [], [] |),
-                  [ guess; secret_number ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, guess |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, secret_number |) |)
+                    |)
+                  ]
                 |)
               |),
               [
@@ -267,9 +334,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array [ M.read (| Value.String "Too small!
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array [ M.read (| Value.String "Too small!
 " |) ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -292,8 +367,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 [],
                                 []
                               |),
-                              [ M.alloc (| Value.Array [ M.read (| Value.String "Too big!
-" |) ] |)
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array [ M.read (| Value.String "Too big!
+" |) ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -320,9 +406,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          Value.Array [ M.read (| Value.String "You win!
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.Array
+                                                  [ M.read (| Value.String "You win!
 " |) ]
+                                              |)
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)

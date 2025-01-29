@@ -80,7 +80,7 @@ Module interpreter.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "revm_interpreter::interpreter::loop_control::LoopControl",
                     "instruction_result"
                   |),
@@ -108,7 +108,7 @@ Module interpreter.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "revm_interpreter::interpreter::loop_control::LoopControl",
                     "next_action"
                   |),
@@ -117,7 +117,7 @@ Module interpreter.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "revm_interpreter::interpreter::loop_control::LoopControl",
                     "instruction_result"
                   |),
@@ -138,10 +138,23 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "revm_interpreter::interpreter::loop_control::LoopControl",
-              "gas"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::loop_control::LoopControl",
+                        "gas"
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -158,7 +171,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::interpreter::loop_control::LoopControl",
                 "instruction_result"
               |)
@@ -183,10 +196,18 @@ Module interpreter.
                 [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ]
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter::loop_control::LoopControl",
-                  "next_action"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::loop_control::LoopControl",
+                        "next_action"
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))

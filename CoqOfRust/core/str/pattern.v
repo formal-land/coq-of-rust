@@ -27,33 +27,42 @@ Module str.
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::str::pattern::Searcher",
-                      Ty.associated,
-                      [],
-                      [],
-                      "next_match",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::str::pattern::Pattern",
-                            Self,
-                            [],
-                            [],
-                            "into_searcher",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |); M.read (| haystack |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::str::pattern::Searcher",
+                        Ty.associated,
+                        [],
+                        [],
+                        "next_match",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::str::pattern::Pattern",
+                                Self,
+                                [],
+                                [],
+                                "into_searcher",
+                                [],
+                                []
+                              |),
+                              [
+                                M.read (| self |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
+                              ]
+                            |)
+                          |)
                         |)
-                      |)
-                    ]
+                      ]
+                    |)
                   |)
                 |)
               ]
@@ -88,18 +97,24 @@ Module str.
                       []
                     |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::str::pattern::Pattern",
-                            Self,
-                            [],
-                            [],
-                            "into_searcher",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |); M.read (| haystack |) ]
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::str::pattern::Pattern",
+                              Self,
+                              [],
+                              [],
+                              "into_searcher",
+                              [],
+                              []
+                            |),
+                            [
+                              M.read (| self |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
+                            ]
+                          |)
                         |)
                       |)
                     ]
@@ -160,18 +175,24 @@ Module str.
                       []
                     |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::str::pattern::Pattern",
-                            Self,
-                            [],
-                            [],
-                            "into_searcher",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |); M.read (| haystack |) ]
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::str::pattern::Pattern",
+                              Self,
+                              [],
+                              [],
+                              "into_searcher",
+                              [],
+                              []
+                            |),
+                            [
+                              M.read (| self |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
+                            ]
+                          |)
                         |)
                       |)
                     ]
@@ -198,7 +219,8 @@ Module str.
                           BinOp.eq (|
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                              [ M.read (| haystack |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
+                              ]
                             |),
                             M.read (| j |)
                           |)
@@ -244,18 +266,27 @@ Module str.
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::str::pattern::Pattern",
-                                    Self,
-                                    [],
-                                    [],
-                                    "into_searcher",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |); M.read (| haystack |) ]
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::str::pattern::Pattern",
+                                      Self,
+                                      [],
+                                      [],
+                                      "into_searcher",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.read (| self |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| haystack |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |)
                             ]
@@ -291,7 +322,13 @@ Module str.
                                   M.match_operator (|
                                     M.alloc (|
                                       Value.Tuple
-                                        [ start; M.alloc (| Value.Integer IntegerKind.Usize 0 |) ]
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, start |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                          |)
+                                        ]
                                     |),
                                     [
                                       fun γ =>
@@ -310,8 +347,12 @@ Module str.
                                                       (M.alloc (|
                                                         UnOp.not (|
                                                           BinOp.eq (|
-                                                            M.read (| M.read (| left_val |) |),
-                                                            M.read (| M.read (| right_val |) |)
+                                                            M.read (|
+                                                              M.deref (| M.read (| left_val |) |)
+                                                            |),
+                                                            M.read (|
+                                                              M.deref (| M.read (| right_val |) |)
+                                                            |)
                                                           |)
                                                         |)
                                                       |)) in
@@ -338,8 +379,28 @@ Module str.
                                                             |),
                                                             [
                                                               M.read (| kind |);
-                                                              M.read (| left_val |);
-                                                              M.read (| right_val |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| left_val |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| right_val |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |);
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
                                                                 [
@@ -352,14 +413,22 @@ Module str.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "The first search step from Searcher must include the first character"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      "The first search step from Searcher must include the first character"
+                                                                                  |)
+                                                                                ]
                                                                             |)
-                                                                          ]
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -384,24 +453,32 @@ Module str.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "str",
-                                "get_unchecked",
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::RangeFrom")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ]
-                              |),
-                              [
-                                M.read (| haystack |);
-                                Value.StructRecord
-                                  "core::ops::range::RangeFrom"
-                                  [ ("start", M.read (| len |)) ]
-                              ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "str",
+                                    "get_unchecked",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeFrom")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| haystack |) |)
+                                    |);
+                                    Value.StructRecord
+                                      "core::ops::range::RangeFrom"
+                                      [ ("start", M.read (| len |)) ]
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                       |)));
@@ -446,18 +523,27 @@ Module str.
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::str::pattern::Pattern",
-                                    Self,
-                                    [],
-                                    [],
-                                    "into_searcher",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |); M.read (| haystack |) ]
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::str::pattern::Pattern",
+                                      Self,
+                                      [],
+                                      [],
+                                      "into_searcher",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.read (| self |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| haystack |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |)
                             ]
@@ -494,16 +580,24 @@ Module str.
                                     M.alloc (|
                                       Value.Tuple
                                         [
-                                          end_;
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "str",
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| haystack |) ]
+                                          M.borrow (| Pointer.Kind.Ref, end_ |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "str",
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| haystack |) |)
+                                                  |)
+                                                ]
+                                              |)
                                             |)
                                           |)
                                         ]
@@ -525,8 +619,12 @@ Module str.
                                                       (M.alloc (|
                                                         UnOp.not (|
                                                           BinOp.eq (|
-                                                            M.read (| M.read (| left_val |) |),
-                                                            M.read (| M.read (| right_val |) |)
+                                                            M.read (|
+                                                              M.deref (| M.read (| left_val |) |)
+                                                            |),
+                                                            M.read (|
+                                                              M.deref (| M.read (| right_val |) |)
+                                                            |)
                                                           |)
                                                         |)
                                                       |)) in
@@ -553,8 +651,28 @@ Module str.
                                                             |),
                                                             [
                                                               M.read (| kind |);
-                                                              M.read (| left_val |);
-                                                              M.read (| right_val |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| left_val |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| right_val |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |);
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
                                                                 [
@@ -567,14 +685,22 @@ Module str.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "The first search step from ReverseSearcher must include the last character"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      "The first search step from ReverseSearcher must include the last character"
+                                                                                  |)
+                                                                                ]
                                                                             |)
-                                                                          ]
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -599,24 +725,32 @@ Module str.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "str",
-                                "get_unchecked",
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::RangeTo")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ]
-                              |),
-                              [
-                                M.read (| haystack |);
-                                Value.StructRecord
-                                  "core::ops::range::RangeTo"
-                                  [ ("end_", M.read (| start |)) ]
-                              ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "str",
+                                    "get_unchecked",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeTo")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| haystack |) |)
+                                    |);
+                                    Value.StructRecord
+                                      "core::ops::range::RangeTo"
+                                      [ ("end_", M.read (| start |)) ]
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                       |)));
@@ -682,7 +816,7 @@ Module str.
             M.read (|
               M.match_operator (|
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -757,7 +891,7 @@ Module str.
                       [],
                       [ Ty.path "core::str::pattern::SearchStep" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -768,7 +902,7 @@ Module str.
                       [],
                       [ Ty.path "core::str::pattern::SearchStep" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -825,7 +959,10 @@ Module str.
                                       [],
                                       []
                                     |),
-                                    [ __self_0; __arg1_0 ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                      M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                    ]
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -838,7 +975,10 @@ Module str.
                                         [],
                                         []
                                       |),
-                                      [ __self_1; __arg1_1 ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                        M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                      ]
                                     |)))
                                 |)
                               |)));
@@ -888,7 +1028,10 @@ Module str.
                                       [],
                                       []
                                     |),
-                                    [ __self_0; __arg1_0 ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                      M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                    ]
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -901,7 +1044,10 @@ Module str.
                                         [],
                                         []
                                       |),
-                                      [ __self_1; __arg1_1 ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                        M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                      ]
                                     |)))
                                 |)
                               |)));
@@ -963,10 +1109,16 @@ Module str.
                             []
                           |),
                           [
-                            M.read (| f |);
-                            M.read (| Value.String "Match" |);
-                            M.read (| __self_0 |);
-                            __self_1
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Match" |) |)
+                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                            |)
                           ]
                         |)
                       |)));
@@ -996,10 +1148,16 @@ Module str.
                             []
                           |),
                           [
-                            M.read (| f |);
-                            M.read (| Value.String "Reject" |);
-                            M.read (| __self_0 |);
-                            __self_1
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Reject" |) |)
+                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                            |)
                           ]
                         |)
                       |)));
@@ -1015,7 +1173,13 @@ Module str.
                             [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Done" |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Done" |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -1062,7 +1226,8 @@ Module str.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           |),
                           [
@@ -1151,7 +1316,8 @@ Module str.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           |),
                           [
@@ -1244,7 +1410,8 @@ Module str.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           |),
                           [
@@ -1333,7 +1500,8 @@ Module str.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           |),
                           [
@@ -1432,23 +1600,36 @@ Module str.
               "core::str::pattern::CharSearcher"
               [
                 ("haystack",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::CharSearcher",
-                        "haystack"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::str::pattern::CharSearcher",
+                                  "haystack"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |));
                 ("finger",
                   M.call_closure (|
@@ -1462,10 +1643,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::CharSearcher",
-                        "finger"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::CharSearcher",
+                              "finger"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -1481,10 +1670,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::CharSearcher",
-                        "finger_back"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::CharSearcher",
+                              "finger_back"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -1500,10 +1697,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::CharSearcher",
-                        "needle"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::CharSearcher",
+                              "needle"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -1519,10 +1724,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::CharSearcher",
-                        "utf8_size"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::CharSearcher",
+                              "utf8_size"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -1541,10 +1754,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::CharSearcher",
-                        "utf8_encoded"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::CharSearcher",
+                              "utf8_encoded"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -1573,56 +1794,138 @@ Module str.
             M.read (|
               let~ names :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (| Value.String "haystack" |);
-                        M.read (| Value.String "finger" |);
-                        M.read (| Value.String "finger_back" |);
-                        M.read (| Value.String "needle" |);
-                        M.read (| Value.String "utf8_size" |);
-                        M.read (| Value.String "utf8_encoded" |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "haystack" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "finger" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "finger_back" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "needle" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "utf8_size" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "utf8_encoded" |) |)
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)
                   |)
                 |) in
               let~ values :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::CharSearcher",
-                          "haystack"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::CharSearcher",
-                          "finger"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::CharSearcher",
-                          "finger_back"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::CharSearcher",
-                          "needle"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::CharSearcher",
-                          "utf8_size"
-                        |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
                         M.alloc (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::pattern::CharSearcher",
-                            "utf8_encoded"
-                          |)
+                          Value.Array
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::CharSearcher",
+                                      "haystack"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::CharSearcher",
+                                      "finger"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::CharSearcher",
+                                      "finger_back"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::CharSearcher",
+                                      "needle"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::CharSearcher",
+                                      "utf8_size"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::str::pattern::CharSearcher",
+                                          "utf8_encoded"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 |) in
               M.alloc (|
@@ -1634,10 +1937,13 @@ Module str.
                     []
                   |),
                   [
-                    M.read (| f |);
-                    M.read (| Value.String "CharSearcher" |);
-                    M.read (| names |);
-                    M.read (| values |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "CharSearcher" |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
                 |)
               |)
@@ -1679,7 +1985,7 @@ Module str.
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::str::pattern::CharSearcher",
                     "utf8_size"
                   |)
@@ -1707,7 +2013,7 @@ Module str.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::str::pattern::CharSearcher",
                 "haystack"
               |)
@@ -1752,7 +2058,7 @@ Module str.
               let~ old_finger :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::str::pattern::CharSearcher",
                     "finger"
                   |)
@@ -1767,11 +2073,16 @@ Module str.
                       [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::CharSearcher",
-                          "haystack"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::CharSearcher",
+                              "haystack"
+                            |)
+                          |)
                         |)
                       |);
                       Value.StructRecord
@@ -1781,7 +2092,7 @@ Module str.
                           ("end_",
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::str::pattern::CharSearcher",
                                 "finger_back"
                               |)
@@ -1794,7 +2105,7 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "str", "chars", [], [] |),
-                    [ M.read (| slice |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                   |)
                 |) in
               let~ old_len :=
@@ -1810,10 +2121,13 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        iter,
-                        "core::str::iter::Chars",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          iter,
+                          "core::str::iter::Chars",
+                          "iter"
+                        |)
                       |)
                     ]
                   |)
@@ -1835,7 +2149,7 @@ Module str.
                               [],
                               []
                             |),
-                            [ iter ]
+                            [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
                           |)
                         |) in
                       let γ0_0 :=
@@ -1848,7 +2162,7 @@ Module str.
                       let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::str::pattern::CharSearcher",
                             "finger"
                           |) in
@@ -1869,10 +2183,13 @@ Module str.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    iter,
-                                    "core::str::iter::Chars",
-                                    "iter"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      iter,
+                                      "core::str::iter::Chars",
+                                      "iter"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1891,7 +2208,7 @@ Module str.
                                       M.read (| ch |),
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::str::pattern::CharSearcher",
                                           "needle"
                                         |)
@@ -1910,7 +2227,7 @@ Module str.
                                     M.read (| old_finger |);
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::pattern::CharSearcher",
                                         "finger"
                                       |)
@@ -1926,7 +2243,7 @@ Module str.
                                     M.read (| old_finger |);
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::pattern::CharSearcher",
                                         "finger"
                                       |)
@@ -2034,22 +2351,32 @@ Module str.
                                         ]
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "as_bytes",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::CharSearcher",
-                                                "haystack"
-                                              |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "as_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::pattern::CharSearcher",
+                                                        "haystack"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::Range"
@@ -2057,7 +2384,7 @@ Module str.
                                             ("start",
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::CharSearcher",
                                                   "finger"
                                                 |)
@@ -2065,7 +2392,7 @@ Module str.
                                             ("end_",
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::CharSearcher",
                                                   "finger_back"
                                                 |)
@@ -2129,32 +2456,42 @@ Module str.
                           |) in
                         let~ last_byte :=
                           M.copy (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                "get_unchecked",
-                                [],
-                                [ Ty.path "usize" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::str::pattern::CharSearcher",
-                                  "utf8_encoded"
-                                |);
-                                BinOp.Wrap.sub (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::str::pattern::CharSearcher",
-                                      "utf8_size",
-                                      [],
-                                      []
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  "get_unchecked",
+                                  [],
+                                  [ Ty.path "usize" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::CharSearcher",
+                                      "utf8_encoded"
+                                    |)
+                                  |);
+                                  BinOp.Wrap.sub (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::str::pattern::CharSearcher",
+                                        "utf8_size",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |),
-                                    [ M.read (| self |) ]
-                                  |),
-                                  Value.Integer IntegerKind.Usize 1
-                                |)
-                              ]
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
+                                ]
+                              |)
                             |)
                           |) in
                         M.match_operator (|
@@ -2166,7 +2503,13 @@ Module str.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (| "core::slice::memchr::memchr", [], [] |),
-                                      [ M.read (| last_byte |); M.read (| bytes |) ]
+                                      [
+                                        M.read (| last_byte |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| bytes |) |)
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -2179,7 +2522,7 @@ Module str.
                                 let~ _ :=
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::str::pattern::CharSearcher",
                                       "finger"
                                     |) in
@@ -2204,7 +2547,7 @@ Module str.
                                               BinOp.ge (|
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::str::pattern::CharSearcher",
                                                     "finger"
                                                   |)
@@ -2216,7 +2559,12 @@ Module str.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| self |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             |)) in
@@ -2230,7 +2578,7 @@ Module str.
                                             BinOp.Wrap.sub (|
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::CharSearcher",
                                                   "finger"
                                                 |)
@@ -2242,7 +2590,12 @@ Module str.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| self |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
                                               |)
                                             |)
                                           |) in
@@ -2269,22 +2622,34 @@ Module str.
                                                         ]
                                                       |),
                                                       [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "str",
-                                                            "as_bytes",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "core::str::pattern::CharSearcher",
-                                                                "haystack"
-                                                              |)
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "str",
+                                                                "as_bytes",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.read (| self |)
+                                                                        |),
+                                                                        "core::str::pattern::CharSearcher",
+                                                                        "haystack"
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                             |)
-                                                          ]
+                                                          |)
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::Range"
@@ -2293,7 +2658,7 @@ Module str.
                                                             ("end_",
                                                               M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
+                                                                  M.deref (| M.read (| self |) |),
                                                                   "core::str::pattern::CharSearcher",
                                                                   "finger"
                                                                 |)
@@ -2346,58 +2711,85 @@ Module str.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  slice;
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::index::Index",
-                                                                        Ty.apply
-                                                                          (Ty.path "array")
-                                                                          [
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              4
-                                                                          ]
-                                                                          [ Ty.path "u8" ],
-                                                                        [],
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::ops::range::Range")
-                                                                            []
-                                                                            [ Ty.path "usize" ]
-                                                                        ],
-                                                                        "index",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| self |),
-                                                                          "core::str::pattern::CharSearcher",
-                                                                          "utf8_encoded"
-                                                                        |);
-                                                                        Value.StructRecord
-                                                                          "core::ops::range::Range"
-                                                                          [
-                                                                            ("start",
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                0);
-                                                                            ("end_",
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::str::pattern::CharSearcher",
-                                                                                  "utf8_size",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [ M.read (| self |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    slice
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::index::Index",
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    4
                                                                                 ]
-                                                                              |))
-                                                                          ]
-                                                                      ]
+                                                                                [ Ty.path "u8" ],
+                                                                              [],
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::ops::range::Range")
+                                                                                  []
+                                                                                  [ Ty.path "usize"
+                                                                                  ]
+                                                                              ],
+                                                                              "index",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |),
+                                                                                  "core::str::pattern::CharSearcher",
+                                                                                  "utf8_encoded"
+                                                                                |)
+                                                                              |);
+                                                                              Value.StructRecord
+                                                                                "core::ops::range::Range"
+                                                                                [
+                                                                                  ("start",
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      0);
+                                                                                  ("end_",
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "core::str::pattern::CharSearcher",
+                                                                                        "utf8_size",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              self
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
+                                                                                    |))
+                                                                                ]
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 ]
@@ -2420,7 +2812,9 @@ Module str.
                                                                         M.read (| found_char |);
                                                                         M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| self |),
+                                                                            M.deref (|
+                                                                              M.read (| self |)
+                                                                            |),
                                                                             "core::str::pattern::CharSearcher",
                                                                             "finger"
                                                                           |)
@@ -2450,13 +2844,13 @@ Module str.
                                       let~ _ :=
                                         M.write (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::str::pattern::CharSearcher",
                                             "finger"
                                           |),
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::str::pattern::CharSearcher",
                                               "finger_back"
                                             |)
@@ -2523,7 +2917,7 @@ Module str.
               let~ old_finger :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::str::pattern::CharSearcher",
                     "finger_back"
                   |)
@@ -2538,11 +2932,16 @@ Module str.
                       [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::CharSearcher",
-                          "haystack"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::CharSearcher",
+                              "haystack"
+                            |)
+                          |)
                         |)
                       |);
                       Value.StructRecord
@@ -2551,7 +2950,7 @@ Module str.
                           ("start",
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::str::pattern::CharSearcher",
                                 "finger"
                               |)
@@ -2565,7 +2964,7 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "str", "chars", [], [] |),
-                    [ M.read (| slice |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                   |)
                 |) in
               let~ old_len :=
@@ -2581,10 +2980,13 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        iter,
-                        "core::str::iter::Chars",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          iter,
+                          "core::str::iter::Chars",
+                          "iter"
+                        |)
                       |)
                     ]
                   |)
@@ -2606,7 +3008,7 @@ Module str.
                               [],
                               []
                             |),
-                            [ iter ]
+                            [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
                           |)
                         |) in
                       let γ0_0 :=
@@ -2619,7 +3021,7 @@ Module str.
                       let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::str::pattern::CharSearcher",
                             "finger_back"
                           |) in
@@ -2640,10 +3042,13 @@ Module str.
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    iter,
-                                    "core::str::iter::Chars",
-                                    "iter"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      iter,
+                                      "core::str::iter::Chars",
+                                      "iter"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2662,7 +3067,7 @@ Module str.
                                       M.read (| ch |),
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::str::pattern::CharSearcher",
                                           "needle"
                                         |)
@@ -2680,7 +3085,7 @@ Module str.
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::pattern::CharSearcher",
                                         "finger_back"
                                       |)
@@ -2696,7 +3101,7 @@ Module str.
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::pattern::CharSearcher",
                                         "finger_back"
                                       |)
@@ -2778,11 +3183,16 @@ Module str.
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                         [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::CharSearcher",
-                              "haystack"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::str::pattern::CharSearcher",
+                                  "haystack"
+                                |)
+                              |)
                             |)
                           |)
                         ]
@@ -2829,14 +3239,17 @@ Module str.
                                             ]
                                           |),
                                           [
-                                            M.read (| haystack |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| haystack |) |)
+                                            |);
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
                                                 ("start",
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::str::pattern::CharSearcher",
                                                       "finger"
                                                     |)
@@ -2844,7 +3257,7 @@ Module str.
                                                 ("end_",
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::str::pattern::CharSearcher",
                                                       "finger_back"
                                                     |)
@@ -2911,32 +3324,42 @@ Module str.
                               |) in
                             let~ last_byte :=
                               M.copy (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                    "get_unchecked",
-                                    [],
-                                    [ Ty.path "usize" ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::str::pattern::CharSearcher",
-                                      "utf8_encoded"
-                                    |);
-                                    BinOp.Wrap.sub (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::str::pattern::CharSearcher",
-                                          "utf8_size",
-                                          [],
-                                          []
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      "get_unchecked",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::str::pattern::CharSearcher",
+                                          "utf8_encoded"
+                                        |)
+                                      |);
+                                      BinOp.Wrap.sub (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::str::pattern::CharSearcher",
+                                            "utf8_size",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |),
-                                        [ M.read (| self |) ]
-                                      |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |)
-                                  ]
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |) in
                             M.match_operator (|
@@ -2952,7 +3375,13 @@ Module str.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| last_byte |); M.read (| bytes |) ]
+                                          [
+                                            M.read (| last_byte |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| bytes |) |)
+                                            |)
+                                          ]
                                         |)
                                       |) in
                                     let γ0_0 :=
@@ -2967,7 +3396,7 @@ Module str.
                                         BinOp.Wrap.add (|
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::str::pattern::CharSearcher",
                                               "finger"
                                             |)
@@ -2985,7 +3414,12 @@ Module str.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
                                           |),
                                           Value.Integer IntegerKind.Usize 1
                                         |)
@@ -3040,7 +3474,10 @@ Module str.
                                                               ]
                                                             |),
                                                             [
-                                                              M.read (| haystack |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| haystack |) |)
+                                                              |);
                                                               Value.StructRecord
                                                                 "core::ops::range::Range"
                                                                 [
@@ -3057,7 +3494,14 @@ Module str.
                                                                           [],
                                                                           []
                                                                         |),
-                                                                        [ M.read (| self |) ]
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (| self |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
                                                                       |)
                                                                     |))
                                                                 ]
@@ -3108,62 +3552,89 @@ Module str.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        slice;
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::index::Index",
-                                                                              Ty.apply
-                                                                                (Ty.path "array")
-                                                                                [
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Usize
-                                                                                    4
-                                                                                ]
-                                                                                [ Ty.path "u8" ],
-                                                                              [],
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::ops::range::Range")
-                                                                                  []
-                                                                                  [ Ty.path "usize"
-                                                                                  ]
-                                                                              ],
-                                                                              "index",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| self |),
-                                                                                "core::str::pattern::CharSearcher",
-                                                                                "utf8_encoded"
-                                                                              |);
-                                                                              Value.StructRecord
-                                                                                "core::ops::range::Range"
-                                                                                [
-                                                                                  ("start",
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      0);
-                                                                                  ("end_",
-                                                                                    M.call_closure (|
-                                                                                      M.get_associated_function (|
-                                                                                        Ty.path
-                                                                                          "core::str::pattern::CharSearcher",
-                                                                                        "utf8_size",
-                                                                                        [],
-                                                                                        []
-                                                                                      |),
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          slice
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.alloc (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.call_closure (|
+                                                                                  M.get_trait_method (|
+                                                                                    "core::ops::index::Index",
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "array")
                                                                                       [
-                                                                                        M.read (|
-                                                                                          self
-                                                                                        |)
+                                                                                        Value.Integer
+                                                                                          IntegerKind.Usize
+                                                                                          4
                                                                                       ]
-                                                                                    |))
-                                                                                ]
-                                                                            ]
+                                                                                      [ Ty.path "u8"
+                                                                                      ],
+                                                                                    [],
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::ops::range::Range")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        ]
+                                                                                    ],
+                                                                                    "index",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            self
+                                                                                          |)
+                                                                                        |),
+                                                                                        "core::str::pattern::CharSearcher",
+                                                                                        "utf8_encoded"
+                                                                                      |)
+                                                                                    |);
+                                                                                    Value.StructRecord
+                                                                                      "core::ops::range::Range"
+                                                                                      [
+                                                                                        ("start",
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            0);
+                                                                                        ("end_",
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::str::pattern::CharSearcher",
+                                                                                              "utf8_size",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    self
+                                                                                                  |)
+                                                                                                |)
+                                                                                              |)
+                                                                                            ]
+                                                                                          |))
+                                                                                      ]
+                                                                                  ]
+                                                                                |)
+                                                                              |)
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       ]
@@ -3180,7 +3651,9 @@ Module str.
                                                                     let~ _ :=
                                                                       M.write (|
                                                                         M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| self |),
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
                                                                           "core::str::pattern::CharSearcher",
                                                                           "finger_back"
                                                                         |),
@@ -3194,7 +3667,11 @@ Module str.
                                                                             [
                                                                               M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
-                                                                                  M.read (| self |),
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |),
                                                                                   "core::str::pattern::CharSearcher",
                                                                                   "finger_back"
                                                                                 |)
@@ -3202,8 +3679,10 @@ Module str.
                                                                               BinOp.Wrap.add (|
                                                                                 M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
-                                                                                    M.read (|
-                                                                                      self
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        self
+                                                                                      |)
                                                                                     |),
                                                                                     "core::str::pattern::CharSearcher",
                                                                                     "finger_back"
@@ -3218,8 +3697,13 @@ Module str.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.read (|
-                                                                                      self
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          self
+                                                                                        |)
+                                                                                      |)
                                                                                     |)
                                                                                   ]
                                                                                 |)
@@ -3245,7 +3729,7 @@ Module str.
                                     let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::str::pattern::CharSearcher",
                                           "finger_back"
                                         |),
@@ -3260,13 +3744,13 @@ Module str.
                                           let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::str::pattern::CharSearcher",
                                                 "finger_back"
                                               |),
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::CharSearcher",
                                                   "finger"
                                                 |)
@@ -3375,20 +3859,36 @@ Module str.
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "str", "len", [], [] |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "char",
-                                  "encode_utf8",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| self |); utf8_encoded ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "char",
+                                      "encode_utf8",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.read (| self |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.borrow (| Pointer.Kind.MutRef, utf8_encoded |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
                         ]
                       |);
-                      M.read (| Value.String "char len should be less than 255" |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "char len should be less than 255" |) |)
+                      |)
                     ]
                   |)
                 |) in
@@ -3396,12 +3896,13 @@ Module str.
                 Value.StructRecord
                   "core::str::pattern::CharSearcher"
                   [
-                    ("haystack", M.read (| haystack |));
+                    ("haystack",
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |));
                     ("finger", Value.Integer IntegerKind.Usize 0);
                     ("finger_back",
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                        [ M.read (| haystack |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |) ]
                       |));
                     ("needle", M.read (| self |));
                     ("utf8_size", M.read (| utf8_size |));
@@ -3452,11 +3953,29 @@ Module str.
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                              [ M.read (| haystack |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| haystack |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |);
-                            M.alloc (| M.rust_cast (M.read (| self |)) |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (| M.rust_cast (M.read (| self |)) |)
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       |)));
@@ -3481,11 +4000,27 @@ Module str.
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
-                              [ M.read (| self |); buffer ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "char",
+                                    "encode_utf8",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (| self |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, buffer |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |);
-                            M.read (| haystack |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
                           ]
                         |)
                       |)))
@@ -3517,16 +4052,32 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
-                  [
-                    M.read (| self |);
-                    M.alloc (|
-                      repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
+                      [
+                        M.read (| self |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                repeat (|
+                                  Value.Integer IntegerKind.U8 0,
+                                  Value.Integer IntegerKind.Usize 4
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |);
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3554,16 +4105,32 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
-                  [
-                    M.read (| self |);
-                    M.alloc (|
-                      repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
+                      [
+                        M.read (| self |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                repeat (|
+                                  Value.Integer IntegerKind.U8 0,
+                                  Value.Integer IntegerKind.Usize 4
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |);
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3594,16 +4161,32 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
-                  [
-                    M.read (| self |);
-                    M.alloc (|
-                      repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
+                      [
+                        M.read (| self |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                repeat (|
+                                  Value.Integer IntegerKind.U8 0,
+                                  Value.Integer IntegerKind.Usize 4
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |);
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3634,16 +4217,32 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
-                  [
-                    M.read (| self |);
-                    M.alloc (|
-                      repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
+                      [
+                        M.read (| self |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                repeat (|
+                                  Value.Integer IntegerKind.U8 0,
+                                  Value.Integer IntegerKind.Usize 4
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |);
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3694,7 +4293,10 @@ Module str.
                 [],
                 []
               |),
-              [ M.read (| self |); Value.Tuple [ M.read (| c |) ] ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                Value.Tuple [ M.read (| c |) ]
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3738,15 +4340,18 @@ Module str.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
-                      "iter",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
+                        "iter",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -3812,15 +4417,23 @@ Module str.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
-                      "iter",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
+                        "iter",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                        |)
+                      ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -3885,15 +4498,23 @@ Module str.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
-                      "iter",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
+                        "iter",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                        |)
+                      ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -3966,31 +4587,52 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", C, [], [], "clone", [], [] |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::MultiCharEqSearcher",
-                        "char_eq"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::MultiCharEqSearcher",
+                              "char_eq"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
                 ("haystack",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::MultiCharEqSearcher",
-                        "haystack"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::str::pattern::MultiCharEqSearcher",
+                                  "haystack"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |));
                 ("char_indices",
                   M.call_closure (|
@@ -4004,10 +4646,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::MultiCharEqSearcher",
-                        "char_indices"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::MultiCharEqSearcher",
+                              "char_indices"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -4044,26 +4694,59 @@ Module str.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "MultiCharEqSearcher" |);
-                M.read (| Value.String "char_eq" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::pattern::MultiCharEqSearcher",
-                  "char_eq"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "MultiCharEqSearcher" |) |)
                 |);
-                M.read (| Value.String "haystack" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::pattern::MultiCharEqSearcher",
-                  "haystack"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "char_eq" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::MultiCharEqSearcher",
+                        "char_eq"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "char_indices" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::pattern::MultiCharEqSearcher",
-                    "char_indices"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "haystack" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::MultiCharEqSearcher",
+                        "haystack"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "char_indices" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::pattern::MultiCharEqSearcher",
+                            "char_indices"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -4108,7 +4791,7 @@ Module str.
             Value.StructRecord
               "core::str::pattern::MultiCharEqSearcher"
               [
-                ("haystack", M.read (| haystack |));
+                ("haystack", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |));
                 ("char_eq",
                   M.read (|
                     M.SubPointer.get_struct_tuple_field (|
@@ -4120,7 +4803,7 @@ Module str.
                 ("char_indices",
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "str", "char_indices", [], [] |),
-                    [ M.read (| haystack |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |) ]
                   |))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4156,7 +4839,7 @@ Module str.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::str::pattern::MultiCharEqSearcher",
                 "haystack"
               |)
@@ -4193,10 +4876,13 @@ Module str.
                 (M.read (|
                   let~ s :=
                     M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::MultiCharEqSearcher",
-                        "char_indices"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::str::pattern::MultiCharEqSearcher",
+                          "char_indices"
+                        |)
                       |)
                     |) in
                   let~ pre_len :=
@@ -4212,14 +4898,17 @@ Module str.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| s |),
-                              "core::str::iter::CharIndices",
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| s |) |),
+                                "core::str::iter::CharIndices",
+                                "iter"
+                              |),
+                              "core::str::iter::Chars",
                               "iter"
-                            |),
-                            "core::str::iter::Chars",
-                            "iter"
+                            |)
                           |)
                         ]
                       |)
@@ -4242,7 +4931,8 @@ Module str.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| s |) ]
+                                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| s |) |) |)
+                                  ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -4271,14 +4961,17 @@ Module str.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| s |),
-                                        "core::str::iter::CharIndices",
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| s |) |),
+                                          "core::str::iter::CharIndices",
+                                          "iter"
+                                        |),
+                                        "core::str::iter::Chars",
                                         "iter"
-                                      |),
-                                      "core::str::iter::Chars",
-                                      "iter"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -4306,10 +4999,13 @@ Module str.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::MultiCharEqSearcher",
-                                                "char_eq"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::pattern::MultiCharEqSearcher",
+                                                  "char_eq"
+                                                |)
                                               |);
                                               M.read (| c |)
                                             ]
@@ -4411,10 +5107,13 @@ Module str.
                 (M.read (|
                   let~ s :=
                     M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::MultiCharEqSearcher",
-                        "char_indices"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::str::pattern::MultiCharEqSearcher",
+                          "char_indices"
+                        |)
                       |)
                     |) in
                   let~ pre_len :=
@@ -4430,14 +5129,17 @@ Module str.
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| s |),
-                              "core::str::iter::CharIndices",
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| s |) |),
+                                "core::str::iter::CharIndices",
+                                "iter"
+                              |),
+                              "core::str::iter::Chars",
                               "iter"
-                            |),
-                            "core::str::iter::Chars",
-                            "iter"
+                            |)
                           |)
                         ]
                       |)
@@ -4460,7 +5162,8 @@ Module str.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| s |) ]
+                                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| s |) |) |)
+                                  ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -4489,14 +5192,17 @@ Module str.
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| s |),
-                                        "core::str::iter::CharIndices",
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| s |) |),
+                                          "core::str::iter::CharIndices",
+                                          "iter"
+                                        |),
+                                        "core::str::iter::Chars",
                                         "iter"
-                                      |),
-                                      "core::str::iter::Chars",
-                                      "iter"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -4524,10 +5230,13 @@ Module str.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::MultiCharEqSearcher",
-                                                "char_eq"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::pattern::MultiCharEqSearcher",
+                                                  "char_eq"
+                                                |)
                                               |);
                                               M.read (| c |)
                                             ]
@@ -4643,10 +5352,18 @@ Module str.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::pattern::CharArraySearcher",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::pattern::CharArraySearcher",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -4683,13 +5400,27 @@ Module str.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "CharArraySearcher" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::str::pattern::CharArraySearcher",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "CharArraySearcher" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::pattern::CharArraySearcher",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -4747,10 +5478,18 @@ Module str.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::pattern::CharArrayRefSearcher",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::pattern::CharArrayRefSearcher",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -4787,13 +5526,27 @@ Module str.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "CharArrayRefSearcher" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::str::pattern::CharArrayRefSearcher",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "CharArrayRefSearcher" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::pattern::CharArrayRefSearcher",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -4854,7 +5607,7 @@ Module str.
                     Value.StructTuple
                       "core::str::pattern::MultiCharEqPattern"
                       [ M.read (| self |) ];
-                    M.read (| haystack |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
                   ]
                 |)
               ]))
@@ -4893,7 +5646,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4931,7 +5684,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4969,7 +5722,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5010,7 +5763,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5051,7 +5804,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5090,26 +5843,34 @@ Module str.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::str::pattern::Searcher",
-                Ty.apply
-                  (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  []
-                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
-                [],
-                [],
-                "haystack",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArraySearcher",
-                  0
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::str::pattern::Searcher",
+                    Ty.apply
+                      (Ty.path "core::str::pattern::MultiCharEqSearcher")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
+                    [],
+                    [],
+                    "haystack",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::CharArraySearcher",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5139,10 +5900,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArraySearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArraySearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5179,10 +5943,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArraySearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArraySearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5219,10 +5986,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArraySearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArraySearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5278,10 +6048,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArraySearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArraySearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5318,10 +6091,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArraySearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArraySearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5358,10 +6134,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArraySearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArraySearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5445,7 +6224,7 @@ Module str.
                     Value.StructTuple
                       "core::str::pattern::MultiCharEqPattern"
                       [ M.read (| self |) ];
-                    M.read (| haystack |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
                   ]
                 |)
               ]))
@@ -5489,7 +6268,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5532,7 +6311,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5575,7 +6354,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5621,7 +6400,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5667,7 +6446,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5706,31 +6485,39 @@ Module str.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::str::pattern::Searcher",
-                Ty.apply
-                  (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  []
-                  [
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::str::pattern::Searcher",
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "core::str::pattern::MultiCharEqSearcher")
                       []
-                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
-                  ],
-                [],
-                [],
-                "haystack",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArrayRefSearcher",
-                  0
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                      ],
+                    [],
+                    [],
+                    "haystack",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::CharArrayRefSearcher",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5765,10 +6552,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArrayRefSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArrayRefSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5810,10 +6600,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArrayRefSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArrayRefSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5855,10 +6648,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArrayRefSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArrayRefSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5919,10 +6715,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArrayRefSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArrayRefSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5964,10 +6763,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArrayRefSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArrayRefSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6009,10 +6811,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharArrayRefSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharArrayRefSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6085,10 +6890,18 @@ Module str.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::pattern::CharSliceSearcher",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::pattern::CharSliceSearcher",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -6122,13 +6935,27 @@ Module str.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "CharSliceSearcher" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::str::pattern::CharSliceSearcher",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "CharSliceSearcher" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::pattern::CharSliceSearcher",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -6157,27 +6984,39 @@ Module str.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::str::pattern::Searcher",
-                Ty.apply
-                  (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
-                  ],
-                [],
-                [],
-                "haystack",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharSliceSearcher",
-                  0
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::str::pattern::Searcher",
+                    Ty.apply
+                      (Ty.path "core::str::pattern::MultiCharEqSearcher")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                      ],
+                    [],
+                    [],
+                    "haystack",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::CharSliceSearcher",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6207,10 +7046,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharSliceSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharSliceSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6242,10 +7084,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharSliceSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharSliceSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6277,10 +7122,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharSliceSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharSliceSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6329,10 +7177,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharSliceSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharSliceSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6364,10 +7215,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharSliceSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharSliceSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6399,10 +7253,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharSliceSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharSliceSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6476,7 +7333,7 @@ Module str.
                     Value.StructTuple
                       "core::str::pattern::MultiCharEqPattern"
                       [ M.read (| self |) ];
-                    M.read (| haystack |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
                   ]
                 |)
               ]))
@@ -6510,7 +7367,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6543,7 +7400,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6576,7 +7433,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6612,7 +7469,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6648,7 +7505,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6704,10 +7561,18 @@ Module str.
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::pattern::CharPredicateSearcher",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::pattern::CharPredicateSearcher",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -6751,14 +7616,9 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugStruct",
-                    "field",
-                    [],
-                    []
-                  |),
-                  [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
@@ -6767,40 +7627,91 @@ Module str.
                         []
                       |),
                       [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Formatter",
-                              "debug_struct",
-                              [],
-                              []
-                            |),
-                            [ M.read (| f |); M.read (| Value.String "CharPredicateSearcher" |) ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::builders::DebugStruct",
+                                "field",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::Formatter",
+                                        "debug_struct",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| f |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (| Value.String "CharPredicateSearcher" |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "haystack" |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::str::pattern::CharPredicateSearcher",
+                                          0
+                                        |),
+                                        "core::str::pattern::MultiCharEqSearcher",
+                                        "haystack"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
                           |)
                         |);
-                        M.read (| Value.String "haystack" |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.read (| self |),
-                            "core::str::pattern::CharPredicateSearcher",
-                            0
-                          |),
-                          "core::str::pattern::MultiCharEqSearcher",
-                          "haystack"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "char_indices" |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::str::pattern::CharPredicateSearcher",
+                                  0
+                                |),
+                                "core::str::pattern::MultiCharEqSearcher",
+                                "char_indices"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
-                    |);
-                    M.read (| Value.String "char_indices" |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::pattern::CharPredicateSearcher",
-                        0
-                      |),
-                      "core::str::pattern::MultiCharEqSearcher",
-                      "char_indices"
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -6831,23 +7742,31 @@ Module str.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::str::pattern::Searcher",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
-                [],
-                [],
-                "haystack",
-                [],
-                []
-              |),
-              [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharPredicateSearcher",
-                  0
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::str::pattern::Searcher",
+                    Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
+                    [],
+                    [],
+                    "haystack",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::CharPredicateSearcher",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6874,10 +7793,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharPredicateSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharPredicateSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6906,10 +7828,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharPredicateSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharPredicateSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6938,10 +7863,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharPredicateSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharPredicateSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6989,10 +7917,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharPredicateSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharPredicateSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -7026,10 +7957,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharPredicateSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharPredicateSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -7063,10 +7997,13 @@ Module str.
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::pattern::CharPredicateSearcher",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::pattern::CharPredicateSearcher",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -7141,7 +8078,7 @@ Module str.
                     Value.StructTuple
                       "core::str::pattern::MultiCharEqPattern"
                       [ M.read (| self |) ];
-                    M.read (| haystack |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
                   ]
                 |)
               ]))
@@ -7177,7 +8114,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7212,7 +8149,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7247,7 +8184,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7285,7 +8222,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7323,7 +8260,7 @@ Module str.
               |),
               [
                 Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7378,24 +8315,27 @@ Module str.
                 []
               |),
               [
-                M.alloc (|
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let s := M.copy (| γ |) in
-                                    M.read (| s |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let s := M.copy (| γ |) in
+                                      M.read (| s |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  |)
                 |);
                 Value.Tuple
                   [
@@ -7410,59 +8350,69 @@ Module str.
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::function::Fn",
-                            Ty.function
-                              [
-                                Ty.tuple
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::function::Fn",
+                                Ty.function
                                   [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      ]
+                                  ]
+                                  (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                                [],
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    ]
+                                ],
+                                "call",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.closure
+                                      (fun γ =>
+                                        ltac:(M.monadic
+                                          match γ with
+                                          | [ α0 ] =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ := M.read (| γ |) in
+                                                      let s := M.copy (| γ |) in
+                                                      M.read (| s |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
+                                          end))
+                                  |)
+                                |);
+                                Value.Tuple
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
                                   ]
                               ]
-                              (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
-                            [],
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                ]
-                            ],
-                            "call",
-                            [],
-                            []
-                          |),
-                          [
-                            M.alloc (|
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [ α0 ] =>
-                                      ltac:(M.monadic
-                                        (M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ := M.read (| γ |) in
-                                                let s := M.copy (| γ |) in
-                                                M.read (| s |)))
-                                          ]
-                                        |)))
-                                    | _ => M.impossible "wrong number of arguments"
-                                    end))
-                            |);
-                            Value.Tuple [ M.read (| self |) ]
-                          ]
+                            |)
+                          |)
                         |);
-                        M.read (| haystack |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
                       ]
                     |)
                   ]
@@ -7493,55 +8443,68 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::function::Fn",
-                    Ty.function
-                      [
-                        Ty.tuple
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::function::Fn",
+                        Ty.function
                           [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              ]
                           ]
+                          (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                        [],
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]
+                        ],
+                        "call",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ := M.read (| γ |) in
+                                              let s := M.copy (| γ |) in
+                                              M.read (| s |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          |)
+                        |);
+                        Value.Tuple
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       ]
-                      (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
-                    [],
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                        ]
-                    ],
-                    "call",
-                    [],
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
-                                        let s := M.copy (| γ |) in
-                                        M.read (| s |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    |);
-                    Value.Tuple [ M.read (| self |) ]
-                  ]
+                    |)
+                  |)
                 |);
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7569,55 +8532,68 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::function::Fn",
-                    Ty.function
-                      [
-                        Ty.tuple
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::function::Fn",
+                        Ty.function
                           [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              ]
                           ]
+                          (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                        [],
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]
+                        ],
+                        "call",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ := M.read (| γ |) in
+                                              let s := M.copy (| γ |) in
+                                              M.read (| s |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          |)
+                        |);
+                        Value.Tuple
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       ]
-                      (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
-                    [],
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                        ]
-                    ],
-                    "call",
-                    [],
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
-                                        let s := M.copy (| γ |) in
-                                        M.read (| s |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    |);
-                    Value.Tuple [ M.read (| self |) ]
-                  ]
+                    |)
+                  |)
                 |);
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7645,55 +8621,68 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::function::Fn",
-                    Ty.function
-                      [
-                        Ty.tuple
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::function::Fn",
+                        Ty.function
                           [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              ]
                           ]
+                          (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                        [],
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]
+                        ],
+                        "call",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ := M.read (| γ |) in
+                                              let s := M.copy (| γ |) in
+                                              M.read (| s |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          |)
+                        |);
+                        Value.Tuple
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       ]
-                      (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
-                    [],
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                        ]
-                    ],
-                    "call",
-                    [],
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
-                                        let s := M.copy (| γ |) in
-                                        M.read (| s |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    |);
-                    Value.Tuple [ M.read (| self |) ]
-                  ]
+                    |)
+                  |)
                 |);
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7724,55 +8713,68 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::function::Fn",
-                    Ty.function
-                      [
-                        Ty.tuple
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::function::Fn",
+                        Ty.function
                           [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              ]
                           ]
+                          (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                        [],
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]
+                        ],
+                        "call",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ := M.read (| γ |) in
+                                              let s := M.copy (| γ |) in
+                                              M.read (| s |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          |)
+                        |);
+                        Value.Tuple
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       ]
-                      (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
-                    [],
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                        ]
-                    ],
-                    "call",
-                    [],
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
-                                        let s := M.copy (| γ |) in
-                                        M.read (| s |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    |);
-                    Value.Tuple [ M.read (| self |) ]
-                  ]
+                    |)
+                  |)
                 |);
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7803,55 +8805,68 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::function::Fn",
-                    Ty.function
-                      [
-                        Ty.tuple
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::function::Fn",
+                        Ty.function
                           [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              ]
                           ]
+                          (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                        [],
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]
+                        ],
+                        "call",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ := M.read (| γ |) in
+                                              let s := M.copy (| γ |) in
+                                              M.read (| s |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          |)
+                        |);
+                        Value.Tuple
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       ]
-                      (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
-                    [],
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                        ]
-                    ],
-                    "call",
-                    [],
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
-                                        let s := M.copy (| γ |) in
-                                        M.read (| s |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    |);
-                    Value.Tuple [ M.read (| self |) ]
-                  ]
+                    |)
+                  |)
                 |);
-                M.read (| haystack |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7898,7 +8913,10 @@ Module str.
                 [],
                 []
               |),
-              [ M.read (| haystack |); M.read (| self |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7922,13 +8940,23 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                  [ M.read (| haystack |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -7981,7 +9009,12 @@ Module str.
                                   BinOp.eq (|
                                     M.call_closure (|
                                       M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -8007,16 +9040,32 @@ Module str.
                           []
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                              [ M.read (| self |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
                             |)
                           |);
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                              [ M.read (| haystack |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| haystack |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)
                             |)
                           |)
                         ]
@@ -8043,7 +9092,12 @@ Module str.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| self |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |),
                                             Value.Integer IntegerKind.Usize 1
                                           |)
@@ -8065,26 +9119,53 @@ Module str.
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "str",
-                                                    "as_bytes",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| haystack |) ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "str",
+                                                        "as_bytes",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| haystack |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
                                                 |);
-                                                M.SubPointer.get_array_field (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "str",
-                                                      "as_bytes",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| self |) ]
-                                                  |),
-                                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_array_field (|
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "str",
+                                                              "as_bytes",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| self |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        M.alloc (|
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -8112,7 +9193,12 @@ Module str.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| self |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |),
                                             Value.Integer IntegerKind.Usize 32
                                           |)
@@ -8135,7 +9221,16 @@ Module str.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| self |); M.read (| haystack |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| haystack |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |) in
                                             let γ0_0 :=
@@ -8168,33 +9263,48 @@ Module str.
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::str::pattern::Searcher",
-                                      Ty.path "core::str::pattern::StrSearcher",
-                                      [],
-                                      [],
-                                      "next_match",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::str::pattern::Pattern",
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                            [],
-                                            [],
-                                            "into_searcher",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| self |); M.read (| haystack |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::str::pattern::Searcher",
+                                        Ty.path "core::str::pattern::StrSearcher",
+                                        [],
+                                        [],
+                                        "next_match",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::str::pattern::Pattern",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                                [],
+                                                [],
+                                                "into_searcher",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| haystack |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
                                         |)
-                                      |)
-                                    ]
+                                      ]
+                                    |)
                                   |)
                                 |)
                               ]
@@ -8213,7 +9323,10 @@ Module str.
                                 [],
                                 []
                               |),
-                              [ self; haystack ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, self |);
+                                M.borrow (| Pointer.Kind.Ref, haystack |)
+                              ]
                             |)
                           |)))
                     ]
@@ -8258,7 +9371,10 @@ Module str.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| haystack |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
+                              ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8266,45 +9382,63 @@ Module str.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "str",
-                                "get_unchecked",
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::RangeFrom")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ]
-                              |),
-                              [
-                                M.read (| haystack |);
-                                Value.StructRecord
-                                  "core::ops::range::RangeFrom"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "str",
+                                    "get_unchecked",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeFrom")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
+                                  |),
                                   [
-                                    ("start",
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| haystack |) |)
+                                    |);
+                                    Value.StructRecord
+                                      "core::ops::range::RangeFrom"
+                                      [
+                                        ("start",
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "str",
-                                              "as_bytes",
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                              "len",
                                               [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
-                                          |)
-                                        ]
-                                      |))
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "as_bytes",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |))
+                                      ]
                                   ]
-                              ]
+                                |)
+                              |)
                             |)
                           ]
                       |)));
@@ -8339,13 +9473,23 @@ Module str.
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                  [ M.read (| haystack |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -8391,7 +9535,10 @@ Module str.
                                 [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| haystack |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
+                              ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8400,7 +9547,8 @@ Module str.
                           BinOp.Wrap.sub (|
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                              [ M.read (| haystack |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
+                              ]
                             |),
                             M.call_closure (|
                               M.get_associated_function (|
@@ -8410,9 +9558,24 @@ Module str.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                                  [ M.read (| self |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "as_bytes",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -8422,24 +9585,32 @@ Module str.
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "str",
-                                "get_unchecked",
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::RangeTo")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ]
-                              |),
-                              [
-                                M.read (| haystack |);
-                                Value.StructRecord
-                                  "core::ops::range::RangeTo"
-                                  [ ("end_", M.read (| i |)) ]
-                              ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "str",
+                                    "get_unchecked",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeTo")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| haystack |) |)
+                                    |);
+                                    Value.StructRecord
+                                      "core::ops::range::RangeTo"
+                                      [ ("end_", M.read (| i |)) ]
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                       |)));
@@ -8495,42 +9666,68 @@ Module str.
               "core::str::pattern::StrSearcher"
               [
                 ("haystack",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::StrSearcher",
-                        "haystack"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::str::pattern::StrSearcher",
+                                  "haystack"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |));
                 ("needle",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::StrSearcher",
-                        "needle"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::str::pattern::StrSearcher",
+                                  "needle"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |));
                 ("searcher",
                   M.call_closure (|
@@ -8544,10 +9741,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::StrSearcher",
-                        "searcher"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::StrSearcher",
+                              "searcher"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -8581,26 +9786,56 @@ Module str.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "StrSearcher" |);
-                M.read (| Value.String "haystack" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::pattern::StrSearcher",
-                  "haystack"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "StrSearcher" |) |)
                 |);
-                M.read (| Value.String "needle" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::pattern::StrSearcher",
-                  "needle"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "haystack" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::StrSearcher",
+                        "haystack"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "searcher" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::pattern::StrSearcher",
-                    "searcher"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "needle" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::StrSearcher",
+                        "needle"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "searcher" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::pattern::StrSearcher",
+                            "searcher"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -8674,7 +9909,8 @@ Module str.
                                 [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)));
@@ -8702,7 +9938,8 @@ Module str.
                                 [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)))
@@ -8752,7 +9989,17 @@ Module str.
                             [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Empty" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Empty" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -8773,7 +10020,17 @@ Module str.
                             [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "TwoWay" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "TwoWay" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -8829,10 +10086,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::EmptyNeedle",
-                        "position"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::EmptyNeedle",
+                              "position"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -8848,10 +10113,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::EmptyNeedle",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::EmptyNeedle",
+                              "end"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -8867,10 +10140,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::EmptyNeedle",
-                        "is_match_fw"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::EmptyNeedle",
+                              "is_match_fw"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -8886,10 +10167,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::EmptyNeedle",
-                        "is_match_bw"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::EmptyNeedle",
+                              "is_match_bw"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -8905,10 +10194,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::EmptyNeedle",
-                        "is_finished"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::EmptyNeedle",
+                              "is_finished"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -8942,38 +10239,93 @@ Module str.
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "EmptyNeedle" |);
-                M.read (| Value.String "position" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::pattern::EmptyNeedle",
-                  "position"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "EmptyNeedle" |) |)
                 |);
-                M.read (| Value.String "end" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::pattern::EmptyNeedle",
-                  "end"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "position" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::EmptyNeedle",
+                        "position"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "is_match_fw" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::pattern::EmptyNeedle",
-                  "is_match_fw"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "end" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::EmptyNeedle",
+                        "end"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "is_match_bw" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::pattern::EmptyNeedle",
-                  "is_match_bw"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "is_match_fw" |) |)
                 |);
-                M.read (| Value.String "is_finished" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::pattern::EmptyNeedle",
-                    "is_finished"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::EmptyNeedle",
+                        "is_match_fw"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "is_match_bw" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::pattern::EmptyNeedle",
+                        "is_match_bw"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "is_finished" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::pattern::EmptyNeedle",
+                            "is_finished"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -9035,7 +10387,7 @@ Module str.
                           (M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
-                              [ M.read (| needle |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9043,8 +10395,10 @@ Module str.
                         Value.StructRecord
                           "core::str::pattern::StrSearcher"
                           [
-                            ("haystack", M.read (| haystack |));
-                            ("needle", M.read (| needle |));
+                            ("haystack",
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |));
+                            ("needle",
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |));
                             ("searcher",
                               Value.StructTuple
                                 "core::str::pattern::StrSearcherImpl::Empty"
@@ -9061,7 +10415,12 @@ Module str.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| haystack |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| haystack |) |)
+                                            |)
+                                          ]
                                         |));
                                       ("is_match_fw", Value.Bool true);
                                       ("is_match_bw", Value.Bool true);
@@ -9076,8 +10435,10 @@ Module str.
                         Value.StructRecord
                           "core::str::pattern::StrSearcher"
                           [
-                            ("haystack", M.read (| haystack |));
-                            ("needle", M.read (| needle |));
+                            ("haystack",
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |));
+                            ("needle",
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |));
                             ("searcher",
                               Value.StructTuple
                                 "core::str::pattern::StrSearcherImpl::TwoWay"
@@ -9090,14 +10451,24 @@ Module str.
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "str",
-                                          "as_bytes",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| needle |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "as_bytes",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| needle |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
                                       |);
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -9106,7 +10477,12 @@ Module str.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| haystack |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| haystack |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -9137,7 +10513,7 @@ Module str.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::str::pattern::StrSearcher",
                 "haystack"
               |)
@@ -9207,7 +10583,7 @@ Module str.
                 (M.read (|
                   M.match_operator (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::str::pattern::StrSearcher",
                       "searcher"
                     |),
@@ -9230,7 +10606,7 @@ Module str.
                                     (let γ :=
                                       M.use
                                         (M.SubPointer.get_struct_record_field (|
-                                          M.read (| searcher |),
+                                          M.deref (| M.read (| searcher |) |),
                                           "core::str::pattern::EmptyNeedle",
                                           "is_finished"
                                         |)) in
@@ -9256,7 +10632,7 @@ Module str.
                           let~ is_match :=
                             M.copy (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| searcher |),
+                                M.deref (| M.read (| searcher |) |),
                                 "core::str::pattern::EmptyNeedle",
                                 "is_match_fw"
                               |)
@@ -9264,14 +10640,14 @@ Module str.
                           let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| searcher |),
+                                M.deref (| M.read (| searcher |) |),
                                 "core::str::pattern::EmptyNeedle",
                                 "is_match_fw"
                               |),
                               UnOp.not (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| searcher |),
+                                    M.deref (| M.read (| searcher |) |),
                                     "core::str::pattern::EmptyNeedle",
                                     "is_match_fw"
                                   |)
@@ -9281,7 +10657,7 @@ Module str.
                           let~ pos :=
                             M.copy (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| searcher |),
+                                M.deref (| M.read (| searcher |) |),
                                 "core::str::pattern::EmptyNeedle",
                                 "position"
                               |)
@@ -9299,44 +10675,57 @@ Module str.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "str",
-                                        "chars",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::index::Index",
-                                            Ty.path "str",
-                                            [],
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::ops::range::RangeFrom")
-                                                []
-                                                [ Ty.path "usize" ]
-                                            ],
-                                            "index",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::StrSearcher",
-                                                "haystack"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "chars",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::index::Index",
+                                                  Ty.path "str",
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::RangeFrom")
+                                                      []
+                                                      [ Ty.path "usize" ]
+                                                  ],
+                                                  "index",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "core::str::pattern::StrSearcher",
+                                                          "haystack"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |);
+                                                  Value.StructRecord
+                                                    "core::ops::range::RangeFrom"
+                                                    [ ("start", M.read (| pos |)) ]
+                                                ]
                                               |)
-                                            |);
-                                            Value.StructRecord
-                                              "core::ops::range::RangeFrom"
-                                              [ ("start", M.read (| pos |)) ]
-                                          ]
-                                        |)
-                                      ]
+                                            |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -9363,7 +10752,7 @@ Module str.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| searcher |),
+                                        M.deref (| M.read (| searcher |) |),
                                         "core::str::pattern::EmptyNeedle",
                                         "is_finished"
                                       |),
@@ -9384,7 +10773,7 @@ Module str.
                                   let~ _ :=
                                     let β :=
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| searcher |),
+                                        M.deref (| M.read (| searcher |) |),
                                         "core::str::pattern::EmptyNeedle",
                                         "position"
                                       |) in
@@ -9410,7 +10799,7 @@ Module str.
                                         M.read (| pos |);
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| searcher |),
+                                            M.deref (| M.read (| searcher |) |),
                                             "core::str::pattern::EmptyNeedle",
                                             "position"
                                           |)
@@ -9440,7 +10829,7 @@ Module str.
                                           BinOp.eq (|
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| searcher |),
+                                                M.deref (| M.read (| searcher |) |),
                                                 "core::str::pattern::TwoWaySearcher",
                                                 "position"
                                               |)
@@ -9453,11 +10842,16 @@ Module str.
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "core::str::pattern::StrSearcher",
-                                                    "haystack"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::pattern::StrSearcher",
+                                                        "haystack"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |)
                                               ]
@@ -9488,7 +10882,7 @@ Module str.
                               BinOp.eq (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| searcher |),
+                                    M.deref (| M.read (| searcher |) |),
                                     "core::str::pattern::TwoWaySearcher",
                                     "memory"
                                   |)
@@ -9506,40 +10900,63 @@ Module str.
                                   [ Ty.path "core::str::pattern::RejectAndMatch" ]
                                 |),
                                 [
-                                  M.read (| searcher |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "as_bytes",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::str::pattern::StrSearcher",
-                                          "haystack"
-                                        |)
-                                      |)
-                                    ]
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| searcher |) |)
                                   |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "as_bytes",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::str::pattern::StrSearcher",
-                                          "needle"
-                                        |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "as_bytes",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::pattern::StrSearcher",
+                                                  "haystack"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "as_bytes",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::pattern::StrSearcher",
+                                                  "needle"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| is_long |)
                                 ]
@@ -9582,11 +10999,16 @@ Module str.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "core::str::pattern::StrSearcher",
-                                                                "haystack"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (| M.read (| self |) |),
+                                                                    "core::str::pattern::StrSearcher",
+                                                                    "haystack"
+                                                                  |)
+                                                                |)
                                                               |)
                                                             |);
                                                             M.read (| b |)
@@ -9630,7 +11052,7 @@ Module str.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| searcher |),
+                                        M.deref (| M.read (| searcher |) |),
                                         "core::str::pattern::TwoWaySearcher",
                                         "position"
                                       |),
@@ -9644,7 +11066,7 @@ Module str.
                                           M.read (| b |);
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| searcher |),
+                                              M.deref (| M.read (| searcher |) |),
                                               "core::str::pattern::TwoWaySearcher",
                                               "position"
                                             |)
@@ -9711,7 +11133,7 @@ Module str.
                 (M.read (|
                   M.match_operator (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::str::pattern::StrSearcher",
                       "searcher"
                     |),
@@ -9740,7 +11162,12 @@ Module str.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       [
@@ -9820,7 +11247,7 @@ Module str.
                               BinOp.eq (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| searcher |),
+                                    M.deref (| M.read (| searcher |) |),
                                     "core::str::pattern::TwoWaySearcher",
                                     "memory"
                                   |)
@@ -9848,40 +11275,63 @@ Module str.
                                         [ Ty.path "core::str::pattern::MatchOnly" ]
                                       |),
                                       [
-                                        M.read (| searcher |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "as_bytes",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::StrSearcher",
-                                                "haystack"
-                                              |)
-                                            |)
-                                          ]
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| searcher |) |)
                                         |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "as_bytes",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::StrSearcher",
-                                                "needle"
-                                              |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "as_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::pattern::StrSearcher",
+                                                        "haystack"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "as_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::pattern::StrSearcher",
+                                                        "needle"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
                                         |);
                                         Value.Bool true
                                       ]
@@ -9898,40 +11348,63 @@ Module str.
                                         [ Ty.path "core::str::pattern::MatchOnly" ]
                                       |),
                                       [
-                                        M.read (| searcher |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "as_bytes",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::StrSearcher",
-                                                "haystack"
-                                              |)
-                                            |)
-                                          ]
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| searcher |) |)
                                         |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "as_bytes",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::StrSearcher",
-                                                "needle"
-                                              |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "as_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::pattern::StrSearcher",
+                                                        "haystack"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "as_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::pattern::StrSearcher",
+                                                        "needle"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
                                         |);
                                         Value.Bool false
                                       ]
@@ -10018,7 +11491,7 @@ Module str.
                 (M.read (|
                   M.match_operator (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::str::pattern::StrSearcher",
                       "searcher"
                     |),
@@ -10041,7 +11514,7 @@ Module str.
                                     (let γ :=
                                       M.use
                                         (M.SubPointer.get_struct_record_field (|
-                                          M.read (| searcher |),
+                                          M.deref (| M.read (| searcher |) |),
                                           "core::str::pattern::EmptyNeedle",
                                           "is_finished"
                                         |)) in
@@ -10067,7 +11540,7 @@ Module str.
                           let~ is_match :=
                             M.copy (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| searcher |),
+                                M.deref (| M.read (| searcher |) |),
                                 "core::str::pattern::EmptyNeedle",
                                 "is_match_bw"
                               |)
@@ -10075,14 +11548,14 @@ Module str.
                           let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| searcher |),
+                                M.deref (| M.read (| searcher |) |),
                                 "core::str::pattern::EmptyNeedle",
                                 "is_match_bw"
                               |),
                               UnOp.not (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| searcher |),
+                                    M.deref (| M.read (| searcher |) |),
                                     "core::str::pattern::EmptyNeedle",
                                     "is_match_bw"
                                   |)
@@ -10092,7 +11565,7 @@ Module str.
                           let~ end_ :=
                             M.copy (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| searcher |),
+                                M.deref (| M.read (| searcher |) |),
                                 "core::str::pattern::EmptyNeedle",
                                 "end"
                               |)
@@ -10110,44 +11583,57 @@ Module str.
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "str",
-                                        "chars",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::index::Index",
-                                            Ty.path "str",
-                                            [],
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::ops::range::RangeTo")
-                                                []
-                                                [ Ty.path "usize" ]
-                                            ],
-                                            "index",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::StrSearcher",
-                                                "haystack"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "chars",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::index::Index",
+                                                  Ty.path "str",
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::RangeTo")
+                                                      []
+                                                      [ Ty.path "usize" ]
+                                                  ],
+                                                  "index",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "core::str::pattern::StrSearcher",
+                                                          "haystack"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |);
+                                                  Value.StructRecord
+                                                    "core::ops::range::RangeTo"
+                                                    [ ("end_", M.read (| end_ |)) ]
+                                                ]
                                               |)
-                                            |);
-                                            Value.StructRecord
-                                              "core::ops::range::RangeTo"
-                                              [ ("end_", M.read (| end_ |)) ]
-                                          ]
-                                        |)
-                                      ]
+                                            |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -10174,7 +11660,7 @@ Module str.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| searcher |),
+                                        M.deref (| M.read (| searcher |) |),
                                         "core::str::pattern::EmptyNeedle",
                                         "is_finished"
                                       |),
@@ -10195,7 +11681,7 @@ Module str.
                                   let~ _ :=
                                     let β :=
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| searcher |),
+                                        M.deref (| M.read (| searcher |) |),
                                         "core::str::pattern::EmptyNeedle",
                                         "end"
                                       |) in
@@ -10220,7 +11706,7 @@ Module str.
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| searcher |),
+                                            M.deref (| M.read (| searcher |) |),
                                             "core::str::pattern::EmptyNeedle",
                                             "end"
                                           |)
@@ -10251,7 +11737,7 @@ Module str.
                                           BinOp.eq (|
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| searcher |),
+                                                M.deref (| M.read (| searcher |) |),
                                                 "core::str::pattern::TwoWaySearcher",
                                                 "end"
                                               |)
@@ -10283,7 +11769,7 @@ Module str.
                               BinOp.eq (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| searcher |),
+                                    M.deref (| M.read (| searcher |) |),
                                     "core::str::pattern::TwoWaySearcher",
                                     "memory"
                                   |)
@@ -10301,40 +11787,63 @@ Module str.
                                   [ Ty.path "core::str::pattern::RejectAndMatch" ]
                                 |),
                                 [
-                                  M.read (| searcher |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "as_bytes",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::str::pattern::StrSearcher",
-                                          "haystack"
-                                        |)
-                                      |)
-                                    ]
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| searcher |) |)
                                   |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "as_bytes",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::str::pattern::StrSearcher",
-                                          "needle"
-                                        |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "as_bytes",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::pattern::StrSearcher",
+                                                  "haystack"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "as_bytes",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::pattern::StrSearcher",
+                                                  "needle"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| is_long |)
                                 ]
@@ -10377,11 +11886,16 @@ Module str.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "core::str::pattern::StrSearcher",
-                                                                "haystack"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (| M.read (| self |) |),
+                                                                    "core::str::pattern::StrSearcher",
+                                                                    "haystack"
+                                                                  |)
+                                                                |)
                                                               |)
                                                             |);
                                                             M.read (| a |)
@@ -10425,7 +11939,7 @@ Module str.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| searcher |),
+                                        M.deref (| M.read (| searcher |) |),
                                         "core::str::pattern::TwoWaySearcher",
                                         "end"
                                       |),
@@ -10439,7 +11953,7 @@ Module str.
                                           M.read (| a |);
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| searcher |),
+                                              M.deref (| M.read (| searcher |) |),
                                               "core::str::pattern::TwoWaySearcher",
                                               "end"
                                             |)
@@ -10505,7 +12019,7 @@ Module str.
                 (M.read (|
                   M.match_operator (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::str::pattern::StrSearcher",
                       "searcher"
                     |),
@@ -10534,7 +12048,12 @@ Module str.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       [
@@ -10614,7 +12133,7 @@ Module str.
                               BinOp.eq (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| searcher |),
+                                    M.deref (| M.read (| searcher |) |),
                                     "core::str::pattern::TwoWaySearcher",
                                     "memory"
                                   |)
@@ -10642,40 +12161,63 @@ Module str.
                                         [ Ty.path "core::str::pattern::MatchOnly" ]
                                       |),
                                       [
-                                        M.read (| searcher |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "as_bytes",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::StrSearcher",
-                                                "haystack"
-                                              |)
-                                            |)
-                                          ]
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| searcher |) |)
                                         |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "as_bytes",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::StrSearcher",
-                                                "needle"
-                                              |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "as_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::pattern::StrSearcher",
+                                                        "haystack"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "as_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::pattern::StrSearcher",
+                                                        "needle"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
                                         |);
                                         Value.Bool true
                                       ]
@@ -10692,40 +12234,63 @@ Module str.
                                         [ Ty.path "core::str::pattern::MatchOnly" ]
                                       |),
                                       [
-                                        M.read (| searcher |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "as_bytes",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::StrSearcher",
-                                                "haystack"
-                                              |)
-                                            |)
-                                          ]
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| searcher |) |)
                                         |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "as_bytes",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::pattern::StrSearcher",
-                                                "needle"
-                                              |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "as_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::pattern::StrSearcher",
+                                                        "haystack"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "as_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::pattern::StrSearcher",
+                                                        "needle"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
                                         |);
                                         Value.Bool false
                                       ]
@@ -10794,10 +12359,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::TwoWaySearcher",
-                        "crit_pos"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "crit_pos"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -10813,10 +12386,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::TwoWaySearcher",
-                        "crit_pos_back"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "crit_pos_back"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -10832,10 +12413,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::TwoWaySearcher",
-                        "period"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "period"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -10851,10 +12440,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::TwoWaySearcher",
-                        "byteset"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "byteset"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -10870,10 +12467,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::TwoWaySearcher",
-                        "position"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "position"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -10889,10 +12494,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::TwoWaySearcher",
-                        "end"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "end"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -10908,10 +12521,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::TwoWaySearcher",
-                        "memory"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "memory"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -10927,10 +12548,18 @@ Module str.
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::pattern::TwoWaySearcher",
-                        "memory_back"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "memory_back"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -10959,68 +12588,172 @@ Module str.
             M.read (|
               let~ names :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (| Value.String "crit_pos" |);
-                        M.read (| Value.String "crit_pos_back" |);
-                        M.read (| Value.String "period" |);
-                        M.read (| Value.String "byteset" |);
-                        M.read (| Value.String "position" |);
-                        M.read (| Value.String "end" |);
-                        M.read (| Value.String "memory" |);
-                        M.read (| Value.String "memory_back" |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "crit_pos" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "crit_pos_back" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "period" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "byteset" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "position" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "end" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "memory" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "memory_back" |) |)
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)
                   |)
                 |) in
               let~ values :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::TwoWaySearcher",
-                          "crit_pos"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::TwoWaySearcher",
-                          "crit_pos_back"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::TwoWaySearcher",
-                          "period"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::TwoWaySearcher",
-                          "byteset"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::TwoWaySearcher",
-                          "position"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::TwoWaySearcher",
-                          "end"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::pattern::TwoWaySearcher",
-                          "memory"
-                        |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
                         M.alloc (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::pattern::TwoWaySearcher",
-                            "memory_back"
-                          |)
+                          Value.Array
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::TwoWaySearcher",
+                                      "crit_pos"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::TwoWaySearcher",
+                                      "crit_pos_back"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::TwoWaySearcher",
+                                      "period"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::TwoWaySearcher",
+                                      "byteset"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::TwoWaySearcher",
+                                      "position"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::TwoWaySearcher",
+                                      "end"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::str::pattern::TwoWaySearcher",
+                                      "memory"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::str::pattern::TwoWaySearcher",
+                                          "memory_back"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 |) in
               M.alloc (|
@@ -11032,10 +12765,13 @@ Module str.
                     []
                   |),
                   [
-                    M.read (| f |);
-                    M.read (| Value.String "TwoWaySearcher" |);
-                    M.read (| names |);
-                    M.read (| values |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "TwoWaySearcher" |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
                 |)
               |)
@@ -11139,7 +12875,10 @@ Module str.
                       [],
                       []
                     |),
-                    [ M.read (| needle |); Value.Bool false ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |);
+                      Value.Bool false
+                    ]
                   |)
                 |),
                 [
@@ -11158,7 +12897,10 @@ Module str.
                               [],
                               []
                             |),
-                            [ M.read (| needle |); Value.Bool true ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |);
+                              Value.Bool true
+                            ]
                           |)
                         |),
                         [
@@ -11234,63 +12976,81 @@ Module str.
                                                         []
                                                       |),
                                                       [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::index::Index",
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [ Ty.path "u8" ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "core::ops::range::RangeTo")
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::index::Index",
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ],
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::range::RangeTo")
+                                                                    []
+                                                                    [ Ty.path "usize" ]
+                                                                ],
+                                                                "index",
+                                                                [],
                                                                 []
-                                                                [ Ty.path "usize" ]
-                                                            ],
-                                                            "index",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (| needle |);
-                                                            Value.StructRecord
-                                                              "core::ops::range::RangeTo"
-                                                              [ ("end_", M.read (| crit_pos |)) ]
-                                                          ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::index::Index",
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [ Ty.path "u8" ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "core::ops::range::Range")
-                                                                []
-                                                                [ Ty.path "usize" ]
-                                                            ],
-                                                            "index",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (| needle |);
-                                                            Value.StructRecord
-                                                              "core::ops::range::Range"
+                                                              |),
                                                               [
-                                                                ("start", M.read (| period |));
-                                                                ("end_",
-                                                                  BinOp.Wrap.add (|
-                                                                    M.read (| period |),
-                                                                    M.read (| crit_pos |)
-                                                                  |))
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| needle |) |)
+                                                                |);
+                                                                Value.StructRecord
+                                                                  "core::ops::range::RangeTo"
+                                                                  [ ("end_", M.read (| crit_pos |))
+                                                                  ]
                                                               ]
-                                                          ]
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::index::Index",
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ],
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::range::Range")
+                                                                    []
+                                                                    [ Ty.path "usize" ]
+                                                                ],
+                                                                "index",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| needle |) |)
+                                                                |);
+                                                                Value.StructRecord
+                                                                  "core::ops::range::Range"
+                                                                  [
+                                                                    ("start", M.read (| period |));
+                                                                    ("end_",
+                                                                      BinOp.Wrap.add (|
+                                                                        M.read (| period |),
+                                                                        M.read (| crit_pos |)
+                                                                      |))
+                                                                  ]
+                                                              ]
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -11313,7 +13073,12 @@ Module str.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| needle |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| needle |) |)
+                                                        |)
+                                                      ]
                                                     |),
                                                     M.call_closure (|
                                                       M.get_function (|
@@ -11331,7 +13096,10 @@ Module str.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (| needle |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| needle |) |)
+                                                            |);
                                                             M.read (| period |);
                                                             Value.Bool false
                                                           ]
@@ -11345,7 +13113,10 @@ Module str.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (| needle |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| needle |) |)
+                                                            |);
                                                             M.read (| period |);
                                                             Value.Bool true
                                                           ]
@@ -11371,31 +13142,49 @@ Module str.
                                                           []
                                                         |),
                                                         [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::index::Index",
-                                                              Ty.apply
-                                                                (Ty.path "slice")
-                                                                []
-                                                                [ Ty.path "u8" ],
-                                                              [],
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::ops::range::RangeTo")
-                                                                  []
-                                                                  [ Ty.path "usize" ]
-                                                              ],
-                                                              "index",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| needle |);
-                                                              Value.StructRecord
-                                                                "core::ops::range::RangeTo"
-                                                                [ ("end_", M.read (| period |)) ]
-                                                            ]
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::index::Index",
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u8" ],
+                                                                      [],
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::ops::range::RangeTo")
+                                                                          []
+                                                                          [ Ty.path "usize" ]
+                                                                      ],
+                                                                      "index",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| needle |)
+                                                                        |)
+                                                                      |);
+                                                                      Value.StructRecord
+                                                                        "core::ops::range::RangeTo"
+                                                                        [
+                                                                          ("end_",
+                                                                            M.read (| period |))
+                                                                        ]
+                                                                    ]
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |));
@@ -11413,7 +13202,12 @@ Module str.
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.read (| needle |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| needle |) |)
+                                                          |)
+                                                        ]
                                                       |))
                                                   ]
                                               |)));
@@ -11446,7 +13240,14 @@ Module str.
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| needle |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| needle |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |),
                                                               M.read (| crit_pos |)
                                                             |)
@@ -11463,7 +13264,12 @@ Module str.
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.read (| needle |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| needle |) |)
+                                                          |)
+                                                        ]
                                                       |));
                                                     ("position", Value.Integer IntegerKind.Usize 0);
                                                     ("end_", M.read (| end_ |));
@@ -11524,7 +13330,7 @@ Module str.
                     [],
                     []
                   |),
-                  [ M.read (| bytes |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
                 |);
                 Value.Integer IntegerKind.U64 0;
                 M.closure
@@ -11584,7 +13390,7 @@ Module str.
                 (BinOp.Wrap.shr (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::str::pattern::TwoWaySearcher",
                       "byteset"
                     |)
@@ -11685,7 +13491,7 @@ Module str.
                   let~ old_pos :=
                     M.copy (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::str::pattern::TwoWaySearcher",
                         "position"
                       |)
@@ -11700,7 +13506,7 @@ Module str.
                             [],
                             []
                           |),
-                          [ M.read (| needle |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |) ]
                         |),
                         Value.Integer IntegerKind.Usize 1
                       |)
@@ -11722,11 +13528,14 @@ Module str.
                                         [ Ty.path "usize" ]
                                       |),
                                       [
-                                        M.read (| haystack |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| haystack |) |)
+                                        |);
                                         BinOp.Wrap.add (|
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::str::pattern::TwoWaySearcher",
                                               "position"
                                             |)
@@ -11758,7 +13567,7 @@ Module str.
                                               let~ _ :=
                                                 M.write (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::str::pattern::TwoWaySearcher",
                                                     "position"
                                                   |),
@@ -11772,7 +13581,12 @@ Module str.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| haystack |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| haystack |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |) in
                                               M.return_ (|
@@ -11790,7 +13604,7 @@ Module str.
                                                     M.read (| old_pos |);
                                                     M.read (|
                                                       M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
+                                                        M.deref (| M.read (| self |) |),
                                                         "core::str::pattern::TwoWaySearcher",
                                                         "position"
                                                       |)
@@ -11831,7 +13645,7 @@ Module str.
                                                   M.read (| old_pos |),
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::str::pattern::TwoWaySearcher",
                                                       "position"
                                                     |)
@@ -11862,7 +13676,7 @@ Module str.
                                                   M.read (| old_pos |);
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::str::pattern::TwoWaySearcher",
                                                       "position"
                                                     |)
@@ -11893,7 +13707,13 @@ Module str.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| self |); M.read (| tail_byte |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |);
+                                                  M.read (| tail_byte |)
+                                                ]
                                               |)
                                             |)
                                           |)) in
@@ -11908,7 +13728,7 @@ Module str.
                                             let~ _ :=
                                               let β :=
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::TwoWaySearcher",
                                                   "position"
                                                 |) in
@@ -11926,7 +13746,12 @@ Module str.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| needle |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| needle |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)
                                               |) in
@@ -11949,7 +13774,7 @@ Module str.
                                                       let~ _ :=
                                                         M.write (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
+                                                            M.deref (| M.read (| self |) |),
                                                             "core::str::pattern::TwoWaySearcher",
                                                             "memory"
                                                           |),
@@ -11981,7 +13806,7 @@ Module str.
                                             Value.Bool true
                                           |) in
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::str::pattern::TwoWaySearcher",
                                           "crit_pos"
                                         |)));
@@ -11997,14 +13822,14 @@ Module str.
                                             [
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::TwoWaySearcher",
                                                   "crit_pos"
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::TwoWaySearcher",
                                                   "memory"
                                                 |)
@@ -12045,7 +13870,12 @@ Module str.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| needle |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| needle |) |)
+                                                  |)
+                                                ]
                                               |))
                                           ]
                                       ]
@@ -12073,7 +13903,14 @@ Module str.
                                                       [],
                                                       []
                                                     |),
-                                                    [ iter ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |),
                                                 [
@@ -12109,18 +13946,26 @@ Module str.
                                                                     BinOp.ne (|
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| needle |),
+                                                                          M.deref (|
+                                                                            M.read (| needle |)
+                                                                          |),
                                                                           i
                                                                         |)
                                                                       |),
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| haystack |),
+                                                                          M.deref (|
+                                                                            M.read (| haystack |)
+                                                                          |),
                                                                           M.alloc (|
                                                                             BinOp.Wrap.add (|
                                                                               M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
-                                                                                  M.read (| self |),
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |),
                                                                                   "core::str::pattern::TwoWaySearcher",
                                                                                   "position"
                                                                                 |)
@@ -12143,7 +13988,9 @@ Module str.
                                                                     let~ _ :=
                                                                       let β :=
                                                                         M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| self |),
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
                                                                           "core::str::pattern::TwoWaySearcher",
                                                                           "position"
                                                                         |) in
@@ -12156,7 +14003,11 @@ Module str.
                                                                               M.read (| i |),
                                                                               M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
-                                                                                  M.read (| self |),
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |),
                                                                                   "core::str::pattern::TwoWaySearcher",
                                                                                   "crit_pos"
                                                                                 |)
@@ -12193,8 +14044,10 @@ Module str.
                                                                               let~ _ :=
                                                                                 M.write (|
                                                                                   M.SubPointer.get_struct_record_field (|
-                                                                                    M.read (|
-                                                                                      self
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        self
+                                                                                      |)
                                                                                     |),
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "memory"
@@ -12245,7 +14098,7 @@ Module str.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::str::pattern::TwoWaySearcher",
                                           "memory"
                                         |)))
@@ -12296,7 +14149,7 @@ Module str.
                                                 ("end_",
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::str::pattern::TwoWaySearcher",
                                                       "crit_pos"
                                                     |)
@@ -12334,7 +14187,14 @@ Module str.
                                                       [],
                                                       []
                                                     |),
-                                                    [ iter ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |),
                                                 [
@@ -12370,18 +14230,26 @@ Module str.
                                                                     BinOp.ne (|
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| needle |),
+                                                                          M.deref (|
+                                                                            M.read (| needle |)
+                                                                          |),
                                                                           i
                                                                         |)
                                                                       |),
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| haystack |),
+                                                                          M.deref (|
+                                                                            M.read (| haystack |)
+                                                                          |),
                                                                           M.alloc (|
                                                                             BinOp.Wrap.add (|
                                                                               M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
-                                                                                  M.read (| self |),
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |),
                                                                                   "core::str::pattern::TwoWaySearcher",
                                                                                   "position"
                                                                                 |)
@@ -12404,7 +14272,9 @@ Module str.
                                                                     let~ _ :=
                                                                       let β :=
                                                                         M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| self |),
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
                                                                           "core::str::pattern::TwoWaySearcher",
                                                                           "position"
                                                                         |) in
@@ -12414,7 +14284,9 @@ Module str.
                                                                           M.read (| β |),
                                                                           M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
-                                                                              M.read (| self |),
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |),
                                                                               "core::str::pattern::TwoWaySearcher",
                                                                               "period"
                                                                             |)
@@ -12446,8 +14318,10 @@ Module str.
                                                                               let~ _ :=
                                                                                 M.write (|
                                                                                   M.SubPointer.get_struct_record_field (|
-                                                                                    M.read (|
-                                                                                      self
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        self
+                                                                                      |)
                                                                                     |),
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "memory"
@@ -12468,15 +14342,22 @@ Module str.
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        M.read (|
-                                                                                          needle
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              needle
+                                                                                            |)
+                                                                                          |)
                                                                                         |)
                                                                                       ]
                                                                                     |),
                                                                                     M.read (|
                                                                                       M.SubPointer.get_struct_record_field (|
-                                                                                        M.read (|
-                                                                                          self
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            self
+                                                                                          |)
                                                                                         |),
                                                                                         "core::str::pattern::TwoWaySearcher",
                                                                                         "period"
@@ -12512,7 +14393,7 @@ Module str.
                             let~ match_pos :=
                               M.copy (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::pattern::TwoWaySearcher",
                                   "position"
                                 |)
@@ -12520,7 +14401,7 @@ Module str.
                             let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::pattern::TwoWaySearcher",
                                   "position"
                                 |) in
@@ -12535,7 +14416,12 @@ Module str.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| needle |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| needle |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |) in
@@ -12556,7 +14442,7 @@ Module str.
                                       let~ _ :=
                                         M.write (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::str::pattern::TwoWaySearcher",
                                             "memory"
                                           |),
@@ -12588,7 +14474,12 @@ Module str.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| needle |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| needle |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 ]
@@ -12693,7 +14584,7 @@ Module str.
                   let~ old_end :=
                     M.copy (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::str::pattern::TwoWaySearcher",
                         "end"
                       |)
@@ -12715,7 +14606,10 @@ Module str.
                                         [ Ty.path "usize" ]
                                       |),
                                       [
-                                        M.read (| haystack |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| haystack |) |)
+                                        |);
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "usize",
@@ -12726,7 +14620,7 @@ Module str.
                                           [
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::str::pattern::TwoWaySearcher",
                                                 "end"
                                               |)
@@ -12738,7 +14632,12 @@ Module str.
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| needle |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| needle |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -12767,7 +14666,7 @@ Module str.
                                               let~ _ :=
                                                 M.write (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::str::pattern::TwoWaySearcher",
                                                     "end"
                                                   |),
@@ -12823,7 +14722,7 @@ Module str.
                                                   M.read (| old_end |),
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::str::pattern::TwoWaySearcher",
                                                       "end"
                                                     |)
@@ -12853,7 +14752,7 @@ Module str.
                                                 [
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::str::pattern::TwoWaySearcher",
                                                       "end"
                                                     |)
@@ -12885,7 +14784,13 @@ Module str.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| self |); M.read (| front_byte |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |);
+                                                  M.read (| front_byte |)
+                                                ]
                                               |)
                                             |)
                                           |)) in
@@ -12900,7 +14805,7 @@ Module str.
                                             let~ _ :=
                                               let β :=
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::TwoWaySearcher",
                                                   "end"
                                                 |) in
@@ -12918,7 +14823,12 @@ Module str.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| needle |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| needle |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)
                                               |) in
@@ -12941,7 +14851,7 @@ Module str.
                                                       let~ _ :=
                                                         M.write (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
+                                                            M.deref (| M.read (| self |) |),
                                                             "core::str::pattern::TwoWaySearcher",
                                                             "memory_back"
                                                           |),
@@ -12955,7 +14865,12 @@ Module str.
                                                               [],
                                                               []
                                                             |),
-                                                            [ M.read (| needle |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| needle |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       M.alloc (| Value.Tuple [] |)));
@@ -12984,7 +14899,7 @@ Module str.
                                             Value.Bool true
                                           |) in
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::str::pattern::TwoWaySearcher",
                                           "crit_pos_back"
                                         |)));
@@ -13000,14 +14915,14 @@ Module str.
                                             [
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::TwoWaySearcher",
                                                   "crit_pos_back"
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::TwoWaySearcher",
                                                   "memory_back"
                                                 |)
@@ -13093,7 +15008,14 @@ Module str.
                                                       [],
                                                       []
                                                     |),
-                                                    [ iter ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |),
                                                 [
@@ -13129,20 +15051,26 @@ Module str.
                                                                     BinOp.ne (|
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| needle |),
+                                                                          M.deref (|
+                                                                            M.read (| needle |)
+                                                                          |),
                                                                           i
                                                                         |)
                                                                       |),
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| haystack |),
+                                                                          M.deref (|
+                                                                            M.read (| haystack |)
+                                                                          |),
                                                                           M.alloc (|
                                                                             BinOp.Wrap.add (|
                                                                               BinOp.Wrap.sub (|
                                                                                 M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
-                                                                                    M.read (|
-                                                                                      self
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        self
+                                                                                      |)
                                                                                     |),
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "end"
@@ -13161,8 +15089,13 @@ Module str.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.read (|
-                                                                                      needle
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          needle
+                                                                                        |)
+                                                                                      |)
                                                                                     |)
                                                                                   ]
                                                                                 |)
@@ -13185,7 +15118,9 @@ Module str.
                                                                     let~ _ :=
                                                                       let β :=
                                                                         M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| self |),
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
                                                                           "core::str::pattern::TwoWaySearcher",
                                                                           "end"
                                                                         |) in
@@ -13196,7 +15131,9 @@ Module str.
                                                                           BinOp.Wrap.sub (|
                                                                             M.read (|
                                                                               M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| self |),
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |),
                                                                                 "core::str::pattern::TwoWaySearcher",
                                                                                 "crit_pos_back"
                                                                               |)
@@ -13230,8 +15167,10 @@ Module str.
                                                                               let~ _ :=
                                                                                 M.write (|
                                                                                   M.SubPointer.get_struct_record_field (|
-                                                                                    M.read (|
-                                                                                      self
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        self
+                                                                                      |)
                                                                                     |),
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "memory_back"
@@ -13251,8 +15190,13 @@ Module str.
                                                                                       []
                                                                                     |),
                                                                                     [
-                                                                                      M.read (|
-                                                                                        needle
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            needle
+                                                                                          |)
+                                                                                        |)
                                                                                       |)
                                                                                     ]
                                                                                   |)
@@ -13303,13 +15247,18 @@ Module str.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| needle |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| needle |) |)
+                                              |)
+                                            ]
                                           |)
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::str::pattern::TwoWaySearcher",
                                           "memory_back"
                                         |)))
@@ -13340,7 +15289,7 @@ Module str.
                                             ("start",
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::pattern::TwoWaySearcher",
                                                   "crit_pos_back"
                                                 |)
@@ -13372,7 +15321,14 @@ Module str.
                                                       [],
                                                       []
                                                     |),
-                                                    [ iter ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |),
                                                 [
@@ -13408,20 +15364,26 @@ Module str.
                                                                     BinOp.ne (|
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| needle |),
+                                                                          M.deref (|
+                                                                            M.read (| needle |)
+                                                                          |),
                                                                           i
                                                                         |)
                                                                       |),
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| haystack |),
+                                                                          M.deref (|
+                                                                            M.read (| haystack |)
+                                                                          |),
                                                                           M.alloc (|
                                                                             BinOp.Wrap.add (|
                                                                               BinOp.Wrap.sub (|
                                                                                 M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
-                                                                                    M.read (|
-                                                                                      self
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        self
+                                                                                      |)
                                                                                     |),
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "end"
@@ -13440,8 +15402,13 @@ Module str.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.read (|
-                                                                                      needle
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          needle
+                                                                                        |)
+                                                                                      |)
                                                                                     |)
                                                                                   ]
                                                                                 |)
@@ -13464,7 +15431,9 @@ Module str.
                                                                     let~ _ :=
                                                                       let β :=
                                                                         M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| self |),
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
                                                                           "core::str::pattern::TwoWaySearcher",
                                                                           "end"
                                                                         |) in
@@ -13474,7 +15443,9 @@ Module str.
                                                                           M.read (| β |),
                                                                           M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
-                                                                              M.read (| self |),
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |),
                                                                               "core::str::pattern::TwoWaySearcher",
                                                                               "period"
                                                                             |)
@@ -13506,16 +15477,20 @@ Module str.
                                                                               let~ _ :=
                                                                                 M.write (|
                                                                                   M.SubPointer.get_struct_record_field (|
-                                                                                    M.read (|
-                                                                                      self
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        self
+                                                                                      |)
                                                                                     |),
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "memory_back"
                                                                                   |),
                                                                                   M.read (|
                                                                                     M.SubPointer.get_struct_record_field (|
-                                                                                      M.read (|
-                                                                                        self
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          self
+                                                                                        |)
                                                                                       |),
                                                                                       "core::str::pattern::TwoWaySearcher",
                                                                                       "period"
@@ -13552,7 +15527,7 @@ Module str.
                                 BinOp.Wrap.sub (|
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::str::pattern::TwoWaySearcher",
                                       "end"
                                     |)
@@ -13564,14 +15539,19 @@ Module str.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| needle |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| needle |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |) in
                             let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::pattern::TwoWaySearcher",
                                   "end"
                                 |) in
@@ -13586,7 +15566,12 @@ Module str.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| needle |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| needle |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |) in
@@ -13607,7 +15592,7 @@ Module str.
                                       let~ _ :=
                                         M.write (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::str::pattern::TwoWaySearcher",
                                             "memory_back"
                                           |),
@@ -13618,7 +15603,12 @@ Module str.
                                               [],
                                               []
                                             |),
-                                            [ M.read (| needle |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| needle |) |)
+                                              |)
+                                            ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
@@ -13647,7 +15637,12 @@ Module str.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| needle |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| needle |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 ]
@@ -13728,7 +15723,7 @@ Module str.
                                     [ Ty.path "usize" ]
                                   |),
                                   [
-                                    M.read (| arr |);
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                                     BinOp.Wrap.add (| M.read (| right |), M.read (| offset |) |)
                                   ]
                                 |)
@@ -13744,7 +15739,7 @@ Module str.
                             let~ b :=
                               M.copy (|
                                 M.SubPointer.get_array_field (|
-                                  M.read (| arr |),
+                                  M.deref (| M.read (| arr |) |),
                                   M.alloc (|
                                     BinOp.Wrap.add (| M.read (| left |), M.read (| offset |) |)
                                   |)
@@ -13976,7 +15971,7 @@ Module str.
                       [],
                       []
                     |),
-                    [ M.read (| arr |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -14000,7 +15995,7 @@ Module str.
                             let~ a :=
                               M.copy (|
                                 M.SubPointer.get_array_field (|
-                                  M.read (| arr |),
+                                  M.deref (| M.read (| arr |) |),
                                   M.alloc (|
                                     BinOp.Wrap.sub (|
                                       M.read (| n |),
@@ -14018,7 +16013,7 @@ Module str.
                             let~ b :=
                               M.copy (|
                                 M.SubPointer.get_array_field (|
-                                  M.read (| arr |),
+                                  M.deref (| M.read (| arr |) |),
                                   M.alloc (|
                                     BinOp.Wrap.sub (|
                                       M.read (| n |),
@@ -14560,14 +16555,14 @@ Module str.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| needle |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |) ]
                     |)
                   |) in
                 let~ haystack :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                      [ M.read (| haystack |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -14597,7 +16592,12 @@ Module str.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| needle |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| needle |) |)
+                                                  |)
+                                                ]
                                               |),
                                               Value.Integer IntegerKind.Usize 1
                                             |)
@@ -14630,7 +16630,7 @@ Module str.
                 let~ first_probe :=
                   M.copy (|
                     M.SubPointer.get_array_field (|
-                      M.read (| needle |),
+                      M.deref (| M.read (| needle |) |),
                       M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                     |)
                   |) in
@@ -14644,7 +16644,7 @@ Module str.
                           [],
                           []
                         |),
-                        [ M.read (| needle |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |) ]
                       |),
                       Value.Integer IntegerKind.Usize 1
                     |)
@@ -14667,7 +16667,12 @@ Module str.
                                         [],
                                         []
                                       |),
-                                      [ M.read (| needle |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| needle |) |)
+                                        |)
+                                      ]
                                     |),
                                     Value.Integer IntegerKind.Usize 2
                                   |)
@@ -14698,42 +16703,58 @@ Module str.
                                     ]
                                   |),
                                   [
-                                    M.alloc (|
-                                      Value.StructRecord
-                                        "core::ops::range::Range"
-                                        [
-                                          ("start",
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "usize",
-                                                "saturating_sub",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| needle |) ]
-                                                |);
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                            |));
-                                          ("end_",
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| needle |) ]
-                                            |))
-                                        ]
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.alloc (|
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          [
+                                            ("start",
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "usize",
+                                                  "saturating_sub",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| needle |) |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
+                                              |));
+                                            ("end_",
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| needle |) |)
+                                                  |)
+                                                ]
+                                              |))
+                                          ]
+                                      |)
                                     |);
                                     M.closure
                                       (fun γ =>
@@ -14751,7 +16772,7 @@ Module str.
                                                       BinOp.ne (|
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
-                                                            M.read (| needle |),
+                                                            M.deref (| M.read (| needle |) |),
                                                             idx
                                                           |)
                                                         |),
@@ -14797,7 +16818,12 @@ Module str.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| haystack |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| haystack |) |)
+                                      |)
+                                    ]
                                   |),
                                   BinOp.Wrap.add (|
                                     M.read (|
@@ -14847,26 +16873,40 @@ Module str.
                                           ]
                                         |),
                                         [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                "windows",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.read (| haystack |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| needle |) ]
-                                                |)
-                                              ]
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                  "windows",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| haystack |) |)
+                                                  |);
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| needle |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
                                             |)
                                           |);
                                           M.closure
@@ -14909,7 +16949,13 @@ Module str.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ c; needle ]
+                                                              [
+                                                                M.borrow (| Pointer.Kind.Ref, c |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  needle
+                                                                |)
+                                                              ]
                                                             |)))
                                                       ]
                                                     |)))
@@ -14955,7 +17001,7 @@ Module str.
                       [
                         M.read (|
                           M.SubPointer.get_array_field (|
-                            M.read (| needle |),
+                            M.deref (| M.read (| needle |) |),
                             second_probe_offset
                           |)
                         |)
@@ -14964,22 +17010,32 @@ Module str.
                   |) in
                 let~ trimmed_needle :=
                   M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::index::Index",
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
-                        "index",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| needle |);
-                        Value.StructRecord
-                          "core::ops::range::RangeFrom"
-                          [ ("start", Value.Integer IntegerKind.Usize 1) ]
-                      ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::index::Index",
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                            [],
+                            [
+                              Ty.apply
+                                (Ty.path "core::ops::range::RangeFrom")
+                                []
+                                [ Ty.path "usize" ]
+                            ],
+                            "index",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |);
+                            Value.StructRecord
+                              "core::ops::range::RangeFrom"
+                              [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                          ]
+                        |)
+                      |)
                     |)
                   |) in
                 let~ check_mask :=
@@ -15109,40 +17165,52 @@ Module str.
                                                                                 ]
                                                                               |),
                                                                               [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
-                                                                                      []
-                                                                                      [ Ty.path "u8"
-                                                                                      ],
-                                                                                    "get_unchecked",
-                                                                                    [],
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "core::ops::range::RangeFrom")
-                                                                                        []
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "slice")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ],
+                                                                                        "get_unchecked",
+                                                                                        [],
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "usize"
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::ops::range::RangeFrom")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "usize"
+                                                                                            ]
                                                                                         ]
-                                                                                    ]
-                                                                                  |),
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      haystack
-                                                                                    |);
-                                                                                    Value.StructRecord
-                                                                                      "core::ops::range::RangeFrom"
+                                                                                      |),
                                                                                       [
-                                                                                        ("start",
-                                                                                          M.read (|
-                                                                                            offset
-                                                                                          |))
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              haystack
+                                                                                            |)
+                                                                                          |)
+                                                                                        |);
+                                                                                        Value.StructRecord
+                                                                                          "core::ops::range::RangeFrom"
+                                                                                          [
+                                                                                            ("start",
+                                                                                              M.read (|
+                                                                                                offset
+                                                                                              |))
+                                                                                          ]
                                                                                       ]
-                                                                                  ]
+                                                                                    |)
+                                                                                  |)
                                                                                 |);
                                                                                 Value.StructRecord
                                                                                   "core::ops::range::RangeTo"
@@ -15163,8 +17231,13 @@ Module str.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.read (|
-                                                                                            trimmed_needle
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                trimmed_needle
+                                                                                              |)
+                                                                                            |)
                                                                                           |)
                                                                                         ]
                                                                                       |))
@@ -15189,11 +17262,21 @@ Module str.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.read (|
-                                                                                            sub
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                sub
+                                                                                              |)
+                                                                                            |)
                                                                                           |);
-                                                                                          M.read (|
-                                                                                            trimmed_needle
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                trimmed_needle
+                                                                                              |)
+                                                                                            |)
                                                                                           |)
                                                                                         ]
                                                                                       |)
@@ -15340,7 +17423,12 @@ Module str.
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| haystack |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| haystack |) |)
+                                                            |)
+                                                          ]
                                                         |);
                                                         M.read (| idx |)
                                                       ]
@@ -15413,7 +17501,14 @@ Module str.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ M.read (| haystack |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| haystack |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                             |);
                                                             M.read (| idx |)
                                                           ]
@@ -15546,7 +17641,12 @@ Module str.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| haystack |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| haystack |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       ltac:(M.monadic (UnOp.not (| M.read (| result |) |)))
@@ -15618,7 +17718,14 @@ Module str.
                                                         [],
                                                         []
                                                       |),
-                                                      [ iter ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |),
                                                   [
@@ -15662,7 +17769,10 @@ Module str.
                                                                 []
                                                               |),
                                                               [
-                                                                test_chunk;
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  test_chunk
+                                                                |);
                                                                 Value.Tuple
                                                                   [
                                                                     BinOp.Wrap.add (|
@@ -15741,7 +17851,14 @@ Module str.
                                                         [],
                                                         []
                                                       |),
-                                                      [ iter ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |),
                                                   [
@@ -15826,7 +17943,10 @@ Module str.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          check_mask;
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            check_mask
+                                                                          |);
                                                                           Value.Tuple
                                                                             [
                                                                               BinOp.Wrap.add (|
@@ -15922,7 +18042,12 @@ Module str.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| haystack |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| haystack |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       ltac:(M.monadic (UnOp.not (| M.read (| result |) |)))
@@ -15945,7 +18070,10 @@ Module str.
                                       [],
                                       []
                                     |),
-                                    [ test_chunk; Value.Tuple [ M.read (| i |) ] ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, test_chunk |);
+                                      Value.Tuple [ M.read (| i |) ]
+                                    ]
                                   |)
                                 |) in
                               let~ _ :=
@@ -16000,7 +18128,7 @@ Module str.
                                                   []
                                                 |),
                                                 [
-                                                  check_mask;
+                                                  M.borrow (| Pointer.Kind.Ref, check_mask |);
                                                   Value.Tuple
                                                     [
                                                       M.read (| i |);
@@ -16051,7 +18179,7 @@ Module str.
                             [],
                             []
                           |),
-                          [ M.read (| haystack |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |) ]
                         |),
                         M.read (| last_byte_offset |)
                       |),
@@ -16070,7 +18198,8 @@ Module str.
                         [],
                         []
                       |),
-                      [ test_chunk; Value.Tuple [ M.read (| i |) ] ]
+                      [ M.borrow (| Pointer.Kind.Ref, test_chunk |); Value.Tuple [ M.read (| i |) ]
+                      ]
                     |)
                   |) in
                 let~ _ :=
@@ -16106,7 +18235,7 @@ Module str.
                                     []
                                   |),
                                   [
-                                    check_mask;
+                                    M.borrow (| Pointer.Kind.Ref, check_mask |);
                                     Value.Tuple
                                       [ M.read (| i |); M.read (| mask |); M.read (| result |) ]
                                   ]
@@ -16212,26 +18341,42 @@ Module str.
                               M.alloc (|
                                 Value.Tuple
                                   [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| x |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            "len",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| x |) |)
+                                            |)
+                                          ]
+                                        |)
                                       |)
                                     |);
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| y |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            "len",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| y |) |)
+                                            |)
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -16253,8 +18398,12 @@ Module str.
                                                 (M.alloc (|
                                                   UnOp.not (|
                                                     BinOp.eq (|
-                                                      M.read (| M.read (| left_val |) |),
-                                                      M.read (| M.read (| right_val |) |)
+                                                      M.read (|
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |),
+                                                      M.read (|
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -16281,8 +18430,24 @@ Module str.
                                                       |),
                                                       [
                                                         M.read (| kind |);
-                                                        M.read (| left_val |);
-                                                        M.read (| right_val |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| left_val |) |)
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| right_val |) |)
+                                                            |)
+                                                          |)
+                                                        |);
                                                         Value.StructTuple
                                                           "core::option::Option::None"
                                                           []
@@ -16318,7 +18483,8 @@ Module str.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| x |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |)
+                                    ]
                                   |),
                                   Value.Integer IntegerKind.Usize 4
                                 |)
@@ -16382,7 +18548,12 @@ Module str.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| x |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| x |) |)
+                                                    |)
+                                                  ]
                                                 |);
                                                 M.read (| y |)
                                               ]
@@ -16422,7 +18593,17 @@ Module str.
                                                           [],
                                                           []
                                                         |),
-                                                        [ iter ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                iter
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |),
                                                     [
@@ -16516,7 +18697,7 @@ Module str.
                             [],
                             []
                           |),
-                          [ M.read (| x |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
@@ -16525,7 +18706,7 @@ Module str.
                             [],
                             []
                           |),
-                          [ M.read (| y |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| y |) |) |) ]
                         |)
                       ]
                   |),
@@ -16557,7 +18738,12 @@ Module str.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| x |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| x |) |)
+                                          |)
+                                        ]
                                       |),
                                       Value.Integer IntegerKind.Usize 4
                                     |)
@@ -16580,7 +18766,12 @@ Module str.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| y |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| y |) |)
+                                          |)
+                                        ]
                                       |),
                                       Value.Integer IntegerKind.Usize 4
                                     |)

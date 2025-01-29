@@ -220,94 +220,106 @@ Module annotated_visitor.
                                         []
                                       |),
                                       [
-                                        M.match_operator (|
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::Try",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.match_operator (|
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::Try",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.tuple [] ];
+                                                      Ty.associated
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "branch",
+                                                  [],
                                                   []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.tuple [] ];
-                                                    Ty.associated
-                                                  ],
-                                                [],
-                                                [],
-                                                "branch",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::VecDriver",
-                                                    "next_element",
-                                                    [],
-                                                    [ Self ]
-                                                  |),
-                                                  [ M.read (| driver |); M.read (| self |) ]
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                    0
-                                                  |) in
-                                                let residual := M.copy (| γ0_0 |) in
-                                                M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::FromResidual",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [ Ty.tuple []; Ty.associated ],
-                                                            [],
-                                                            [
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_core_types::annotated_visitor::VecDriver",
+                                                      "next_element",
+                                                      [],
+                                                      [ Self ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| driver |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      γ,
+                                                      "core::ops::control_flow::ControlFlow::Break",
+                                                      0
+                                                    |) in
+                                                  let residual := M.copy (| γ0_0 |) in
+                                                  M.alloc (|
+                                                    M.never_to_any (|
+                                                      M.read (|
+                                                        M.return_ (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::FromResidual",
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
                                                                 []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::convert::Infallible";
-                                                                  Ty.associated
-                                                                ]
-                                                            ],
-                                                            "from_residual",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| residual |) ]
+                                                                [ Ty.tuple []; Ty.associated ],
+                                                              [],
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::convert::Infallible";
+                                                                    Ty.associated
+                                                                  ]
+                                                              ],
+                                                              "from_residual",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [ M.read (| residual |) ]
+                                                          |)
                                                         |)
                                                       |)
                                                     |)
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                    0
-                                                  |) in
-                                                let val := M.copy (| γ0_0 |) in
-                                                val))
-                                          ]
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      γ,
+                                                      "core::ops::control_flow::ControlFlow::Continue",
+                                                      0
+                                                    |) in
+                                                  let val := M.copy (| γ0_0 |) in
+                                                  val))
+                                            ]
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -393,106 +405,118 @@ Module annotated_visitor.
                                         []
                                       |),
                                       [
-                                        M.match_operator (|
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::Try",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_core_types::annotated_value::MoveFieldLayout"
-                                                              ];
-                                                            Ty.tuple []
-                                                          ]
-                                                      ];
-                                                    Ty.associated
-                                                  ],
-                                                [],
-                                                [],
-                                                "branch",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::StructDriver",
-                                                    "next_field",
-                                                    [],
-                                                    [ Self ]
-                                                  |),
-                                                  [ M.read (| driver |); M.read (| self |) ]
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                    0
-                                                  |) in
-                                                let residual := M.copy (| γ0_0 |) in
-                                                M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::FromResidual",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [ Ty.tuple []; Ty.associated ],
-                                                            [],
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.match_operator (|
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::Try",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [
+                                                          Ty.tuple
                                                             [
                                                               Ty.apply
-                                                                (Ty.path "core::result::Result")
+                                                                (Ty.path "&")
                                                                 []
                                                                 [
                                                                   Ty.path
-                                                                    "core::convert::Infallible";
-                                                                  Ty.associated
-                                                                ]
-                                                            ],
-                                                            "from_residual",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| residual |) ]
+                                                                    "move_core_types::annotated_value::MoveFieldLayout"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ]
+                                                        ];
+                                                      Ty.associated
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "branch",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_core_types::annotated_visitor::StructDriver",
+                                                      "next_field",
+                                                      [],
+                                                      [ Self ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| driver |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      γ,
+                                                      "core::ops::control_flow::ControlFlow::Break",
+                                                      0
+                                                    |) in
+                                                  let residual := M.copy (| γ0_0 |) in
+                                                  M.alloc (|
+                                                    M.never_to_any (|
+                                                      M.read (|
+                                                        M.return_ (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::FromResidual",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [ Ty.tuple []; Ty.associated ],
+                                                              [],
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::convert::Infallible";
+                                                                    Ty.associated
+                                                                  ]
+                                                              ],
+                                                              "from_residual",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [ M.read (| residual |) ]
+                                                          |)
                                                         |)
                                                       |)
                                                     |)
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                    0
-                                                  |) in
-                                                let val := M.copy (| γ0_0 |) in
-                                                val))
-                                          ]
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      γ,
+                                                      "core::ops::control_flow::ControlFlow::Continue",
+                                                      0
+                                                    |) in
+                                                  let val := M.copy (| γ0_0 |) in
+                                                  val))
+                                            ]
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -563,7 +587,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| value |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.read (| value |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -590,7 +617,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| value |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.read (| value |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -617,7 +647,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| value |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.read (| value |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -644,7 +677,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| value |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.read (| value |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -671,7 +707,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| value |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.read (| value |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -698,7 +737,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| value |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.read (| value |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -725,7 +767,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| value |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.read (| value |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -752,7 +797,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| value |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.read (| value |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -779,7 +827,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| value |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.read (| value |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -809,7 +860,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| driver |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| driver |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -839,7 +893,10 @@ Module annotated_visitor.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| driver |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| driver |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -979,7 +1036,10 @@ Module annotated_visitor.
                           []
                         |),
                         [
-                          M.read (| __formatter |);
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.read (| __formatter |) |)
+                          |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -988,8 +1048,17 @@ Module annotated_visitor.
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "unexpected end of input" |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [ M.read (| Value.String "unexpected end of input" |) ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1015,7 +1084,10 @@ Module annotated_visitor.
                           []
                         |),
                         [
-                          M.read (| __formatter |);
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.read (| __formatter |) |)
+                          |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -1024,37 +1096,64 @@ Module annotated_visitor.
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "unexpected byte: " |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "thiserror::display::DisplayAsDisplay",
-                                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
-                                              [],
-                                              [],
-                                              "as_display",
-                                              [],
-                                              []
-                                            |),
-                                            [ _0 ]
-                                          |)
-                                        |)
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "unexpected byte: " |) ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "thiserror::display::DisplayAsDisplay",
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u8" ],
+                                                          [],
+                                                          [],
+                                                          "as_display",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.borrow (| Pointer.Kind.Ref, _0 |) ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1080,7 +1179,10 @@ Module annotated_visitor.
                           []
                         |),
                         [
-                          M.read (| __formatter |);
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.read (| __formatter |) |)
+                          |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
@@ -1089,41 +1191,68 @@ Module annotated_visitor.
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "trailing " |);
-                                    M.read (| Value.String " byte(s) at the end of input" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "thiserror::display::DisplayAsDisplay",
-                                              Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                              [],
-                                              [],
-                                              "as_display",
-                                              [],
-                                              []
-                                            |),
-                                            [ _0 ]
-                                          |)
-                                        |)
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "trailing " |);
+                                          M.read (| Value.String " byte(s) at the end of input" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "thiserror::display::DisplayAsDisplay",
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "usize" ],
+                                                          [],
+                                                          [],
+                                                          "as_display",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.borrow (| Pointer.Kind.Ref, _0 |) ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1174,7 +1303,13 @@ Module annotated_visitor.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "UnexpectedEof" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UnexpectedEof" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1195,7 +1330,17 @@ Module annotated_visitor.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "UnexpectedByte" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UnexpectedByte" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1216,7 +1361,17 @@ Module annotated_visitor.
                           [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "TrailingBytes" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TrailingBytes" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -1278,7 +1433,7 @@ Module annotated_visitor.
           Value.StructRecord
             "move_core_types::annotated_visitor::VecDriver"
             [
-              ("bytes", M.read (| bytes |));
+              ("bytes", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |));
               ("layout", M.read (| layout |));
               ("len", M.read (| len |));
               ("off", Value.Integer IntegerKind.U64 0)
@@ -1300,7 +1455,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "move_core_types::annotated_visitor::VecDriver",
               "layout"
             |)
@@ -1323,7 +1478,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "move_core_types::annotated_visitor::VecDriver",
               "len"
             |)
@@ -1346,14 +1501,14 @@ Module annotated_visitor.
           BinOp.lt (|
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "move_core_types::annotated_visitor::VecDriver",
                 "off"
               |)
             |),
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "move_core_types::annotated_visitor::VecDriver",
                 "len"
               |)
@@ -1401,14 +1556,14 @@ Module annotated_visitor.
                                   BinOp.ge (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "move_core_types::annotated_visitor::VecDriver",
                                         "off"
                                       |)
                                     |),
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "move_core_types::annotated_visitor::VecDriver",
                                         "len"
                                       |)
@@ -1445,21 +1600,34 @@ Module annotated_visitor.
                                             [ V ]
                                           |),
                                           [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_core_types::annotated_visitor::VecDriver",
-                                                "bytes"
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_core_types::annotated_visitor::VecDriver",
+                                                    "bytes"
+                                                  |)
+                                                |)
                                               |)
                                             |);
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_core_types::annotated_visitor::VecDriver",
-                                                "layout"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_core_types::annotated_visitor::VecDriver",
+                                                    "layout"
+                                                  |)
+                                                |)
                                               |)
                                             |);
-                                            M.read (| visitor |)
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| visitor |) |)
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -1528,7 +1696,7 @@ Module annotated_visitor.
                             let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "move_core_types::annotated_visitor::VecDriver",
                                   "off"
                                 |) in
@@ -1586,9 +1754,17 @@ Module annotated_visitor.
                   [ Ty.path "move_core_types::annotated_visitor::NullTraversal" ]
                 |),
                 [
-                  M.read (| self |);
-                  M.alloc (|
-                    Value.StructTuple "move_core_types::annotated_visitor::NullTraversal" []
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          Value.StructTuple "move_core_types::annotated_visitor::NullTraversal" []
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |);
@@ -1611,7 +1787,7 @@ Module annotated_visitor.
                                     [],
                                     []
                                   |),
-                                  [ v ]
+                                  [ M.borrow (| Pointer.Kind.Ref, v |) ]
                                 |)))
                           ]
                         |)))
@@ -1646,7 +1822,7 @@ Module annotated_visitor.
           Value.StructRecord
             "move_core_types::annotated_visitor::StructDriver"
             [
-              ("bytes", M.read (| bytes |));
+              ("bytes", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |));
               ("layout", M.read (| layout |));
               ("off", Value.Integer IntegerKind.Usize 0)
             ]))
@@ -1667,7 +1843,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "move_core_types::annotated_visitor::StructDriver",
               "layout"
             |)
@@ -1699,39 +1875,49 @@ Module annotated_visitor.
               [ Ty.path "usize" ]
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [
-                      Ty.path "move_core_types::annotated_value::MoveFieldLayout";
-                      Ty.path "alloc::alloc::Global"
-                    ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_core_types::annotated_visitor::StructDriver",
-                        "layout"
-                      |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_core_types::annotated_value::MoveFieldLayout";
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
                     |),
-                    "move_core_types::annotated_value::MoveStructLayout",
-                    "fields"
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_core_types::annotated_visitor::StructDriver",
+                                "layout"
+                              |)
+                            |)
+                          |),
+                          "move_core_types::annotated_value::MoveStructLayout",
+                          "fields"
+                        |)
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |);
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "move_core_types::annotated_visitor::StructDriver",
                   "off"
                 |)
@@ -1775,7 +1961,7 @@ Module annotated_visitor.
                         [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |),
                   [
@@ -1813,19 +1999,35 @@ Module annotated_visitor.
                                         [ V ]
                                       |),
                                       [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "move_core_types::annotated_visitor::StructDriver",
-                                            "bytes"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "move_core_types::annotated_visitor::StructDriver",
+                                                "bytes"
+                                              |)
+                                            |)
                                           |)
                                         |);
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| field |),
-                                          "move_core_types::annotated_value::MoveFieldLayout",
-                                          "layout"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| field |) |),
+                                                "move_core_types::annotated_value::MoveFieldLayout",
+                                                "layout"
+                                              |)
+                                            |)
+                                          |)
                                         |);
-                                        M.read (| visitor |)
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| visitor |) |)
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -1906,7 +2108,7 @@ Module annotated_visitor.
                         let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "move_core_types::annotated_visitor::StructDriver",
                               "off"
                             |) in
@@ -1920,7 +2122,16 @@ Module annotated_visitor.
                             [
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.Tuple [ M.read (| field |); M.read (| res |) ] ]
+                                [
+                                  Value.Tuple
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| field |) |)
+                                      |);
+                                      M.read (| res |)
+                                    ]
+                                ]
                             ]
                         |)))
                   ]
@@ -2015,9 +2226,17 @@ Module annotated_visitor.
                   [ Ty.path "move_core_types::annotated_visitor::NullTraversal" ]
                 |),
                 [
-                  M.read (| self |);
-                  M.alloc (|
-                    Value.StructTuple "move_core_types::annotated_visitor::NullTraversal" []
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          Value.StructTuple "move_core_types::annotated_visitor::NullTraversal" []
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |);
@@ -2210,7 +2429,12 @@ Module annotated_visitor.
                                     [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
-                                  [ M.read (| bytes |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| bytes |) |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -2289,7 +2513,13 @@ Module annotated_visitor.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| visitor |); Value.Bool false ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| visitor |) |)
+                                    |);
+                                    Value.Bool false
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -2311,7 +2541,13 @@ Module annotated_visitor.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| visitor |); Value.Bool true ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| visitor |) |)
+                                    |);
+                                    Value.Bool true
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -2362,7 +2598,7 @@ Module annotated_visitor.
                             []
                           |),
                           [
-                            M.read (| visitor |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u8", "from_le_bytes", [], [] |),
                               [
@@ -2395,7 +2631,12 @@ Module annotated_visitor.
                                               [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
-                                            [ M.read (| bytes |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| bytes |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2480,7 +2721,7 @@ Module annotated_visitor.
                             []
                           |),
                           [
-                            M.read (| visitor |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "u16",
@@ -2518,7 +2759,12 @@ Module annotated_visitor.
                                               [ Value.Integer IntegerKind.Usize 2 ],
                                               []
                                             |),
-                                            [ M.read (| bytes |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| bytes |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2603,7 +2849,7 @@ Module annotated_visitor.
                             []
                           |),
                           [
-                            M.read (| visitor |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "u32",
@@ -2641,7 +2887,12 @@ Module annotated_visitor.
                                               [ Value.Integer IntegerKind.Usize 4 ],
                                               []
                                             |),
-                                            [ M.read (| bytes |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| bytes |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2726,7 +2977,7 @@ Module annotated_visitor.
                             []
                           |),
                           [
-                            M.read (| visitor |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "u64",
@@ -2764,7 +3015,12 @@ Module annotated_visitor.
                                               [ Value.Integer IntegerKind.Usize 8 ],
                                               []
                                             |),
-                                            [ M.read (| bytes |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| bytes |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2849,7 +3105,7 @@ Module annotated_visitor.
                             []
                           |),
                           [
-                            M.read (| visitor |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "u128",
@@ -2887,7 +3143,12 @@ Module annotated_visitor.
                                               [ Value.Integer IntegerKind.Usize 16 ],
                                               []
                                             |),
-                                            [ M.read (| bytes |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| bytes |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2972,7 +3233,7 @@ Module annotated_visitor.
                             []
                           |),
                           [
-                            M.read (| visitor |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "move_core_types::u256::U256",
@@ -2981,92 +3242,106 @@ Module annotated_visitor.
                                 []
                               |),
                               [
-                                M.match_operator (|
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::try_trait::Try",
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 32 ]
-                                              [ Ty.path "u8" ];
-                                            Ty.path "move_core_types::annotated_visitor::Error"
-                                          ],
-                                        [],
-                                        [],
-                                        "branch",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_function (|
-                                            "move_core_types::annotated_visitor::read_exact",
-                                            [ Value.Integer IntegerKind.Usize 32 ],
-                                            []
-                                          |),
-                                          [ M.read (| bytes |) ]
-                                        |)
-                                      ]
-                                    |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::ops::control_flow::ControlFlow::Break",
-                                            0
-                                          |) in
-                                        let residual := M.copy (| γ0_0 |) in
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.match_operator (|
                                         M.alloc (|
-                                          M.never_to_any (|
-                                            M.read (|
-                                              M.return_ (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::try_trait::FromResidual",
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [ Ty.associated; Ty.associated ],
-                                                    [],
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
-                                                        []
-                                                        [
-                                                          Ty.path "core::convert::Infallible";
-                                                          Ty.path
-                                                            "move_core_types::annotated_visitor::Error"
-                                                        ]
-                                                    ],
-                                                    "from_residual",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| residual |) ]
-                                                |)
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::Try",
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                                    [ Ty.path "u8" ];
+                                                  Ty.path
+                                                    "move_core_types::annotated_visitor::Error"
+                                                ],
+                                              [],
+                                              [],
+                                              "branch",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_function (|
+                                                  "move_core_types::annotated_visitor::read_exact",
+                                                  [ Value.Integer IntegerKind.Usize 32 ],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| bytes |) |)
+                                                  |)
+                                                ]
                                               |)
-                                            |)
+                                            ]
                                           |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::ops::control_flow::ControlFlow::Continue",
-                                            0
-                                          |) in
-                                        let val := M.copy (| γ0_0 |) in
-                                        val))
-                                  ]
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                  0
+                                                |) in
+                                              let residual := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (|
+                                                    M.return_ (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::try_trait::FromResidual",
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [ Ty.associated; Ty.associated ],
+                                                          [],
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_core_types::annotated_visitor::Error"
+                                                              ]
+                                                          ],
+                                                          "from_residual",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.read (| residual |) ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                  0
+                                                |) in
+                                              let val := M.copy (| γ0_0 |) in
+                                              val))
+                                        ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -3093,7 +3368,7 @@ Module annotated_visitor.
                             []
                           |),
                           [
-                            M.read (| visitor |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "move_core_types::account_address::AccountAddress",
@@ -3131,7 +3406,12 @@ Module annotated_visitor.
                                               [ Value.Integer IntegerKind.Usize 32 ],
                                               []
                                             |),
-                                            [ M.read (| bytes |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| bytes |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -3216,7 +3496,7 @@ Module annotated_visitor.
                             []
                           |),
                           [
-                            M.read (| visitor |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "move_core_types::account_address::AccountAddress",
@@ -3254,7 +3534,12 @@ Module annotated_visitor.
                                               [ Value.Integer IntegerKind.Usize 32 ],
                                               []
                                             |),
-                                            [ M.read (| bytes |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| bytes |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -3377,7 +3662,12 @@ Module annotated_visitor.
                                               [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                           ]
                                         |),
-                                        [ M.read (| bytes |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| bytes |) |)
+                                          |)
+                                        ]
                                       |);
                                       M.closure
                                         (fun γ =>
@@ -3467,24 +3757,32 @@ Module annotated_visitor.
                               []
                             |),
                             [
-                              M.read (| bytes |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::convert::AsRef",
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
-                                    [
-                                      Ty.path "move_core_types::annotated_value::MoveTypeLayout";
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
-                                  [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ],
-                                  "as_ref",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| l |) ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::convert::AsRef",
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::annotated_value::MoveTypeLayout";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      [],
+                                      [ Ty.path "move_core_types::annotated_value::MoveTypeLayout"
+                                      ],
+                                      "as_ref",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |);
                               M.read (| len |)
                             ]
@@ -3518,7 +3816,16 @@ Module annotated_visitor.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| visitor |); driver ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| visitor |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, driver |) |)
+                                      |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -3615,7 +3922,7 @@ Module annotated_visitor.
                                                     [],
                                                     []
                                                   |),
-                                                  [ driver ]
+                                                  [ M.borrow (| Pointer.Kind.MutRef, driver |) ]
                                                 |)
                                               ]
                                             |)
@@ -3717,7 +4024,11 @@ Module annotated_visitor.
                             [],
                             [ V ]
                           |),
-                          [ M.read (| bytes |); M.read (| l |); M.read (| visitor |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |)
+                          ]
                         |)
                       |)))
                 ]
@@ -3761,7 +4072,10 @@ Module annotated_visitor.
                       [],
                       []
                     |),
-                    [ M.read (| bytes |); M.read (| layout |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| layout |) |) |)
+                    ]
                   |)
                 |) in
               let~ res :=
@@ -3792,7 +4106,16 @@ Module annotated_visitor.
                               [],
                               []
                             |),
-                            [ M.read (| visitor |); driver ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.read (| visitor |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, driver |) |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -3878,103 +4201,107 @@ Module annotated_visitor.
                                       []
                                     |),
                                     [
-                                      M.match_operator (|
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_core_types::annotated_value::MoveFieldLayout"
-                                                        ]
-                                                    ];
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ],
-                                              [],
-                                              [],
-                                              "branch",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::StructDriver",
-                                                  "skip_field",
-                                                  [],
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.match_operator (|
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::try_trait::Try",
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
                                                   []
-                                                |),
-                                                [ driver ]
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual := M.copy (| γ0_0 |) in
-                                              M.alloc (|
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [ Ty.associated; Ty.associated ],
-                                                          [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
                                                           [
+                                                            Ty.path
+                                                              "move_core_types::annotated_value::MoveFieldLayout"
+                                                          ]
+                                                      ];
+                                                    Ty.path
+                                                      "move_core_types::annotated_visitor::Error"
+                                                  ],
+                                                [],
+                                                [],
+                                                "branch",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_core_types::annotated_visitor::StructDriver",
+                                                    "skip_field",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.borrow (| Pointer.Kind.MutRef, driver |) ]
+                                                |)
+                                              ]
+                                            |)
+                                          |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::ops::control_flow::ControlFlow::Break",
+                                                    0
+                                                  |) in
+                                                let residual := M.copy (| γ0_0 |) in
+                                                M.alloc (|
+                                                  M.never_to_any (|
+                                                    M.read (|
+                                                      M.return_ (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::FromResidual",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
                                                               []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.path
-                                                                  "move_core_types::annotated_visitor::Error"
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
+                                                              [ Ty.associated; Ty.associated ],
+                                                            [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_core_types::annotated_visitor::Error"
+                                                                ]
+                                                            ],
+                                                            "from_residual",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.read (| residual |) ]
+                                                        |)
                                                       |)
                                                     |)
                                                   |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val := M.copy (| γ0_0 |) in
-                                              val))
-                                        ]
+                                                |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::ops::control_flow::ControlFlow::Continue",
+                                                    0
+                                                  |) in
+                                                let val := M.copy (| γ0_0 |) in
+                                                val))
+                                          ]
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -4069,7 +4396,16 @@ Module annotated_visitor.
                                 [],
                                 []
                               |),
-                              [ M.read (| bytes |); buf ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| bytes |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                                |)
+                              ]
                             |);
                             M.closure
                               (fun γ =>

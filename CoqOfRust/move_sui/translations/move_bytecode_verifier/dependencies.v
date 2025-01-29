@@ -101,7 +101,10 @@ Module dependencies.
               [],
               [ impl_IntoIterator_Item____'b_CompiledModule_ ]
             |),
-            [ M.read (| module |); M.read (| dependencies |) ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+              M.read (| dependencies |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -229,7 +232,7 @@ Module dependencies.
                     [],
                     []
                   |),
-                  [ M.read (| module |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                 |)
               |) in
             let~ self_module_idx :=
@@ -241,7 +244,7 @@ Module dependencies.
                     [],
                     []
                   |),
-                  [ M.read (| module |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                 |)
               |) in
             let~ self_function_defs :=
@@ -253,7 +256,7 @@ Module dependencies.
                     [],
                     []
                   |),
-                  [ M.read (| module |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                 |)
               |) in
             let~ dependency_map :=
@@ -460,19 +463,31 @@ Module dependencies.
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_binary_format::file_format::CompiledModule",
-                                                        "self_id",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| M.read (| d |) |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_binary_format::file_format::CompiledModule",
+                                                          "self_id",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.deref (| M.read (| d |) |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
                                                   |);
-                                                  self_module
+                                                  M.borrow (| Pointer.Kind.Ref, self_module |)
                                                 ]
                                               |)))
                                         ]
@@ -503,7 +518,12 @@ Module dependencies.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| d |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| d |) |)
+                                                  |)
+                                                ]
                                               |);
                                               M.read (| d |)
                                             ]))
@@ -534,7 +554,12 @@ Module dependencies.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| module |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| module |) |)
+                                    |)
+                                  ]
                                 |),
                                 M.read (|
                                   M.get_constant (|
@@ -696,10 +721,13 @@ Module dependencies.
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          context,
-                          "move_bytecode_verifier::dependencies::Context",
-                          "dependency_map"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            context,
+                            "move_bytecode_verifier::dependencies::Context",
+                            "dependency_map"
+                          |)
                         |)
                       ]
                     |)
@@ -735,7 +763,12 @@ Module dependencies.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -814,7 +847,16 @@ Module dependencies.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| M.read (| module |) |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (|
+                                                            M.deref (| M.read (| module |) |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -855,7 +897,16 @@ Module dependencies.
                                                       [],
                                                       []
                                                     |),
-                                                    [ M.read (| M.read (| module |) |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (|
+                                                            M.deref (| M.read (| module |) |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -886,7 +937,17 @@ Module dependencies.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ iter ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      iter
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |),
                                                           [
@@ -923,12 +984,23 @@ Module dependencies.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (|
-                                                                          M.read (| module |)
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              M.deref (|
+                                                                                M.read (| module |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
                                                                         |);
                                                                         M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| struct_def |),
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                struct_def
+                                                                              |)
+                                                                            |),
                                                                             "move_binary_format::file_format::StructDefinition",
                                                                             "struct_handle"
                                                                           |)
@@ -947,13 +1019,22 @@ Module dependencies.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (|
-                                                                          M.read (| module |)
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              M.deref (|
+                                                                                M.read (| module |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
                                                                         |);
                                                                         M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
-                                                                            M.read (|
-                                                                              struct_handle
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                struct_handle
+                                                                              |)
                                                                             |),
                                                                             "move_binary_format::file_format::StructHandle",
                                                                             "name"
@@ -988,10 +1069,13 @@ Module dependencies.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          context,
-                                                                          "move_bytecode_verifier::dependencies::Context",
-                                                                          "struct_id_to_handle_map"
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            context,
+                                                                            "move_bytecode_verifier::dependencies::Context",
+                                                                            "struct_id_to_handle_map"
+                                                                          |)
                                                                         |);
                                                                         Value.Tuple
                                                                           [
@@ -1007,8 +1091,13 @@ Module dependencies.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                M.read (|
-                                                                                  module_id
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      module_id
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               ]
                                                                             |);
@@ -1024,15 +1113,24 @@ Module dependencies.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                M.read (|
-                                                                                  struct_name
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      struct_name
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               ]
                                                                             |)
                                                                           ];
                                                                         M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| struct_def |),
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                struct_def
+                                                                              |)
+                                                                            |),
                                                                             "move_binary_format::file_format::StructDefinition",
                                                                             "struct_handle"
                                                                           |)
@@ -1080,7 +1178,16 @@ Module dependencies.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| M.read (| module |) |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.read (|
+                                                          M.deref (| M.read (| module |) |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -1110,7 +1217,17 @@ Module dependencies.
                                                               [],
                                                               []
                                                             |),
-                                                            [ iter ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    iter
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |),
                                                         [
@@ -1146,12 +1263,21 @@ Module dependencies.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (|
-                                                                        M.read (| module |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            M.deref (|
+                                                                              M.read (| module |)
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |);
                                                                       M.read (|
                                                                         M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| func_def |),
+                                                                          M.deref (|
+                                                                            M.read (| func_def |)
+                                                                          |),
                                                                           "move_binary_format::file_format::FunctionDefinition",
                                                                           "function"
                                                                         |)
@@ -1170,12 +1296,21 @@ Module dependencies.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (|
-                                                                        M.read (| module |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            M.deref (|
+                                                                              M.read (| module |)
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |);
                                                                       M.read (|
                                                                         M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| func_handle |),
+                                                                          M.deref (|
+                                                                            M.read (| func_handle |)
+                                                                          |),
                                                                           "move_binary_format::file_format::FunctionHandle",
                                                                           "name"
                                                                         |)
@@ -1213,7 +1348,10 @@ Module dependencies.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      dependency_visibilities;
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        dependency_visibilities
+                                                                      |);
                                                                       Value.Tuple
                                                                         [
                                                                           M.call_closure (|
@@ -1227,7 +1365,15 @@ Module dependencies.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| module_id |)
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    module_id
+                                                                                  |)
+                                                                                |)
+                                                                              |)
                                                                             ]
                                                                           |);
                                                                           M.call_closure (|
@@ -1241,7 +1387,15 @@ Module dependencies.
                                                                               [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| func_name |)
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    func_name
+                                                                                  |)
+                                                                                |)
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         ];
@@ -1249,14 +1403,22 @@ Module dependencies.
                                                                         [
                                                                           M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
-                                                                              M.read (| func_def |),
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  func_def
+                                                                                |)
+                                                                              |),
                                                                               "move_binary_format::file_format::FunctionDefinition",
                                                                               "visibility"
                                                                             |)
                                                                           |);
                                                                           M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
-                                                                              M.read (| func_def |),
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  func_def
+                                                                                |)
+                                                                              |),
                                                                               "move_binary_format::file_format::FunctionDefinition",
                                                                               "is_entry"
                                                                             |)
@@ -1269,7 +1431,9 @@ Module dependencies.
                                                                 M.copy (|
                                                                   M.match_operator (|
                                                                     M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| func_def |),
+                                                                      M.deref (|
+                                                                        M.read (| func_def |)
+                                                                      |),
                                                                       "move_binary_format::file_format::FunctionDefinition",
                                                                       "visibility"
                                                                     |),
@@ -1312,8 +1476,19 @@ Module dependencies.
                                                                                 ]
                                                                               |),
                                                                               [
-                                                                                friend_module_ids;
-                                                                                self_module
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  friend_module_ids
+                                                                                |);
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      self_module
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               ]
                                                                             |)
                                                                           |)));
@@ -1368,10 +1543,13 @@ Module dependencies.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                context,
-                                                                                "move_bytecode_verifier::dependencies::Context",
-                                                                                "func_id_to_handle_map"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  context,
+                                                                                  "move_bytecode_verifier::dependencies::Context",
+                                                                                  "func_id_to_handle_map"
+                                                                                |)
                                                                               |);
                                                                               Value.Tuple
                                                                                 [
@@ -1387,8 +1565,13 @@ Module dependencies.
                                                                                       []
                                                                                     |),
                                                                                     [
-                                                                                      M.read (|
-                                                                                        module_id
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            module_id
+                                                                                          |)
+                                                                                        |)
                                                                                       |)
                                                                                     ]
                                                                                   |);
@@ -1404,16 +1587,23 @@ Module dependencies.
                                                                                       []
                                                                                     |),
                                                                                     [
-                                                                                      M.read (|
-                                                                                        func_name
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            func_name
+                                                                                          |)
+                                                                                        |)
                                                                                       |)
                                                                                     ]
                                                                                   |)
                                                                                 ];
                                                                               M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
-                                                                                  M.read (|
-                                                                                    func_def
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      func_def
+                                                                                    |)
                                                                                   |),
                                                                                   "move_binary_format::file_format::FunctionDefinition",
                                                                                   "function"
@@ -1494,7 +1684,12 @@ Module dependencies.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -1533,21 +1728,24 @@ Module dependencies.
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                context,
-                                                "move_bytecode_verifier::dependencies::Context",
-                                                "function_visibilities"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  context,
+                                                  "move_bytecode_verifier::dependencies::Context",
+                                                  "function_visibilities"
+                                                |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| function_def |),
+                                                  M.deref (| M.read (| function_def |) |),
                                                   "move_binary_format::file_format::FunctionDefinition",
                                                   "function"
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| function_def |),
+                                                  M.deref (| M.read (| function_def |) |),
                                                   "move_binary_format::file_format::FunctionDefinition",
                                                   "visibility"
                                                 |)
@@ -1563,7 +1761,7 @@ Module dependencies.
                                               (let γ :=
                                                 M.use
                                                   (M.SubPointer.get_struct_record_field (|
-                                                    M.read (| function_def |),
+                                                    M.deref (| M.read (| function_def |) |),
                                                     "move_binary_format::file_format::FunctionDefinition",
                                                     "is_entry"
                                                   |)) in
@@ -1645,10 +1843,13 @@ Module dependencies.
                                                           []
                                                         |),
                                                         [
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            context,
-                                                            "move_bytecode_verifier::dependencies::Context",
-                                                            "script_functions"
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              context,
+                                                              "move_bytecode_verifier::dependencies::Context",
+                                                              "script_functions"
+                                                            |)
                                                           |)
                                                         ]
                                                       |);
@@ -1681,11 +1882,18 @@ Module dependencies.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.read (| s |);
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.MutRef,
+                                                                              M.deref (|
+                                                                                M.read (| s |)
+                                                                              |)
+                                                                            |);
                                                                             M.read (|
                                                                               M.SubPointer.get_struct_record_field (|
-                                                                                M.read (|
-                                                                                  function_def
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    function_def
+                                                                                  |)
                                                                                 |),
                                                                                 "move_binary_format::file_format::FunctionDefinition",
                                                                                 "function"
@@ -1760,22 +1968,32 @@ Module dependencies.
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::CompiledModule",
-                                    "function_handles",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        context,
-                                        "move_bytecode_verifier::dependencies::Context",
-                                        "module"
-                                      |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "move_binary_format::file_format::CompiledModule",
+                                        "function_handles",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                context,
+                                                "move_bytecode_verifier::dependencies::Context",
+                                                "module"
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |)
@@ -1814,7 +2032,12 @@ Module dependencies.
                                       [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -1861,12 +2084,20 @@ Module dependencies.
                                                           []
                                                         |),
                                                         [
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| function_handle |),
-                                                            "move_binary_format::file_format::FunctionHandle",
-                                                            "module"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (|
+                                                                M.read (| function_handle |)
+                                                              |),
+                                                              "move_binary_format::file_format::FunctionHandle",
+                                                              "module"
+                                                            |)
                                                           |);
-                                                          self_module_idx
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            self_module_idx
+                                                          |)
                                                         ]
                                                       |)
                                                     |)) in
@@ -1892,37 +2123,54 @@ Module dependencies.
                                               []
                                             |),
                                             [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  context,
-                                                  "move_bytecode_verifier::dependencies::Context",
-                                                  "module"
-                                                |)
-                                              |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_binary_format::file_format::CompiledModule",
-                                                  "module_handle_at",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       context,
                                                       "move_bytecode_verifier::dependencies::Context",
                                                       "module"
                                                     |)
-                                                  |);
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| function_handle |),
-                                                      "move_binary_format::file_format::FunctionHandle",
-                                                      "module"
-                                                    |)
                                                   |)
-                                                ]
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::CompiledModule",
+                                                      "module_handle_at",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              context,
+                                                              "move_bytecode_verifier::dependencies::Context",
+                                                              "module"
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |);
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (|
+                                                            M.read (| function_handle |)
+                                                          |),
+                                                          "move_binary_format::file_format::FunctionHandle",
+                                                          "module"
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1938,16 +2186,21 @@ Module dependencies.
                                               []
                                             |),
                                             [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  context,
-                                                  "move_bytecode_verifier::dependencies::Context",
-                                                  "module"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      context,
+                                                      "move_bytecode_verifier::dependencies::Context",
+                                                      "module"
+                                                    |)
+                                                  |)
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| function_handle |),
+                                                  M.deref (| M.read (| function_handle |) |),
                                                   "move_binary_format::file_format::FunctionHandle",
                                                   "name"
                                                 |)
@@ -1958,66 +2211,81 @@ Module dependencies.
                                       let~ dep_file_format_version :=
                                         M.copy (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::CompiledModule"
-                                                            ]
-                                                        ]
-                                                    ],
-                                                  "unwrap",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
+                                            M.deref (|
+                                              M.read (|
+                                                M.deref (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::btree::map::BTreeMap")
+                                                        (Ty.path "core::option::Option")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_core_types::language_storage::ModuleId";
                                                           Ty.apply
                                                             (Ty.path "&")
                                                             []
                                                             [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::CompiledModule"
-                                                            ];
-                                                          Ty.path "alloc::alloc::Global"
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::CompiledModule"
+                                                                ]
+                                                            ]
                                                         ],
-                                                      "get",
+                                                      "unwrap",
                                                       [],
-                                                      [
-                                                        Ty.path
-                                                          "move_core_types::language_storage::ModuleId"
-                                                      ]
+                                                      []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        context,
-                                                        "move_bytecode_verifier::dependencies::Context",
-                                                        "dependency_map"
-                                                      |);
-                                                      dep_module_id
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::btree::map::BTreeMap")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::language_storage::ModuleId";
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::CompiledModule"
+                                                                ];
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          "get",
+                                                          [],
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::language_storage::ModuleId"
+                                                          ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              context,
+                                                              "move_bytecode_verifier::dependencies::Context",
+                                                              "dependency_map"
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                dep_module_id
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
                                                     ]
                                                   |)
-                                                ]
+                                                |)
                                               |)
                                             |),
                                             "move_binary_format::file_format::CompiledModule",
@@ -2039,7 +2307,12 @@ Module dependencies.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| function_name |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| function_name |) |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                         |) in
@@ -2080,7 +2353,18 @@ Module dependencies.
                                                     ]
                                                 ]
                                               |),
-                                              [ dependency_visibilities; dep_function ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  dependency_visibilities
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, dep_function |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -2103,7 +2387,7 @@ Module dependencies.
                                                     0
                                                   |) in
                                                 let vis_entry := M.copy (| γ0_0 |) in
-                                                M.read (| vis_entry |)))
+                                                M.deref (| M.read (| vis_entry |) |)))
                                           ]
                                         |),
                                         [
@@ -2140,10 +2424,13 @@ Module dependencies.
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        context,
-                                                        "move_bytecode_verifier::dependencies::Context",
-                                                        "function_visibilities"
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          context,
+                                                          "move_bytecode_verifier::dependencies::Context",
+                                                          "function_visibilities"
+                                                        |)
                                                       |);
                                                       M.read (| fhandle_idx |);
                                                       M.read (| visibility |)
@@ -2253,10 +2540,13 @@ Module dependencies.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    context,
-                                                                    "move_bytecode_verifier::dependencies::Context",
-                                                                    "script_functions"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      context,
+                                                                      "move_bytecode_verifier::dependencies::Context",
+                                                                      "script_functions"
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |);
@@ -2290,7 +2580,14 @@ Module dependencies.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.read (| s |);
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.MutRef,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          s
+                                                                                        |)
+                                                                                      |)
+                                                                                    |);
                                                                                     M.read (|
                                                                                       fhandle_idx
                                                                                     |)
@@ -2363,7 +2660,10 @@ Module dependencies.
                 [],
                 [ impl_IntoIterator_Item____'a_CompiledModule_ ]
               |),
-              [ M.read (| module |); M.read (| dependencies |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                M.read (| dependencies |)
+              ]
             |);
             M.closure
               (fun γ =>
@@ -2396,7 +2696,12 @@ Module dependencies.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| module |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| module |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 ]
@@ -2437,15 +2742,21 @@ Module dependencies.
             (M.read (|
               let~ context :=
                 M.alloc (|
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "move_bytecode_verifier::dependencies::Context",
-                        "module",
-                        [],
-                        [ impl_IntoIterator_Item____'a_CompiledModule_ ]
-                      |),
-                      [ M.read (| module |); M.read (| dependencies |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "move_bytecode_verifier::dependencies::Context",
+                          "module",
+                          [],
+                          [ impl_IntoIterator_Item____'a_CompiledModule_ ]
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                          M.read (| dependencies |)
+                        ]
+                      |)
                     |)
                   |)
                 |) in
@@ -2472,7 +2783,7 @@ Module dependencies.
                             [],
                             []
                           |),
-                          [ M.read (| context |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |) ]
                         |)
                       ]
                     |)
@@ -2556,7 +2867,7 @@ Module dependencies.
                             [],
                             []
                           |),
-                          [ M.read (| context |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |) ]
                         |)
                       ]
                     |)
@@ -2640,7 +2951,7 @@ Module dependencies.
                             [],
                             []
                           |),
-                          [ M.read (| context |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |) ]
                         |)
                       ]
                     |)
@@ -2708,7 +3019,7 @@ Module dependencies.
                     [],
                     []
                   |),
-                  [ M.read (| context |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |) ]
                 |)
               |)
             |)))
@@ -2755,11 +3066,16 @@ Module dependencies.
                       []
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| context |),
-                          "move_bytecode_verifier::dependencies::Context",
-                          "module"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| context |) |),
+                              "move_bytecode_verifier::dependencies::Context",
+                              "module"
+                            |)
+                          |)
                         |)
                       |)
                     ]
@@ -2813,22 +3129,32 @@ Module dependencies.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "module_handles",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| context |),
-                                          "move_bytecode_verifier::dependencies::Context",
-                                          "module"
-                                        |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "module_handles",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| context |) |),
+                                                  "move_bytecode_verifier::dependencies::Context",
+                                                  "module"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2867,7 +3193,12 @@ Module dependencies.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -2901,14 +3232,22 @@ Module dependencies.
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| context |),
-                                                    "move_bytecode_verifier::dependencies::Context",
-                                                    "module"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| context |) |),
+                                                        "move_bytecode_verifier::dependencies::Context",
+                                                        "module"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |);
-                                                M.read (| module_handle |)
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| module_handle |) |)
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -2936,12 +3275,18 @@ Module dependencies.
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.StructTuple
-                                                                "move_binary_format::file_format::ModuleHandleIndex"
-                                                                [ M.rust_cast (M.read (| idx |)) ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                Value.StructTuple
+                                                                  "move_binary_format::file_format::ModuleHandleIndex"
+                                                                  [ M.rust_cast (M.read (| idx |)) ]
+                                                              |)
                                                             |);
-                                                            self_module
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              self_module
+                                                            |)
                                                           ]
                                                         |),
                                                         ltac:(M.monadic
@@ -2972,12 +3317,25 @@ Module dependencies.
                                                                 ]
                                                               |),
                                                               [
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| context |),
-                                                                  "move_bytecode_verifier::dependencies::Context",
-                                                                  "dependency_map"
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (|
+                                                                      M.read (| context |)
+                                                                    |),
+                                                                    "move_bytecode_verifier::dependencies::Context",
+                                                                    "dependency_map"
+                                                                  |)
                                                                 |);
-                                                                module_id
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      module_id
+                                                                    |)
+                                                                  |)
+                                                                |)
                                                               ]
                                                             |)
                                                           |)))
@@ -3098,11 +3456,16 @@ Module dependencies.
                       []
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| context |),
-                          "move_bytecode_verifier::dependencies::Context",
-                          "module"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| context |) |),
+                              "move_bytecode_verifier::dependencies::Context",
+                              "module"
+                            |)
+                          |)
                         |)
                       |)
                     ]
@@ -3156,22 +3519,32 @@ Module dependencies.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "struct_handles",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| context |),
-                                          "move_bytecode_verifier::dependencies::Context",
-                                          "module"
-                                        |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "struct_handles",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| context |) |),
+                                                  "move_bytecode_verifier::dependencies::Context",
+                                                  "module"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3210,7 +3583,12 @@ Module dependencies.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -3257,12 +3635,20 @@ Module dependencies.
                                                             []
                                                           |),
                                                           [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| struct_handle |),
-                                                              "move_binary_format::file_format::StructHandle",
-                                                              "module"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (|
+                                                                  M.read (| struct_handle |)
+                                                                |),
+                                                                "move_binary_format::file_format::StructHandle",
+                                                                "module"
+                                                              |)
                                                             |);
-                                                            self_module
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              self_module
+                                                            |)
                                                           ]
                                                         |)
                                                       |)) in
@@ -3291,37 +3677,54 @@ Module dependencies.
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| context |),
-                                                    "move_bytecode_verifier::dependencies::Context",
-                                                    "module"
-                                                  |)
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_binary_format::file_format::CompiledModule",
-                                                    "module_handle_at",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
                                                     M.read (|
                                                       M.SubPointer.get_struct_record_field (|
-                                                        M.read (| context |),
+                                                        M.deref (| M.read (| context |) |),
                                                         "move_bytecode_verifier::dependencies::Context",
                                                         "module"
                                                       |)
-                                                    |);
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| struct_handle |),
-                                                        "move_binary_format::file_format::StructHandle",
-                                                        "module"
-                                                      |)
                                                     |)
-                                                  ]
+                                                  |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::file_format::CompiledModule",
+                                                        "module_handle_at",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| context |) |),
+                                                                "move_bytecode_verifier::dependencies::Context",
+                                                                "module"
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (|
+                                                              M.read (| struct_handle |)
+                                                            |),
+                                                            "move_binary_format::file_format::StructHandle",
+                                                            "module"
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -3356,12 +3759,23 @@ Module dependencies.
                                                     ]
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| context |),
-                                                      "move_bytecode_verifier::dependencies::Context",
-                                                      "dependency_map"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| context |) |),
+                                                        "move_bytecode_verifier::dependencies::Context",
+                                                        "dependency_map"
+                                                      |)
                                                     |);
-                                                    owner_module_id
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          owner_module_id
+                                                        |)
+                                                      |)
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -3434,25 +3848,41 @@ Module dependencies.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/dependencies.rs:195 (none)"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              "crates/move-bytecode-verifier/src/dependencies.rs:195 (none)"
+                                                                                          |)
+                                                                                        ]
                                                                                     |)
-                                                                                  ]
+                                                                                  |)
+                                                                                |)
                                                                               |);
-                                                                              M.alloc (|
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "none",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  []
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.alloc (|
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::rt::Argument",
+                                                                                          "none",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        []
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             ]
@@ -3498,31 +3928,58 @@ Module dependencies.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
-                                                                        |);
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_debug",
-                                                                                  [],
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.alloc (|
+                                                                                Value.Array
                                                                                   [
-                                                                                    Ty.path
-                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        ""
+                                                                                    |)
                                                                                   ]
-                                                                                |),
-                                                                                [ err ]
                                                                               |)
-                                                                            ]
+                                                                            |)
+                                                                          |)
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "core::fmt::rt::Argument",
+                                                                                        "new_debug",
+                                                                                        [],
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                        ]
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              err
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
+                                                                              |)
+                                                                            |)
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -3559,16 +4016,21 @@ Module dependencies.
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| context |),
-                                                    "move_bytecode_verifier::dependencies::Context",
-                                                    "module"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| context |) |),
+                                                        "move_bytecode_verifier::dependencies::Context",
+                                                        "module"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |);
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| struct_handle |),
+                                                    M.deref (| M.read (| struct_handle |) |),
                                                     "move_binary_format::file_format::StructHandle",
                                                     "name"
                                                   |)
@@ -3609,29 +4071,47 @@ Module dependencies.
                                                 ]
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| context |),
-                                                  "move_bytecode_verifier::dependencies::Context",
-                                                  "struct_id_to_handle_map"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| context |) |),
+                                                    "move_bytecode_verifier::dependencies::Context",
+                                                    "struct_id_to_handle_map"
+                                                  |)
                                                 |);
-                                                M.alloc (|
-                                                  Value.Tuple
-                                                    [
-                                                      M.read (| owner_module_id |);
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "alloc::borrow::ToOwned",
-                                                          Ty.path
-                                                            "move_core_types::identifier::IdentStr",
-                                                          [],
-                                                          [],
-                                                          "to_owned",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| struct_name |) ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Tuple
+                                                          [
+                                                            M.read (| owner_module_id |);
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "alloc::borrow::ToOwned",
+                                                                Ty.path
+                                                                  "move_core_types::identifier::IdentStr",
+                                                                [],
+                                                                [],
+                                                                "to_owned",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| struct_name |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
                                                       |)
-                                                    ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -3657,8 +4137,19 @@ Module dependencies.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| M.read (| owner_module |) |);
-                                                        M.read (| M.read (| def_idx |) |)
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.deref (|
+                                                                M.read (| owner_module |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.read (|
+                                                          M.deref (| M.read (| def_idx |) |)
+                                                        |)
                                                       ]
                                                     |)
                                                   |) in
@@ -3681,8 +4172,10 @@ Module dependencies.
                                                                     [
                                                                       M.read (|
                                                                         M.SubPointer.get_struct_record_field (|
-                                                                          M.read (|
-                                                                            struct_handle
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              struct_handle
+                                                                            |)
                                                                           |),
                                                                           "move_binary_format::file_format::StructHandle",
                                                                           "abilities"
@@ -3690,7 +4183,9 @@ Module dependencies.
                                                                       |);
                                                                       M.read (|
                                                                         M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| def_handle |),
+                                                                          M.deref (|
+                                                                            M.read (| def_handle |)
+                                                                          |),
                                                                           "move_binary_format::file_format::StructHandle",
                                                                           "abilities"
                                                                         |)
@@ -3707,63 +4202,93 @@ Module dependencies.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::deref::Deref",
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::vec::Vec")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_binary_format::file_format::StructTypeParameter";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            [],
-                                                                            [],
-                                                                            "deref",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (|
-                                                                                struct_handle
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::deref::Deref",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::StructTypeParameter";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                [],
+                                                                                [],
+                                                                                "deref",
+                                                                                [],
+                                                                                []
                                                                               |),
-                                                                              "move_binary_format::file_format::StructHandle",
-                                                                              "type_parameters"
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            struct_handle
+                                                                                          |)
+                                                                                        |),
+                                                                                        "move_binary_format::file_format::StructHandle",
+                                                                                        "type_parameters"
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              ]
                                                                             |)
-                                                                          ]
+                                                                          |)
                                                                         |);
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::deref::Deref",
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::vec::Vec")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_binary_format::file_format::StructTypeParameter";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            [],
-                                                                            [],
-                                                                            "deref",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (|
-                                                                                def_handle
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::deref::Deref",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::StructTypeParameter";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                [],
+                                                                                [],
+                                                                                "deref",
+                                                                                [],
+                                                                                []
                                                                               |),
-                                                                              "move_binary_format::file_format::StructHandle",
-                                                                              "type_parameters"
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            def_handle
+                                                                                          |)
+                                                                                        |),
+                                                                                        "move_binary_format::file_format::StructHandle",
+                                                                                        "type_parameters"
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              ]
                                                                             |)
-                                                                          ]
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -3964,11 +4489,16 @@ Module dependencies.
                       []
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| context |),
-                          "move_bytecode_verifier::dependencies::Context",
-                          "module"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| context |) |),
+                              "move_bytecode_verifier::dependencies::Context",
+                              "module"
+                            |)
+                          |)
                         |)
                       |)
                     ]
@@ -4022,22 +4552,32 @@ Module dependencies.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "function_handles",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| context |),
-                                          "move_bytecode_verifier::dependencies::Context",
-                                          "module"
-                                        |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "function_handles",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| context |) |),
+                                                  "move_bytecode_verifier::dependencies::Context",
+                                                  "module"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |)
@@ -4076,7 +4616,12 @@ Module dependencies.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -4123,12 +4668,20 @@ Module dependencies.
                                                             []
                                                           |),
                                                           [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| function_handle |),
-                                                              "move_binary_format::file_format::FunctionHandle",
-                                                              "module"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (|
+                                                                  M.read (| function_handle |)
+                                                                |),
+                                                                "move_binary_format::file_format::FunctionHandle",
+                                                                "module"
+                                                              |)
                                                             |);
-                                                            self_module
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              self_module
+                                                            |)
                                                           ]
                                                         |)
                                                       |)) in
@@ -4157,37 +4710,54 @@ Module dependencies.
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| context |),
-                                                    "move_bytecode_verifier::dependencies::Context",
-                                                    "module"
-                                                  |)
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_binary_format::file_format::CompiledModule",
-                                                    "module_handle_at",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
                                                     M.read (|
                                                       M.SubPointer.get_struct_record_field (|
-                                                        M.read (| context |),
+                                                        M.deref (| M.read (| context |) |),
                                                         "move_bytecode_verifier::dependencies::Context",
                                                         "module"
                                                       |)
-                                                    |);
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| function_handle |),
-                                                        "move_binary_format::file_format::FunctionHandle",
-                                                        "module"
-                                                      |)
                                                     |)
-                                                  ]
+                                                  |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::file_format::CompiledModule",
+                                                        "module_handle_at",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| context |) |),
+                                                                "move_bytecode_verifier::dependencies::Context",
+                                                                "module"
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (|
+                                                              M.read (| function_handle |)
+                                                            |),
+                                                            "move_binary_format::file_format::FunctionHandle",
+                                                            "module"
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -4203,16 +4773,21 @@ Module dependencies.
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| context |),
-                                                    "move_bytecode_verifier::dependencies::Context",
-                                                    "module"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| context |) |),
+                                                        "move_bytecode_verifier::dependencies::Context",
+                                                        "module"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |);
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| function_handle |),
+                                                    M.deref (| M.read (| function_handle |) |),
                                                     "move_binary_format::file_format::FunctionHandle",
                                                     "name"
                                                   |)
@@ -4250,12 +4825,23 @@ Module dependencies.
                                                     ]
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| context |),
-                                                      "move_bytecode_verifier::dependencies::Context",
-                                                      "dependency_map"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| context |) |),
+                                                        "move_bytecode_verifier::dependencies::Context",
+                                                        "dependency_map"
+                                                      |)
                                                     |);
-                                                    owner_module_id
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          owner_module_id
+                                                        |)
+                                                      |)
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -4328,25 +4914,41 @@ Module dependencies.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/dependencies.rs:238 (none)"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              "crates/move-bytecode-verifier/src/dependencies.rs:238 (none)"
+                                                                                          |)
+                                                                                        ]
                                                                                     |)
-                                                                                  ]
+                                                                                  |)
+                                                                                |)
                                                                               |);
-                                                                              M.alloc (|
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "none",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  []
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.alloc (|
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::rt::Argument",
+                                                                                          "none",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        []
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             ]
@@ -4392,31 +4994,58 @@ Module dependencies.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
-                                                                        |);
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_debug",
-                                                                                  [],
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.alloc (|
+                                                                                Value.Array
                                                                                   [
-                                                                                    Ty.path
-                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        ""
+                                                                                    |)
                                                                                   ]
-                                                                                |),
-                                                                                [ err ]
                                                                               |)
-                                                                            ]
+                                                                            |)
+                                                                          |)
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "core::fmt::rt::Argument",
+                                                                                        "new_debug",
+                                                                                        [],
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                        ]
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              err
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
+                                                                              |)
+                                                                            |)
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -4475,41 +5104,64 @@ Module dependencies.
                                                 ]
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| context |),
-                                                  "move_bytecode_verifier::dependencies::Context",
-                                                  "func_id_to_handle_map"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| context |) |),
+                                                    "move_bytecode_verifier::dependencies::Context",
+                                                    "func_id_to_handle_map"
+                                                  |)
                                                 |);
-                                                M.alloc (|
-                                                  Value.Tuple
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::clone::Clone",
-                                                          Ty.path
-                                                            "move_core_types::language_storage::ModuleId",
-                                                          [],
-                                                          [],
-                                                          "clone",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ owner_module_id ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "alloc::borrow::ToOwned",
-                                                          Ty.path
-                                                            "move_core_types::identifier::IdentStr",
-                                                          [],
-                                                          [],
-                                                          "to_owned",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| function_name |) ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Tuple
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::clone::Clone",
+                                                                Ty.path
+                                                                  "move_core_types::language_storage::ModuleId",
+                                                                [],
+                                                                [],
+                                                                "clone",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  owner_module_id
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "alloc::borrow::ToOwned",
+                                                                Ty.path
+                                                                  "move_core_types::identifier::IdentStr",
+                                                                [],
+                                                                [],
+                                                                "to_owned",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| function_name |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
                                                       |)
-                                                    ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -4535,8 +5187,19 @@ Module dependencies.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| M.read (| owner_module |) |);
-                                                        M.read (| M.read (| def_idx |) |)
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.deref (|
+                                                                M.read (| owner_module |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.read (|
+                                                          M.deref (| M.read (| def_idx |) |)
+                                                        |)
                                                       ]
                                                     |)
                                                   |) in
@@ -4557,61 +5220,93 @@ Module dependencies.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::deref::Deref",
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::vec::Vec")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::AbilitySet";
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ],
-                                                                          [],
-                                                                          [],
-                                                                          "deref",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.read (|
-                                                                              function_handle
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::deref::Deref",
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "alloc::vec::Vec")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::AbilitySet";
+                                                                                  Ty.path
+                                                                                    "alloc::alloc::Global"
+                                                                                ],
+                                                                              [],
+                                                                              [],
+                                                                              "deref",
+                                                                              [],
+                                                                              []
                                                                             |),
-                                                                            "move_binary_format::file_format::FunctionHandle",
-                                                                            "type_parameters"
-                                                                          |)
-                                                                        ]
-                                                                      |);
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::deref::Deref",
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::vec::Vec")
-                                                                            []
                                                                             [
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::AbilitySet";
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ],
-                                                                          [],
-                                                                          [],
-                                                                          "deref",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| def_handle |),
-                                                                            "move_binary_format::file_format::FunctionHandle",
-                                                                            "type_parameters"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          function_handle
+                                                                                        |)
+                                                                                      |),
+                                                                                      "move_binary_format::file_format::FunctionHandle",
+                                                                                      "type_parameters"
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |)
-                                                                        ]
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::deref::Deref",
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "alloc::vec::Vec")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::AbilitySet";
+                                                                                  Ty.path
+                                                                                    "alloc::alloc::Global"
+                                                                                ],
+                                                                              [],
+                                                                              [],
+                                                                              "deref",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          def_handle
+                                                                                        |)
+                                                                                      |),
+                                                                                      "move_binary_format::file_format::FunctionHandle",
+                                                                                      "type_parameters"
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -4667,16 +5362,23 @@ Module dependencies.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| context |),
-                                                            "move_bytecode_verifier::dependencies::Context",
-                                                            "module"
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| context |) |),
+                                                                "move_bytecode_verifier::dependencies::Context",
+                                                                "module"
+                                                              |)
+                                                            |)
                                                           |)
                                                         |);
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| function_handle |),
+                                                            M.deref (|
+                                                              M.read (| function_handle |)
+                                                            |),
                                                             "move_binary_format::file_format::FunctionHandle",
                                                             "parameters"
                                                           |)
@@ -4714,12 +5416,23 @@ Module dependencies.
                                                             ]
                                                           |),
                                                           [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| context |),
-                                                              "move_bytecode_verifier::dependencies::Context",
-                                                              "dependency_map"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| context |) |),
+                                                                "move_bytecode_verifier::dependencies::Context",
+                                                                "dependency_map"
+                                                              |)
                                                             |);
-                                                            owner_module_id
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  owner_module_id
+                                                                |)
+                                                              |)
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -4743,10 +5456,21 @@ Module dependencies.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| M.read (| module |) |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        M.deref (|
+                                                                          M.read (| module |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |);
                                                                   M.read (|
                                                                     M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| def_handle |),
+                                                                      M.deref (|
+                                                                        M.read (| def_handle |)
+                                                                      |),
                                                                       "move_binary_format::file_format::FunctionHandle",
                                                                       "parameters"
                                                                     |)
@@ -4849,61 +5573,109 @@ Module dependencies.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| context |);
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::deref::Deref",
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::SignatureToken";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      [],
-                                                                      [],
-                                                                      "deref",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        M.read (| handle_params |),
-                                                                        "move_binary_format::file_format::Signature",
-                                                                        0
-                                                                      |)
-                                                                    ]
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| context |)
+                                                                    |)
                                                                   |);
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::deref::Deref",
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::deref::Deref",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [],
+                                                                          [],
+                                                                          "deref",
+                                                                          [],
+                                                                          []
+                                                                        |),
                                                                         [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::SignatureToken";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      [],
-                                                                      [],
-                                                                      "deref",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        M.read (| def_params |),
-                                                                        "move_binary_format::file_format::Signature",
-                                                                        0
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      handle_params
+                                                                                    |)
+                                                                                  |),
+                                                                                  "move_binary_format::file_format::Signature",
+                                                                                  0
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
                                                                       |)
-                                                                    ]
+                                                                    |)
                                                                   |);
-                                                                  M.read (|
-                                                                    M.read (| owner_module |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::deref::Deref",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [],
+                                                                          [],
+                                                                          "deref",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      def_params
+                                                                                    |)
+                                                                                  |),
+                                                                                  "move_binary_format::file_format::Signature",
+                                                                                  0
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        M.deref (|
+                                                                          M.read (| owner_module |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |);
@@ -5022,16 +5794,23 @@ Module dependencies.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| context |),
-                                                            "move_bytecode_verifier::dependencies::Context",
-                                                            "module"
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| context |) |),
+                                                                "move_bytecode_verifier::dependencies::Context",
+                                                                "module"
+                                                              |)
+                                                            |)
                                                           |)
                                                         |);
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| function_handle |),
+                                                            M.deref (|
+                                                              M.read (| function_handle |)
+                                                            |),
                                                             "move_binary_format::file_format::FunctionHandle",
                                                             "return_"
                                                           |)
@@ -5069,12 +5848,23 @@ Module dependencies.
                                                             ]
                                                           |),
                                                           [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| context |),
-                                                              "move_bytecode_verifier::dependencies::Context",
-                                                              "dependency_map"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| context |) |),
+                                                                "move_bytecode_verifier::dependencies::Context",
+                                                                "dependency_map"
+                                                              |)
                                                             |);
-                                                            owner_module_id
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  owner_module_id
+                                                                |)
+                                                              |)
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -5098,10 +5888,21 @@ Module dependencies.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| M.read (| module |) |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        M.deref (|
+                                                                          M.read (| module |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |);
                                                                   M.read (|
                                                                     M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| def_handle |),
+                                                                      M.deref (|
+                                                                        M.read (| def_handle |)
+                                                                      |),
                                                                       "move_binary_format::file_format::FunctionHandle",
                                                                       "return_"
                                                                     |)
@@ -5204,61 +6005,109 @@ Module dependencies.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (| context |);
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::deref::Deref",
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::SignatureToken";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      [],
-                                                                      [],
-                                                                      "deref",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        M.read (| handle_return |),
-                                                                        "move_binary_format::file_format::Signature",
-                                                                        0
-                                                                      |)
-                                                                    ]
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| context |)
+                                                                    |)
                                                                   |);
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::deref::Deref",
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::deref::Deref",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [],
+                                                                          [],
+                                                                          "deref",
+                                                                          [],
+                                                                          []
+                                                                        |),
                                                                         [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::SignatureToken";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      [],
-                                                                      [],
-                                                                      "deref",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        M.read (| def_return |),
-                                                                        "move_binary_format::file_format::Signature",
-                                                                        0
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      handle_return
+                                                                                    |)
+                                                                                  |),
+                                                                                  "move_binary_format::file_format::Signature",
+                                                                                  0
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
                                                                       |)
-                                                                    ]
+                                                                    |)
                                                                   |);
-                                                                  M.read (|
-                                                                    M.read (| owner_module |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::deref::Deref",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [],
+                                                                          [],
+                                                                          "deref",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      def_return
+                                                                                    |)
+                                                                                  |),
+                                                                                  "move_binary_format::file_format::Signature",
+                                                                                  0
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        M.deref (|
+                                                                          M.read (| owner_module |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |);
@@ -5501,7 +6350,12 @@ Module dependencies.
                 [],
                 []
               |),
-              [ M.read (| local_type_parameters_declaration |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| local_type_parameters_declaration |) |)
+                |)
+              ]
             |),
             M.call_closure (|
               M.get_associated_function (|
@@ -5513,7 +6367,8 @@ Module dependencies.
                 [],
                 []
               |),
-              [ M.read (| defined_type_parameters |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| defined_type_parameters |) |) |)
+              ]
             |)
           |),
           ltac:(M.monadic
@@ -5559,45 +6414,53 @@ Module dependencies.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Ty.apply
-                        (Ty.path "core::slice::iter::Iter")
-                        []
-                        [ Ty.path "move_binary_format::file_format::AbilitySet" ],
-                      [],
-                      [],
-                      "zip",
-                      [],
-                      [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
                         Ty.apply
-                          (Ty.path "&")
+                          (Ty.path "core::slice::iter::Iter")
                           []
-                          [
+                          [ Ty.path "move_binary_format::file_format::AbilitySet" ],
+                        [],
+                        [],
+                        "zip",
+                        [],
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                            ]
+                        ]
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
                               []
-                              [ Ty.path "move_binary_format::file_format::AbilitySet" ]
-                          ]
-                      ]
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "slice")
+                              [ Ty.path "move_binary_format::file_format::AbilitySet" ],
+                            "iter",
+                            [],
                             []
-                            [ Ty.path "move_binary_format::file_format::AbilitySet" ],
-                          "iter",
-                          [],
-                          []
-                        |),
-                        [ M.read (| local_type_parameters_declaration |) ]
-                      |);
-                      M.read (| defined_type_parameters |)
-                    ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| local_type_parameters_declaration |) |)
+                            |)
+                          ]
+                        |);
+                        M.read (| defined_type_parameters |)
+                      ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -5624,9 +6487,15 @@ Module dependencies.
                                     |),
                                     [
                                       M.read (|
-                                        M.read (| local_type_parameter_constraints_declaration |)
+                                        M.deref (|
+                                          M.read (| local_type_parameter_constraints_declaration |)
+                                        |)
                                       |);
-                                      M.read (| M.read (| defined_type_parameter_constraints |) |)
+                                      M.read (|
+                                        M.deref (|
+                                          M.read (| defined_type_parameter_constraints |)
+                                        |)
+                                      |)
                                     ]
                                   |)))
                             ]
@@ -5688,7 +6557,12 @@ Module dependencies.
                 [],
                 []
               |),
-              [ M.read (| local_type_parameters_declaration |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| local_type_parameters_declaration |) |)
+                |)
+              ]
             |),
             M.call_closure (|
               M.get_associated_function (|
@@ -5700,7 +6574,8 @@ Module dependencies.
                 [],
                 []
               |),
-              [ M.read (| defined_type_parameters |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| defined_type_parameters |) |) |)
+              ]
             |)
           |),
           ltac:(M.monadic
@@ -5746,45 +6621,53 @@ Module dependencies.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Ty.apply
-                        (Ty.path "core::slice::iter::Iter")
-                        []
-                        [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
-                      [],
-                      [],
-                      "zip",
-                      [],
-                      [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
                         Ty.apply
-                          (Ty.path "&")
+                          (Ty.path "core::slice::iter::Iter")
                           []
-                          [
+                          [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
+                        [],
+                        [],
+                        "zip",
+                        [],
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
+                            ]
+                        ]
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
-                          ]
-                      ]
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "slice")
+                              [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
+                            "iter",
+                            [],
                             []
-                            [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
-                          "iter",
-                          [],
-                          []
-                        |),
-                        [ M.read (| local_type_parameters_declaration |) ]
-                      |);
-                      M.read (| defined_type_parameters |)
-                    ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| local_type_parameters_declaration |) |)
+                            |)
+                          ]
+                        |);
+                        M.read (| defined_type_parameters |)
+                      ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -5810,8 +6693,16 @@ Module dependencies.
                                         []
                                       |),
                                       [
-                                        M.read (| local_type_parameter_declaration |);
-                                        M.read (| defined_type_parameter |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (| local_type_parameter_declaration |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| defined_type_parameter |) |)
+                                        |)
                                       ]
                                     |),
                                     ltac:(M.monadic
@@ -5824,14 +6715,16 @@ Module dependencies.
                                         [
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| local_type_parameter_declaration |),
+                                              M.deref (|
+                                                M.read (| local_type_parameter_declaration |)
+                                              |),
                                               "move_binary_format::file_format::StructTypeParameter",
                                               "constraints"
                                             |)
                                           |);
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| defined_type_parameter |),
+                                              M.deref (| M.read (| defined_type_parameter |) |),
                                               "move_binary_format::file_format::StructTypeParameter",
                                               "constraints"
                                             |)
@@ -5919,7 +6812,7 @@ Module dependencies.
           UnOp.not (|
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| local_type_parameter_declaration |),
+                M.deref (| M.read (| local_type_parameter_declaration |) |),
                 "move_binary_format::file_format::StructTypeParameter",
                 "is_phantom"
               |)
@@ -5928,7 +6821,7 @@ Module dependencies.
           ltac:(M.monadic
             (M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| defined_type_parameter |),
+                M.deref (| M.read (| defined_type_parameter |) |),
                 "move_binary_format::file_format::StructTypeParameter",
                 "is_phantom"
               |)
@@ -5993,7 +6886,12 @@ Module dependencies.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| handle_sig |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| handle_sig |) |)
+                                    |)
+                                  ]
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -6005,7 +6903,12 @@ Module dependencies.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| def_sig |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| def_sig |) |)
+                                    |)
+                                  ]
                                 |)
                               |)
                             |)) in
@@ -6100,7 +7003,12 @@ Module dependencies.
                                   [],
                                   []
                                 |),
-                                [ M.read (| handle_sig |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| handle_sig |) |)
+                                  |)
+                                ]
                               |);
                               M.read (| def_sig |)
                             ]
@@ -6145,7 +7053,12 @@ Module dependencies.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -6196,10 +7109,22 @@ Module dependencies.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| context |);
-                                                      M.read (| handle_type |);
-                                                      M.read (| def_type |);
-                                                      M.read (| def_module |)
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| context |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| handle_type |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| def_type |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| def_module |) |)
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -6555,10 +7480,16 @@ Module dependencies.
                             []
                           |),
                           [
-                            M.read (| context |);
-                            M.read (| M.read (| ty1 |) |);
-                            M.read (| M.read (| ty2 |) |);
-                            M.read (| def_module |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| M.deref (| M.read (| ty1 |) |) |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| M.deref (| M.read (| ty2 |) |) |) |)
+                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| def_module |) |) |)
                           ]
                         |)
                       |)));
@@ -6590,10 +7521,10 @@ Module dependencies.
                             []
                           |),
                           [
-                            M.read (| context |);
-                            M.read (| M.read (| idx1 |) |);
-                            M.read (| M.read (| idx2 |) |);
-                            M.read (| def_module |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |);
+                            M.read (| M.deref (| M.read (| idx1 |) |) |);
+                            M.read (| M.deref (| M.read (| idx2 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| def_module |) |) |)
                           ]
                         |)
                       |)));
@@ -6618,7 +7549,12 @@ Module dependencies.
                         |) in
                       let struct_inst2 := M.alloc (| γ2_0 |) in
                       M.match_operator (|
-                        M.alloc (| M.read (| M.read (| struct_inst1 |) |) |),
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| struct_inst1 |) |) |) |)
+                          |)
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -6628,7 +7564,14 @@ Module dependencies.
                               let idx1 := M.alloc (| γ1_0 |) in
                               let inst1 := M.alloc (| γ1_1 |) in
                               M.match_operator (|
-                                M.alloc (| M.read (| M.read (| struct_inst2 |) |) |),
+                                M.alloc (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (| M.deref (| M.read (| struct_inst2 |) |) |)
+                                    |)
+                                  |)
+                                |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -6665,10 +7608,16 @@ Module dependencies.
                                                     []
                                                   |),
                                                   [
-                                                    M.read (| context |);
-                                                    M.read (| M.read (| idx1 |) |);
-                                                    M.read (| M.read (| idx2 |) |);
-                                                    M.read (| def_module |)
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| context |) |)
+                                                    |);
+                                                    M.read (| M.deref (| M.read (| idx1 |) |) |);
+                                                    M.read (| M.deref (| M.read (| idx2 |) |) |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| def_module |) |)
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -6741,46 +7690,72 @@ Module dependencies.
                                             []
                                           |),
                                           [
-                                            M.read (| context |);
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::deref::Deref",
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ],
-                                                [],
-                                                [],
-                                                "deref",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| inst1 |) ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| context |) |)
                                             |);
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::deref::Deref",
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
+                                                    [],
+                                                    [],
+                                                    "deref",
+                                                    [],
+                                                    []
+                                                  |),
                                                   [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ],
-                                                [],
-                                                [],
-                                                "deref",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| inst2 |) ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| inst1 |) |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
                                             |);
-                                            M.read (| def_module |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
+                                                    [],
+                                                    [],
+                                                    "deref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| inst2 |) |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| def_module |) |)
+                                            |)
                                           ]
                                         |)
                                       |)))
@@ -6849,10 +7824,22 @@ Module dependencies.
                                       []
                                     |),
                                     [
-                                      M.read (| context |);
-                                      M.read (| M.read (| ty1 |) |);
-                                      M.read (| M.read (| ty2 |) |);
-                                      M.read (| def_module |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| context |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| M.deref (| M.read (| ty1 |) |) |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| M.deref (| M.read (| ty2 |) |) |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| def_module |) |)
+                                      |)
                                     ]
                                   |)
                                 |)))
@@ -6897,7 +7884,10 @@ Module dependencies.
                                         [],
                                         []
                                       |),
-                                      [ idx1; idx2 ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, idx1 |);
+                                        M.borrow (| Pointer.Kind.Ref, idx2 |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -7190,11 +8180,16 @@ Module dependencies.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| context |),
-                      "move_bytecode_verifier::dependencies::Context",
-                      "module"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| context |) |),
+                          "move_bytecode_verifier::dependencies::Context",
+                          "module"
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| idx1 |)
@@ -7211,16 +8206,21 @@ Module dependencies.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| context |),
-                      "move_bytecode_verifier::dependencies::Context",
-                      "module"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| context |) |),
+                          "move_bytecode_verifier::dependencies::Context",
+                          "module"
+                        |)
+                      |)
                     |)
                   |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| struct_handle |),
+                      M.deref (| M.read (| struct_handle |) |),
                       "move_binary_format::file_format::StructHandle",
                       "module"
                     |)
@@ -7238,14 +8238,19 @@ Module dependencies.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| context |),
-                      "move_bytecode_verifier::dependencies::Context",
-                      "module"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| context |) |),
+                          "move_bytecode_verifier::dependencies::Context",
+                          "module"
+                        |)
+                      |)
                     |)
                   |);
-                  M.read (| module_handle |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module_handle |) |) |)
                 ]
               |)
             |) in
@@ -7259,16 +8264,21 @@ Module dependencies.
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| context |),
-                      "move_bytecode_verifier::dependencies::Context",
-                      "module"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| context |) |),
+                          "move_bytecode_verifier::dependencies::Context",
+                          "module"
+                        |)
+                      |)
                     |)
                   |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| struct_handle |),
+                      M.deref (| M.read (| struct_handle |) |),
                       "move_binary_format::file_format::StructHandle",
                       "name"
                     |)
@@ -7285,7 +8295,10 @@ Module dependencies.
                   [],
                   []
                 |),
-                [ M.read (| def_module |); M.read (| idx2 |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| def_module |) |) |);
+                  M.read (| idx2 |)
+                ]
               |)
             |) in
           let~ def_module_handle :=
@@ -7298,10 +8311,10 @@ Module dependencies.
                   []
                 |),
                 [
-                  M.read (| def_module |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| def_module |) |) |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| def_struct_handle |),
+                      M.deref (| M.read (| def_struct_handle |) |),
                       "move_binary_format::file_format::StructHandle",
                       "module"
                     |)
@@ -7318,7 +8331,10 @@ Module dependencies.
                   [],
                   []
                 |),
-                [ M.read (| def_module |); M.read (| def_module_handle |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| def_module |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| def_module_handle |) |) |)
+                ]
               |)
             |) in
           let~ def_struct_name :=
@@ -7331,10 +8347,10 @@ Module dependencies.
                   []
                 |),
                 [
-                  M.read (| def_module |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| def_module |) |) |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| def_struct_handle |),
+                      M.deref (| M.read (| def_struct_handle |) |),
                       "move_binary_format::file_format::StructHandle",
                       "name"
                     |)
@@ -7361,7 +8377,10 @@ Module dependencies.
                               [],
                               []
                             |),
-                            [ module_id; def_module_id ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, module_id |);
+                              M.borrow (| Pointer.Kind.Ref, def_module_id |)
+                            ]
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
@@ -7382,7 +8401,10 @@ Module dependencies.
                                 [],
                                 []
                               |),
-                              [ struct_name; def_struct_name ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, struct_name |);
+                                M.borrow (| Pointer.Kind.Ref, def_struct_name |)
+                              ]
                             |)))
                         |)
                       |)) in
@@ -7463,10 +8485,13 @@ Module dependencies.
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| context |),
-                        "move_bytecode_verifier::dependencies::Context",
-                        "script_functions"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| context |) |),
+                          "move_bytecode_verifier::dependencies::Context",
+                          "script_functions"
+                        |)
                       |)
                     |),
                     [
@@ -7526,11 +8551,16 @@ Module dependencies.
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| context |),
-                                                    "move_bytecode_verifier::dependencies::Context",
-                                                    "module"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| context |) |),
+                                                        "move_bytecode_verifier::dependencies::Context",
+                                                        "module"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |)
                                               ]
@@ -7571,7 +8601,7 @@ Module dependencies.
               let~ m :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| context |),
+                    M.deref (| M.read (| context |) |),
                     "move_bytecode_verifier::dependencies::Context",
                     "module"
                   |)
@@ -7625,14 +8655,24 @@ Module dependencies.
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "function_defs",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| m |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "function_defs",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| m |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -7671,7 +8711,12 @@ Module dependencies.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -7698,10 +8743,13 @@ Module dependencies.
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| fdef |),
-                                                  "move_binary_format::file_format::FunctionDefinition",
-                                                  "code"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| fdef |) |),
+                                                    "move_binary_format::file_format::FunctionDefinition",
+                                                    "code"
+                                                  |)
                                                 |)
                                               |),
                                               [
@@ -7729,10 +8777,13 @@ Module dependencies.
                                                       |) in
                                                     let code := M.alloc (| γ1_0 |) in
                                                     M.alloc (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| code |),
-                                                        "move_binary_format::file_format::CodeUnit",
-                                                        "code"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| code |) |),
+                                                          "move_binary_format::file_format::CodeUnit",
+                                                          "code"
+                                                        |)
                                                       |)
                                                     |)))
                                               ]
@@ -7765,17 +8816,25 @@ Module dependencies.
                                                     []
                                                   |),
                                                   [
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| context |),
-                                                        "move_bytecode_verifier::dependencies::Context",
-                                                        "module"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| context |) |),
+                                                            "move_bytecode_verifier::dependencies::Context",
+                                                            "module"
+                                                          |)
+                                                        |)
                                                       |)
                                                     |);
-                                                    M.read (| script_functions |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| script_functions |) |)
+                                                    |);
                                                     M.read (|
                                                       M.SubPointer.get_struct_record_field (|
-                                                        M.read (| fdef |),
+                                                        M.deref (| M.read (| fdef |) |),
                                                         "move_binary_format::file_format::FunctionDefinition",
                                                         "is_entry"
                                                       |)
@@ -7783,24 +8842,34 @@ Module dependencies.
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::FunctionDefinitionIndex"
                                                       [ M.rust_cast (M.read (| idx |)) ];
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.apply
-                                                          (Ty.path "alloc::vec::Vec")
-                                                          []
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::Bytecode";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            [],
+                                                            [],
+                                                            "deref",
+                                                            [],
+                                                            []
+                                                          |),
                                                           [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::Bytecode";
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ],
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| code |) ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| code |) |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -7982,7 +9051,7 @@ Module dependencies.
                                   [],
                                   []
                                 |),
-                                [ M.read (| code |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |) ]
                               |)
                             ]
                           |)
@@ -8017,7 +9086,12 @@ Module dependencies.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -8068,22 +9142,41 @@ Module dependencies.
                                                       |) in
                                                     let finst_idx := M.alloc (| γ1_0 |) in
                                                     M.alloc (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::CompiledModule",
-                                                            "function_instantiation_at",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (| module |);
-                                                            M.read (| M.read (| finst_idx |) |)
-                                                          ]
-                                                        |),
-                                                        "move_binary_format::file_format::FunctionInstantiation",
-                                                        "handle"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                    "function_instantiation_at",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| module |)
+                                                                      |)
+                                                                    |);
+                                                                    M.read (|
+                                                                      M.deref (|
+                                                                        M.read (| finst_idx |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |),
+                                                              "move_binary_format::file_format::FunctionInstantiation",
+                                                              "handle"
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |)
                                                     |)));
                                                 fun γ =>
@@ -8120,8 +9213,14 @@ Module dependencies.
                                                     ]
                                                   |),
                                                   [
-                                                    M.read (| script_functions |);
-                                                    M.read (| fhandle_idx |)
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| script_functions |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| fhandle_idx |) |)
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -8209,9 +9308,14 @@ Module dependencies.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "script-visible functions can only be called from scripts or other script-visible functions"
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "script-visible functions can only be called from scripts or other script-visible functions"
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)

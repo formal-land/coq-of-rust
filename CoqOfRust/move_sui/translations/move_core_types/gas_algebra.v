@@ -177,12 +177,23 @@ Module gas_algebra.
                             [ Ty.path "u64" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "val" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::gas_algebra::GasQuantity",
-                              "val"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::gas_algebra::GasQuantity",
+                                    "val"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -234,12 +245,23 @@ Module gas_algebra.
                             [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ U ] ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "phantom" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::gas_algebra::GasQuantity",
-                              "phantom"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::gas_algebra::GasQuantity",
+                                    "phantom"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -560,7 +582,7 @@ Module gas_algebra.
           BinOp.eq (|
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "move_core_types::gas_algebra::GasQuantity",
                 "val"
               |)
@@ -588,15 +610,26 @@ Module gas_algebra.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::gas_algebra::GasQuantity",
-                "val"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::gas_algebra::GasQuantity",
+                  "val"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "move_core_types::gas_algebra::GasQuantity",
-                "val"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::gas_algebra::GasQuantity",
+                      "val"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -742,8 +775,11 @@ Module gas_algebra.
                 M.alloc (|
                   Value.Tuple
                     [
-                      M.get_constant (| "move_core_types::gas_algebra::ToUnit::MULTIPLIER" |);
-                      M.alloc (| Value.Integer IntegerKind.U64 0 |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.get_constant (| "move_core_types::gas_algebra::ToUnit::MULTIPLIER" |)
+                      |);
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
                     ]
                 |),
                 [
@@ -762,8 +798,8 @@ Module gas_algebra.
                                 M.use
                                   (M.alloc (|
                                     BinOp.eq (|
-                                      M.read (| M.read (| left_val |) |),
-                                      M.read (| M.read (| right_val |) |)
+                                      M.read (| M.deref (| M.read (| left_val |) |) |),
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
                                     |)
                                   |)) in
                               let _ :=
@@ -787,8 +823,24 @@ Module gas_algebra.
                                         |),
                                         [
                                           M.read (| kind |);
-                                          M.read (| left_val |);
-                                          M.read (| right_val |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| left_val |) |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| right_val |) |)
+                                              |)
+                                            |)
+                                          |);
                                           Value.StructTuple "core::option::Option::None" []
                                         ]
                                       |)
@@ -989,13 +1041,17 @@ Module gas_algebra.
                     [],
                     []
                   |),
-                  [ M.read (| params |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| params |) |) |) ]
                 |)
               |) in
             let~ _ :=
               M.match_operator (|
                 M.alloc (|
-                  Value.Tuple [ multiplier; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+                  Value.Tuple
+                    [
+                      M.borrow (| Pointer.Kind.Ref, multiplier |);
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                    ]
                 |),
                 [
                   fun γ =>
@@ -1013,8 +1069,8 @@ Module gas_algebra.
                                 M.use
                                   (M.alloc (|
                                     BinOp.eq (|
-                                      M.read (| M.read (| left_val |) |),
-                                      M.read (| M.read (| right_val |) |)
+                                      M.read (| M.deref (| M.read (| left_val |) |) |),
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
                                     |)
                                   |)) in
                               let _ :=
@@ -1038,8 +1094,24 @@ Module gas_algebra.
                                         |),
                                         [
                                           M.read (| kind |);
-                                          M.read (| left_val |);
-                                          M.read (| right_val |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| left_val |) |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| right_val |) |)
+                                              |)
+                                            |)
+                                          |);
                                           Value.StructTuple "core::option::Option::None" []
                                         ]
                                       |)
@@ -1122,7 +1194,7 @@ Module gas_algebra.
                     [],
                     []
                   |),
-                  [ M.read (| params |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| params |) |) |) ]
                 |)
               |),
               [
@@ -1212,7 +1284,7 @@ Module gas_algebra.
                     [],
                     []
                   |),
-                  [ M.read (| params |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| params |) |) |) ]
                 |)
               |),
               [
@@ -1361,7 +1433,7 @@ Module gas_algebra.
             [
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "move_core_types::gas_algebra::GasQuantity",
                   "val"
                 |)
@@ -1412,30 +1484,54 @@ Module gas_algebra.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [],
-                            [ Ty.path "u64" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::gas_algebra::GasQuantity",
-                              "val"
-                            |)
-                          ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [],
+                                  [ Ty.path "u64" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::gas_algebra::GasQuantity",
+                                          "val"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1472,53 +1568,85 @@ Module gas_algebra.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (| Value.String "" |);
-                        M.read (| Value.String " (" |);
-                        M.read (| Value.String ")" |)
-                      ]
-                  |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [],
-                            [ Ty.path "u64" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::gas_algebra::GasQuantity",
-                              "val"
-                            |)
-                          ]
-                        |);
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                          |),
-                          [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_function (| "core::any::type_name", [], [ U ] |),
-                                []
-                              |)
-                            |)
-                          ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " (" |);
+                              M.read (| Value.String ")" |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [],
+                                  [ Ty.path "u64" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::gas_algebra::GasQuantity",
+                                          "val"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_function (| "core::any::type_name", [], [ U ] |),
+                                            []
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1563,7 +1691,10 @@ Module gas_algebra.
                     [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               |),
               [
@@ -1625,7 +1756,10 @@ Module gas_algebra.
                   [],
                   []
                 |),
-                [ M.read (| self |); M.read (| other |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                ]
               |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1663,7 +1797,10 @@ Module gas_algebra.
               [],
               []
             |),
-            [ M.read (| self |); M.read (| other |) ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1758,7 +1895,7 @@ Module gas_algebra.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.write (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::arith::Add",
@@ -1769,7 +1906,7 @@ Module gas_algebra.
                   [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
               |)
             |)
           |)))
@@ -1941,7 +2078,11 @@ Module gas_algebra.
           let~ _ :=
             M.match_operator (|
               M.alloc (|
-                Value.Tuple [ nominator; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+                Value.Tuple
+                  [
+                    M.borrow (| Pointer.Kind.Ref, nominator |);
+                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                  ]
               |),
               [
                 fun γ =>
@@ -1959,8 +2100,8 @@ Module gas_algebra.
                               M.use
                                 (M.alloc (|
                                   BinOp.eq (|
-                                    M.read (| M.read (| left_val |) |),
-                                    M.read (| M.read (| right_val |) |)
+                                    M.read (| M.deref (| M.read (| left_val |) |) |),
+                                    M.read (| M.deref (| M.read (| right_val |) |) |)
                                   |)
                                 |)) in
                             let _ :=
@@ -1981,8 +2122,24 @@ Module gas_algebra.
                                       |),
                                       [
                                         M.read (| kind |);
-                                        M.read (| left_val |);
-                                        M.read (| right_val |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
                                         Value.StructTuple "core::option::Option::None" []
                                       ]
                                     |)
@@ -1998,7 +2155,11 @@ Module gas_algebra.
           let~ _ :=
             M.match_operator (|
               M.alloc (|
-                Value.Tuple [ denominator; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+                Value.Tuple
+                  [
+                    M.borrow (| Pointer.Kind.Ref, denominator |);
+                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                  ]
               |),
               [
                 fun γ =>
@@ -2016,8 +2177,8 @@ Module gas_algebra.
                               M.use
                                 (M.alloc (|
                                   BinOp.eq (|
-                                    M.read (| M.read (| left_val |) |),
-                                    M.read (| M.read (| right_val |) |)
+                                    M.read (| M.deref (| M.read (| left_val |) |) |),
+                                    M.read (| M.deref (| M.read (| right_val |) |) |)
                                   |)
                                 |)) in
                             let _ :=
@@ -2038,8 +2199,24 @@ Module gas_algebra.
                                       |),
                                       [
                                         M.read (| kind |);
-                                        M.read (| left_val |);
-                                        M.read (| right_val |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
                                         Value.StructTuple "core::option::Option::None" []
                                       ]
                                     |)
@@ -2114,7 +2291,11 @@ Module gas_algebra.
           let~ _ :=
             M.match_operator (|
               M.alloc (|
-                Value.Tuple [ nominator; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+                Value.Tuple
+                  [
+                    M.borrow (| Pointer.Kind.Ref, nominator |);
+                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                  ]
               |),
               [
                 fun γ =>
@@ -2132,8 +2313,8 @@ Module gas_algebra.
                               M.use
                                 (M.alloc (|
                                   BinOp.eq (|
-                                    M.read (| M.read (| left_val |) |),
-                                    M.read (| M.read (| right_val |) |)
+                                    M.read (| M.deref (| M.read (| left_val |) |) |),
+                                    M.read (| M.deref (| M.read (| right_val |) |) |)
                                   |)
                                 |)) in
                             let _ :=
@@ -2154,8 +2335,24 @@ Module gas_algebra.
                                       |),
                                       [
                                         M.read (| kind |);
-                                        M.read (| left_val |);
-                                        M.read (| right_val |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
                                         Value.StructTuple "core::option::Option::None" []
                                       ]
                                     |)
@@ -2171,7 +2368,11 @@ Module gas_algebra.
           let~ _ :=
             M.match_operator (|
               M.alloc (|
-                Value.Tuple [ denominator; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+                Value.Tuple
+                  [
+                    M.borrow (| Pointer.Kind.Ref, denominator |);
+                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                  ]
               |),
               [
                 fun γ =>
@@ -2189,8 +2390,8 @@ Module gas_algebra.
                               M.use
                                 (M.alloc (|
                                   BinOp.eq (|
-                                    M.read (| M.read (| left_val |) |),
-                                    M.read (| M.read (| right_val |) |)
+                                    M.read (| M.deref (| M.read (| left_val |) |) |),
+                                    M.read (| M.deref (| M.read (| right_val |) |) |)
                                   |)
                                 |)) in
                             let _ :=
@@ -2211,8 +2412,24 @@ Module gas_algebra.
                                       |),
                                       [
                                         M.read (| kind |);
-                                        M.read (| left_val |);
-                                        M.read (| right_val |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
                                         Value.StructTuple "core::option::Option::None" []
                                       ]
                                     |)

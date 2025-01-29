@@ -202,9 +202,14 @@ Module bls12_381.
                               []
                             |),
                             [
-                              M.read (|
-                                M.get_constant (|
-                                  "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (|
+                                    M.get_constant (|
+                                      "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                                    |)
+                                  |)
                                 |)
                               |)
                             ]
@@ -219,9 +224,11 @@ Module bls12_381.
                     M.rust_cast
                       (M.read (|
                         M.SubPointer.get_array_field (|
-                          M.read (|
-                            M.get_constant (|
-                              "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                          M.deref (|
+                            M.read (|
+                              M.get_constant (|
+                                "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                              |)
                             |)
                           |),
                           index

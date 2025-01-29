@@ -56,7 +56,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -150,7 +150,7 @@ Module Impl_conditional_compilation_Env.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "conditional_compilation::Env",
             "caller"
           |)
@@ -329,14 +329,14 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
               UnOp.not (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "conditional_compilation::ConditionalCompilation",
                     "value"
                   |)
@@ -353,15 +353,18 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "conditional_compilation::ConditionalCompilation",
-                        "init_env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "conditional_compilation::ConditionalCompilation",
+                          "init_env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -377,15 +380,18 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "conditional_compilation::ConditionalCompilation",
-                        "init_env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "conditional_compilation::ConditionalCompilation",
+                          "init_env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -397,7 +403,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                           ("new_value",
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "conditional_compilation::ConditionalCompilation",
                                 "value"
                               |)
@@ -444,15 +450,18 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "conditional_compilation::ConditionalCompilation",
-                        "init_env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "conditional_compilation::ConditionalCompilation",
+                          "init_env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -468,15 +477,18 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "conditional_compilation::ConditionalCompilation",
-                        "init_env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "conditional_compilation::ConditionalCompilation",
+                          "init_env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -485,14 +497,14 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
               UnOp.not (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "conditional_compilation::ConditionalCompilation",
                     "value"
                   |)
@@ -509,15 +521,18 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "conditional_compilation::ConditionalCompilation",
-                        "init_env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "conditional_compilation::ConditionalCompilation",
+                          "init_env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -529,7 +544,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                           ("new_value",
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "conditional_compilation::ConditionalCompilation",
                                 "value"
                               |)
@@ -567,14 +582,14 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
               UnOp.not (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "conditional_compilation::ConditionalCompilation",
                     "value"
                   |)
@@ -598,7 +613,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "conditional_compilation::ConditionalCompilation",
             "value"
           |)
@@ -633,15 +648,18 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "conditional_compilation::ConditionalCompilation",
-                        "init_env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "conditional_compilation::ConditionalCompilation",
+                          "init_env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -657,15 +675,18 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "conditional_compilation::ConditionalCompilation",
-                        "init_env",
-                        [],
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "conditional_compilation::ConditionalCompilation",
+                          "init_env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -681,7 +702,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),

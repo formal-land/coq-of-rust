@@ -45,7 +45,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 M.use
@@ -121,7 +121,12 @@ Module slice.
                                         [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -179,7 +184,10 @@ Module slice.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (| v |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| v |) |)
+                                                            |);
                                                             Value.Integer IntegerKind.Usize 0;
                                                             M.read (| i |)
                                                           ]
@@ -200,40 +208,60 @@ Module slice.
                                                 [ T; F ]
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::index::IndexMut",
-                                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                                    [],
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::ops::range::RangeTo")
-                                                        []
-                                                        [ Ty.path "usize" ]
-                                                    ],
-                                                    "index_mut",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| v |);
-                                                    Value.StructRecord
-                                                      "core::ops::range::RangeTo"
-                                                      [
-                                                        ("end_",
-                                                          M.call_closure (|
-                                                            M.get_function (|
-                                                              "core::cmp::min",
-                                                              [],
-                                                              [ Ty.path "usize" ]
-                                                            |),
-                                                            [ M.read (| i |); M.read (| len |) ]
-                                                          |))
-                                                      ]
-                                                  ]
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::index::IndexMut",
+                                                            Ty.apply (Ty.path "slice") [] [ T ],
+                                                            [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::range::RangeTo")
+                                                                []
+                                                                [ Ty.path "usize" ]
+                                                            ],
+                                                            "index_mut",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| v |) |)
+                                                            |);
+                                                            Value.StructRecord
+                                                              "core::ops::range::RangeTo"
+                                                              [
+                                                                ("end_",
+                                                                  M.call_closure (|
+                                                                    M.get_function (|
+                                                                      "core::cmp::min",
+                                                                      [],
+                                                                      [ Ty.path "usize" ]
+                                                                    |),
+                                                                    [
+                                                                      M.read (| i |);
+                                                                      M.read (| len |)
+                                                                    ]
+                                                                  |))
+                                                              ]
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
                                                 |);
                                                 M.read (| sift_idx |);
-                                                M.read (| is_less |)
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| is_less |) |)
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -317,7 +345,7 @@ Module slice.
                                 [],
                                 []
                               |),
-                              [ M.read (| v |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                             |)
                           |)
                         ]
@@ -333,7 +361,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 let~ v_base :=
@@ -345,7 +373,7 @@ Module slice.
                         [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 M.loop (|
@@ -424,32 +452,56 @@ Module slice.
                                             []
                                           |),
                                           [
-                                            M.read (| is_less |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| is_less |) |)
+                                            |);
                                             Value.Tuple
                                               [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                                    "add",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| v_base |); M.read (| child |) ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                                    "add",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| v_base |);
-                                                    BinOp.Wrap.add (|
-                                                      M.read (| child |),
-                                                      Value.Integer IntegerKind.Usize 1
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply (Ty.path "*mut") [] [ T ],
+                                                            "add",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.read (| v_base |); M.read (| child |)
+                                                          ]
+                                                        |)
+                                                      |)
                                                     |)
-                                                  ]
+                                                  |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply (Ty.path "*mut") [] [ T ],
+                                                            "add",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| v_base |);
+                                                            BinOp.Wrap.add (|
+                                                              M.read (| child |),
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                           ]
@@ -487,26 +539,50 @@ Module slice.
                                             []
                                           |),
                                           [
-                                            M.read (| is_less |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| is_less |) |)
+                                            |);
                                             Value.Tuple
                                               [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                                    "add",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| v_base |); M.read (| node |) ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply (Ty.path "*mut") [] [ T ],
+                                                            "add",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.read (| v_base |); M.read (| node |) ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
                                                 |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                                    "add",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| v_base |); M.read (| child |) ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply (Ty.path "*mut") [] [ T ],
+                                                            "add",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.read (| v_base |); M.read (| child |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                           ]
